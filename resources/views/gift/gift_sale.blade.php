@@ -183,6 +183,10 @@
    font-family: FontAwesome;
    content: "\f09d";
    }
+   #progressbar #spayment:before {
+   font-family: FontAwesome;
+   content: "\f09d";
+   }
    #progressbar #confirm:before {
    font-family: FontAwesome;
    content: "\f00c";
@@ -480,7 +484,7 @@
                                    <ul id="progressbar">
                                        <li class="active" id="account"><strong>Account</strong></li>
                                        <li id="personal"><strong>Personal</strong></li>
-                                       <li id="payment"><strong>Payment</strong></li>
+                                       <li id="spayment"><strong>Payment</strong></li>
                                        <li id="confirm"><strong>Finish</strong></li>
                                    </ul>
                                    <!-- sections -->
@@ -1104,7 +1108,7 @@ function sfinalcalculation() {
         document.getElementById('o_six').style.display = 'none';
         // Assuming the next section has an id of 'nextSection'
         document.getElementById('o_seven').style.display = 'block';
-        $('#payment').addClass("active");
+        $('#spayment').addClass("active");
         
     } 
     // else {
