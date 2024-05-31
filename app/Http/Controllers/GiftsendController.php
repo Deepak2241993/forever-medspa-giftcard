@@ -11,6 +11,7 @@ use Mail;
 use Session;
 use Validator;
 use App\Mail\GeftcardMail;
+use App\Mail\ResendGiftcard;
 use App\Mail\GiftCardStatement;
 use App\Mail\GiftcardCancelMail;
 class GiftsendController extends Controller
@@ -423,6 +424,21 @@ public function giftcancel(Request $request,){
      } 
     return $result;
  
+}
+
+public function Resendmail(Request $request)
+{
+    try {
+        $statement = Giftsend::findOrFail($request->id);
+
+        Mail::to($statement->gift_send_to)->send(new ResendGiftcard($statement));
+
+        return response()->json(['message' => 'Email sent successfully.'], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json(['error' => 'Giftsend record not found.'], 404);
+    } catch (Exception $e) {
+        return response()->json(['error' => 'Failed to send email.'], 500);
+    }
 }
 
 

@@ -1,5 +1,5 @@
-@extends('layouts.admin_layout')
-@section('body')
+
+<?php $__env->startSection('body'); ?>
 <style>
     .scroll-container {
   width: 100%; /* Set the width of the container */
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo e(url('admin-dashboard')); ?>">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Giftcards Transactions
                         </li>
@@ -59,19 +59,11 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a>
-            <div class="card-header">
-                @if(session()->has('error'))
-                    {{ session()->get('error') }}
-                @endif
-                @if(session()->has('success'))
-                    {{ session()->get('success') }}
-                @endif
-            </div> --}}
+            
             <span class="text-success"id="response_msg"></span>
             <div class="scroll-container">
                 <div class="scroll-content">
-            @if(count($data)>0)
+            <?php if(count($data)>0): ?>
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>
                 <tr>
@@ -93,48 +85,50 @@
                                   </tr>
                 </thead>
                  <tbody>
-                    @foreach($data as $key => $value)
+                    <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $value['recipient_name'] ? $value['recipient_name']:$value['your_name'] }}</td>
+                        <td><?php echo e($loop->iteration); ?></td>
+                        <td><?php echo e($value['recipient_name'] ? $value['recipient_name']:$value['your_name']); ?></td>
                         <td>
-                            @if($value['payment_mode']=='Payment Gateway')
-                            {{ $value['recipient_name'] ? $value['your_name']:'Self' }}
-                            @else
-                            {{ Auth::user()->user_token; }}
-                            @endif
+                            <?php if($value['payment_mode']=='Payment Gateway'): ?>
+                            <?php echo e($value['recipient_name'] ? $value['your_name']:'Self'); ?>
+
+                            <?php else: ?>
+                            <?php echo e(Auth::user()->user_token); ?>
+
+                            <?php endif; ?>
                         </td>
-                        <!--<td>{{ $value['recipient_name'] ? $value['message']:'NULL' }}</td>-->
-                        <td>{{ $value['recipient_name'] ? $value['receipt_email']:'Medspa' }}</td>
-                        <td class="text-uppercase">{{$value['coupon_code'] ? $value['coupon_code']:'----' }}</td>
-                        <td>{{$value['qty'] ? $value['qty']:'----' }}</td>
-                        <td>{{ $value['amount'] ?   '$'.$value['amount']:'$ 0' }}</td>
-                        <td>{{ $value['discount'] ?   '$'.$value['discount']:'$ 0' }}</td>
-                        <td>{{ $value['transaction_amount'] ?   '$'.$value['transaction_amount']:'$ 0' }}</td>
+                        <!--<td><?php echo e($value['recipient_name'] ? $value['message']:'NULL'); ?></td>-->
+                        <td><?php echo e($value['recipient_name'] ? $value['receipt_email']:'Medspa'); ?></td>
+                        <td class="text-uppercase"><?php echo e($value['coupon_code'] ? $value['coupon_code']:'----'); ?></td>
+                        <td><?php echo e($value['qty'] ? $value['qty']:'----'); ?></td>
+                        <td><?php echo e($value['amount'] ?   '$'.$value['amount']:'$ 0'); ?></td>
+                        <td><?php echo e($value['discount'] ?   '$'.$value['discount']:'$ 0'); ?></td>
+                        <td><?php echo e($value['transaction_amount'] ?   '$'.$value['transaction_amount']:'$ 0'); ?></td>
                         
                         <td>
-                            @if($value['payment_status']=='succeeded')
-                            <span class="badge text-bg-success">{{ucFirst($value['payment_status'])}}</span>
-                        @elseif($value['payment_status']=='processing')
-                            <span class="badge text-bg-primary">{{ucFirst($value['payment_status'])}}</span>
+                            <?php if($value['payment_status']=='succeeded'): ?>
+                            <span class="badge text-bg-success"><?php echo e(ucFirst($value['payment_status'])); ?></span>
+                        <?php elseif($value['payment_status']=='processing'): ?>
+                            <span class="badge text-bg-primary"><?php echo e(ucFirst($value['payment_status'])); ?></span>
                             <a href="#">
-                                <span class="badge text-bg-warning" data-bs-toggle="modal" data-bs-target="#paymentUpdate_{{$value['id']}}" onclick="modalopen({{$value['id']}}, '{{$value['transaction_id']}}')">Update Status</span>
+                                <span class="badge text-bg-warning" data-bs-toggle="modal" data-bs-target="#paymentUpdate_<?php echo e($value['id']); ?>" onclick="modalopen(<?php echo e($value['id']); ?>, '<?php echo e($value['transaction_id']); ?>')">Update Status</span>
                             </a>
-                        @elseif($value['payment_status']=='amount_capturable_updated')
-                            <span class="badge text-bg-warning">{{ucFirst($value['payment_status'])}}</span>
-                        @elseif($value['payment_status']=='payment_failed')
-                            <span class="badge text-bg-danger">{{ucFirst($value['payment_status'])}}</span>
-                        @else
+                        <?php elseif($value['payment_status']=='amount_capturable_updated'): ?>
+                            <span class="badge text-bg-warning"><?php echo e(ucFirst($value['payment_status'])); ?></span>
+                        <?php elseif($value['payment_status']=='payment_failed'): ?>
+                            <span class="badge text-bg-danger"><?php echo e(ucFirst($value['payment_status'])); ?></span>
+                        <?php else: ?>
                             <span class="badge text-bg-danger">Incompleted</span>
-                        @endif                        
+                        <?php endif; ?>                        
                            </td>
-                        <td>{{ $value['transaction_id']}}</td>
+                        <td><?php echo e($value['transaction_id']); ?></td>
                         
                         <td><?php echo date('m-d-Y h:i:A', strtotime($value['created_at'])); ?></td>
-                        <td><a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop_{{$value['id']}}" onclick="cardview({{$value['id']}},'{{$value['transaction_id'] }}')">
+                        <td><a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop_<?php echo e($value['id']); ?>" onclick="cardview(<?php echo e($value['id']); ?>,'<?php echo e($value['transaction_id']); ?>')">
                             View Card
                         </a></td>
-                        <td><button class="btn btn-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button></td>
+                        <td><button class="btn btn-warning" type="button" id="mailsend_<?php echo e($value['id']); ?>" onclick="sendmail(<?php echo e($value['id']); ?>, '<?php echo e($value['transaction_id']); ?>')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button></td>
                         
                         <!-- Button trigger modal -->
 
@@ -142,11 +136,11 @@
 
                        
                     </tr>
-                @endforeach
-                @else
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
                 <hr>
             <p> No data found</p>
-            @endif
+            <?php endif; ?>
                 
                 </tbody>
             </table>
@@ -161,7 +155,7 @@
     </div>
     <!--end::App Content-->
 </main>
-{{-- for payment status update modal --}}
+
 <div class="modal fade paymentUpdate" id="paymentUpdate_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="paymentstatus" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -185,7 +179,7 @@
                         <label for="comments_" style="margin-right: 10px;">Comments</label>
                         <textarea class="form-control comments_" name="comments" id="comments_" style="margin-right: 20px;"></textarea>
 
-                        <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                        <input type="hidden" class="user_token" name="user_token" value="<?php echo e(Auth::user()->user_token); ?>">
                         <input type="hidden" class="gift_id" id="gift_id_" name="id" value="">
 
                         <button type="button" class="btn btn-primary mt-3 paymentstatusbutton" id="paymentstatusbutton" gift_id="gift_id_" onclick="updatestatus(event)" ><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Update</button>
@@ -198,7 +192,7 @@
         </div>
     </div>
 </div>
-{{-- Paymnet status update modal End --}}
+
 
 
   <!-- for Show Gift card Number Modal -->
@@ -218,9 +212,9 @@
       </div>
     </div>
   </div>
-  @endsection
+  <?php $__env->stopSection(); ?>
 
-  @push('script')
+  <?php $__env->startPush('script'); ?>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
 <script>
     // for payment status Modal Open
@@ -243,15 +237,15 @@ function updatestatus(event) {
     button.attr('disabled', true);
     button.find('.spinner-border').show();
     $.ajax({
-        url: '{{ route('giftcard-payment-update') }}',
+        url: '<?php echo e(route('giftcard-payment-update')); ?>',
         method: "post",
         dataType: "json",
         data: {
-            _token: '{{ csrf_token() }}',
+            _token: '<?php echo e(csrf_token()); ?>',
             transaction_id: $('#transaction_id_' + id).val(),
             id: $('#gift_id_' + id).val(),
             comments: $('#comments_' + id).val(),
-            user_token: '{{ Auth::user()->user_token }}',
+            user_token: '<?php echo e(Auth::user()->user_token); ?>',
             payment_status: $('#payment_status_' + id).val(),
         },
         success: function(response) {
@@ -278,13 +272,13 @@ function cardview(id,tid) {
     $('#staticBackdrop_' + id).modal('show');
 
     $.ajax({
-        url: '{{ route('cardview-route') }}',
+        url: '<?php echo e(route('cardview-route')); ?>',
         method: "post",
         dataType: "json",
         data: {
-            _token: '{{ csrf_token() }}',
+            _token: '<?php echo e(csrf_token()); ?>',
             tid: tid,
-            user_token: '{{Auth::user()->user_token }}',
+            user_token: '<?php echo e(Auth::user()->user_token); ?>',
         },
         success: function(response) {
             if (response.success) {
@@ -311,14 +305,14 @@ function sendmail(id, tid){
     // spinner code end
 
     $.ajax({
-        url: '{{ route('resendmail') }}',
+        url: '<?php echo e(route('resendmail')); ?>',
         method: "post",
         dataType: "json",
         data: {
-            _token: '{{ csrf_token() }}',
+            _token: '<?php echo e(csrf_token()); ?>',
             tid: tid,
             id: id,
-            user_token: '{{Auth::user()->user_token }}',
+            user_token: '<?php echo e(Auth::user()->user_token); ?>',
         },
         success: function(response) {
             console.log(response.message);
@@ -340,4 +334,6 @@ function sendmail(id, tid){
 
     </script>
     
-  @endpush
+  <?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/admin/cardnumber/index.blade.php ENDPATH**/ ?>

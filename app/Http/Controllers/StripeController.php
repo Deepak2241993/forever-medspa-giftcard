@@ -137,7 +137,9 @@ class StripeController extends Controller
             $mail_data  = $giftsend->update($transaction_entry);
 
             // For Entry Gift Number Generate Process
-           $qty=$giftsend->qty;
+            if($data->status=='succeeded')
+            {
+            $qty=$giftsend->qty;
             for($i=1;$i<=$qty;$i++)
             {
 
@@ -156,8 +158,10 @@ class StripeController extends Controller
                 $cardnumber->create($cardgenerate);
             }
 
+            }
             $gift_send_to = $giftsend->gift_send_to;
             $tomail = $giftsend->receipt_email;
+            
 
             if (empty($giftsend->in_future)) {
                 Mail::to($gift_send_to)->send(new GeftcardMail($giftsend));
@@ -171,10 +175,14 @@ class StripeController extends Controller
             }
 
             return view('stripe.thanks',compact('data'))->with('success', 'Payment successful.');
-           }
+        }
+       
        } catch (\Exception $e) {
            // Payment failed, handle the error
-           return back()->with('error', $e->getMessage());
+        //    return  $e->getMessage();
+
+           return view('stripe.failed')->with('error',  $e->getMessage());
+        //    return back()->with('error', $e->getMessage());
        }
     }
 

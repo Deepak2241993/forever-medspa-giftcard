@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('body'); ?>
 <main class="app-main">
     <!--begin::App Content Header-->

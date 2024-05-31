@@ -53,6 +53,7 @@ Route::resource('/product', ProductController::class);
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
 Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess')->name('giftcard-purchases-success');
 Route::post('/giftcard-payment-update','GiftsendController@updatePaymentStatus')->name('giftcard-payment-update');
+Route::post('/resendmail','GiftsendController@Resendmail')->name('resendmail');
 
 
 });
@@ -64,10 +65,6 @@ Route::post('/giftcard-payment-update','GiftsendController@updatePaymentStatus')
     Route::get('/user-dashboard', 'HomeController@dashboard')->name('dashboard');
     // Route::resource('/gift', GiftController::class);
     Route::resource('/order-history', TransactionHistoryController::class);
-    // Route::post('/giftcards-history', 'GiftController@history')->name('giftcards-history');
-    // Route::get('/giftcards-view', 'GiftController@redeem_view')->name('giftcards-view');
-    // Route::get('/giftcards-redeem-view', 'GiftController@history_view')->name('giftcards-redeem-view');
-    // Route::post('/giftcards-redeem', 'GiftController@redeem_store')->name('giftcards-redeem');
 
     });
 
@@ -78,6 +75,9 @@ Route::get('/strip_form',[App\Http\Controllers\StripeController::class,'formview
 Route::post('/payment',[App\Http\Controllers\StripeController::class,'makepayment']);
 Route::get('/success', function () {
     return view('stripe.thanks');
+});
+Route::get('/failed', function () {
+    return view('stripe.failed');
 });
 
 Route::view('dd','admin.admin_dashboad');
