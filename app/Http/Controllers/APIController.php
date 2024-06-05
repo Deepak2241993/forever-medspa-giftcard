@@ -691,7 +691,11 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
 public function gift_purchase (Request $request,Giftsend $giftsend,User $user,GiftCoupon $coupon,GiftcardsNumbers $cardnumber)
 {
     $data=$request->all();
-    $data['receipt_email']=$request->gift_send_to;
+    if(!empty($result->recipient_name))
+    {
+    $data['receipt_email']=$request->receipt_email;
+    }
+
     $data['payment_time'] = NOW();
     $result=$giftsend->create($data);
 
@@ -724,7 +728,7 @@ public function gift_purchase (Request $request,Giftsend $giftsend,User $user,Gi
     if(!empty($result->recipient_name))
     {
 
-        Mail::to("$result->receipt_email")->send(new GiftReceipt($result));
+        Mail::to($result->receipt_email)->send(new GiftReceipt($result));
     }
     Mail::to($gift_send_to)->send(new GeftcardMail($result));
 

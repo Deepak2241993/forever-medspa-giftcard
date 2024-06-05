@@ -35,7 +35,6 @@
 </head>
 <body id="home" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
     
-    <?php if(empty(Session::get('preloader'))): ?>
     <!-- LOADER -->
     <div id="preloader">
         <div class="loader">
@@ -43,7 +42,7 @@
             <div class="box"></div>
         </div>
     </div><!-- end loader -->
-<?php endif; ?>
+
 
     <!-- END LOADER -->
 	
