@@ -473,7 +473,7 @@
                                        border-radius: 0px;
                                        cursor: pointer;
                                        padding: 10px 5px;
-                                       margin: 10px 5px;"Name="Submit" style="margin-top: 15px; border-radius: 6px; width: 130px;"onclick="this.value='Please Wait ...';alert('Please Continue on OK to print the Invoice');" />
+                                       margin: 10px 5px;"Name="Submit" style="margin-top: 15px; border-radius: 6px; width: 100%;"onclick="this.value='Please Wait ...';alert('Please Continue on OK to print the Invoice');" />
                                        <span class="error_message"></span>
                                    </section>
                                </form>
@@ -613,7 +613,7 @@
                                     border-radius: 0px;
                                     cursor: pointer;
                                     padding: 10px 5px;
-                                    margin: 10px 5px;"Name="Submit" style="margin-top: 15px; border-radius: 6px; width: 130px;"onclick="this.value='Please Wait ...';alert('Please Continue on OK to print the Invoice');" />
+                                    margin: 10px 5px;"Name="Submit" style="margin-top: 15px; border-radius: 6px; width: 100%;"onclick="this.value='Please Wait ...';alert('Please Continue on OK to print the Invoice');" />
                                     
                                     <span class="error_message"></span>
                                 </section>

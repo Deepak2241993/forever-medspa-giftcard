@@ -441,6 +441,12 @@ public function Resendmail(Request $request)
     }
 }
 
+public function Resendmail_view(Request $request){
+    $statement = Giftsend::findOrFail($request->id);
+    return view('email.email_template_view.blade',compact('statement'));
+
+}
+
 
 
 }

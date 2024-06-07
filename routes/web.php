@@ -53,6 +53,9 @@ Route::resource('/product', ProductController::class);
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
 Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess')->name('giftcard-purchases-success');
 Route::post('/giftcard-payment-update','GiftsendController@updatePaymentStatus')->name('giftcard-payment-update');
+
+//  For Mail Resend Option
+Route::post('/resendmail-view','GiftsendController@Resendmail_view')->name('resendmail_view');
 Route::post('/resendmail','GiftsendController@Resendmail')->name('resendmail');
 
 
