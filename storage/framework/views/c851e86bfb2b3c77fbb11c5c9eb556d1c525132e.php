@@ -464,14 +464,14 @@
                                            </select>
                                        </div>
                                        <button type="button"  class="previous btn btn-dark action-button-previous">Go Back</button>
-                                       <button type="submit"  class="btn btn-success" style="    width: 100px;
+                                       <input type="submit" name="cok" value="Submit" class="btn btn-success" style="width: 100px;
                                        font-weight: bold;
                                        color: white;
                                        border: 0 none;
                                        border-radius: 0px;
                                        cursor: pointer;
                                        padding: 10px 5px;
-                                       margin: 10px 5px;">Submit</button>
+                                       margin: 10px 5px;"Name="Submit" style="margin-top: 15px; border-radius: 6px; width: 130px;"onclick="this.value='Please Wait ...';alert('Please Continue on OK to print the Invoice');" />
                                        <span class="error_message"></span>
                                    </section>
                                </form>
@@ -602,14 +602,15 @@
                                     </div>
                                    
                                     <button type="button"  class="previous btn btn-dark action-button-previous">Go Back</button>
-                                    <button type="submit"  class="btn btn-success" style="    width: 100px;
+                                    <input type="submit" name="cok" value="Submit" class="btn btn-success" style="width: 100px;
                                     font-weight: bold;
                                     color: white;
                                     border: 0 none;
                                     border-radius: 0px;
                                     cursor: pointer;
                                     padding: 10px 5px;
-                                    margin: 10px 5px;">Submit</button>
+                                    margin: 10px 5px;"Name="Submit" style="margin-top: 15px; border-radius: 6px; width: 130px;"onclick="this.value='Please Wait ...';alert('Please Continue on OK to print the Invoice');" />
+                                    
                                     <span class="error_message"></span>
                                 </section>
                                    
@@ -1107,12 +1108,6 @@ function sfinalcalculation() {
         $('#spayment').addClass("active");
         
     } 
-    // else {
-    //     // If validation fails, do not proceed
-    //     // Optionally, you can show an error message or highlight invalid fields
-    //     alert('Please fill in all required fields.');
-    //     document.getElementById('o_three').style.display = 'none';
-    // }
     var amount = $('#fix_amount').val();
     $('#amount_input').val(amount);
     $('#samount_input').val(amount);
@@ -1153,6 +1148,8 @@ function validateEmail(email) {
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
 }
-</script>
+
+
+    </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/gift/gift_sale.blade.php ENDPATH**/ ?>
