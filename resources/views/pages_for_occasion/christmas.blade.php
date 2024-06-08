@@ -1,24 +1,23 @@
 @extends('layouts.front-master')
 @section('body')
 <style>
-    .box_coupon {
-    border: double;
+   .main_box_coupon{
+     background-image: url('{{url("/giftcards/images/coupon.png")}}');
+     margin-bottom:20px; 
+     width: 570px;
+     height: 107px;
+  }
+    .main_box_coupon.box_coupon {
     top: 0;
     left: 0;
-    width: 135px;
-    height: 100px;
-    background-image: none;
-    background-size: auto auto;
-    background-image: none;
-    margin-top: 0px;
-    margin-left: 0px;
-    animation-delay: 0s;
-    animation-delay: 0s;
-    animation-delay: 0s;
-    background-image: url('../images/gb.png');
-    background-size: 100% 100%;
-
+    margin-top: 34px;
+    margin-left: 444px;
     }
+   .main_box_coupon.single-coupon-content{
+      margin-top: 0px;
+
+   }
+
 </style>
 <!-- wish -->
 <div class="about-box" style="padding-bottom: 0;">
@@ -42,17 +41,15 @@
                                
                                 @foreach($coupon_code as $key=>$value)
                                 @if($key<5)
-                            <div class="row align-items-left g-5" style="border: dotted;border-color: gold; margin-bottom:20px">
-                                <div class="col-md-3 col-sm-12">
-                                    <div class="box_coupon"><br>
+                            <div class="row align-items-left g-5 main_box_coupon">
+                                    <div class="box_coupon">
                                        <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
                                      <span class="text-warning ml-4 mt-2"><b>{{$value->title?$value->coupon_code:''}}</b></span>
                                     </div>
-                                </div>
                                 <div class="col-md-9 col-sm-12">
                                     <div class="single-coupon-content">
                                         <h5 class="mt-2">{{$value->title?$value->title:''}}</h5>
-                                        <p>{{$value->title?$value->redeem_description:''}}</p>
+                                        <span>{{$value->title?$value->redeem_description:''}}</span>
                                             
                                     </div>
                                 </div>
