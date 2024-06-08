@@ -8,7 +8,7 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Dashboard</h3>
+                    <h3 class="mb-0">Resend Mail</h3>
                     <?php if(session()->has('error')): ?>
                     <h3 class="text-danger">  <?php echo e(session()->get('error')); ?></h3>
                     <a href="<?php echo e(route('cardgenerated-list')); ?>" class="btn btn-warning">Go Back</a>

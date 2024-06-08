@@ -8,7 +8,7 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Dashboard</h3>
+                    <h3 class="mb-0">Resend Mail</h3>
                     @if(session()->has('error'))
                     <h3 class="text-danger">  {{ session()->get('error') }}</h3>
                     <a href="{{route('cardgenerated-list')}}" class="btn btn-warning">Go Back</a>
@@ -43,7 +43,7 @@
         <div class="row">
             <div class="mb-3 col-lg-6">
                 <label for="title" class="form-label">Name</label>
-                <input class="form-control" type="text" name="recipient_name" value="{{isset($mail_data) && $mail_data->recipient_name?$mail_data->recipient_name:'$mail_data->your_name'}}" placeholder="To">
+                <input class="form-control" type="text" name="recipient_name" value="{{isset($mail_data) && $mail_data->recipient_name?$mail_data->recipient_name:$mail_data->your_name}}" placeholder="To">
             </div>
             <div class="mb-3 col-lg-6">
                 <label for="title" class="form-label">To</label>
