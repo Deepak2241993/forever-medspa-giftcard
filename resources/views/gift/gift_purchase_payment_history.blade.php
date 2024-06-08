@@ -53,11 +53,11 @@
                         </td></tr>
                       <tr><th>Giftcard Sent To </th><td> {{$result->gift_send_to}}</td></tr>
                       <tr><th>Payment Method </th><td>{{$result->payment_mode}}</td></tr>
-                      <tr><th>Giftcard Amount</th><td>{{$result->amount/$result->qty}}</td></tr>
+                      <tr><th>Giftcard Amount</th><td>${{$result->amount/$result->qty}}</td></tr>
                       <tr><th>Giftcard Quantity</th><td>{{$result->qty}}</td></tr>
-                      <tr><th>Total Amount</th><td>{{$result->amount}}</td></tr>
+                      <tr><th>Total Amount</th><td>${{$result->amount}}</td></tr>
                       <tr style="background-color: #00800047;"><th>Discount</th><td>{{$result->discount}}</td></tr>
-                      <tr style="background-color: orange;"><th>Payable Amount</th><td>{{$result->transaction_amount}}</td></tr>
+                      <tr style="background-color: orange;"><th>Payable Amount</th><td>${{$result->transaction_amount}}</td></tr>
                       <tr><th>Transaction ID</th><td>{{$result->transaction_id}}</td></tr>
                       <tr><th>Transaction Date&Time</th><td>{{ date('m-d-Y h:i:s', strtotime($result->payment_time)) }}</td></tr>
                       <tr style="background-color: {{$result->payment_status=='succeeded'?'#00800047':'orange'}};"><th>Payment Status</th><td>{{$result->payment_status}}</td></tr>
@@ -68,7 +68,7 @@
                         @if(isset($result->card_number))
 
                         @foreach($result->card_number as $value)
-                        <tr><th>{{$value['giftnumber']}}</th><td>{{$value['amount']}}</td></tr>
+                        <tr><th>{{$value['giftnumber']}}</th><td>${{$value['amount']}}</td></tr>
                         @endforeach
                         @else
                         <h5>No Card Number Has Been Generated Because the Payment Is Under Process</h5>
