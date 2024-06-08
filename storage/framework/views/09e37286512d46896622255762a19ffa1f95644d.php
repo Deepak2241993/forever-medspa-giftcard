@@ -3,15 +3,16 @@
 <style>
    .main_box_coupon{
      background-image: url('<?php echo e(url("/giftcards/images/coupon.png")); ?>');
-     margin-bottom:20px; 
      width: 570px;
      height: 107px;
+      align-items: center;
+    justify-content: center;
   }
     .main_box_coupon .box_coupon {
     float: right;
     display: flex;
     width: 100%;
-    justify-content: end;
+    justify-content:end !important;
 
     }
    .main_box_coupon .single-coupon-content{
@@ -42,19 +43,18 @@
                                
                                 <?php $__currentLoopData = $coupon_code; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php if($key<5): ?>
-                            <div class="row align-items-left g-5 main_box_coupon">
-                                    <div class="box_coupon">
-                                       <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
-                                     <span class="text-warning ml-4 mt-2"><b><?php echo e($value->title?$value->coupon_code:''); ?></b></span>
-                                    </div>
-                                <div class="col-md-9 col-sm-12">
-                                    <div class="single-coupon-content">
-                                        <h5 class="mt-2"><?php echo e($value->title?$value->title:''); ?></h5>
+                               <div class="row main_box_coupon">
+                                 <div class="col-md-9">
+                                    <h5 class="mt-2"><?php echo e($value->title?$value->title:''); ?></h5>
                                         <span><?php echo e($value->title?$value->redeem_description:''); ?></span>
-                                            
-                                    </div>
-                                </div>
-                            </div>
+                                 </div>
+                                 <div class="col-md-3">
+                                    <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
+                                       <span class="text-warning ml-4 mt-2"><b><?php echo e($value->title?$value->coupon_code:''); ?></b></span>
+                                 </div>
+                               </div>
+                  
+                            
                             <?php endif; ?>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>

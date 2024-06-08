@@ -3,15 +3,16 @@
 <style>
    .main_box_coupon{
      background-image: url('{{url("/giftcards/images/coupon.png")}}');
-     margin-bottom:20px; 
      width: 570px;
      height: 107px;
+      align-items: center;
+    justify-content: center;
   }
     .main_box_coupon .box_coupon {
     float: right;
     display: flex;
     width: 100%;
-    justify-content: end;
+    justify-content:end !important;
 
     }
    .main_box_coupon .single-coupon-content{
@@ -42,19 +43,28 @@
                                
                                 @foreach($coupon_code as $key=>$value)
                                 @if($key<5)
-                            <div class="row align-items-left g-5 main_box_coupon">
+                               <div class="row main_box_coupon">
+                                 <div class="col-md-9">
+                                    <h5 class="mt-2">{{$value->title?$value->title:''}}</h5>
+                                        <span>{{$value->title?$value->redeem_description:''}}</span>
+                                 </div>
+                                 <div class="col-md-3">
+                                    <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
+                                       <span class="text-warning ml-4 mt-2"><b>{{$value->title?$value->coupon_code:''}}</b></span>
+                                 </div>
+                               </div>
+                  
+                            {{-- <div class="row align-items-left g-5 main_box_coupon">
                                     <div class="box_coupon">
-                                       <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
-                                     <span class="text-warning ml-4 mt-2"><b>{{$value->title?$value->coupon_code:''}}</b></span>
+                                       
                                     </div>
                                 <div class="col-md-9 col-sm-12">
                                     <div class="single-coupon-content">
-                                        <h5 class="mt-2">{{$value->title?$value->title:''}}</h5>
-                                        <span>{{$value->title?$value->redeem_description:''}}</span>
+                                        
                                             
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             @endif
                             @endforeach
                             @endif
