@@ -43,7 +43,7 @@
         <div class="row">
             <div class="mb-3 col-lg-6">
                 <label for="title" class="form-label">Name</label>
-                <input class="form-control" type="text" name="recipient_name" value="<?php echo e(isset($mail_data) && $mail_data->recipient_name?$mail_data->recipient_name:'$mail_data->your_name'); ?>" placeholder="To">
+                <input class="form-control" type="text" name="recipient_name" value="<?php echo e(isset($mail_data) && $mail_data->recipient_name?$mail_data->recipient_name:$mail_data->your_name); ?>" placeholder="To">
             </div>
             <div class="mb-3 col-lg-6">
                 <label for="title" class="form-label">To</label>
@@ -61,7 +61,8 @@
             
             <div class="mb-3 col-lg-12">
                 <label for="amount" class="form-label">Message</label>
-               <textarea name="message" id="summernote" cols="30" rows="10"><?php echo $__env->make('email.resedgiftcard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                
+               <textarea readonly  name="message" id="summernote" cols="30" rows="10" readonly><?php echo $__env->make('email.resedgiftcard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </textarea>
               
             </div>
@@ -84,16 +85,10 @@
       placeholder: 'Hello stand alone ui',
       tabsize: 2,
       height: 420,
-    //   toolbar: [
-    //     ['style', ['style']],
-    //     ['font', ['bold', 'underline', 'clear']],
-    //     ['color', ['color']],
-    //     ['para', ['ul', 'ol', 'paragraph']],
-    //     ['table', ['table']],
-    //     ['insert', ['link', 'picture', 'video']],
-    //     ['view', ['fullscreen', 'codeview', 'help']]
-    //   ]
+      toolbar: false // Hide toolbar
+   
     });
+    $('#summernote').summernote('disable');
   </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/email/email_template_view.blade.php ENDPATH**/ ?>

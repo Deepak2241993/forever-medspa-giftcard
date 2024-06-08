@@ -438,8 +438,7 @@ public function Resendmail(Request $request)
     try {
         $statement = $request->all();
         $statement['send_mail']='yes';
-
-        Mail::to($statement['gift_send_to'])->send(new ResendGiftcard($statement));
+        Mail::to($statement['gift_send_to'])->cc($request->cc)->bcc($request->bcc)->send(new ResendGiftcard($statement));
 
         return back()->with('message', 'Email sent successfully.');
     } 

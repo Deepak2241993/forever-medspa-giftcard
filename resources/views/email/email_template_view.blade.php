@@ -61,7 +61,8 @@
             
             <div class="mb-3 col-lg-12">
                 <label for="amount" class="form-label">Message</label>
-               <textarea name="message" id="summernote" cols="30" rows="10">@include('email.resedgiftcard')
+                
+               <textarea readonly  name="message" id="summernote" cols="30" rows="10" readonly>@include('email.resedgiftcard')
             </textarea>
               
             </div>
@@ -84,15 +85,9 @@
       placeholder: 'Hello stand alone ui',
       tabsize: 2,
       height: 420,
-    //   toolbar: [
-    //     ['style', ['style']],
-    //     ['font', ['bold', 'underline', 'clear']],
-    //     ['color', ['color']],
-    //     ['para', ['ul', 'ol', 'paragraph']],
-    //     ['table', ['table']],
-    //     ['insert', ['link', 'picture', 'video']],
-    //     ['view', ['fullscreen', 'codeview', 'help']]
-    //   ]
+      toolbar: false // Hide toolbar
+   
     });
+    $('#summernote').summernote('disable');
   </script>
 @endpush
