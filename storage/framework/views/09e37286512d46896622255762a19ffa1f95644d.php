@@ -7,13 +7,14 @@
      width: 570px;
      height: 107px;
   }
-    .main_box_coupon.box_coupon {
-    top: 0;
-    left: 0;
-    margin-top: 34px;
-    margin-left: 444px;
+    .main_box_coupon .box_coupon {
+    float: right;
+    display: flex;
+    width: 100%;
+    justify-content: end;
+
     }
-   .main_box_coupon.single-coupon-content{
+   .main_box_coupon .single-coupon-content{
       margin-top: 0px;
 
    }
