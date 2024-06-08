@@ -12,19 +12,11 @@
     <meta name="description" content="<?php echo e(url('/medspa.png')); ?>">
     <meta name="keywords" content="<?php echo e(url('/medspa.png')); ?>">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo e(url('/medspa.png')); ?>">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
-    <!--end::Primary Meta Tags-->
     <!--begin::Fonts-->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <!--end::Fonts-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.1.0/styles/overlayscrollbars.min.css" integrity="sha256-LWLZPJ7X1jJLI5OG5695qDemW1qQ7lNdbTfQ64ylbUY=" crossorigin="anonymous">
-    <!--end::Third Party Plugin(OverlayScrollbars)-->
-
-    <!--begin::Third Party Plugin(Font Awesome)-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
-    <!--end::Third Party Plugin(Font Awesome)-->
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="<?php echo e(url('/')); ?>/dist/css/adminlte.css">
     <!--end::Required Plugin(AdminLTE)-->
@@ -36,10 +28,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
     
     <script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>    
-
+    <!-- include summernote css/js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
-<!--end::Head-->
-<!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <!--begin::App Wrapper-->
@@ -181,183 +177,13 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
 
     <!-- ChartJS -->
-    <script>
-        // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
-        // IT'S ALL JUST JUNK FOR DEMO
-        // ++++++++++++++++++++++++++++++++++++++++++
-
-        const sales_chart_options = {
-            series: [{
-                    name: "Digital Goods",
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                },
-                {
-                    name: "Electronics",
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                },
-            ],
-            chart: {
-                height: 300,
-                type: "area",
-                toolbar: {
-                    show: false,
-                },
-            },
-            legend: {
-                show: false,
-            },
-            colors: ["#0d6efd", "#20c997"],
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                curve: "smooth",
-            },
-            xaxis: {
-                type: "datetime",
-                categories: [
-                    "2023-01-01",
-                    "2023-02-01",
-                    "2023-03-01",
-                    "2023-04-01",
-                    "2023-05-01",
-                    "2023-06-01",
-                    "2023-07-01",
-                ],
-            },
-            tooltip: {
-                x: {
-                    format: "MMMM yyyy",
-                },
-            },
-        };
-
-        const sales_chart = new ApexCharts(
-            document.querySelector("#revenue-chart"),
-            sales_chart_options
-        );
-        sales_chart.render();
-    </script>
-
     <!-- jsvectormap -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="http://localhost/giftcards/public/giftcards/js/bootstrap.min.js"></script>
     
     
     <!-- jsvectormap -->
-    <script>
-        const visitorsData = {
-            US: 398, // USA
-            SA: 400, // Saudi Arabia
-            CA: 1000, // Canada
-            DE: 500, // Germany
-            FR: 760, // France
-            CN: 300, // China
-            AU: 700, // Australia
-            BR: 600, // Brazil
-            IN: 800, // India
-            GB: 320, // Great Britain
-            RU: 3000, // Russia
-        };
-
-        // World map by jsVectorMap
-        const map = new jsVectorMap({
-            selector: "#world-map",
-            map: "world",
-        });
-
-        // Sparkline charts
-        const option_sparkline1 = {
-            series: [{
-                data: [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021],
-            }, ],
-            chart: {
-                type: "area",
-                height: 50,
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: "straight",
-            },
-            fill: {
-                opacity: 0.3,
-            },
-            yaxis: {
-                min: 0,
-            },
-            colors: ["#DCE6EC"],
-        };
-
-        const sparkline1 = new ApexCharts(
-            document.querySelector("#sparkline-1"),
-            option_sparkline1
-        );
-        sparkline1.render();
-
-        const option_sparkline2 = {
-            series: [{
-                data: [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921],
-            }, ],
-            chart: {
-                type: "area",
-                height: 50,
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: "straight",
-            },
-            fill: {
-                opacity: 0.3,
-            },
-            yaxis: {
-                min: 0,
-            },
-            colors: ["#DCE6EC"],
-        };
-
-        const sparkline2 = new ApexCharts(
-            document.querySelector("#sparkline-2"),
-            option_sparkline2
-        );
-        sparkline2.render();
-
-        const option_sparkline3 = {
-            series: [{
-                data: [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21],
-            }, ],
-            chart: {
-                type: "area",
-                height: 50,
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: "straight",
-            },
-            fill: {
-                opacity: 0.3,
-            },
-            yaxis: {
-                min: 0,
-            },
-            colors: ["#DCE6EC"],
-        };
-
-        const sparkline3 = new ApexCharts(
-            document.querySelector("#sparkline-3"),
-            option_sparkline3
-        );
-        sparkline3.render();
-    </script>
+   
     <?php echo $__env->yieldPushContent('script'); ?>
     <!--end::Script-->
 </body><!--end::Body-->

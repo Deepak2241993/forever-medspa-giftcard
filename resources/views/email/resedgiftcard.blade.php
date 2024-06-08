@@ -1,4 +1,6 @@
-
+@if(isset($mail_data) && $mail_data['send_mail']=='yes')
+{!!$mail_data['message']!!}
+@else
 <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="table-layout:fixed">
     <tbody>
        <tr>
@@ -282,3 +284,4 @@
        </tr>
     </tbody>
  </table>
+ @endif

@@ -60,6 +60,14 @@
         <div class="container-fluid">
             <!--begin::Row-->
             
+            <div class="card-header">
+                <?php if(session()->has('error')): ?>
+                  <p class="text-danger">  <?php echo e(session()->get('error')); ?></p>
+                <?php endif; ?>
+                <?php if(session()->has('success')): ?>
+                <p class="text-success"> <?php echo e(session()->get('success')); ?></p>
+                <?php endif; ?>
+            </div>
             <span class="text-success"id="response_msg"></span>
             <div class="scroll-container">
                 <div class="scroll-content">
@@ -130,7 +138,8 @@
                         </a></td>
                         <td>
                             <?php if($value['payment_status']=='succeeded'): ?>
-                            <button class="btn btn-warning" type="button" id="mailsend_<?php echo e($value['id']); ?>" onclick="sendmail(<?php echo e($value['id']); ?>, '<?php echo e($value['transaction_id']); ?>')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button>
+                            <a href="<?php echo e(route('Resendmail_view', ['id' => $value['id']])); ?>" class="btn btn-warning" id="mailsend_<?php echo e($value['id']); ?>">Mail Resend</a>
+                            
                             <?php endif; ?>
                         </td>
                         
@@ -309,7 +318,7 @@ function sendmail(id, tid){
     // spinner code end
 
     $.ajax({
-        url: '<?php echo e(route('resendmail')); ?>',
+        url: '<?php echo e(route('Resendmail_view')); ?>',
         method: "post",
         dataType: "json",
         data: {

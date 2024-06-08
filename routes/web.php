@@ -55,7 +55,7 @@ Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess
 Route::post('/giftcard-payment-update','GiftsendController@updatePaymentStatus')->name('giftcard-payment-update');
 
 //  For Mail Resend Option
-Route::post('/resendmail-view','GiftsendController@Resendmail_view')->name('resendmail_view');
+Route::get('/resendmail_view','GiftsendController@Resendmail_view')->name('Resendmail_view');
 Route::post('/resendmail','GiftsendController@Resendmail')->name('resendmail');
 
 
@@ -82,8 +82,6 @@ Route::get('/success', function () {
 Route::get('/failed', function () {
     return view('stripe.failed');
 });
-
-Route::view('dd','admin.admin_dashboad');
 
 
 

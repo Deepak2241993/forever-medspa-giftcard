@@ -1,4 +1,7 @@
+<?php if(isset($mail_data) && $mail_data['send_mail']=='yes'): ?>
+<?php echo $mail_data['message']; ?>
 
+<?php else: ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="table-layout:fixed">
     <tbody>
        <tr>
@@ -282,4 +285,5 @@
           </td>
        </tr>
     </tbody>
- </table><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/email/resedgiftcard.blade.php ENDPATH**/ ?>
+ </table>
+ <?php endif; ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/email/resedgiftcard.blade.php ENDPATH**/ ?>

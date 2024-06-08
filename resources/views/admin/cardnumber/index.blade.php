@@ -59,15 +59,15 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a>
+            {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a> --}}
             <div class="card-header">
                 @if(session()->has('error'))
-                    {{ session()->get('error') }}
+                  <p class="text-danger">  {{ session()->get('error') }}</p>
                 @endif
                 @if(session()->has('success'))
-                    {{ session()->get('success') }}
+                <p class="text-success"> {{ session()->get('success') }}</p>
                 @endif
-            </div> --}}
+            </div>
             <span class="text-success"id="response_msg"></span>
             <div class="scroll-container">
                 <div class="scroll-content">
@@ -136,7 +136,8 @@
                         </a></td>
                         <td>
                             @if($value['payment_status']=='succeeded')
-                            <button class="btn btn-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button>
+                            <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}" class="btn btn-warning" id="mailsend_{{$value['id']}}">Mail Resend</a>
+                            {{-- <button class="btn btn-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
                             @endif
                         </td>
                         
@@ -315,7 +316,7 @@ function sendmail(id, tid){
     // spinner code end
 
     $.ajax({
-        url: '{{ route('resendmail') }}',
+        url: '{{ route('Resendmail_view') }}',
         method: "post",
         dataType: "json",
         data: {

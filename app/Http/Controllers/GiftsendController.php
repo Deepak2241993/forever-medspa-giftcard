@@ -6,8 +6,8 @@ use App\Models\Giftsend;
 use App\Models\User;
 use App\Models\GiftcardsNumbers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Auth;
-use Mail;
 use Session;
 use Validator;
 use App\Mail\GeftcardMail;
@@ -383,7 +383,8 @@ public function cardgeneratedList(Request $request, User $user,GiftcardsNumbers 
         $data=$result['result'];
         return view('admin.cardnumber.index',compact('data'));
     } else {
-        echo json_encode(["error" => '<h5 style="color: red;">' . $result['msg'] .'<a href="'.rouet('admin-dashboard').'">Return Dashboard</a></h5>']);
+        return view('admin.cardnumber.index')->with('error','Something Went');
+        
     }
  
 }
@@ -426,25 +427,25 @@ public function giftcancel(Request $request,){
  
 }
 
+public function Resendmail_view(Request $request){
+    $mail_data = Giftsend::findOrFail($request->id);
+    return view('email.email_template_view',compact('mail_data'));
+
+}
+
 public function Resendmail(Request $request)
 {
     try {
-        $statement = Giftsend::findOrFail($request->id);
+        $statement = $request->all();
+        $statement['send_mail']='yes';
 
-        Mail::to($statement->gift_send_to)->send(new ResendGiftcard($statement));
+        Mail::to($statement['gift_send_to'])->send(new ResendGiftcard($statement));
 
-        return response()->json(['message' => 'Email sent successfully.'], 200);
-    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return response()->json(['error' => 'Giftsend record not found.'], 404);
-    } catch (Exception $e) {
-        return response()->json(['error' => 'Failed to send email.'], 500);
+        return back()->with('message', 'Email sent successfully.');
+    } 
+    catch (Exception $e) {
+        return back()->with('error','Failed to send email.');
     }
-}
-
-public function Resendmail_view(Request $request){
-    $statement = Giftsend::findOrFail($request->id);
-    return view('email.email_template_view.blade',compact('statement'));
-
 }
 
 
