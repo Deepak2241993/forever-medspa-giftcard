@@ -51,7 +51,7 @@
             </div>
             <div class="mb-3 col-lg-6">
                 <label for="title" class="form-label">CC</label>
-                <input class="form-control" type="text" name="cc" value="{{isset($mail_data)?$mail_data->title:''}}" placeholder="Cc">
+                <input class="form-control" type="text" name="cc" value="{{isset($mail_data) && $mail_data->recipient_name!=''?$mail_data->receipt_email:''}}" placeholder="Cc">
             </div>
             <div class="mb-3 col-lg-6">
                 <label for="title" class="form-label">Bcc</label>
