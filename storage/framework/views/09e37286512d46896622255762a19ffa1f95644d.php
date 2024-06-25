@@ -43,14 +43,14 @@
                                
                                 <?php $__currentLoopData = $coupon_code; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php if($key<5): ?>
-                               <div class="row main_box_coupon">
-                                 <div class="col-md-9">
-                                    <h5 class="mt-2"><?php echo e($value->title?$value->title:''); ?></h5>
-                                        <span><?php echo e($value->title?$value->redeem_description:''); ?></span>
+                               <div class="row main_box_coupon mt-2">
+                                 <div class="col-md-3"></div>
+                                 <div class="col-md-5">
+                                    <strong><?php echo e($value->title?$value->title:''); ?></strong>
+                                        <p style="font-weight: 400"><?php echo e($value->title?$value->redeem_description:''); ?></p>
                                  </div>
-                                 <div class="col-md-3">
-                                    <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
-                                       <span class="text-warning ml-4 mt-2"><b><?php echo e($value->title?$value->coupon_code:''); ?></b></span>
+                                 <div class="col-md-4" style="text-align:center">
+                                       <span class="mt-2"> Coupon Code<h3><b><?php echo e($value->title?$value->coupon_code:''); ?></b></h3></span>
                                  </div>
                                </div>
                   

@@ -43,14 +43,14 @@
                                
                                 @foreach($coupon_code as $key=>$value)
                                 @if($key<5)
-                               <div class="row main_box_coupon">
-                                 <div class="col-md-9">
-                                    <h5 class="mt-2">{{$value->title?$value->title:''}}</h5>
-                                        <span>{{$value->title?$value->redeem_description:''}}</span>
+                               <div class="row main_box_coupon mt-2">
+                                 <div class="col-md-3"></div>
+                                 <div class="col-md-5">
+                                    <strong>{{$value->title?$value->title:''}}</strong>
+                                        <p style="font-weight: 400">{{$value->title?$value->redeem_description:''}}</p>
                                  </div>
-                                 <div class="col-md-3">
-                                    <span class="text-dark ml-2 mt-2"> Coupon Code<span><br>
-                                       <span class="text-warning ml-4 mt-2"><b>{{$value->title?$value->coupon_code:''}}</b></span>
+                                 <div class="col-md-4" style="text-align:center">
+                                       <span class="mt-2"> Coupon Code<h3><b>{{$value->title?$value->coupon_code:''}}</b></h3></span>
                                  </div>
                                </div>
                   
