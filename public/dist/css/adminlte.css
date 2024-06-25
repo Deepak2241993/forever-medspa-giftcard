@@ -14257,12 +14257,12 @@ html.maximized-card {
 }
 .small-box .small-box-icon {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 5px;
+  right: 5px;
   z-index: 0;
   height: 70px;
   font-size: 70px;
-  color: rgba(0, 0, 0, 0.15);
+  color: rgb(0 0 0 / 36%);
   transition: transform 0.3s linear;
 }
 @media (prefers-reduced-motion: reduce) {

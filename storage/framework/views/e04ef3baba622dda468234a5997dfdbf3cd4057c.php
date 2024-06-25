@@ -1,5 +1,5 @@
-@extends('layouts.admin_layout')
-@section('body')
+
+<?php $__env->startSection('body'); ?>
 <script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
 <main class="app-main">
     <!--begin::App Content Header-->
@@ -31,22 +31,22 @@
         <div class="container-fluid">
             <!--begin::Row-->
             <div class="card-body p-4">
-                @if(isset($emailTemplate))
-                <form method="post" enctype="multipart/form-data" action="{{url('/admin/email-template/'.$emailTemplate->id)}}" id="validation">
-                @method('PUT')
-                @else
-                <form method="post" action="{{route('email-template.store')}}" enctype="multipart/form-data">
-                    @endif
-                    @csrf
+                <?php if(isset($emailTemplate)): ?>
+                <form method="post" enctype="multipart/form-data" action="<?php echo e(url('/admin/email-template/'.$emailTemplate->id)); ?>" id="validation">
+                <?php echo method_field('PUT'); ?>
+                <?php else: ?>
+                <form method="post" action="<?php echo e(route('email-template.store')); ?>" enctype="multipart/form-data">
+                    <?php endif; ?>
+                    <?php echo csrf_field(); ?>
                     <div class="row">
                         
                         <div class="mb-3 col-lg-6">
                             <label for="title" class="form-label">Template Title</label>
-                            <input class="form-control" type="text" name="title" placeholder="Title" id="title" value="{{isset($emailTemplate)?$emailTemplate->title:''}}">
+                            <input class="form-control" type="text" name="title" placeholder="Title" id="title" value="<?php echo e(isset($emailTemplate)?$emailTemplate->title:''); ?>">
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="subject" class="form-label">Subject</label>
-                            <input class="form-control" type="text" name="subject" value="{{isset($emailTemplate)?$emailTemplate->subject:''}}" placeholder="subject" id="subject">
+                            <input class="form-control" type="text" name="subject" value="<?php echo e(isset($emailTemplate)?$emailTemplate->subject:''); ?>" placeholder="subject" id="subject">
                         </div>
                        
                         <div class="mb-3 col-lg-12">
@@ -62,7 +62,7 @@
                                 <li> From Name=['from_name']</li>
                                 <li> Gift Card Code=['code']</li></br>
                              <p>
-                            <textarea name="html_code"  id="content" rows="4" class="form-control summernote">{{isset($emailTemplate)?$emailTemplate->html_code:''}}</textarea>
+                            <textarea name="html_code"  id="content" rows="4" class="form-control summernote"><?php echo e(isset($emailTemplate)?$emailTemplate->html_code:''); ?></textarea>
                             
                         </div>
                    
@@ -83,10 +83,10 @@
     </div>
     <!--end::App Content-->
 </main>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@push('script')
+<?php $__env->startPush('script'); ?>
     
 
 <script>
@@ -146,4 +146,5 @@ $(document).ready(function() {
   });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.admin_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/email_template/create.blade.php ENDPATH**/ ?>

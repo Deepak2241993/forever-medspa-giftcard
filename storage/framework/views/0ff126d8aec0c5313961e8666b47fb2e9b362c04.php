@@ -22,7 +22,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item menu-open">
                     <a href="<?php echo e(url('/')); ?>" class="nav-link active">
-                        <i class="nav-icon fa-solid fa-gauge-high"></i>
+                        <i class="fa-solid fa-desktop"></i>
                         <p>
                             Dashboard
                             <i class="nav-arrow fa-solid fa-angle-right"></i>
@@ -54,7 +54,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="<?php echo e(route('coupon.index')); ?>" class="nav-link">
-                                <i class="nav-icon fa-regular fa-circle"></i>
+                                <i class="fa-solid fa-ticket"></i>
                                 <p>Coupon Management</p>
                             </a>
                         </li>
@@ -82,7 +82,7 @@
                 <li class="nav-header">Settings</li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
-                        <i class="nav-icon fa-solid fa-arrow-right-to-bracket"></i>
+                        <i class="fa-solid fa-gear"></i>
                         <p>
                            Profile Settings
                             <i class="nav-arrow fa-solid fa-angle-right"></i>
@@ -148,7 +148,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item menu-open">
                     <a href="<?php echo e(route('root')); ?>" class="nav-link active">
-                        <i class="nav-icon fa-solid fa-gauge-high"></i>
+                        <i class="fa-solid fa-desktop"></i>
                         <p>
                             Dashboard
                             <i class="nav-arrow fa-solid fa-angle-right"></i>
@@ -158,7 +158,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
-                        <i class="nav-icon fa-solid fa-box-open"></i>
+                        <i class="fa-solid fa-ticket"></i>
                         <p>
                         Coupon Management
                        
@@ -177,7 +177,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
-                        <i class="nav-icon fa-solid fa-copy"></i>
+                        <i class="fa-solid fa-receipt"></i>
                         <p>
                             Giftcards Orders
                           
@@ -196,7 +196,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
-                        <i class="nav-icon fa-solid fa-copy"></i>
+                        <i class="fa-solid fa-barcode"></i>
                         <p>
                             Redeem Process 
                           
@@ -215,7 +215,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
-                        <i class="fa-brands fa-product-hunt"></i>
+                        <i class="fa-solid fa-gift"></i>
                         <p>
                             Gift Card Sale
                             <i class="nav-arrow fa-solid fa-angle-right"></i>
@@ -231,7 +231,24 @@
                         
                     </ul>
                 </li>
-                
+                <li class="nav-item">
+                    <a href="javascript:;" class="nav-link">
+                        <i class="fa-regular fa-envelope"></i>
+                        <p>
+                           Email Template
+                            <i class="nav-arrow fa-solid fa-angle-right"></i>
+                        </p>
+                    </a>
+                    
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo e(route('email-template.index')); ?>" class="nav-link">
+                                <i class="nav-icon fa-regular fa-circle"></i>
+                                <p>Template Management</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
                         <i class="fa-brands fa-product-hunt"></i>
@@ -260,7 +277,7 @@
                 <li class="nav-header">Settings</li>
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link">
-                        <i class="nav-icon fa-solid fa-arrow-right-to-bracket"></i>
+                        <i class="fa-solid fa-gear"></i>
                         <p>
                            Profile Settings
                             <i class="nav-arrow fa-solid fa-angle-right"></i>

@@ -36,7 +36,7 @@ Route::post('/giftcards-history', 'GiftController@history')->name('giftcards-his
 Route::get('/giftcards-view', 'GiftController@redeem_view')->name('giftcards-view');
 Route::get('/giftcards-redeem-view', 'GiftController@history_view')->name('giftcards-redeem-view');
 Route::post('/giftcards-redeem', 'GiftController@redeem_store')->name('giftcards-redeem');
-Route::post('/ckeditor-image-post', 'CkeditorController@index')->name('ckeditor-impage-upload');
+Route::post('/ckeditor-image-post', 'CkeditorController@uploadImage')->name('ckeditor-image-upload');
 
 // New Route
 Route::get('/cardgenerated-list','GiftsendController@cardgeneratedList')->name('cardgenerated-list');
