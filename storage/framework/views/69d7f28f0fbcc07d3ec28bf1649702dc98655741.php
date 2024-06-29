@@ -30,7 +30,7 @@ $mail_data = (object) $mail_data;
          padding-right: 0px !important;
          }
          .u-row .u-col {
-         min-width: 320px !important;
+         min-width: 280px !important;
          max-width: 100% !important;
          display: block !important;
          }
