@@ -19,6 +19,7 @@ use App\Http\Controllers\AdminController;
 Route::get('/login',[AdminController::class,'login'])->name('login');
 Route::get('/logout',[AdminController::class,'logout'])->name('logout');
 Route::post('/login',[AdminController::class,'login_post'])->name('login-post');
+Route::view('email','email.giftcard');
 
 
 //For All Admin  Route
