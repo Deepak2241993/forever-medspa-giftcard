@@ -36,6 +36,13 @@ class EmailTemplateController extends Controller
     public function store(Request $request,EmailTemplate $template)
     {
         $data=$request->all();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $destinationPath = '/email_template/';
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path($destinationPath), $filename);
+            $data['image'] = url('/').$destinationPath.$filename;
+        }
         $result=$template->create($data);
         if($result)
         {
@@ -79,6 +86,13 @@ class EmailTemplateController extends Controller
     public function update(Request $request, EmailTemplate $emailTemplate)
     {
         $data=$request->all();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $destinationPath = '/email_template/';
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path($destinationPath), $filename);
+            $data['image'] = url('/').$destinationPath.$filename;
+        }
         $emailTemplate->update($data);
         return redirect(route('email-template.index'))->with('message','Template Updated Successfully');
     }

@@ -174,17 +174,31 @@
                                                       <label for="recipient_email" class="form-label"><b>Your email address (for the receipt)<span class="text-danger">*</span></b></label>
                                                       <input class="form-control" type="email" name="from_email" value="" placeholder="Sender's Email address (for the receipt)" id="recipient_email" autocomplete="off" required>
                                                    </div>
-                                                   <div class="mb-3 col-lg-12">
-                                                      <!--<label class="form-label">Send In Future</label><br>-->
-                                                      <label for="future_yes">
-                                                      <input type="radio" id="future_yes" value="yes"  name="future_status" onclick="futureDate()" autocomplete="off"> Send on a future date
-                                                      </label>
-                                                      <label for="future_no">
-                                                      <input type="radio" id="future_no" value="no" checked name="future_status" onclick="futureDate()" autocomplete="off"> Send instantly
-                                                      </label>
+                                                   <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
+                                                      <label for="recipient_email" class="form-label"><b>Select Occassions<span class="text-danger">*</span></b></label>
+
+                                                      <select class="form-control" id="" name="">
+                                                         <option value="">Select Occassions</option>
+                                                         @foreach($occassion as $value)
+                                                         <option value="{{$value->id}}">{{$value->title}}</option>
+                                                         @endforeach
+                                                      </select>
+                                                      
                                                    </div>
+                                                   <div class="mb-3 col-lg-12 d-flex align-items-center">
+                                                      <label  class="form-label"><b>Send In Future:<span class="text-danger">*</span></b></label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline mb-4">
+                                                      <input class="form-check-input" type="radio" id="future_yes" value="yes" name="future_status" onclick="futureDate()" autocomplete="off">
+                                                      <label class="form-check-label" for="future_yes">Send on a future date</label>
+                                                    </div>
+                                                  
+                                                    <div class="form-check form-check-inline mb-4">
+                                                      <input class="form-check-input" type="radio" id="future_no" value="no" checked name="future_status" onclick="futureDate()" autocomplete="off">
+                                                      <label class="form-check-label" for="future_no">Send instantly</label>
+                                                    </div>
                                                    <div class="mb-3 col-lg-12" id="future_date_section">
-                                                      <label for="in_future" class="form-label">Select Date</label>
+                                                      <label for="in_future" class="form-label"><b>Select Date</b></label>
                                                       <input class="form-control" id="in_future" type="date" name="future_date" autocomplete="off" required>
                                                       <span id="error_msg" class="text-danger"></span>
                                                    </div>

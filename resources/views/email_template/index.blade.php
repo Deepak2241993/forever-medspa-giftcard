@@ -44,7 +44,8 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Subject</th>
+                    <th>Image</th>
+                    <th>Message</th>
                     <th>Status</th>
                     <th>Action</th>
                   
@@ -58,7 +59,9 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$value->title}}</td>
-                    <td>{{$value->subject}}</td>
+                    <td>@if(!empty($value->image))<image src="{{$value->image}}" height="100px" width="100px">@endif</td>
+                    <td>{{substr($value->message_email,0,100)}}</td>
+
                     <td>{{$value->status==1 ? 'Active':'Deactive'}}</td>
                     <td><a href="{{route('email-template.edit',$value->id)}}" class="btn btn-primary"><i class="bx bx-pencil"></i>Edit </a>
                         <form method="post" action="{{route('email-template.destroy',$value->id)}}">

@@ -10,5 +10,5 @@ class EmailTemplate extends Model
     use HasFactory;
     public $timestamps = true;
 
-    protected $fillable=['title', 'subject', 'html_code', 'status', 'created_at', 'updated_at'];
+    protected $fillable=['title', 'message_email', 'image', 'status', 'created_at', 'updated_at', 'footer_message'];
 }

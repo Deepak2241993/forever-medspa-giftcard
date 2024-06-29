@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gift;
 use App\Models\MedsapGift;
+use App\Models\EmailTemplate;
 use App\Models\Giftsend;
 use App\Models\GiftCoupon;
 use App\Models\GiftCategory;
@@ -289,7 +290,8 @@ class GiftController extends Controller
         ->leftJoin('gift_categories', 'gift_categories.id', '=', 'gift_coupons.category_id')
         ->orderBy('id', 'DESC')->where('gift_coupons.status',1) // Use 'orderBy' instead of 'OrderBy'
         ->get();
-        return view('pages_for_occasion.christmas',compact('gift','coupon_code'));
+        $occassion = EmailTemplate::where('status',1)->get();
+        return view('pages_for_occasion.christmas',compact('gift','coupon_code','occassion'));
     } 
 
 

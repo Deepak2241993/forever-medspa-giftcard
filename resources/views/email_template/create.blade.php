@@ -9,7 +9,7 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Dashboard</h3>
+                    <h3 class="mb-0">Email Template</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -40,31 +40,24 @@
                     @csrf
                     <div class="row">
                         
-                        <div class="mb-3 col-lg-6">
-                            <label for="title" class="form-label">Template Title</label>
-                            <input class="form-control" type="text" name="title" placeholder="Title" id="title" value="{{isset($emailTemplate)?$emailTemplate->title:''}}">
+                        <div class="mb-3 col-lg-12 col-md-6">
+                            <label for="title" class="form-label">Template Title<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="title" placeholder="Title" id="title" value="{{isset($emailTemplate)?$emailTemplate->title:''}}" required>
                         </div>
-                        <div class="mb-3 col-lg-6 self">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input class="form-control" type="text" name="subject" value="{{isset($emailTemplate)?$emailTemplate->subject:''}}" placeholder="subject" id="subject">
+                        <div class="mb-3 col-lg-12 col-md-6 self">
+                            <label for="message_email" class="form-label">Email Message<span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="message_email" id="message_email" cols="30" rows="10" required>{{isset($emailTemplate)?$emailTemplate->message_email:''}}</textarea>
+                        </div>
+                        <div class="mb-3 col-lg-12 col-md-6">
+                            <label for="image" class="form-label">Occasion Image<span class="text-danger"> (600 X 350 px)*</span></label>
+                            <input class="form-control" type="file" name="image" id="image"{{isset($emailTemplate)?'':'required'}}>
+                        </div>
+                        <div class="mb-3 col-lg-12 col-md-6">
+                            <label for="title" class="form-label">Footer Message<span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="footer_message" id="footer_message" cols="30" rows="10" required>{{isset($emailTemplate)?$emailTemplate->footer_message:''}}</textarea>
                         </div>
                        
-                        <div class="mb-3 col-lg-12">
-                         
-                            <label for="summernote" class="form-label">Template Design </label>
-                            <p class="text-danger">
-                                Use Variable for getdata
-                                <li> From Email=['from']</li>
-                                <li> Message=['msg']</li>
-                                <li> To Email=['to']</li>
-                                <li> To Email=['to_name']</li>
-                                <li>Amount=['amount']</li>
-                                <li> From Name=['from_name']</li>
-                                <li> Gift Card Code=['code']</li></br>
-                             <p>
-                            <textarea name="html_code"  id="content" rows="4" class="form-control summernote">{{isset($emailTemplate)?$emailTemplate->html_code:''}}</textarea>
-                            
-                        </div>
+                        
                    
                         <div class="mb-3 col-lg-6">
                             

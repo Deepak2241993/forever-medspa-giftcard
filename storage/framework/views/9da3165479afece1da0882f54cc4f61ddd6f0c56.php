@@ -46,7 +46,8 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Subject</th>
+                    <th>Image</th>
+                    <th>Message</th>
                     <th>Status</th>
                     <th>Action</th>
                   
@@ -60,7 +61,9 @@
                 <tr>
                     <td><?php echo e($loop->iteration); ?></td>
                     <td><?php echo e($value->title); ?></td>
-                    <td><?php echo e($value->subject); ?></td>
+                    <td><?php if(!empty($value->image)): ?><image src="<?php echo e($value->image); ?>" height="100px" width="100px"><?php endif; ?></td>
+                    <td><?php echo e(substr($value->message_email,0,100)); ?></td>
+
                     <td><?php echo e($value->status==1 ? 'Active':'Deactive'); ?></td>
                     <td><a href="<?php echo e(route('email-template.edit',$value->id)); ?>" class="btn btn-primary"><i class="bx bx-pencil"></i>Edit </a>
                         <form method="post" action="<?php echo e(route('email-template.destroy',$value->id)); ?>">
