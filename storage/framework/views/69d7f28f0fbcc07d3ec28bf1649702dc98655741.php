@@ -1,6 +1,6 @@
 <?php
 
-$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'monu','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWwQgHXhy3bfGAtx9JnFGAY'];
+$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWwQgHXhy3bfGAtx9JnFGAY'];
 $mail_data = (object) $mail_data;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
