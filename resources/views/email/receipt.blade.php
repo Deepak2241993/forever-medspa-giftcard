@@ -124,7 +124,7 @@ $newString = str_replace($search, $replace, $string);
 																		<tbody>
 																		<tr>
 																			<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word" valign="top">
-										{{$mail_data->your_name}}                                             <br>
+																	{{$mail_data->your_name}}                                             <br>
 																						<span style="color:#9b9b9b"><a href="mailto:{{$mail_data->receipt_email}}" target="_blank">{{$mail_data->receipt_email}}</a></span>
 																			</td>
 																		</tr>
@@ -216,7 +216,7 @@ $newString = str_replace($search, $replace, $string);
 																		<tbody>
 																		<tr>
 																			<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word" valign="top">
-										We'll email {{$mail_data->recipient_name}} at <a href="mailto:{{$mail_data->gift_send_to}}" target="_blank">{{$mail_data->gift_send_to}}</a> with their gift card  (
+										We'll email {{$mail_data->recipient_name}} at <a href="mailto:{{$mail_data->gift_send_to}}" target="_blank">{{$mail_data->gift_send_to}}</a> with their gift card 
 											{{-- <a href="https://beta.download.yourgift.cards/download-zip/order/pdf/7f0a841a-2f15-4527-cc0c-08dc2f769b14" style="color:#333333" id="m_1192176901181685102primary-button" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://beta.download.yourgift.cards/download-zip/order/pdf/7f0a841a-2f15-4527-cc0c-08dc2f769b14&amp;source=gmail&amp;ust=1708259681213000&amp;usg=AOvVaw0HIVajL0nNOSHNcYre8BAy">download now</a>) --}}
 																			</td>
 																		</tr>

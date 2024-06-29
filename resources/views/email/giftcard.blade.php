@@ -1,8 +1,8 @@
-@php
+{{-- @php
 
 $mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'Geeta','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
 $mail_data = (object) $mail_data;
-@endphp
+@endphp --}}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -115,8 +115,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <div style="background-color: #000000;height: 100%;width: 100% !important;">
 
   <div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
-
-  
+<div class="logo" style="background-color:#fca52a; padding:20px;">
+	<a class="navbar-brand" href="https://myforevermedspa.com"><img src="https://forevermedspanj.com/wp-content/uploads/2019/07/forever-white-1.png" alt="image" style="height:70px;"></a>
+</div>
 <table id="u_content_heading_3" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
   <tbody>
     <tr>
@@ -196,26 +197,26 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 				<div style="background-color: #ffffff;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
 					
 					<div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-						<p style="line-height: 24px;padding:20px;">Dear <b>@if(!empty($mail_data->recipient_name)){{ucFirst($mail_data->recipient_name)}} @else{{ucFirst($mail_data->your_name)}} @endif </b>,<br>
+						<p style="line-height: 24px;padding:20px; font-size: 16px; word-wrap: break-word; font-family:arial,helvetica,sans-serif;">Dear <b>@if(!empty($mail_data->recipient_name)){{ucFirst($mail_data->recipient_name)}} @else{{ucFirst($mail_data->your_name)}} @endif </b>,<br>
 							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis a quod tempore omnis quae tenetur numquam sunt nostrum et commodi, delectus ea! Voluptates quos laboriosam nisi suscipit. Inventore, voluptas ratione?
 						</p>
 
   
-<table id="u_content_text_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="line-height: 130%;">At [Your Company Name], we believe that every special occasion deserves to</p>
-<p style="line-height: 130%;">be celebrated in style. Whether it's a birthday, anniversary,</p>
-<p style="line-height: 130%;">or just a "just because" moment, we're here to make it unforgettable. </p>
-  </div>
+						<table id="u_content_text_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+						<tbody>
+						<tr>
+							<td style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
+							
+						<div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
+						<p style="line-height: 130%;">At Forever MedSpa, we believe that every special occasion deserves to</p>
+						<p style="line-height: 130%;">be celebrated in style. Whether it's a birthday, anniversary,</p>
+						<p style="line-height: 130%;">or just a "just because" moment, we're here to make it unforgettable. </p>
+						</div>
 
-      </td>
-    </tr>
-  </tbody>
-</table>
+							</td>
+						</tr>
+						</tbody>
+						</table>
 
 <table id="u_content_heading_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
   <tbody>
@@ -234,12 +235,103 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
         
-  <div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="line-height: 140%;">To mark this special day with you, we're delighted to offer you an exclusive [Discount Percentage]% discount on your next purchase.</p>
-<p style="line-height: 140%;"> </p>
-<p style="line-height: 140%;">Simply use promo code:</p>
-<p style="line-height: 140%;">[Promo Code] at checkout. </p>
+  <div class="v-line-height v-font-size" style="font-size: 16px; line-height: 140%; text-align: center; word-wrap: break-word;">
+	<p style="line-height: 140%;padding:20px;">To mark this special day with you, we're delighted to offer you an exclusive discount on your next purchase.
+		@if(!empty($mail_data->recipient_name))
+		{{$mail_data->your_name}} just sent you {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at <br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
+		@else
+		You have received a gift card purchase {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at<br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
+		@endif
+	</p>
+	
   </div>
+  
+	{{-- Gift Sender Details Start --}}
+	<div class="m_1192176901181685102pc-sm-mw-100pc" style="display:inline-block;max-width:280px;width:100%;vertical-align:top;overflow:hidden">
+		<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+			<tbody>
+			<tr>
+				<td style="padding:10px 20px" valign="top">
+					<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+						<tbody>
+						<tr>
+							<td style="border-bottom:1px solid #e5e5e5;padding:0 0 10px;letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;font-weight:bold;color:#151515" valign="top">Gifted To</td>
+						</tr>
+						<tr>
+							<td height="10" style="font-size:1px;line-height:1px">&nbsp;</td>
+						</tr>
+						</tbody>
+						<tbody>
+						<tr>
+							<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word" valign="top">
+								{{$mail_data->recipient_name}}                                       <br>
+										<span style="color:#9b9b9b"><a href="mailto:{{$mail_data->gift_send_to}}" target="_blank">{{$mail_data->gift_send_to}}</a></span>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{-- To Section --}}
+	<div class="m_1192176901181685102pc-sm-mw-100pc" style="display:inline-block;max-width:280px;width:100%;vertical-align:top;overflow:hidden">
+		<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+			<tbody>
+			<tr>
+				<td style="padding:10px 20px" valign="top">
+					<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+						<tbody>
+						<tr>
+							<td style="border-bottom:1px solid #e5e5e5;padding:0 0 10px;letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;font-weight:bold;color:#151515" valign="top">Giftcard Generated By:</td>
+						</tr>
+						<tr>
+							<td height="10" style="font-size:1px;line-height:1px">&nbsp;</td>
+						</tr>
+						</tbody>
+						<tbody>
+						<tr>
+							<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word" valign="top">
+					{{$mail_data->your_name}}                                             <br>
+										<span style="color:#9b9b9b"><a href="mailto:{{$mail_data->receipt_email}}" target="_blank">{{$mail_data->receipt_email}}</a></span>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{-- Message Section start --}}
+	<div class="m_1192176901181685102pc-sm-mw-100pc" style="display:inline-block;max-width:600px;width:100%;vertical-align:top">
+		<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+			<tbody>
+			<tr>
+				<td style="padding:10px 20px" valign="top">
+					<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+						<tbody>
+						<tr>
+							<td style="border-bottom:1px solid #e5e5e5;padding:0 0 10px;letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;font-weight:bold;color:#151515" valign="top">Message</td>
+						</tr>
+						<tr>
+							<td height="10" style="font-size:1px;line-height:1px">&nbsp;</td>
+						</tr>
+						</tbody>
+						<tbody>
+						<tr>
+							<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word;white-space:pre-wrap" valign="top" id="m_1192176901181685102message">{{$mail_data->message}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	{{-- Gift Sender Details End --}}
+
 
       </td>
     </tr>
@@ -274,7 +366,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
 	<div align="center">
 
-	<a href="https://unlayer.com/" target="_blank" class="v-button v-size-width v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #ff0184; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:45%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 21px;">
+	<a href="https://unlayer.com/" target="_blank" class="v-button v-size-width v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #fca52a; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:45%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 21px;">
 		<span class="v-line-height v-padding" style="display:block;padding:10px 20px;line-height:120%;"><span style="line-height: 25.2px;">UN2848465186</span></span>
 	</a>
 	</div>
@@ -399,7 +491,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
 
 <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-  <div style="background-color: #ffffff;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+  <div style="background-color: #fca52a;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
   <!--[if (!mso)&(!IE)]><!-->
   <div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
     <!--<![endif]-->
@@ -409,8 +501,8 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:60px 50px 20px;font-family:arial,helvetica,sans-serif;" align="left">
         
-  <div class="v-line-height v-font-size" style="font-size: 14px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;">Forever Medspa Forever Medspa.<br>
+  <div class="v-line-height v-font-size" style="font-size: 14px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word;">
+    <p style="font-size: 18px; line-height: 140%;">Forever Medspa Forever Medspa.<br>
 	468 Paterson Ave East Rutherford NJ, 07073<br>
 	©{{date('Y')}} All rights reserved. </p>
   </div>
