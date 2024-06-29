@@ -1,4 +1,8 @@
-{{-- {{dd($mail_data);}} --}}
+@php
+
+$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'monu','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWwQgHXhy3bfGAtx9JnFGAY'];
+$mail_data = (object) $mail_data;
+@endphp
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
    <head>
@@ -107,9 +111,9 @@
          <tr style="vertical-align: top">
             <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                <div class="u-row-container" style="padding: 0px;background-color: transparent">
-                  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
+                  <div class="u-row" style="margin: 0 auto;min-width: 280px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
                      <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                        <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
+                        <div class="u-col u-col-100" style="max-width: 280px;min-width: 600px;display: table-cell;vertical-align: top;">
                            <div style="background-color: #000000;height: 100%;width: 100% !important;">
                               <div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
                                  <table id="u_content_heading_3" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -134,7 +138,7 @@
                                     <tbody>
                                        <tr>
                                           <td style="overflow-wrap:break-word;word-break:break-word;padding:0px;font-family:arial,helvetica,sans-serif;" align="left">
-                                             <h1 class="v-line-height v-font-size" style="margin: 0px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word; font-family: Epilogue; font-size: 22px; font-weight: 400;">Received From []</h1>
+                                             <h1 class="v-line-height v-font-size" style="margin: 0px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word; font-family: Epilogue; font-size: 22px; font-weight: 400;"> @if(!empty($mail_data->recipient_name)){{'Received From '.ucFirst($mail_data->your_name)}} @else{{'Just for You'}} @endif</h1>
                                           </td>
                                        </tr>
                                     </tbody>
@@ -161,9 +165,9 @@
                   </div>
                </div>
                <div class="u-row-container" style="padding: 0px;background-color: transparent">
-                  <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
+                  <div class="u-row" style="margin: 0 auto;min-width: 280px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
                      <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                        <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
+                        <div class="u-col u-col-100" style="max-width: 280px;min-width: 600px;display: table-cell;vertical-align: top;">
                            <div style="background-color: #ffffff;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                               <div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                                  <table id="u_content_text_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -176,7 +180,7 @@
                                                       <tr>
                                                          <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
                                                             <div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; word-wrap: break-word;">
-                                                               <p style="line-height: 24px;">Dear <b>@if(!empty($mail_data->recipient_name)){{$mail_data->recipient_name}} @else{{$mail_data->your_name}} @endif </b>,<br>
+                                                               <p style="line-height: 24px;">Dear <b>@if(!empty($mail_data->recipient_name)){{ucFirst($mail_data->recipient_name)}} @else{{ucFirst($mail_data->your_name)}} @endif </b>,<br>
                                                                   Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis a quod tempore omnis quae tenetur numquam sunt nostrum et commodi, delectus ea! Voluptates quos laboriosam nisi suscipit. Inventore, voluptas ratione?
                                                                </p>
                                                                <p style="line-height: 140%;"> </p>
@@ -203,12 +207,13 @@
                                     </tbody>
                                  </table>
                                  {{-- Gift Card Sender Details --}}
-						  
+						   @if(!empty($mail_data->recipient_name))
                                  <table>
                                     <tbody>
                                        <tr>
                                           <td style="font-size:0" valign="top">
-                                             <div style="display:inline-block;max-width:300px;width:100%;vertical-align:top;overflow:hidden;margin-left: 20px;">
+
+                                             <div style="display:inline-block;max-width:280px;width:100%;vertical-align:top;overflow:hidden;margin-left: 20px;">
                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
                                                    <tbody>
                                                       <tr>
@@ -236,6 +241,7 @@
                                                    </tbody>
                                                 </table>
                                              </div>
+
                                              <div style="display:inline-block;max-width:280px;width:100%;vertical-align:top;overflow:hidden margin-left: 20px;">
                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
                                                    <tbody>
@@ -264,11 +270,13 @@
                                                    </tbody>
                                                 </table>
                                              </div>
+
                                           </td>
                                        </tr>
                                        <tr>
                                           <td style="line-height:1px;font-size:1px" height="10">&nbsp;</td>
                                        </tr>
+
                                        <tr>
                                           <td style="font-size:0" valign="top">
                                              <div style="margin-left: 20px;" >
@@ -287,9 +295,7 @@
                                                                </tbody>
                                                                <tbody>
                                                                   <tr>
-                                                                     <td  style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word;white-space:pre-wrap" valign="top" id="m_631320612814964149m_1192176901181685102message">
-														{{$mail_data->message}}
-													</td>
+                                                                     <td  style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word;white-space:pre-wrap" valign="top" id="m_631320612814964149m_1192176901181685102message">{{$mail_data->message}}</td>
                                                                   </tr>
                                                                </tbody>
                                                             </table>
@@ -297,7 +303,7 @@
                                                       </tr>
                                                    </tbody>
                                                 </table>
-									 
+									@endif
 									  
 									   
                                                 {{-- Giftcard sender details end --}}
@@ -305,13 +311,15 @@
                                                    <tbody>
                                                       <tr>
                                                          <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-                                                            <div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
+                                                            <div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word; margin-left:10px;margin-right:10px">
                                                                <p style="line-height: 140%;">To mark this special day with you, we're delighted to offer you an exclusive discount on your next purchase.</p>
                                                                <h3 style="line-height: 140%;"> 
+													@if(!empty($mail_data->recipient_name))
                                                                   {{$mail_data->your_name}} just sent you {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at <a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
-                                                                 
-                                                                  You have received a gift card purchase {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at<br>Forever Medspa.
-                                                               </h3>
+                                                                 @else
+                                                                  You have received a gift card purchase {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at<br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
+													@endif
+													</h3>
                                                               
                                                             </div>
                                                          </td>
@@ -319,6 +327,11 @@
                                                    </tbody>
                                                 </table>
                                              </div>
+								  </td>
+							    </tr>
+							 </tbody>
+						   </table>
+						 
 
                               </div>
                            </div>
@@ -331,9 +344,9 @@
 			   @endphp
 		    @foreach($cardnumber as $value)  
                <div class="u-row-container" style="padding: 36px 0px;background-image: url('{{url('/email_template')}}/1695808724401-Rectangle%202%20copy%202.png');background-repeat: no-repeat;background-position: center center;background-color: transparent">
-               	<div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
+               	<div class="u-row" style="margin: 0 auto;min-width: 280px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
                   		<div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                  			<div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
+                  			<div class="u-col u-col-100" style="max-width: 280px;min-width: 600px;display: table-cell;vertical-align: top;">
                   				<div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                   					<div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                   						<table id="u_content_button_3" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -398,16 +411,7 @@
                   							</tbody>
                   						</table>
                   						<table id="u_content_menu_1" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                 							<tbody>
-                  								<tr>
-                  									<td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-                  										<div class="menu" style="text-align:center"> deepak</div>
-                  									</td>
-                  								</tr>
-                  								<tr>
-                  									<td style="line-height:1px;font-size:1px" height="10">&nbsp;</td>
-                  								</tr>
-                  							</tbody>
+                 				
                   					</div>
                   </td>
                   </tr>
