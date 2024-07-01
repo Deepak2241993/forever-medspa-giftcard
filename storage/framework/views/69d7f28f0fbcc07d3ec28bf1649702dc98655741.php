@@ -1,9 +1,9 @@
 <?php
-$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
-$mail_data = (object) $mail_data;
+// $mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
+// $mail_data = (object) $mail_data;
 $cardnumber = App\Models\GiftcardsNumbers::where('transaction_id',$mail_data->transaction_id)->get();
-// $template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
-$template_data = App\Models\EmailTemplate::where('id',null)->get();
+$template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
+// $template_data = App\Models\EmailTemplate::where('id',null)->get();
 ?>
 
 

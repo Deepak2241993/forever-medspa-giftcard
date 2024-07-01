@@ -524,7 +524,7 @@
    
    	var gift_card_send_type = $('#gift_card_send_type').val();
    	var receipt_email = $('#recipient_email').val();
-   
+
    	
    	if($('#in_future').val()!='')
    	{
@@ -599,7 +599,6 @@
    $('#Coupon_error').hide();
    
    function CheckCoupon() {
-      var coupon_code = $('#coupon_code').val();
       var amount = $('#amountdisplay').attr('finalamount');
       $.ajax({
           url: '{{ route('coupon-validate') }}',
@@ -618,8 +617,8 @@
    			if(response.data[0]['discount_type']=='amount')
    			{
    				var discountAmount = response.data[0]['discount_rate'];
-   				var afterDiscount = parseInt(discountAmount);
-   				$("#amountdisplay").attr('coupondiscount', afterDiscount);
+   				var afterDiscount = parseInt(amount - discountAmount);
+   				$("#amountdisplay").attr('coupondiscount', discountAmount);
    				$("#amountdisplay").attr('finalamount', amount);
    			}
    			if(response.data[0]['discount_type']=='percentage')
@@ -627,7 +626,7 @@
    				var discountRate = response.data[0]['discount_rate']; // Assuming discount_rate is a percentage (e.g., 10 for 10%)
    				var discountAmount = (amount * discountRate) / 100;
    				var afterDiscount = amount - discountAmount;
-   				$("#amountdisplay").attr('coupondiscount', afterDiscount);
+   				$("#amountdisplay").attr('coupondiscount', discountAmount);
    				$("#amountdisplay").attr('finalamount', amount);
    			}
    
