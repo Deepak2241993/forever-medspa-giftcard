@@ -164,10 +164,10 @@
                                                       <input class="form-control" type="email" name="from_email" value="" placeholder="Sender's Email address (for the receipt)" id="recipient_email" autocomplete="off" required>
                                                    </div>
                                                    <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
-                                                      <label for="recipient_email" class="form-label"><b>Select Occassions<span class="text-danger">*</span></b></label>
+                                                      <label for="recipient_email" class="form-label"><b>Select Event<span class="text-danger">*</span></b></label>
 
-                                                      <select class="form-control" id="" name="">
-                                                         <option value="">Select Occassions</option>
+                                                      <select class="form-control" id="Event_id" name="">
+                                                         <option value="">Select Event</option>
                                                          <?php $__currentLoopData = $occassion; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                          <option value="<?php echo e($value->id); ?>"><?php echo e($value->title); ?></option>
                                                          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -509,6 +509,7 @@
    	var your_name = $('#your_name').val();
    	var recipient_name = $('#recipient_name').val();
    	var message = $('#message').val();
+   	var event = $('#Event_id').val();
    
    	var gift_card_send_type = $('#gift_card_send_type').val();
    	var receipt_email = $('#recipient_email').val();
@@ -549,6 +550,7 @@
    			  coupon_code:coupon_code,
    			  discount:discount,
    			  gift_send_to:gift_send_to,
+   			  event_id:event,
    		},
    		  success: function (response) {
    			  console.log(response.success);

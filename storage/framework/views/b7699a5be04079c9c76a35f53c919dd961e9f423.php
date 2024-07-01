@@ -99,7 +99,7 @@
 																		<tbody>
 																		<tr>
 																			<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word" valign="top">
-										<?php echo e($mail_data->your_name); ?>                                             <br>
+																	<?php echo e($mail_data->your_name); ?>                                             <br>
 																						<span style="color:#9b9b9b"><a href="mailto:<?php echo e($mail_data->receipt_email); ?>" target="_blank"><?php echo e($mail_data->receipt_email); ?></a></span>
 																			</td>
 																		</tr>
@@ -191,7 +191,7 @@
 																		<tbody>
 																		<tr>
 																			<td style="letter-spacing:-0.2px;line-height:26px;font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:16px;color:#151515;max-width:260px;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word" valign="top">
-										We'll email <?php echo e($mail_data->recipient_name); ?> at <a href="mailto:<?php echo e($mail_data->gift_send_to); ?>" target="_blank"><?php echo e($mail_data->gift_send_to); ?></a> with their gift card  (
+										We'll email <?php echo e($mail_data->recipient_name); ?> at <a href="mailto:<?php echo e($mail_data->gift_send_to); ?>" target="_blank"><?php echo e($mail_data->gift_send_to); ?></a> with their gift card 
 											
 																			</td>
 																		</tr>

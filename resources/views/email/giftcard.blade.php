@@ -1,12 +1,13 @@
 @php
-
-$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'Geeta','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
-$mail_data = (object) $mail_data;
+// $mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
+// $mail_data = (object) $mail_data;
+$cardnumber = App\Models\GiftcardsNumbers::where('transaction_id',$mail_data->transaction_id)->get();
+$template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
 @endphp
+
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-
-
 <head>
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -197,9 +198,15 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 				<div style="background-color: #ffffff;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
 					
 					<div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-						<p style="line-height: 24px;padding:20px; font-size: 16px; word-wrap: break-word; font-family:arial,helvetica,sans-serif;">Dear <b>@if(!empty($mail_data->recipient_name)){{ucFirst($mail_data->recipient_name)}} @else{{ucFirst($mail_data->your_name)}} @endif </b>,<br>
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis a quod tempore omnis quae tenetur numquam sunt nostrum et commodi, delectus ea! Voluptates quos laboriosam nisi suscipit. Inventore, voluptas ratione?
-						</p>
+						
+            <p style="line-height: 24px;padding:20px; font-size: 16px; word-wrap: break-word; font-family:arial,helvetica,sans-serif;">
+              Dear <b>@if(!empty($mail_data->recipient_name)){{ucFirst($mail_data->recipient_name)}} @else{{ucFirst($mail_data->your_name)}} @endif </b>,<br>
+							@if(!empty($template_data[0]['message_email']))
+              {{$template_data[0]['message_email']}}
+              @else
+              Thank you for choosing My Forever Medspa! We can't wait for you to experience relaxation and rejuvenation with your gift card.
+						@endif
+            </p>
 
   
 						<table id="u_content_text_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -208,7 +215,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 							<td style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px;font-family:arial,helvetica,sans-serif;" align="left">
 							
 						<div class="v-line-height v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
-						<p style="line-height: 130%;">At Forever MedSpa, we believe that every special occasion deserves to</p>
+						<p style="line-height: 130%;">At My Forever MedSpa, we believe that every special occasion deserves to</p>
 						<p style="line-height: 130%;">be celebrated in style. Whether it's a birthday, anniversary,</p>
 						<p style="line-height: 130%;">or just a "just because" moment, we're here to make it unforgettable. </p>
 						</div>
@@ -236,13 +243,24 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
         
   <div class="v-line-height v-font-size" style="font-size: 16px; line-height: 140%; text-align: center; word-wrap: break-word;">
-	<p style="line-height: 140%;padding:20px;">To mark this special day with you, we're delighted to offer you an exclusive discount on your next purchase.
-		@if(!empty($mail_data->recipient_name))
-		{{$mail_data->your_name}} just sent you {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at <br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
-		@else
-		You have received a gift card purchase {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at<br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
-		@endif
+    @if(!empty($mail_data->recipient_name))
+    <p style="line-height: 140%;padding:20px;">To celebrate this day with you, {{ucFirst($mail_data->your_name)}} has gifted you a voucher for your next happy session at the My Forever Medspa Wellness Centre.<br>
+      @if(!empty($mail_data->recipient_name))
+      {{ucFirst($mail_data->your_name)}} sent you {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at <br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
+      @else
+      You have received a gift card purchase {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at<br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
+      @endif
+    </p>
+  @else
+  {{--  For Other Section Sending Gift Message --}}
+  
+  <p style="line-height: 140%;padding:20px;">
+    {{ucFirst($mail_data->your_name)}}, at My Forever Medspa Wellness Centre we emphasise the value of Self Care and we see that you do too!
+    Lets celebrate this with your exclusively purchased Giftcard for the nex session with My Forever Medspa.
+   <br>
+		{{ucFirst($mail_data->your_name)}} you are purchased  {{$mail_data->qty}} x ${{ round(($mail_data->amount) / ($mail_data->qty)) }} gift card to use at <br><a href="https://myforevermedspa.com/" target="_blank" data-saferedirecturl="https://myforevermedspa.com/">Forever Medspa</a>.
 	</p>
+  @endif
 	
   </div>
   
@@ -306,6 +324,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 	</div>
 	
 	{{-- Message Section start --}}
+  @if(!empty($mail_data->recipient_name))
 	<div class="m_1192176901181685102pc-sm-mw-100pc" style="display:inline-block;max-width:600px;width:100%;vertical-align:top">
 		<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
 			<tbody>
@@ -331,14 +350,25 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 			</tbody>
 		</table>
 	</div>
+  @endif
 	{{-- Gift Sender Details End --}}
 
+</td>
+  </tbody>
+</table>
+{{-- for Gift card Hedding --}}
+<table id="u_content_heading_2" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+  <tbody>
+    <tr>
+      <td style="overflow-wrap:break-word;word-break:break-word;padding:30px 0px 0px;font-family:arial,helvetica,sans-serif;" align="left">
+        
+  <h1 class="v-line-height v-font-size" style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-family: Epilogue; font-size: 40px; font-weight: 700;">Giftcard Details:</h1>
 
       </td>
     </tr>
   </tbody>
 </table>
-
+{{-- for Gift card Hedding --}}
 </div>
 
   </div>
@@ -347,10 +377,10 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     </div>
   </div>
   </div>
+  
+  
 
-  @php
-  $cardnumber = App\Models\GiftcardsNumbers::where('transaction_id',$mail_data->transaction_id)->get();
-  @endphp
+{{-- Gift Card Generate --}}
   @foreach($cardnumber as $value)  
 <div class="u-row-container" style="padding: 36px 0px;background-image: url('{{url('/email_template')}}/1695808724401-Rectangle%202%20copy%202.png');background-repeat: no-repeat;background-position: center center;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
@@ -384,13 +414,8 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   </div>
   </div>
   @endforeach
-  
-    
-    
+  {{-- Gift Card Generate end --}}
 
-
-  
-  
 <div class="u-row-container" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
@@ -416,7 +441,14 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 	    <td style="overflow-wrap:break-word;word-break:break-word;padding:20px 50px 10px;font-family:arial,helvetica,sans-serif;" align="left">
 		 
 	<div class="v-line-height v-font-size" style="font-size: 14px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word;">
-	  <p style="font-size: 14px; line-height: 140%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+	  <p style="font-size: 14px; line-height: 140%;">
+      @if(!empty($template_data[0]['footer_messag']))
+      {{$template_data[0]['footer_messag']}}
+      @else
+      Happy Shopping!
+      @endif
+      
+    </p>
 	</div>
    
 	    </td>
