@@ -1,8 +1,9 @@
 <?php
-// $mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
-// $mail_data = (object) $mail_data;
+$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
+$mail_data = (object) $mail_data;
 $cardnumber = App\Models\GiftcardsNumbers::where('transaction_id',$mail_data->transaction_id)->get();
-$template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
+// $template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
+$template_data = App\Models\EmailTemplate::where('id',null)->get();
 ?>
 
 
@@ -443,8 +444,8 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 		 
 	<div class="v-line-height v-font-size" style="font-size: 14px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word;">
 	  <p style="font-size: 14px; line-height: 140%;">
-      <?php if(!empty($template_data[0]['footer_messag'])): ?>
-      <?php echo e($template_data[0]['footer_messag']); ?>
+      <?php if(!empty($template_data[0]['footer_message'])): ?>
+      <?php echo e($template_data[0]['footer_message']); ?>
 
       <?php else: ?>
       Happy Shopping!
