@@ -125,6 +125,7 @@ class GiftsendController extends Controller
         //  First API
         $resultData =$this->postAPI('gift-for-other',$data);
         $result=json_decode($resultData['result']);
+        dd($result);
         $request->session()->put('gift_id', $result->id);
 
         if($result->discount!=0)

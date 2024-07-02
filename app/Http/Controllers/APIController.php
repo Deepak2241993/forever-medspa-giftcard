@@ -98,6 +98,7 @@ public function giftvalidate(Request $request, GiftCoupon $giftCoupon,MedsapGift
  *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
  *                 @OA\Property(property="in_future", type="date", example="12-05-2025"),
  *                 @OA\Property(property="coupon_code", type="string", example="CCODE12"),
+ *                 @OA\Property(property="event_id", type="integer", example="5"),
  *             )
  *         )
  *     ),
