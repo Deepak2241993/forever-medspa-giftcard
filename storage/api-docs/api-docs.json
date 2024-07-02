@@ -121,6 +121,10 @@
                                     "coupon_code": {
                                         "type": "string",
                                         "example": "CCODE12"
+                                    },
+                                    "event_id": {
+                                        "type": "integer",
+                                        "example": "5"
                                     }
                                 },
                                 "type": "object"
