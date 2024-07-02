@@ -1,9 +1,9 @@
 <?php
-// $mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
-// $mail_data = (object) $mail_data;
+$mail_data=['qty'=>1,'amount'=>25,'your_name'=>'deepak','recipient_name'=>'','message'=>'test','gift_send_to'=>'deepak@thetemz.com','receipt_email'=>'deepakprasad224@gmail.com','transaction_id'=>'card_1PWvpdHXhy3bfGAtfIzHmifj'];
+$mail_data = (object) $mail_data;
 $cardnumber = App\Models\GiftcardsNumbers::where('transaction_id',$mail_data->transaction_id)->get();
-$template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
-// $template_data = App\Models\EmailTemplate::where('id',null)->get();
+// $template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
+$template_data = App\Models\EmailTemplate::where('id',5)->get();
 ?>
 
 
@@ -166,7 +166,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="<?php echo e(url('/email_template')); ?>/1695808292317-nuds.png" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600"/>
+      <img align="center" border="0" src="<?php if(!empty($template_data[0]['image'])): ?><?php echo e($template_data[0]['image']); ?><?php else: ?><?php echo e(url('/email_template/med.png')); ?><?php endif; ?>" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600"/>
       
     </td>
   </tr>

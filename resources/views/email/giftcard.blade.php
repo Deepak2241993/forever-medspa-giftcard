@@ -3,7 +3,7 @@
 // $mail_data = (object) $mail_data;
 $cardnumber = App\Models\GiftcardsNumbers::where('transaction_id',$mail_data->transaction_id)->get();
 $template_data = App\Models\EmailTemplate::where('id',$mail_data->event_id)->get();
-// $template_data = App\Models\EmailTemplate::where('id',null)->get();
+// $template_data = App\Models\EmailTemplate::where('id',5)->get();
 @endphp
 
 
@@ -166,7 +166,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="{{url('/email_template')}}/1695808292317-nuds.png" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600"/>
+      <img align="center" border="0" src="@if(!empty($template_data[0]['image'])){{$template_data[0]['image']}}@else{{url('/email_template/med.png')}}@endif" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600"/>
       
     </td>
   </tr>
