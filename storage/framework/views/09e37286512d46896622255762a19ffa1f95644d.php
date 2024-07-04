@@ -46,8 +46,8 @@
                                <div class="row main_box_coupon mt-2">
                                  <div class="col-md-3"></div>
                                  <div class="col-md-5">
-                                    <strong><?php echo e($value->title?$value->title:''); ?></strong>
-                                        <p style="font-weight: 400"><?php echo e($value->title?$value->redeem_description:''); ?></p>
+                                    <strong style="margin-left: 2px;margin-right: 2px;font-size:22px;text-align: center;"><?php echo e($value->title?$value->title:''); ?></strong>
+                                        <p style="font-weight: 700;margin-left: 5px;margin-right: 18px;text-align: center;"><?php echo e($value->title?$value->redeem_description:''); ?></p>
                                  </div>
                                  <div class="col-md-4" style="text-align:center">
                                        <span class="mt-2"> Coupon Code<h3><b><?php echo e($value->title?$value->coupon_code:''); ?></b></h3></span>
