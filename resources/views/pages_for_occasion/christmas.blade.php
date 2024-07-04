@@ -46,7 +46,7 @@
                                <div class="row main_box_coupon mt-2">
                                  <div class="col-md-3"></div>
                                  <div class="col-md-5">
-                                    <strong style="margin-left: 2px;margin-right: 2px;font-size:22px;text-align: center;">{{$value->title?$value->title:''}}</strong>
+                                    <strong style="margin-left: 2px;margin-right: 2px;font-size:20px;text-align: center;">{{$value->title?$value->title:''}}</strong>
                                         <p style="font-weight: 700;margin-left: 5px;margin-right: 18px;text-align: center;">{{$value->title?$value->redeem_description:''}}</p>
                                  </div>
                                  <div class="col-md-4" style="text-align:center">

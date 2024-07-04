@@ -42,8 +42,8 @@
                     <div class="row">
 
                         <div class="mb-3 col-lg-6 self">
-                            <label for="title" class="form-label">Coupon Title<span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" name="title" value="<?php echo e(isset($giftCoupon)?$giftCoupon->title:''); ?>" placeholder="Coupon Title" id="title" required>
+                            <label for="title" class="form-label">Coupon Title<span class="text-danger"><i> Characters Limit max 20 *</i></span></label>
+                            <input class="form-control" type="text" name="title" value="<?php echo e(isset($giftCoupon)?$giftCoupon->title:''); ?>" placeholder="Coupon Title" maxlength="20" id="title" required>
                         </div>
                         <?php if(count($gatcategory)>0): ?>
                         <div class="mb-3 col-lg-6 self">
@@ -80,7 +80,11 @@
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="redeem_description" class="form-label">Redeem Description</label>
-                            <textarea class="form-control" id="redeem_description" name="redeem_description"><?php echo e(isset($giftCoupon)?$giftCoupon->redeem_description:''); ?></textarea>
+                            <textarea onKeyDown="textCounter(this,60);"
+						onKeyUp="textCounter(this,'q17length' ,60)" class="form-control" name="redeem_description" id="redeem_description" rows="5" cols=""><?php echo e(isset($giftCoupon)?$giftCoupon->redeem_description:''); ?></textarea><br>
+                       
+                        
+                        <i>Maximum of 60 characters - <input style="color:red;font-size:12pt;font-style:italic;" readonly type="text" id='q17length' name="q17length" size="3" maxlength="3" value="60"> characters left</i>
 
                         </div>
                         <div class="mb-3 col-lg-6">
@@ -107,6 +111,19 @@
     <!--end::App Content-->
 </main>
 <?php $__env->stopSection(); ?>
+<?php $__env->startPush('script'); ?>
+
+<script>
+    function textCounter(field,cnt, maxlimit) {         
+	var cntfield = document.getElementById(cnt)	
+     if (field.value.length > maxlimit) // if too long...trim it!
+		field.value = field.value.substring(0, maxlimit);
+		// otherwise, update 'characters left' counter
+		else
+		cntfield.value = maxlimit - field.value.length;
+}
+</script>
+<?php $__env->stopPush(); ?>
 
 
 <?php echo $__env->make('layouts.admin_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/coupon/create.blade.php ENDPATH**/ ?>

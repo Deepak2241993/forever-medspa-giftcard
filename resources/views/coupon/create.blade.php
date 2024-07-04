@@ -42,8 +42,8 @@
                     <div class="row">
 
                         <div class="mb-3 col-lg-6 self">
-                            <label for="title" class="form-label">Coupon Title<span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" name="title" value="{{isset($giftCoupon)?$giftCoupon->title:''}}" placeholder="Coupon Title" id="title" required>
+                            <label for="title" class="form-label">Coupon Title<span class="text-danger"><i> Characters Limit max 20 *</i></span></label>
+                            <input class="form-control" type="text" name="title" value="{{isset($giftCoupon)?$giftCoupon->title:''}}" placeholder="Coupon Title" maxlength="20" id="title" required>
                         </div>
                         @if(count($gatcategory)>0)
                         <div class="mb-3 col-lg-6 self">
@@ -80,7 +80,12 @@
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="redeem_description" class="form-label">Redeem Description</label>
-                            <textarea class="form-control" id="redeem_description" name="redeem_description">{{isset($giftCoupon)?$giftCoupon->redeem_description:''}}</textarea>
+                            <textarea onKeyDown="textCounter(this,60);"
+						onKeyUp="textCounter(this,'q17length' ,60)" class="form-control" name="redeem_description" id="redeem_description" rows="5" cols="">{{isset($giftCoupon)?$giftCoupon->redeem_description:''}}</textarea><br>
+                       
+                        {{-- <textarea onKeyDown="textCounter(this,500);"
+						onKeyUp="textCounter(this,'q17length' ,500)" class="scanwid" name="q17" id="q17" rows="5" cols=""></textarea> --}}
+                        <i>Maximum of 60 characters - <input style="color:red;font-size:12pt;font-style:italic;" readonly type="text" id='q17length' name="q17length" size="3" maxlength="3" value="60"> characters left</i>
 
                         </div>
                         <div class="mb-3 col-lg-6">
@@ -107,4 +112,17 @@
     <!--end::App Content-->
 </main>
 @endsection
+@push('script')
+
+<script>
+    function textCounter(field,cnt, maxlimit) {         
+	var cntfield = document.getElementById(cnt)	
+     if (field.value.length > maxlimit) // if too long...trim it!
+		field.value = field.value.substring(0, maxlimit);
+		// otherwise, update 'characters left' counter
+		else
+		cntfield.value = maxlimit - field.value.length;
+}
+</script>
+@endpush
 
