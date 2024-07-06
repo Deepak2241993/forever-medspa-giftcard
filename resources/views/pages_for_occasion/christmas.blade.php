@@ -43,7 +43,7 @@
                                
                                 @foreach($coupon_code as $key=>$value)
                                 @if($key<5)
-                               <div class="row main_box_coupon mt-2">
+                              <div class="row main_box_coupon mt-2">
                                  <div class="col-md-3"></div>
                                  <div class="col-md-5">
                                     <strong style="margin-left: 2px;margin-right: 2px;font-size:20px;text-align: center;"><u>{{$value->title?$value->title:''}}</u></strong>
@@ -52,17 +52,14 @@
                                  <div class="col-md-4" style="text-align:center">
                                        <span class="mt-2"> Coupon Code<h3><b>{{$value->title?$value->coupon_code:''}}</b></h3></span>
                                  </div>
-                               </div>
+                              </div>
                   
                             {{-- <div class="row align-items-left g-5 main_box_coupon">
                                     <div class="box_coupon">
                                        
                                     </div>
                                 <div class="col-md-9 col-sm-12">
-                                    <div class="single-coupon-content">
-                                        
-                                            
-                                    </div>
+                                    <div class="single-coupon-content"></div>
                                 </div>
                             </div> --}}
                             @endif

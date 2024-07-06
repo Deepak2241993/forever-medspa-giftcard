@@ -60,7 +60,7 @@
                     <ul class="navbar-nav">
                          <li><a class="nav-link active" href="<?php echo e(url('/')); ?>">Home</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/">Forever Medspa</a></li>
-						<!--<li><a class="nav-link" href="<?php echo e(route('product-page')); ?>" target="_blank">Product</a></li>-->
+						<li><a class="nav-link" href="<?php echo e(route('product-page')); ?>" target="_blank">Product</a></li>
                         
                     </ul>
                 </div>
