@@ -163,9 +163,9 @@
                                                       <label for="recipient_email" class="form-label"><b>Your email address (for the receipt)<span class="text-danger">*</span></b></label>
                                                       <input class="form-control" type="email" name="from_email" value="" placeholder="Sender's Email address (for the receipt)" id="recipient_email" autocomplete="off" required>
                                                    </div>
+                                                   <?php if(count($occassion) >0): ?>
                                                    <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
                                                       <label for="recipient_email" class="form-label"><b>Select Event<span class="text-danger">*</span></b></label>
-
                                                       <select class="form-control" id="Event_id" name="">
                                                          <option value="">Select Event</option>
                                                          <?php $__currentLoopData = $occassion; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -174,6 +174,7 @@
                                                       </select>
                                                       
                                                    </div>
+                                                   <?php endif; ?>
                                                    <div class="mb-3 col-lg-12 d-flex align-items-center">
                                                       <label  class="form-label"><b>Send In Future:<span class="text-danger">*</span></b></label>
                                                     </div>
