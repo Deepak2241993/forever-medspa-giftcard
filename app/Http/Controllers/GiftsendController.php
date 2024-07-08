@@ -121,7 +121,6 @@ class GiftsendController extends Controller
     public function sendgift(Request $request){
         $data_arr = $request->except('_token');
         $data = json_encode($data_arr);
-       
         //  First API
         $resultData =$this->postAPI('gift-for-other',$data);
         $result=json_decode($resultData['result']);
@@ -138,6 +137,7 @@ else{
             echo json_encode(["error" => '<h5 style="color: red;">' . $resultData['error'] . '</h5>']);
         } 
         else {
+            
                 //  for gift send to other
                 if($result->recipient_name!=null)
                 {
