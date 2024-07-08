@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Auth;
 class ProductController extends Controller
@@ -196,23 +197,27 @@ class ProductController extends Controller
 
     public function productpage(Request $request){
         
-        if(empty($request->token))
-        {
-        $token= 'FOREVER-MEDSPA';
-        $data_arr = ['user_token'=>$token];
-        $data = json_encode($data_arr);
-        $data = $this->postAPI('product-list', $data);
-  
-        return view('product.index',compact('data'));
-        }
-        else
-        {
-        $token= strtoupper($request->token);
-        $data_arr = ['user_token'=>$token];
-        $data = json_encode($data_arr);
-        $data = $this->postAPI('product-list', $data);
+        // if(empty($request->token))
+        // {
+        // $token= 'FOREVER-MEDSPA';
+        // $data_arr = ['user_token'=>$token];
+        // $data = json_encode($data_arr);
 
-        return view('product.index',compact('data'));
+        // $data = $this->postAPI('product-list', $data);
+  
+        // return view('product.index',compact('data'));
+        // }
+        // else
+        // {
+        // $token= strtoupper($request->token);
+        // $data_arr = ['user_token'=>$token];
+        // $data = json_encode($data_arr);
+        // $data = $this->postAPI('product-list', $data);
+        $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
+        $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+
+
+        return view('product.index',compact('data','category'));
         }
     }
-}
+

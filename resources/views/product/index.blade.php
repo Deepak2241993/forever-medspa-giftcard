@@ -15,6 +15,44 @@
    main {
       margin-top: 100px;
    }
+.theme-bg-3{
+   background: #fca52a;
+}
+.fill-btn-hover{
+   color:#ffffff;
+}
+.fill-btn{
+background-color: black;
+}
+.fill-btn::before {
+   background-color: #fca52a;
+}
+.breadcrumb__wrapper .nav_class {
+    height: 40px;
+    width: 350px;
+    border: 1px solid;
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px;
+    border-color: #FCA52A;
+    background-color: rgba(252, 165, 42, 0.75); /* Set background opacity to 75% */
+    color: white; /* Ensuring text color is white */
+}
+
+.breadcrumb__wrapper .nav_class:hover {
+    border-color: #FCA52A; /* Keep the same border color or change it if needed */
+    background-color: rgba(252, 165, 42, 1); /* Optionally, make the background fully opaque on hover */
+   
+}
+.breadcrumb__wrapper .nav_class h6 {
+    opacity: 1; /* Full opacity for the text */
+}
+.bd-basic__pagination ul li .current {
+    
+    background-color: #FCA52A;
+    color: black;
+    
+}
 
 
    @media (max-width: 767px) {
@@ -49,12 +87,16 @@
             <div class="row justify-content-center">
                <div class="col-xxl-12">
                   <div class="breadcrumb__wrapper text-center">
-                     <h2 class="breadcrumb__title">Blog Classic</h2>
+                     <h4 class="breadcrumb__title">Welcome to the world of Forever Medspa.</h4>
+                     <center><div class="nav_class">
+                        <h6 style="color: white;opacity: 100%;">Avail these amazing Services Now!</h6>
+                     </div>
+                  </center>
                      <div class="breadcrumb__menu">
                         <nav>
                            <ul>
                               <li><span><a href="index.html">Home</a></span></li>
-                              <li><span>Blog Classic</span></li>
+                              <li><span>Services</span></li>
                            </ul>
                         </nav>
                      </div>
@@ -71,10 +113,12 @@
             <div class="row gy-50">
                <div class="col-xxl-8 col-lg-8">
                   <div class="postbox__wrapper">
+                     @if(isset($data) && $data['status']!=404)
+                     @foreach($data as $value) 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
                            <a href="blog-details.html">
-                              <img src="{{url('/product_page')}}/imgs/blog/postbox/postbox-01.jpg" alt="">
+                              <img src="{{$value['product_image']}}" alt="">
                            </a>
                         </div>
                         <div class="postbox__content">
@@ -117,14 +161,10 @@
                               </span>
                            </div>
                            <h3 class="postbox__title">
-                              <a href="blog-details.html">Energizing Medicine: Doctors' Secrets to Recharge</a>
+                              <a href="blog-details.html">{{$value['product_name']}}</a>
                            </h3>
                            <div class="postbox__text">
-                              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in
-                                 hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur,
-                                 ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum
-                                 auctor ornare leo, non suscipit magna interdum eu. Curabitur pellentesque nibh nibh, at
-                                 maximus ante fermentum.</p>
+                              <p>{!!$value['product_description']!!}</p>
                            </div>
                            <div class="postbox__read-more">
                               <a class="text-btn" href="#">Explore Now<span><i
@@ -132,7 +172,11 @@
                            </div>
                         </div>
                      </article>
-                     <article class="postbox__item mb-30 transition-3">
+                     @endforeach
+                     @else
+                        <p>{{$data['error']}}</p>
+                     @endif
+                     {{-- <article class="postbox__item mb-30 transition-3">
                         <div class="postbox__thumb postbox__video w-img p-relative mb-30">
                            <a href="blog-details.html">
                               <img src="{{url('/product_page')}}/imgs/blog/postbox/postbox-02.jpg" alt="">
@@ -194,8 +238,8 @@
                                        class="fa-regular fa-angle-right"></i></span></a>
                            </div>
                         </div>
-                     </article>
-                     <article class="postbox__item format-image mb-50 transition-3">
+                     </article> --}}
+                     {{-- <article class="postbox__item format-image mb-50 transition-3">
                         <div class="postbox__thumb postbox__slider swiper w-img p-relative">
                            <div class="swiper-wrapper">
                               <div class="postbox__slider-item swiper-slide mb-30">
@@ -235,11 +279,13 @@
                                        class="fa-regular fa-angle-right"></i></span></a>
                            </div>
                         </div>
-                     </article>
+                     </article> --}}
+                 
+                     
                      <div class="pagination__wrapper">
                         <div class="bd-basic__pagination d-flex align-items-center justify-content-center">
                            <nav>
-                              <ul>
+                              {{-- <ul>
                                  <li>
                                     <a href="#">1</a>
                                  </li>
@@ -252,10 +298,12 @@
                                  <li>
                                     <a href="#"><i class="fa-regular fa-angle-right"></i></a>
                                  </li>
-                              </ul>
+                              </ul> --}}
+                              {{$data->links('vendor.pagination.custom')}}
                            </nav>
                         </div>
                      </div>
+                     
                   </div>
                </div>
                <div class="col-xxl-4 col-lg-4">
@@ -307,16 +355,20 @@
                         <h3 class="sidebar__widget-title">Category</h3>
                         <div class="sidebar__widget-content">
                            <ul>
-                              <li><a href="blog.html">Business <span>10</span></a></li>
-                              <li><a href="blog.html">Cleaning <span>08</span></a></li>
-                              <li><a href="blog.html">Consultant <span>24</span></a></li>
-                              <li><a href="blog.html">Creative <span>37</span></a></li>
-                              <li><a href="blog.html">Technology <span>103</span></a></li>
+                              @foreach($category as $value)
+                              <li><a href="blog.html">{{substr(ucFirst($value->cat_name),0,20)}} <span>
+                              @php
+                                 $count= \App\Models\Product::where('cat_id',$value->id)->count();
+                              @endphp 
+                              {{$count}}  
+                              </span></a></li>
+                              @endforeach
+                              
                            </ul>
                         </div>
                      </div>
                      <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Recent Post</h3>
+                        <h3 class="sidebar__widget-title">Popular Services</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
                               <div class="rc__post d-flex align-items-center">
@@ -391,19 +443,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="sidebar__widget">
-                        <h3 class="sidebar__widget-title">Tags</h3>
-                        <div class="sidebar__widget-content">
-                           <div class="tagcloud">
-                              <a href="#">Techology</a>
-                              <a href="#">Food</a>
-                              <a href="#">Personality</a>
-                              <a href="#">Life Style</a>
-                              <a href="#">Travel</a>
-                              <a href="#">Nature</a>
-                           </div>
-                        </div>
-                     </div>
+                     
                   </div>
                </div>
             </div>
@@ -422,22 +462,19 @@
                <div class="row gy-4 align-items-center">
                   <div class="col-xxl-6 col-xl-6 col-lg-6">
                      <div class="newsletter-content">
-                        <h3 class="newsletter-title">Subscribe to Our News Letter</h3>
+                        <h3 class="newsletter-title">Buy Our Awesome Giftcards</h3>
                      </div>
                   </div>
                   <div class="col-xxl-6 col-xl-6 col-lg-6">
                      <div class="newsletter-form">
                         <form action="#">
                            <div class="newsletter-input p-relative">
-                              <input type="text" placeholder="Enter Email Address">
+                             
                               <button class="fill-btn" type="submit">
+                                
                                  <span class="fill-btn-inner">
-                                    <span class="fill-btn-normal">Subscribe Us</span>
-                                    <span class="fill-btn-hover">Subscribe Us</span>
-                                 </span>
-                                 <span class="fill-btn-inner">
-                                    <span class="fill-btn-normal"><i class="fa-light fa-bell-on"></i></span>
-                                    <span class="fill-btn-hover"><i class="fa-light fa-bell-on"></i></span>
+                                   Buy Now
+                                    <span class="fill-btn-hover"> Buy Now</span>
                                  </span>
                               </button>
                            </div>

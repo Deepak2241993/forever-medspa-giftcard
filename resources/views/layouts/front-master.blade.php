@@ -68,9 +68,9 @@
 				</button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
                     <ul class="navbar-nav">
-                         <li><a class="nav-link active" href="{{url('/')}}">Home</a></li> 
-                        <li><a class="nav-link" href="https://forevermedspanj.com/">Forever Medspa</a></li>
-						<li><a class="nav-link" href="{{route('product-page')}}" target="_blank">Product</a></li>
+                         <li><a class="nav-link @if(Route::currentRouteName()!='product-page'){{'active'}} @endif" href="{{url('/')}}">Giftcards</a></li> 
+                        <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
+						<li><a class="nav-link @if(Route::currentRouteName()=='product-page'){{'active'}} @endif" href="{{route('product-page')}}">Services</a></li>
                         
                     </ul>
                 </div>
@@ -106,6 +106,7 @@
  <!--   <script src="{{url('/')}}/giftcards/js/jquery.pogo-slider.min.js"></script> -->
 	<!--<script src="{{url('/')}}/giftcards/js/slider-index.js"></script>-->
     <script src="{{url('/')}}/giftcards/js/custom.js"></script>
+
 @stack('footerscript')
 </body>
 </html>

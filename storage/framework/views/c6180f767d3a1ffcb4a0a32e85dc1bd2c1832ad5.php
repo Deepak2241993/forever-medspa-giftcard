@@ -68,9 +68,9 @@
 				</button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
                     <ul class="navbar-nav">
-                         <li><a class="nav-link active" href="<?php echo e(url('/')); ?>">Home</a></li> 
-                        <li><a class="nav-link" href="https://forevermedspanj.com/">Forever Medspa</a></li>
-						<li><a class="nav-link" href="<?php echo e(route('product-page')); ?>" target="_blank">Product</a></li>
+                         <li><a class="nav-link <?php if(Route::currentRouteName()!='product-page'): ?><?php echo e('active'); ?> <?php endif; ?>" href="<?php echo e(url('/')); ?>">Giftcards</a></li> 
+                        <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
+						<li><a class="nav-link <?php if(Route::currentRouteName()=='product-page'): ?><?php echo e('active'); ?> <?php endif; ?>" href="<?php echo e(route('product-page')); ?>">Services</a></li>
                         
                     </ul>
                 </div>
@@ -106,6 +106,7 @@
  <!--   <script src="<?php echo e(url('/')); ?>/giftcards/js/jquery.pogo-slider.min.js"></script> -->
 	<!--<script src="<?php echo e(url('/')); ?>/giftcards/js/slider-index.js"></script>-->
     <script src="<?php echo e(url('/')); ?>/giftcards/js/custom.js"></script>
+
 <?php echo $__env->yieldPushContent('footerscript'); ?>
 </body>
 </html><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/layouts/front-master.blade.php ENDPATH**/ ?>
