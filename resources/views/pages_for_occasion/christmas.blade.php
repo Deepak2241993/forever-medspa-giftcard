@@ -314,7 +314,7 @@
             </div>
          </div>
       </div>
-      <div class="row">
+      <div class="row p-4">
          <ol>
             <li>The customer needs to purchase the giftcard from<strong> https://myforevermedspa.com</strong></li>
             <li>After Purchasing the giftcard, the customer needs to visit the <strong>MedSpa Wellness Center</strong> to redeem the dedicated purchased Giftcard</li>

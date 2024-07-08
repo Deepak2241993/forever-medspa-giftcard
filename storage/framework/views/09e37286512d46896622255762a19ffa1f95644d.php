@@ -43,7 +43,7 @@
                                
                                 <?php $__currentLoopData = $coupon_code; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php if($key<5): ?>
-                               <div class="row main_box_coupon mt-2">
+                              <div class="row main_box_coupon mt-2">
                                  <div class="col-md-3"></div>
                                  <div class="col-md-5">
                                     <strong style="margin-left: 2px;margin-right: 2px;font-size:20px;text-align: center;"><u><?php echo e($value->title?$value->title:''); ?></u></strong>
@@ -52,7 +52,7 @@
                                  <div class="col-md-4" style="text-align:center">
                                        <span class="mt-2"> Coupon Code<h3><b><?php echo e($value->title?$value->coupon_code:''); ?></b></h3></span>
                                  </div>
-                               </div>
+                              </div>
                   
                             
                             <?php endif; ?>
@@ -306,7 +306,7 @@
             </div>
          </div>
       </div>
-      <div class="row">
+      <div class="row p-4">
          <ol>
             <li>The customer needs to purchase the giftcard from<strong> https://myforevermedspa.com</strong></li>
             <li>After Purchasing the giftcard, the customer needs to visit the <strong>MedSpa Wellness Center</strong> to redeem the dedicated purchased Giftcard</li>

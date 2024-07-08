@@ -31,7 +31,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo e(url('/medspa.png')); ?>">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <?php echo $__env->yieldPushContent('css'); ?>
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+<style>
+@media (max-width: 767px) {
+ .navbar-brand img {
+  width: 180px;
+  margin-left: 25px;
+}
+}
+</style>
+
 </head>
 <body id="home" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
     
@@ -50,7 +60,7 @@
 	<header class="top-header">
 		<nav class="navbar header-nav navbar-expand-lg">
             <div class="container">
-				<a class="navbar-brand" href="<?php echo e(url('/')); ?>"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:70px;"></a>
+				<a class="navbar-brand" href="<?php echo e(url('/')); ?>"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:81px;"></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-wd" aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
 					<span></span>
 					<span></span>
