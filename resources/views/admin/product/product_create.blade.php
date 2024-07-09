@@ -8,13 +8,13 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Product Create</h3>
+                    <h3 class="mb-0">Service Create</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                           Product Add/Update
+                           Service Add/Update
                         </li>
                     </ol>
                 </div>
@@ -43,15 +43,15 @@
                     @csrf
                     <div class="row">
                         <div class="mb-3 col-lg-6 self">
-                            <label for="product_name" class="form-label">Product Name</label>
+                            <label for="product_name" class="form-label">Service Name</label>
                             <input class="form-control" type="text" name="product_name" value="{{isset($data)?$data['product_name']:''}}" placeholder="Product Name">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="cat_id" class="form-label">Product Category</label>
+                            <label for="cat_id" class="form-label">Service Category</label>
                             <select name="cat_id" class="form-control">
                                 <option value="">Select Category</option>
-                                @if($category && $category['status']!=404)
-                                    @foreach($category['result'] as $value)
+                                @if($category)
+                                    @foreach($category as $value)
                                         <option value="{{$value['id']}}" {{ isset($data['id']) && $data['cat_id'] == $value['id'] ? 'selected' : '' }}>{{$value['cat_name']}}</option>
                                     @endforeach
                                 @else
@@ -62,26 +62,26 @@
                         </div>
                        
                         <div class="mb-12 col-lg-12 self">
-                            <label for="product_description" class="form-label">Product Description</label>
+                            <label for="product_description" class="form-label">Service Description</label>
                             <textarea name="product_description"  id="product_description" rows="4" class="form-control">{{isset($data)?$data['product_description']:''}}</textarea>
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="product_image" class="form-label">Product Image</label>
+                            <label for="product_image" class="form-label">Service Image</label><br>
                             @isset($data['product_image'])
                             <img src="{{ $data['product_image'] }}" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger">X</buttom></span>
                         @endisset
-                            <input class="form-control" id="image" type="file" name="product_image">
+                            <input class="form-control mt-4" id="image" type="file" name="product_image">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="discounted_amount" class="form-label">Product Discounted Price</label>
+                            <label for="discounted_amount" class="form-label">Service Discounted Price</label>
                             <input class="form-control" type="number" min="0" name="discounted_amount" value="{{isset($data)?$data['discounted_amount']:''}}" placeholder="Product Name">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="amount" class="form-label">Product Amount MRP</label>
+                            <label for="amount" class="form-label">Service Amount MRP</label>
                             <input class="form-control" type="number" min="0" name="amount" value="{{isset($data)?$data['amount']:''}}" placeholder="Product Name">
                             <input class="form-control" type="hidden" min="0" name="id" value="{{isset($data)?$data['id']:''}}">
                         </div>
-                        <div class="mb-12 col-lg-12 self">
+                        {{-- <div class="mb-12 col-lg-12 self">
                             <label for="meta_title" class="form-label">Meta Title</label>
                             <textarea name="meta_title"  id="meta_title" rows="4" class="form-control">{{isset($data)?$data['meta_title']:''}}</textarea>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="mb-12 col-lg-12 self">
                             <label for="meta_keywords" class="form-label">Meta Keywords</label>
                             <textarea name="meta_keywords"  id="meta_keywords" rows="4" class="form-control">{{isset($data)?$data['meta_keywords']:''}}</textarea>
-                        </div>
+                        </div> --}}
                        
                         <div class="mb-3 col-lg-6">
                             <label for="from" class="form-label">Status</label>

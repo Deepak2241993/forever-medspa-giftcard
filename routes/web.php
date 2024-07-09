@@ -98,6 +98,8 @@ Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('pay
 
 //  Product Page Route
 Route::get('product-page/{token?}','ProductController@productpage')->name('product-page');
+Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
+Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 
 
 Route::resource('/product', ProductController::class);

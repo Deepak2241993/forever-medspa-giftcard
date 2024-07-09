@@ -219,5 +219,23 @@ class ProductController extends Controller
 
         return view('product.index',compact('data','category'));
         }
+
+        public function productCategory(Request $request, $id){
+            $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id',$id)->paginate(20);
+            $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+            return view('product.index',compact('data','category'));
+
+
+        }
+
+        public function ServicesSearch(Request $request){
+            $search = '%' . $request->search . '%';
+            $data = Product::where('product_is_deleted', 0)
+                ->where('user_token', 'FOREVER-MEDSPA')
+                ->where('product_name', 'LIKE', $search)
+                ->paginate(50);
+            $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+            return view('product.index',compact('data','category'));
+        }
     }
 

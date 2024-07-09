@@ -113,7 +113,7 @@ background-color: black;
             <div class="row gy-50">
                <div class="col-xxl-8 col-lg-8">
                   <div class="postbox__wrapper">
-                     <?php if(isset($data) && $data['status']!=404): ?>
+                     <?php if(isset($data)): ?>
                      <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
@@ -167,8 +167,7 @@ background-color: black;
                               <p><?php echo $value['product_description']; ?></p>
                            </div>
                            <div class="postbox__read-more">
-                              <a class="text-btn" href="#">Explore Now<span><i
-                                       class="fa-regular fa-angle-right"></i></span></a>
+                              <a class="btn btn-primary" href="#">Buy Now</a>
                            </div>
                         </div>
                      </article>
@@ -197,9 +196,10 @@ background-color: black;
                      <div class="sidebar__widget mb-20">
                         <div class="sidebar__widget-content">
                            <div class="sidebar__search">
-                              <form action="#">
+                              <form action="<?php echo e(route('ServicesSearch')); ?>" method="post">
+                                 <?php echo csrf_field(); ?>
                                  <div class="sidebar__search-input">
-                                    <input type="text" placeholder="Enter your keywords...">
+                                    <input type="text" placeholder="Enter your keywords..." name="search">
                                     <button type="submit">
                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                           xmlns="http://www.w3.org/2000/svg">
@@ -242,7 +242,7 @@ background-color: black;
                         <div class="sidebar__widget-content">
                            <ul>
                               <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                              <li><a href="blog.html"><?php echo e(substr(ucFirst($value->cat_name),0,20)); ?> <span>
+                              <li><a href="<?php echo e(route('productCategory', ['id' => $value->id])); ?>"><?php echo e(substr(ucFirst($value->cat_name),0,20)); ?> <span>
                               <?php
                                  $count= \App\Models\Product::where('cat_id',$value->id)->count();
                               ?> 
