@@ -63,14 +63,18 @@
                        
                         <div class="mb-12 col-lg-12 self">
                             <label for="product_description" class="form-label">Service Description</label>
-                            <textarea name="product_description"  id="product_description" rows="4" class="form-control">{{isset($data)?$data['product_description']:''}}</textarea>
+                            <textarea name="product_description"  id="product_description" class="form-control summernote">{{isset($data)?$data['product_description']:''}}</textarea>
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="product_image" class="form-label">Service Image</label><br>
                             @isset($data['product_image'])
-                            <img src="{{ $data['product_image'] }}" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger">X</buttom></span>
-                        @endisset
-                            <input class="form-control mt-4" id="image" type="file" name="product_image">
+                                <div id="image_class">
+                                    <img src="{{ $data['product_image'] }}" class="mb-4" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger" onclick="hideImage()">X</buttom></span>
+                                </div>
+                            @endisset
+                            <div id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
+                                <input class="form-control" id="image" type="file" name="product_image">
+                            </div>
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="discounted_amount" class="form-label">Service Discounted Price</label>
@@ -119,11 +123,35 @@
 @endsection
 
 @push('script')
-    
+
+<script>
+function hideImage(){
+$('#image_class').hide();
+$('#image_field').show();
+}
+</script>
+{{--     
 <script>
     CKEDITOR.replace( 'product_description', {
      height: 300,
      filebrowserUploadUrl: "{{url('/ckeditor')}}/script.php"
     });
-</script>
+</script> --}}
+<script>
+
+    $(document).ready(function() {
+      $('.summernote').summernote({
+        popover: {
+          image: [
+    
+            // This is a Custom Button in a new Toolbar Area
+            ['custom', ['examplePlugin']],
+            ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+            ['float', ['floatLeft', 'floatRight', 'floatNone']],
+            ['remove', ['removeMedia']]
+          ]
+        }
+      });
+    });
+    </script>
 @endpush

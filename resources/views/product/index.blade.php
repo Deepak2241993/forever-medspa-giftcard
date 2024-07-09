@@ -122,7 +122,7 @@ background-color: black;
                            </a>
                         </div>
                         <div class="postbox__content">
-                           <div class="postbox__meta">
+                           {{-- <div class="postbox__meta">
                               <span>
                                  <a href="#">
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
@@ -159,7 +159,7 @@ background-color: black;
                                        stroke-linejoin="round" />
                                  </svg>35
                               </span>
-                           </div>
+                           </div> --}}
                            <h3 class="postbox__title">
                               <a href="blog-details.html">{{$value['product_name']}}</a>
                            </h3>
@@ -167,8 +167,8 @@ background-color: black;
                               <p>{!!$value['product_description']!!}</p>
                            </div>
                            <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="#">Buy Now</a>
                            </div>
+                           <a class="btn btn-primary" href="#">Buy Now</a>
                         </div>
                      </article>
                      @endforeach

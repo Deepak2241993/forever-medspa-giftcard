@@ -35,8 +35,7 @@ class ProductController extends Controller
         $categorydata = json_encode($data_arr);
 
         $categoryresult = $this->postAPI('category-list',$categorydata);
-       
-        $category=$categoryresult;
+        $category=$categoryresult['result'];
         
         return view('admin.product.product_create',compact('category'));
     }
