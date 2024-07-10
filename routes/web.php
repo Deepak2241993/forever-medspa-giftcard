@@ -100,6 +100,7 @@ Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('pay
 Route::get('product-page/{token?}','ProductController@productpage')->name('product-page');
 Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
+Route::get('search-keywords-reports','ProductController@KeywordsReports')->name('keywords_reports');
 
 
 Route::resource('/product', ProductController::class);

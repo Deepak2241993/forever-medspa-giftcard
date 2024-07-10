@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Search_keyword;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Auth;
 class ProductController extends Controller
 {
@@ -228,13 +230,31 @@ class ProductController extends Controller
         }
 
         public function ServicesSearch(Request $request){
+            if(empty($request->search))
+            {
+                return redirect(route('product-page'));
+            }
+            $data=['keywords'=>$request->search];
+            Search_keyword::create($data);
             $search = '%' . $request->search . '%';
             $data = Product::where('product_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
                 ->where('product_name', 'LIKE', $search)
+                ->Orwhere('search_keywords', 'LIKE', $search)
                 ->paginate(50);
             $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
             return view('product.index',compact('data','category'));
         }
+
+
+        public function KeywordsReports(){
+            $keywordsData = DB::table('search_keywords')
+            ->select('keywords', DB::raw('count(*) as keyword_count'))
+            ->groupBy('keywords')
+            ->paginate(10);
+            return view('admin.product.keyword_report',compact('keywordsData'));
+        }
+
+
     }
 

@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\GiftCoupon;
 use App\Models\Giftsend;
 use App\Models\GiftcardRedeem;
+use App\Models\Search_keyword;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -52,8 +54,9 @@ class HomeController extends Controller
             $giftCoupon = GiftCoupon::count();
             $ProductCategory = ProductCategory::count();
             $Product = Product::count();
-            $user=User::where('user_type',0)->count();
-            return view('admin.admin_dashboad',compact('cardnumbers','alltransaction','user','successTransaction','faildTransaction','processingTransaction','giftCoupon','ProductCategory','Product'));
+            $user=User::where('user_type',1)->count();
+            $search_keyword=Search_keyword::all()->count();
+            return view('admin.admin_dashboad',compact('cardnumbers','alltransaction','user','successTransaction','faildTransaction','processingTransaction','giftCoupon','ProductCategory','Product','search_keyword'));
         }
         else{
             $user_email=Auth::user()->email;

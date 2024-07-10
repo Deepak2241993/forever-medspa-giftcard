@@ -85,6 +85,10 @@
                             <input class="form-control" type="number" min="0" name="amount" value="{{isset($data)?$data['amount']:''}}" placeholder="Product Name">
                             <input class="form-control" type="hidden" min="0" name="id" value="{{isset($data)?$data['id']:''}}">
                         </div>
+                        <div class="mb-12 col-lg-12 self">
+                            <label for="search_keywords" class="form-label">Search Keywords</label>
+                            <textarea name="search_keywords"  id="search_keywords" rows="4" class="form-control">{{isset($data)?$data['search_keywords']:''}}</textarea>
+                        </div>
                         {{-- <div class="mb-12 col-lg-12 self">
                             <label for="meta_title" class="form-label">Meta Title</label>
                             <textarea name="meta_title"  id="meta_title" rows="4" class="form-control">{{isset($data)?$data['meta_title']:''}}</textarea>
