@@ -29,7 +29,8 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-           
+            
+               <a href="<?php echo e(route('export_date')); ?>" class="btn btn-primary">Click For Data Export</a>
             <div class="card-header">
                
                <span class="text-success"> <?php if(session()->has('success')): ?>

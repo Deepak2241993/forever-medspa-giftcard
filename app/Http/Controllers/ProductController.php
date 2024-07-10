@@ -7,6 +7,7 @@ use App\Models\Search_keyword;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Auth;
 class ProductController extends Controller
 {
@@ -247,13 +248,49 @@ class ProductController extends Controller
         }
 
 
-        public function KeywordsReports(){
+        public function KeywordsReports(Request $request){
             $keywordsData = DB::table('search_keywords')
             ->select('keywords', DB::raw('count(*) as keyword_count'))
             ->groupBy('keywords')
             ->paginate(10);
             return view('admin.product.keyword_report',compact('keywordsData'));
         }
+
+
+        public function ExportDate(Request $request)
+        {
+            $filename = "keywords.xls";
+            $response = new StreamedResponse(function() {
+                $handle = fopen('php://output', 'w');
+    
+                // Set the column headers
+                fputcsv($handle, ['#', 'Keywords', 'Number of Search'], "\t");
+    
+                // Fetch data from the database
+                $results = DB::table('search_keywords')
+                    ->select('keywords', DB::raw('COUNT(*) as Number_of_Search'))
+                    ->groupBy('keywords')
+                    ->get();
+    
+                // Loop through data and write to file
+                $index = 1;
+                foreach ($results as $row) {
+                    fputcsv($handle, [$index, $row->keywords, $row->Number_of_Search], "\t");
+                    $index++;
+                }
+    
+                fclose($handle);
+            }, 200, [
+                'Content-Type' => 'application/vnd.ms-excel',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+            ]);
+    
+            return $response;
+        }
+        
+        
 
 
     }
