@@ -36,7 +36,19 @@
                     {{ session()->get('success') }}
                 @endif</span>
             </div>
-           
+           <form action="">
+            <div class="row">
+                <div class="com-md-4">
+                    <input type="date" class="form-control" placeholder="To Date">
+                </div>
+                <div class="com-md-4">
+                    <input type="date" class="form-control" placeholder="From Date">
+                </div>
+                <div class="com-md-4">
+                    <button class="form-control btn btn-primary">Export</button>
+                </div>
+            </div>
+           </form>
             
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>
