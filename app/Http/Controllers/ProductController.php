@@ -275,7 +275,7 @@ class ProductController extends Controller
                         
             $search_result = ProductCategory::where('cat_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
-                ->where('cat_name', 'LIKE', $search) // Assuming $search is defined somewhere
+                ->where('cat_name', '=', $search) // Assuming $search is defined somewhere
                 ->first();
 
 

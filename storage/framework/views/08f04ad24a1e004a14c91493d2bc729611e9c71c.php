@@ -67,10 +67,7 @@
                                 <option value="0"<?php echo e(isset($data['status']) && $data['status'] == 0 ? 'selected' : ''); ?>>Inactive</option>
                             </select>
                         </div>
-                        <div class="mb-12 col-lg-12 self mb-4">
-                            <label for="search_keywords" class="form-label">Search Keywords</label>
-                            <textarea name="search_keywords"  id="search_keywords" rows="4" class="form-control"><?php echo e(isset($data)?$data['search_keywords']:''); ?></textarea>
-                        </div>
+                 
                         <div class="mb-3 col-lg-6">
                             <button class="btn btn-primary" type="submit">Submit</button>
                         </div>

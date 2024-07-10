@@ -99,7 +99,7 @@
                                 <option value="0"<?php echo e(isset($data['status']) && $data['status'] == 0 ? 'selected' : ''); ?>>Inactive</option>
                             </select>
                         </div>
-                        <div class="mb-3 col-lg-6 mt-5">
+                        <div class="mb-3 col-lg-6 mt-4">
                             <button class="btn btn-primary" type="submit">Submit</button>
                         </div>
                     </div>
