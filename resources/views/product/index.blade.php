@@ -1,3 +1,4 @@
+
 @extends('layouts.front-master')
 @section('body')
 @push('css')
@@ -128,6 +129,23 @@ background-color: black;
      background-color: DodgerBlue !important; 
      color: #ffffff; 
    }
+   /* For Discount  */
+   .hl05eU .Nx9bqj {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #212121;
+}
+.hl05eU .UkUFwK {
+    color: #FCA52A;
+    font-size: 13px;
+    letter-spacing: -.2px;
+    font-weight: 500;
+}
+.hl05eU .UkUFwK, .hl05eU .yRaY8j {
+    display: inline-block;
+    margin-left: 8px;
+}
    </style>
 @endpush
 
@@ -226,7 +244,23 @@ background-color: black;
                            </div> --}}
                            <h3 class="postbox__title">
                               <a href="blog-details.html">{{$value['product_name']}}</a>
-                           </h3>
+                          </h3>
+@php
+$price = $value->discounted_amount;
+$original_price = $value->amount;
+
+// Calculate discount percentage
+$discount_percentage = 0;
+if ($original_price > 0) {
+    $discount_percentage = round((($original_price - $price) / $original_price) * 100);
+}
+@endphp
+
+<div class="hl05eU">
+    <div class="Nx9bqj">${{ number_format($price, 2) }}</div>
+    <del class="yRaY8j">${{ number_format($original_price, 2) }}</del>
+    <div class="UkUFwK"><span>{{ $discount_percentage }}% off</span></div>
+</div>
                            <div class="postbox__text">
                               <p>{!!$value['product_description']!!}</p>
                            </div>
@@ -395,6 +429,17 @@ background-color: black;
                         </div>
                      </div>
                      <div class="sidebar__widget mb-45">
+                        <h3 class="sidebar__widget-title">Category</h3>
+                        <div class="sidebar__widget-content">
+                           <ul>
+                              @foreach($category as $value)
+                              <li><a href="{{ route('productCategory', ['id' => $value->id]) }}">{{substr(ucFirst($value->cat_name),0,20)}}</a></li>
+                              @endforeach
+                              
+                           </ul>
+                        </div>
+                     </div>
+                     {{-- <div class="sidebar__widget mb-45">
                         <div class="sidebar__widget-content">
                            <div class="sidebar__author">
                               <div class="sidebar__author-thumb">
@@ -414,25 +459,10 @@ background-color: black;
                               </div>
                            </div>
                         </div>
-                     </div>
-                     <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Category</h3>
-                        <div class="sidebar__widget-content">
-                           <ul>
-                              @foreach($category as $value)
-                              <li><a href="{{ route('productCategory', ['id' => $value->id]) }}">{{substr(ucFirst($value->cat_name),0,20)}} <span>
-                              @php
-                                 $count= \App\Models\Product::where('cat_id',$value->id)->count();
-                              @endphp 
-                              {{$count}}  
-                              </span></a></li>
-                              @endforeach
-                              
-                           </ul>
-                        </div>
-                     </div>
-                     <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Popular Services</h3>
+                     </div> --}}
+                      {{-- Hot Deals --}}
+                      <div class="sidebar__widget mb-45">
+                        <h3 class="sidebar__widget-title">Our Popular Offers</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
                               <div class="rc__post d-flex align-items-center">
@@ -507,6 +537,43 @@ background-color: black;
                            </div>
                         </div>
                      </div>
+                     @if(count($popular_service)>0)
+                     <div class="sidebar__widget mb-45">
+                        <h3 class="sidebar__widget-title">Popular Services</h3>
+                        <div class="sidebar__widget-content">
+                           <div class="sidebar__post">
+                             
+                              @foreach($popular_service as $value)
+                              <div class="rc__post d-flex align-items-center">
+                                 <div class="rc__post-thumb">
+                                    <a href="{{ route('PopularService', ['id' => $value->id]) }}"><img src="{{$value->product_image}}" alt="{{$value->product_name}}"></a>
+                                 </div>
+                                 <div class="rc__post-content">
+                                    <h4 class="rc__post-title">
+                                       <a href="{{ route('PopularService', ['id' => $value->id]) }}">{{$value->product_name}}</a>
+                                    </h4>
+                                    {{-- <div class="rc__meta">
+                                       <span>
+                                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path
+                                                d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                             <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                          </svg>July 21, 2022
+                                       </span>
+                                    </div> --}}
+                                 </div>
+                              </div>
+                              @endforeach
+                              
+                              
+                           </div>
+                        </div>
+                     </div>
+                    @endif
                      
                   </div>
                </div>

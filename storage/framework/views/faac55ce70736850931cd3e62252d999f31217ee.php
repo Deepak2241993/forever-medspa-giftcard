@@ -47,24 +47,37 @@
                             <label for="product_name" class="form-label">Service Name</label>
                             <input class="form-control" type="text" name="product_name" value="<?php echo e(isset($data)?$data['product_name']:''); ?>" placeholder="Product Name">
                         </div>
-                        <div class="mb-3 col-lg-6 self">
-                            <label for="cat_id" class="form-label">Service Category</label>
-                            <select name="cat_id" class="form-control">
-                                <option value="">Select Category</option>
-                                <?php if($category): ?>
-                                    <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($value['id']); ?>" <?php echo e(isset($data['id']) && $data['cat_id'] == $value['id'] ? 'selected' : ''); ?>><?php echo e($value['cat_name']); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <?php else: ?>
-                                    <option>No Category Found</option>
-                                <?php endif; ?>
-                            </select>
-                            
+                        <div class="mb-3 col-lg-12 self">
+                            <label class="form-label">Select Service Category</label>
+                            <?php if($category): ?>
+                                <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="cat_id[]" value="<?php echo e($value['id']); ?>" 
+                                            <?php echo e(isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : ''); ?>>
+                                        <label class="form-check-label" for="cat_<?php echo e($value['id']); ?>">
+                                            <?php echo e($value['cat_name']); ?>
+
+                                        </label>
+                                    </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php else: ?>
+                                <div>No Category Found</div>
+                            <?php endif; ?>
                         </div>
+                        
+                        
                        
+                        <div class="mb-12 col-lg-12 self">
+                            <label for="short_description" class="form-label">Short Description</label>
+                            <textarea name="short_description"  id="short_description" class="form-control summernote"><?php echo e(isset($data)?$data['short_description']:''); ?></textarea>
+                        </div>
                         <div class="mb-12 col-lg-12 self">
                             <label for="product_description" class="form-label">Service Description</label>
                             <textarea name="product_description"  id="product_description" class="form-control summernote"><?php echo e(isset($data)?$data['product_description']:''); ?></textarea>
+                        </div>
+                        <div class="mb-12 col-lg-12 self">
+                            <label for="prerequisites" class="form-label">Prerequisites</label>
+                            <textarea name="prerequisites"  id="prerequisites" class="form-control summernote"><?php echo e(isset($data)?$data['prerequisites']:''); ?></textarea>
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="product_image" class="form-label">Service Image</label><br>
@@ -92,6 +105,13 @@
                         </div>
                         
                        
+                        <div class="mb-3 col-lg-6">
+                            <label for="from" class="form-label">Popular Services</label>
+                            <select class="form-control" name="popular_service" id="from">
+                                <option value="1"<?php echo e(isset($data['popular_service']) && $data['popular_service'] == 1 ? 'selected' : ''); ?> >Yes</option>
+                                <option value="0"<?php echo e(isset($data['popular_service']) && $data['popular_service'] == 0 ? 'selected' : ''); ?>>No</option>
+                            </select>
+                        </div>
                         <div class="mb-3 col-lg-6">
                             <label for="from" class="form-label">Status</label>
                             <select class="form-control" name="status" id="from">

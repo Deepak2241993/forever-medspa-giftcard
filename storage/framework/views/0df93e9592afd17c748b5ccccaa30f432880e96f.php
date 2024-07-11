@@ -1,4 +1,5 @@
 
+
 <?php $__env->startSection('body'); ?>
 <?php $__env->startPush('css'); ?>
 <!-- CSS here -->
@@ -128,6 +129,23 @@ background-color: black;
      background-color: DodgerBlue !important; 
      color: #ffffff; 
    }
+   /* For Discount  */
+   .hl05eU .Nx9bqj {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #212121;
+}
+.hl05eU .UkUFwK {
+    color: #FCA52A;
+    font-size: 13px;
+    letter-spacing: -.2px;
+    font-weight: 500;
+}
+.hl05eU .UkUFwK, .hl05eU .yRaY8j {
+    display: inline-block;
+    margin-left: 8px;
+}
    </style>
 <?php $__env->stopPush(); ?>
 
@@ -189,7 +207,23 @@ background-color: black;
                            
                            <h3 class="postbox__title">
                               <a href="blog-details.html"><?php echo e($value['product_name']); ?></a>
-                           </h3>
+                          </h3>
+<?php
+$price = $value->discounted_amount;
+$original_price = $value->amount;
+
+// Calculate discount percentage
+$discount_percentage = 0;
+if ($original_price > 0) {
+    $discount_percentage = round((($original_price - $price) / $original_price) * 100);
+}
+?>
+
+<div class="hl05eU">
+    <div class="Nx9bqj">$<?php echo e(number_format($price, 2)); ?></div>
+    <del class="yRaY8j">$<?php echo e(number_format($original_price, 2)); ?></del>
+    <div class="UkUFwK"><span><?php echo e($discount_percentage); ?>% off</span></div>
+</div>
                            <div class="postbox__text">
                               <p><?php echo $value['product_description']; ?></p>
                            </div>
@@ -244,44 +278,20 @@ background-color: black;
                         </div>
                      </div>
                      <div class="sidebar__widget mb-45">
-                        <div class="sidebar__widget-content">
-                           <div class="sidebar__author">
-                              <div class="sidebar__author-thumb">
-                                 <img src="<?php echo e(url('/product_page')); ?>/imgs/blog/blog-10.jpg" alt="">
-                              </div>
-                              <div class="sidebar__author-content">
-                                 <h3 class="sidebar__author-title">Colene Landin</h3>
-                                 <p>Adipiscing elit, sed do eiu tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim </p>
-                                 <div
-                                    class="sidebar__author-social d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Category</h3>
                         <div class="sidebar__widget-content">
                            <ul>
                               <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                              <li><a href="<?php echo e(route('productCategory', ['id' => $value->id])); ?>"><?php echo e(substr(ucFirst($value->cat_name),0,20)); ?> <span>
-                              <?php
-                                 $count= \App\Models\Product::where('cat_id',$value->id)->count();
-                              ?> 
-                              <?php echo e($count); ?>  
-                              </span></a></li>
+                              <li><a href="<?php echo e(route('productCategory', ['id' => $value->id])); ?>"><?php echo e(substr(ucFirst($value->cat_name),0,20)); ?></a></li>
                               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                               
                            </ul>
                         </div>
                      </div>
-                     <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Popular Services</h3>
+                     
+                      
+                      <div class="sidebar__widget mb-45">
+                        <h3 class="sidebar__widget-title">Our Popular Offers</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
                               <div class="rc__post d-flex align-items-center">
@@ -356,6 +366,31 @@ background-color: black;
                            </div>
                         </div>
                      </div>
+                     <?php if(count($popular_service)>0): ?>
+                     <div class="sidebar__widget mb-45">
+                        <h3 class="sidebar__widget-title">Popular Services</h3>
+                        <div class="sidebar__widget-content">
+                           <div class="sidebar__post">
+                             
+                              <?php $__currentLoopData = $popular_service; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                              <div class="rc__post d-flex align-items-center">
+                                 <div class="rc__post-thumb">
+                                    <a href="<?php echo e(route('PopularService', ['id' => $value->id])); ?>"><img src="<?php echo e($value->product_image); ?>" alt="<?php echo e($value->product_name); ?>"></a>
+                                 </div>
+                                 <div class="rc__post-content">
+                                    <h4 class="rc__post-title">
+                                       <a href="<?php echo e(route('PopularService', ['id' => $value->id])); ?>"><?php echo e($value->product_name); ?></a>
+                                    </h4>
+                                    
+                                 </div>
+                              </div>
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                              
+                              
+                           </div>
+                        </div>
+                     </div>
+                    <?php endif; ?>
                      
                   </div>
                </div>

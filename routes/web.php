@@ -50,6 +50,8 @@ Route::get('/giftcards-sale', 'GiftsendController@giftsale')->name('giftcards-sa
 Route::post('/giftcancel','GiftsendController@giftcancel')->name('giftcancel');
 Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
+// Popular Officers
+Route::resource('/popular-offers', ProductController::class);
 
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
 Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess')->name('giftcard-purchases-success');
@@ -58,7 +60,9 @@ Route::post('/giftcard-payment-update','GiftsendController@updatePaymentStatus')
 //  For Mail Resend Option
 Route::get('/resendmail_view','GiftsendController@Resendmail_view')->name('Resendmail_view');
 Route::post('/resendmail','GiftsendController@Resendmail')->name('resendmail');
-
+// For Keywords Search
+Route::get('search-keywords-reports','ProductController@KeywordsReports')->name('keywords_reports');
+Route::get('export-keywords','ProductController@ExportDate')->name('export_date');
 
 });
 
@@ -100,8 +104,8 @@ Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('pay
 Route::get('product-page/{token?}','ProductController@productpage')->name('product-page');
 Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
-Route::get('search-keywords-reports','ProductController@KeywordsReports')->name('keywords_reports');
-Route::get('export-keywords','ProductController@ExportDate')->name('export_date');
+Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
+
 
 
 Route::resource('/product', ProductController::class);

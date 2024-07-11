@@ -253,7 +253,7 @@
                     <a href="javascript:;" class="nav-link">
                         <i class="fa-brands fa-product-hunt"></i>
                         <p>
-                            Product Management
+                            Services & Offers
                             <i class="nav-arrow fa-solid fa-angle-right"></i>
                         </p>
                     </a>
@@ -269,6 +269,18 @@
                             <a href="<?php echo e(route('product.index')); ?>" class="nav-link">
                                 <i class="nav-icon fa-regular fa-circle"></i>
                                 <p>Product Management</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo e(route('keywords_reports')); ?>" class="nav-link">
+                                <i class="nav-icon fa-regular fa-circle"></i>
+                                <p>Popular Offers</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo e(route('keywords_reports')); ?>" class="nav-link">
+                                <i class="nav-icon fa-regular fa-circle"></i>
+                                <p>Search Keywords Report</p>
                             </a>
                         </li>
                     </ul>

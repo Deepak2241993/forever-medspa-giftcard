@@ -46,24 +46,36 @@
                             <label for="product_name" class="form-label">Service Name</label>
                             <input class="form-control" type="text" name="product_name" value="{{isset($data)?$data['product_name']:''}}" placeholder="Product Name">
                         </div>
-                        <div class="mb-3 col-lg-6 self">
-                            <label for="cat_id" class="form-label">Service Category</label>
-                            <select name="cat_id" class="form-control">
-                                <option value="">Select Category</option>
-                                @if($category)
-                                    @foreach($category as $value)
-                                        <option value="{{$value['id']}}" {{ isset($data['id']) && $data['cat_id'] == $value['id'] ? 'selected' : '' }}>{{$value['cat_name']}}</option>
-                                    @endforeach
-                                @else
-                                    <option>No Category Found</option>
-                                @endif
-                            </select>
-                            
+                        <div class="mb-3 col-lg-12 self">
+                            <label class="form-label">Select Service Category</label>
+                            @if($category)
+                                @foreach($category as $value)
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="cat_id[]" value="{{ $value['id'] }}" 
+                                            {{ isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="cat_{{ $value['id'] }}">
+                                            {{ $value['cat_name'] }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div>No Category Found</div>
+                            @endif
                         </div>
+                        
+                        
                        
+                        <div class="mb-12 col-lg-12 self">
+                            <label for="short_description" class="form-label">Short Description</label>
+                            <textarea name="short_description"  id="short_description" class="form-control summernote">{{isset($data)?$data['short_description']:''}}</textarea>
+                        </div>
                         <div class="mb-12 col-lg-12 self">
                             <label for="product_description" class="form-label">Service Description</label>
                             <textarea name="product_description"  id="product_description" class="form-control summernote">{{isset($data)?$data['product_description']:''}}</textarea>
+                        </div>
+                        <div class="mb-12 col-lg-12 self">
+                            <label for="prerequisites" class="form-label">Prerequisites</label>
+                            <textarea name="prerequisites"  id="prerequisites" class="form-control summernote">{{isset($data)?$data['prerequisites']:''}}</textarea>
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="product_image" class="form-label">Service Image</label><br>
@@ -102,6 +114,13 @@
                             <textarea name="meta_keywords"  id="meta_keywords" rows="4" class="form-control">{{isset($data)?$data['meta_keywords']:''}}</textarea>
                         </div> --}}
                        
+                        <div class="mb-3 col-lg-6">
+                            <label for="from" class="form-label">Popular Services</label>
+                            <select class="form-control" name="popular_service" id="from">
+                                <option value="1"{{ isset($data['popular_service']) && $data['popular_service'] == 1 ? 'selected' : '' }} >Yes</option>
+                                <option value="0"{{ isset($data['popular_service']) && $data['popular_service'] == 0 ? 'selected' : '' }}>No</option>
+                            </select>
+                        </div>
                         <div class="mb-3 col-lg-6">
                             <label for="from" class="form-label">Status</label>
                             <select class="form-control" name="status" id="from">
