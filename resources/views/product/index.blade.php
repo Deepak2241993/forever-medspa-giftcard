@@ -1,17 +1,9 @@
 
-@extends('layouts.front-master')
+@extends('layouts.front_product')
 @section('body')
 @push('css')
 <!-- CSS here -->
-<link rel="stylesheet" href="{{url('/product_page')}}/css/bootstrap.min.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/meanmenu.min.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/animate.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/swiper.min.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/slick.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/magnific-popup.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/fontawesome-pro.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/spacing.css">
-<link rel="stylesheet" href="{{url('/product_page')}}/css/main.css">
+
 <style>
    main {
       margin-top: 100px;
@@ -288,7 +280,7 @@ input[type=text] {
                               <p>No Data Found</p>
                               @endif
                            </div>
-                           <div id="prerequisites__desc_{{$value->id}}">
+                           <div id="prerequisites__desc_{{$value->id}}"  style="display:none">
                               @if(!empty($value->prerequisites))
                                <p>{!! $value->prerequisites !!}</p>
                                @else
@@ -297,7 +289,7 @@ input[type=text] {
                               </div>
 
                            <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="#">Buy Now</a>
+                              <a class="btn btn-primary" href="{{route('checkout')}}">Buy Now</a>
                            </div>
                         </div>
                      </article>

@@ -107,6 +107,8 @@ Route::post('services-search','ProductController@ServicesSearch')->name('Service
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
 // Front Route for PopularOffer
 Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
+Route::get('checkout','PopularOfferController@Checkout')->name('checkout');
+Route::get('cart','PopularOfferController@Cart')->name('cart');
 
 
 

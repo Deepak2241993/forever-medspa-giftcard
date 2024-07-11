@@ -86,4 +86,10 @@ class PopularOfferController extends Controller
     public function popularDeals(){
         return view('product.offers_details');
     }
+    public function Checkout(){
+        return view('product.checkout');
+    }
+    public function Cart(){
+        return view('product.cart');
+    }
 }

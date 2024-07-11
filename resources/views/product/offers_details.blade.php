@@ -1,42 +1,6 @@
-@extends('layouts.front-master')
+@extends('layouts.front_product')
 @section('body')
-@push('css')
 
-@endpush
-<!doctype html>
-<html class="no-js" lang="zxx">
-
-<head>
-   <meta charset="utf-8">
-   <meta http-equiv="x-ua-compatible" content="ie=edge">
-   <title>Dogri - Health & Medical HTML Template</title>
-   <meta name="description" content="">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-   <!-- Place favicon.ico in the root directory -->
-   <link rel="shortcut icon" type="image/x-icon" href="{{url('/product_page')}}/imgs/favicon.svg">
-
-   <!-- CSS here -->
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/bootstrap.min.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/meanmenu.min.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/animate.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/swiper.min.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/slick.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/magnific-popup.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/fontawesome-pro.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/spacing.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/main.css">
-</head>
-
-<body>
-
-    <!-- Back to top start -->
-    <div class="backtotop-wrap cursor-pointer">
-       <svg class="backtotop-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-          <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-       </svg>
-    </div>
-    <!-- Back to top end -->
  
     <!-- Body main wrapper start -->
     <main>
@@ -273,26 +237,6 @@
 
    </main>
    <!-- Body main wrapper end -->
-
-  
-
-   <!-- JS here -->
-   <script src="{{url('/product_page')}}/js/jquery-3.6.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/waypoints.min.js"></script>
-   <script src="{{url('/product_page')}}/js/bootstrap.bundle.min.js"></script>
-   <script src="{{url('/product_page')}}/js/meanmenu.min.js"></script>
-   <script src="{{url('/product_page')}}/js/swiper.min.js"></script>
-   <script src="{{url('/product_page')}}/js/slick.min.js"></script>
-   <script src="{{url('/product_page')}}/js/magnific-popup.min.js"></script>
-   <script src="{{url('/product_page')}}/js/counterup.js"></script>
-   <script src="{{url('/product_page')}}/js/wow.js"></script>
-   <script src="{{url('/product_page')}}/js/ajax-form.js"></script>
-   <script src="{{url('/product_page')}}/js/beforeafter.jquery-1.0.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/main.js"></script>
-</body>
-
-</html>
-
 @endsection
 @push('footerscript')
 <script src="{{url('/')}}/giftcards/js/custom.js"></script>
