@@ -48,13 +48,12 @@ background-color: black;
 .breadcrumb__wrapper .nav_class h6 {
     opacity: 1; /* Full opacity for the text */
 }
-.bd-basic__pagination ul li .current {
-    
-    background-color: #FCA52A;
-    color: black;
-    
-}
 
+
+input[type=text] {
+    background-color: #ffffff;
+    width: 100%;
+}
 
    @media (max-width: 767px) {
       main {
@@ -90,7 +89,7 @@ background-color: black;
    }
    
    input[type=text] {
-     background-color: #f1f1f1;
+     background-color: #ffffff;
      width: 100%;
    }
    
@@ -500,11 +499,11 @@ background-color: black;
                            <div class="sidebar__post">
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="blog-details.html"><img src="{{url('/product_page')}}/imgs/blog/blog-11.jpg" alt=""></a>
+                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-11.jpg" alt=""></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="blog-details.html">Business meeting 2021 in San Francisco</a>
+                                       <a href="{{route('popularDeals')}}">Business meeting 2021 in San Francisco</a>
                                     </h4>
                                     <div class="rc__meta">
                                        <span>
@@ -523,11 +522,11 @@ background-color: black;
                               </div>
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="blog-details.html"><img src="{{url('/product_page')}}/imgs/blog/blog-12.jpg" alt=""></a>
+                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-12.jpg" alt=""></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="blog-details.html">Developing privacy user-centric apps</a>
+                                       <a href="{{route('popularDeals')}}">Developing privacy user-centric apps</a>
                                     </h4>
                                     <div class="rc__meta">
                                        <span>
@@ -546,11 +545,11 @@ background-color: black;
                               </div>
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="blog-details.html"><img src="{{url('/product_page')}}/imgs/blog/blog-13.jpg" alt=""></a>
+                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-13.jpg" alt=""></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="blog-details.html">Starting and Growing Web Design in 2022</a>
+                                       <a href="{{route('popularDeals')}}">Starting and Growing Web Design in 2022</a>
                                     </h4>
                                     <div class="rc__meta">
                                        <span>

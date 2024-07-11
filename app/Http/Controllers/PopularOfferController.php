@@ -82,4 +82,8 @@ class PopularOfferController extends Controller
     {
         //
     }
+
+    public function popularDeals(){
+        return view('product.offers_details');
+    }
 }

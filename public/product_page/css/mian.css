@@ -120,7 +120,7 @@ h6, i[class^=flaticon-], .body__overlay {
   --clr-common-body-text: #161616;
   --clr-common-selection: #262626;
   --clr-common-body: rgb(255, 255, 255);
-  --clr-theme-1: #02AFE5;
+  --clr-theme-1: #FCA52A;
   --clr-theme-2: #EB753B;
   --clr-text-primary: rgb(255, 255, 255);
   --clr-text-secondary: rgb(22, 22, 22);
@@ -1695,7 +1695,7 @@ i[class^=flaticon-] {
   height: 12px;
   top: 50%;
   left: 0;
-  background: linear-gradient(180deg, #02AFE5 0%, rgba(2, 175, 229, 0) 100%);
+  background: linear-gradient(180deg, #FCA52A 0%, rgba(2, 175, 229, 0) 100%);
   transform: translateY(-50%);
   border-radius: 30px;
 }

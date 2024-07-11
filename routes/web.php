@@ -51,7 +51,7 @@ Route::post('/giftcancel','GiftsendController@giftcancel')->name('giftcancel');
 Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
 // Popular Officers
-Route::resource('/popular-offers', ProductController::class);
+Route::resource('/popular-offers', PopularOfferController::class);
 
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
 Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess')->name('giftcard-purchases-success');
@@ -105,6 +105,8 @@ Route::get('product-page/{token?}','ProductController@productpage')->name('produ
 Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
+// Front Route for PopularOffer
+Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
 
 
 

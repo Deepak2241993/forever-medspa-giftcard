@@ -1,8 +1,8 @@
-@extends('layouts.front-master')
-@section('body')
-@push('css')
 
-@endpush
+<?php $__env->startSection('body'); ?>
+<?php $__env->startPush('css'); ?>
+
+<?php $__env->stopPush(); ?>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -14,18 +14,18 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
 
    <!-- Place favicon.ico in the root directory -->
-   <link rel="shortcut icon" type="image/x-icon" href="{{url('/product_page')}}/imgs/favicon.svg">
+   <link rel="shortcut icon" type="image/x-icon" href="<?php echo e(url('/product_page')); ?>/imgs/favicon.svg">
 
    <!-- CSS here -->
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/bootstrap.min.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/meanmenu.min.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/animate.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/swiper.min.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/slick.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/magnific-popup.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/fontawesome-pro.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/spacing.css">
-   <link rel="stylesheet" href="{{url('/product_page')}}/css/main.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/bootstrap.min.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/meanmenu.min.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/animate.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/swiper.min.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/slick.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/magnific-popup.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/fontawesome-pro.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/spacing.css">
+   <link rel="stylesheet" href="<?php echo e(url('/product_page')); ?>/css/main.css">
 </head>
 
 <body>
@@ -43,7 +43,7 @@
  
        <!-- Breadcrumb area start  -->
        <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
-          <div class="breadcrumb__thumb" data-background="{{url('/uploads/FOREVER-MEDSPA')}}/med-spa-banner.jpg"></div>
+          <div class="breadcrumb__thumb" data-background="<?php echo e(url('/uploads/FOREVER-MEDSPA')); ?>/med-spa-banner.jpg"></div>
           <div class="container">
              <div class="row justify-content-center">
                 <div class="col-xxl-12">
@@ -90,7 +90,7 @@
             <div class="row">
                <div class="col-12">
                   <div class="service-details-thumb mt-80 mb-80">
-                     <img src="{{url('/product_page')}}/imgs/service/service-big-01.jpg" alt="">
+                     <img src="<?php echo e(url('/product_page')); ?>/imgs/service/service-big-01.jpg" alt="">
                   </div>
                </div>
             </div>
@@ -277,24 +277,26 @@
   
 
    <!-- JS here -->
-   <script src="{{url('/product_page')}}/js/jquery-3.6.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/waypoints.min.js"></script>
-   <script src="{{url('/product_page')}}/js/bootstrap.bundle.min.js"></script>
-   <script src="{{url('/product_page')}}/js/meanmenu.min.js"></script>
-   <script src="{{url('/product_page')}}/js/swiper.min.js"></script>
-   <script src="{{url('/product_page')}}/js/slick.min.js"></script>
-   <script src="{{url('/product_page')}}/js/magnific-popup.min.js"></script>
-   <script src="{{url('/product_page')}}/js/counterup.js"></script>
-   <script src="{{url('/product_page')}}/js/wow.js"></script>
-   <script src="{{url('/product_page')}}/js/ajax-form.js"></script>
-   <script src="{{url('/product_page')}}/js/beforeafter.jquery-1.0.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/main.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/jquery-3.6.0.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/waypoints.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/bootstrap.bundle.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/meanmenu.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/swiper.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/slick.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/magnific-popup.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/counterup.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/wow.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/ajax-form.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/beforeafter.jquery-1.0.0.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/main.js"></script>
 </body>
 
 </html>
 
-@endsection
-@push('footerscript')
-<script src="{{url('/')}}/giftcards/js/custom.js"></script>
-<script src="{{url('/')}}/giftcards/js/giftcard.js"></script>
-@endpush
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('footerscript'); ?>
+<script src="<?php echo e(url('/')); ?>/giftcards/js/custom.js"></script>
+<script src="<?php echo e(url('/')); ?>/giftcards/js/giftcard.js"></script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.front-master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/product/offers_details.blade.php ENDPATH**/ ?>
