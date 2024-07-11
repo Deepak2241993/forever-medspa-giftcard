@@ -89,15 +89,14 @@
                             </div>
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="amount" class="form-label">Service Original Price </label>
+                            <label for="discounted_amount" class="form-label">Service Discounted Price</label>
+                            <input class="form-control" type="number" min="0" name="discounted_amount" value="{{isset($data)?$data['discounted_amount']:''}}" placeholder="Product Name">
+                        </div>
+                        <div class="mb-3 col-lg-6 self">
+                            <label for="amount" class="form-label">Service Amount MRP</label>
                             <input class="form-control" type="number" min="0" name="amount" value="{{isset($data)?$data['amount']:''}}" placeholder="Product Name">
                             <input class="form-control" type="hidden" min="0" name="id" value="{{isset($data)?$data['id']:''}}">
                         </div>
-                        <div class="mb-3 col-lg-6 self">
-                            <label for="discounted_amount" class="form-label">Service Price</label>
-                            <input class="form-control" type="number" min="0" name="discounted_amount" value="{{isset($data)?$data['discounted_amount']:''}}" placeholder="Product Name">
-                        </div>
-                     
                         <div class="mb-12 col-lg-12 self">
                             <label for="search_keywords" class="form-label">Search Keywords</label>
                             <textarea name="search_keywords"  id="search_keywords" rows="4" class="form-control">{{isset($data)?$data['search_keywords']:''}}</textarea>

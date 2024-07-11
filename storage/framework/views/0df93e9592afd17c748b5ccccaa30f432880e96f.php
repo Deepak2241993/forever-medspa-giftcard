@@ -138,7 +138,7 @@ background-color: black;
 }
 .hl05eU .UkUFwK {
     color: #FCA52A;
-    font-size: 13px;
+    font-size: 16px;
     letter-spacing: -.2px;
     font-weight: 500;
 }
@@ -146,6 +146,13 @@ background-color: black;
     display: inline-block;
     margin-left: 8px;
 }
+
+.nav {
+    border-color: orange;
+    --bs-nav-tabs-link-active-color: #fca52a;
+    --bs-nav-tabs-link-active-border-color: #fca52a #fca52a #f6f6f6;
+}
+
    </style>
 <?php $__env->stopPush(); ?>
 
@@ -208,28 +215,54 @@ background-color: black;
                            <h3 class="postbox__title">
                               <a href="blog-details.html"><?php echo e($value['product_name']); ?></a>
                           </h3>
-<?php
-$price = $value->discounted_amount;
-$original_price = $value->amount;
+   <?php
+   $price = $value->discounted_amount;
+   $original_price = $value->amount;
 
-// Calculate discount percentage
-$discount_percentage = 0;
-if ($original_price > 0) {
-    $discount_percentage = round((($original_price - $price) / $original_price) * 100);
-}
-?>
-
+   // Calculate discount percentage
+   $discount_percentage = 0;
+   if ($original_price > 0) {
+      $discount_percentage = round((($original_price - $price) / $original_price) * 100);
+   }
+   ?>
 <div class="hl05eU">
-    <div class="Nx9bqj">$<?php echo e(number_format($price, 2)); ?></div>
-    <del class="yRaY8j">$<?php echo e(number_format($original_price, 2)); ?></del>
-    <div class="UkUFwK"><span><?php echo e($discount_percentage); ?>% off</span></div>
+    <div class="Nx9bqj"><b>$<?php echo e(number_format($price, 2)); ?></b></div>
+    <del class="yRaY8j"><b>$<?php echo e(number_format($original_price, 2)); ?></b></del>
+    <div class="UkUFwK"><span><b><?php echo e($discount_percentage); ?>% off</b></span></div>
 </div>
                            <div class="postbox__text">
                               <p><?php echo $value['product_description']; ?></p>
                            </div>
-                           <div class="postbox__read-more">
+                           <div>
+                              <ul class="nav nav-tabs">
+                                 <li class="nav-item" >
+                                   <span class="nav-link active" id="service_desc_<?php echo e($value->id); ?>" onclick="navtab(<?php echo e($value->id); ?>,'service_desc')" aria-current="page"><b>Service Description</b></span>
+                                 </li>
+                                 <li class="nav-item">
+                                   <span class="nav-link" id="prerequisites_<?php echo e($value->id); ?>" onclick="navtab(<?php echo e($value->id); ?>,'prerequisites')"><b>Prerequisites</b></span>
+                                 </li>
+                        
+                               </ul>
+                              
                            </div>
-                           <a class="btn btn-primary" href="#">Buy Now</a>
+                           <div id="desc_<?php echo e($value->id); ?>">
+                              <?php if(!empty($value->product_description)): ?>
+                              <p><?php echo $value->product_description; ?></p>
+                              <?php else: ?>
+                              <p>No Data Found</p>
+                              <?php endif; ?>
+                           </div>
+                           <div id="prerequisites__desc_<?php echo e($value->id); ?>">
+                              <?php if(!empty($value->prerequisites)): ?>
+                               <p><?php echo $value->prerequisites; ?></p>
+                               <?php else: ?>
+                              <p class="mt-4">No Data Found</p>
+                              <?php endif; ?>
+                              </div>
+
+                           <div class="postbox__read-more">
+                              <a class="btn btn-primary" href="#">Buy Now</a>
+                           </div>
                         </div>
                      </article>
                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -562,6 +595,24 @@ if ($original_price > 0) {
    
    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
    autocomplete(document.getElementById("myInput"), countries);
+   </script>
+   <script>
+      function navtab(id,type){
+         if(type==='service_desc')
+         {
+            $('#prerequisites_'+id).removeClass('active');
+            $('#service_desc_'+id).addClass('active');
+            $('#desc_'+id).show();
+            $('#prerequisites__desc_'+id).hide();
+         }
+         if(type==='prerequisites')
+         {
+            $('#prerequisites_'+id).addClass('active');
+            $('#service_desc_'+id).removeClass('active');
+            $('#desc_'+id).hide();
+            $('#prerequisites__desc_'+id).show();
+         }
+      }
    </script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.front-master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/product/index.blade.php ENDPATH**/ ?>
