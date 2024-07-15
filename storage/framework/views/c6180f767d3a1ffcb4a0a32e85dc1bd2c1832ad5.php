@@ -8,31 +8,31 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
  
      <!-- Site Metas -->
-    <title>@yield('title','Medspa')</title>  
-    <meta name="keywords" content="@yield('keywords','Medspa')">
-    <meta name="description" content="@yield('description','Medspa')">
+    <title><?php echo $__env->yieldContent('title','Medspa'); ?></title>  
+    <meta name="keywords" content="<?php echo $__env->yieldContent('keywords','Medspa'); ?>">
+    <meta name="description" content="<?php echo $__env->yieldContent('description','Medspa'); ?>">
     <meta name="Deepak Prasad" content="">
 
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="{{url('/medspa.png')}}" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="{{url('/medspa.png')}}" />
+    <link rel="shortcut icon" href="<?php echo e(url('/medspa.png')); ?>" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="<?php echo e(url('/medspa.png')); ?>" />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{url('/')}}/giftcards/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo e(url('/')); ?>/giftcards/css/bootstrap.min.css">
     <!-- Pogo Slider CSS -->
-    <link rel="stylesheet" href="{{url('/')}}/giftcards/css/pogo-slider.min.css">
+    <link rel="stylesheet" href="<?php echo e(url('/')); ?>/giftcards/css/pogo-slider.min.css">
 	<!-- Site CSS -->
-    <link rel="stylesheet" href="{{url('/')}}/giftcards/css/style.css">    
+    <link rel="stylesheet" href="<?php echo e(url('/')); ?>/giftcards/css/style.css">    
     <!-- Responsive CSS -->
-    <link rel="stylesheet" href="{{url('/')}}/giftcards/css/responsive.css">
+    <link rel="stylesheet" href="<?php echo e(url('/')); ?>/giftcards/css/responsive.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{url('/')}}/giftcards/css/custom.css">
+    <link rel="stylesheet" href="<?php echo e(url('/')); ?>/giftcards/css/custom.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
-    <link rel="shortcut icon" type="image/x-icon" href="{{url('/medspa.png')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo e(url('/medspa.png')); ?>">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    @stack('css')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <?php echo $__env->yieldPushContent('css'); ?>
+<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 <style>
 @media (max-width: 767px) {
  .navbar-brand img {
@@ -60,7 +60,7 @@
 	<header class="top-header">
 		<nav class="navbar header-nav navbar-expand-lg">
             <div class="container">
-				<a class="navbar-brand" href="{{url('/')}}"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:81px;"></a>
+				<a class="navbar-brand" href="<?php echo e(url('/')); ?>"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:81px;"></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-wd" aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
 					<span></span>
 					<span></span>
@@ -68,9 +68,9 @@
 				</button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
                     <ul class="navbar-nav">
-                         <li><a class="nav-link @if(Route::currentRouteName()==route('home')) {{'active'}} @endif" href="{{url('/')}}">Giftcards</a></li> 
+                         <li><a class="nav-link <?php if(Route::currentRouteName()==route('home')): ?> <?php echo e('active'); ?> <?php endif; ?>" href="<?php echo e(url('/')); ?>">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
-						<li><a class="nav-link @if(Route::currentRouteName() != route('home')){{'active'}} @endif" href="{{route('category',['token'=>'FOREVER-MEDSPA'])}}">Services</a></li>
+						
                         
                     </ul>
                 </div>
@@ -80,7 +80,7 @@
 	<!-- End header -->
 	
 	<!-- Start Banner -->
-	@yield('body')
+	<?php echo $__env->yieldContent('body'); ?>
 	
 	<!-- End Subscribe -->
 	
@@ -89,7 +89,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<p class="footer-company-name">All Rights Reserved. &copy; {{date('Y')}} <a href="#">FOREVER MEDSPA</a> Design By : <a href="https://www.thetemz.com/">TEMZ Solution Pvt.Ltd</a></p>
+					<p class="footer-company-name">All Rights Reserved. &copy; <?php echo e(date('Y')); ?> <a href="#">FOREVER MEDSPA</a> Design By : <a href="https://www.thetemz.com/">TEMZ Solution Pvt.Ltd</a></p>
 				</div>
 			</div>
 		</div>
@@ -101,12 +101,12 @@
 	<!-- ALL JS FILES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="{{url('/')}}/giftcards/js/bootstrap.min.js"></script>
+	<script src="<?php echo e(url('/')); ?>/giftcards/js/bootstrap.min.js"></script>
     <!-- ALL PLUGINS -->
- <!--   <script src="{{url('/')}}/giftcards/js/jquery.pogo-slider.min.js"></script> -->
-	<!--<script src="{{url('/')}}/giftcards/js/slider-index.js"></script>-->
-    <script src="{{url('/')}}/giftcards/js/custom.js"></script>
+ <!--   <script src="<?php echo e(url('/')); ?>/giftcards/js/jquery.pogo-slider.min.js"></script> -->
+	<!--<script src="<?php echo e(url('/')); ?>/giftcards/js/slider-index.js"></script>-->
+    <script src="<?php echo e(url('/')); ?>/giftcards/js/custom.js"></script>
 
-@stack('footerscript')
+<?php echo $__env->yieldPushContent('footerscript'); ?>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/layouts/front-master.blade.php ENDPATH**/ ?>

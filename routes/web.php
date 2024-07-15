@@ -76,7 +76,7 @@ Route::get('export-keywords','ProductController@ExportDate')->name('export_date'
 
     });
 
-Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card']);
+Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card'])->name('home');
 Route::post('/send-gift-cards','GiftController@store')->name('send-gift-cards');
 
 Route::get('/strip_form',[App\Http\Controllers\StripeController::class,'formview']);

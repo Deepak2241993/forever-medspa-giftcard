@@ -71,7 +71,7 @@
                     <ul class="navbar-nav">
                          <li><a class="nav-link <?php if(Route::currentRouteName()==url('/')): ?><?php echo e('active'); ?> <?php endif; ?>" href="<?php echo e(url('/')); ?>">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
-						<li><a class="nav-link <?php if(Route::currentRouteName()!=url('/')): ?><?php echo e('active'); ?> <?php endif; ?>" href="<?php echo e(route('category')); ?>">Services</a></li>
+						<li><a class="nav-link <?php if(Route::currentRouteName()!=url('/')): ?><?php echo e('active'); ?> <?php endif; ?>" href="<?php echo e(route('category',['token'=>'FOREVER-MEDSPA'])); ?>">Services</a></li>
                         
                     </ul>
                 </div>
