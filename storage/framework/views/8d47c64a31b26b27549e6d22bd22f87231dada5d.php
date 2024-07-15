@@ -175,8 +175,8 @@ input[type=text] {
                      <div class="breadcrumb__menu">
                         <nav>
                            <ul>
-                              <li><span><a href="index.html">Home</a></span></li>
-                              <li><span>Services</span></li>
+                              <li><span><a href="<?php echo e(url('/')); ?>">Home</a></span></li>
+                              <li><span>Categories</span></li>
                            </ul>
                         </nav>
                      </div>
@@ -197,93 +197,36 @@ input[type=text] {
                      <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
-                           <a href="blog-details.html">
-                              <img src="<?php echo e($value['product_image']); ?>" alt="">
+                           <a href="<?php echo e(route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']])); ?>">
+                              <img src="<?php echo e($value['cat_image']); ?>" alt="<?php echo e($value['cat_name']); ?>">
                            </a>
                         </div>
                         <div class="postbox__content">
-                           
+                          
                            <h3 class="postbox__title">
-                              <a href="blog-details.html"><?php echo e($value['product_name']); ?></a>
+                              <a href="<?php echo e(route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']])); ?>"><?php echo e($value['cat_name']); ?></a>
                           </h3>
-   <?php
-   $price = $value->discounted_amount;
-   $original_price = $value->amount;
 
-   // Calculate discount percentage
-   $discount_percentage = 0;
-   if ($original_price > 0) {
-      $discount_percentage = round((($original_price - $price) / $original_price) * 100);
-   }
-   ?>
-<div class="hl05eU">
-    <div class="Nx9bqj"><b>$<?php echo e(number_format($price, 2)); ?></b></div>
-    <del class="yRaY8j"><b>$<?php echo e(number_format($original_price, 2)); ?></b></del>
-    <div class="UkUFwK"><span><b><?php echo e($discount_percentage); ?>% off</b></span></div>
-</div>
-                           <div class="postbox__text">
-                              <p><?php echo $value['product_description']; ?></p>
+                   <div class="postbox__text">
+                    
+                              <p><?php echo $value['cat_description']; ?></p>
                            </div>
-                           <div>
-                              <ul class="nav nav-tabs">
-                                 <li class="nav-item" >
-                                   <span class="nav-link active" id="service_desc_<?php echo e($value->id); ?>" onclick="navtab(<?php echo e($value->id); ?>,'service_desc')" aria-current="page"><b>Service Description</b></span>
-                                 </li>
-                                 <li class="nav-item">
-                                   <span class="nav-link" id="prerequisites_<?php echo e($value->id); ?>" onclick="navtab(<?php echo e($value->id); ?>,'prerequisites')"><b>Prerequisites</b></span>
-                                 </li>
-                        
-                               </ul>
-                              
+                           <div class="postbox__read-more">
+                              <a class="btn btn-primary" href="<?php echo e(route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']])); ?>">Explore</a>
                            </div>
-                           <div id="desc_<?php echo e($value->id); ?>">
-                              <?php if(!empty($value->product_description)): ?>
-                              <p><?php echo $value->product_description; ?></p>
-                              <?php else: ?>
-                              <p>No Data Found</p>
-                              <?php endif; ?>
-                           </div>
-                           <div id="prerequisites__desc_<?php echo e($value->id); ?>"  style="display:none">
-                              <?php if(!empty($value->prerequisites)): ?>
-                               <p><?php echo $value->prerequisites; ?></p>
-                               <?php else: ?>
-                              <p class="mt-4">No Data Found</p>
-                              <?php endif; ?>
-                              </div>
-
-                           <div class="row">
-                              <div class="product__add-cart col-md-3">
-                                 <a href="<?php echo e(route('productdetails',['slug' => $value['product_slug']])); ?>" class="fill-btn cart-btn">
-                                    <span class="fill-btn-inner">
-                                       <span class="fill-btn-normal">BUY NOW</span>
-                                       <span class="fill-btn-hover">BUY NOW</span>
-                                    </span>
-                                 </a>
-                              </div>
-                              <div class="product__add-cart col-md-6">
-                                 <a href="<?php echo e(route('cart')); ?>" class="fill-btn cart-btn">
-                                    <span class="fill-btn-inner">
-                                       <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
-                                       <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
-                                    </span>
-                                 </a>
-                              </div>
-                           </div>
-                           
                         </div>
                      </article>
                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                      <?php else: ?>
                         <p><?php echo e($data['error']); ?></p>
                      <?php endif; ?>
-                     
-                     
+                    
                  
                      
                      <div class="pagination__wrapper">
                         <div class="bd-basic__pagination d-flex align-items-center justify-content-center">
                            <nav>
-                              
+               
                               <?php echo e($data->links('vendor.pagination.custom')); ?>
 
                            </nav>
@@ -317,17 +260,7 @@ input[type=text] {
                            </div>
                         </div>
                      </div>
-                     <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Category</h3>
-                        <div class="sidebar__widget-content">
-                           <ul>
-                              <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                              <li><a href="<?php echo e(route('productCategory', ['id' => $value->id])); ?>"><?php echo e(substr(ucFirst($value->cat_name),0,20)); ?></a></li>
-                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                              
-                           </ul>
-                        </div>
-                     </div>
+                     
                      
                       
                       <div class="sidebar__widget mb-45">
@@ -603,23 +536,6 @@ input[type=text] {
    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
    autocomplete(document.getElementById("myInput"), countries);
    </script>
-   <script>
-      function navtab(id,type){
-         if(type==='service_desc')
-         {
-            $('#prerequisites_'+id).removeClass('active');
-            $('#service_desc_'+id).addClass('active');
-            $('#desc_'+id).show();
-            $('#prerequisites__desc_'+id).hide();
-         }
-         if(type==='prerequisites')
-         {
-            $('#prerequisites_'+id).addClass('active');
-            $('#service_desc_'+id).removeClass('active');
-            $('#desc_'+id).hide();
-            $('#prerequisites__desc_'+id).show();
-         }
-      }
-   </script>
+  
 <?php $__env->stopPush(); ?>
-<?php echo $__env->make('layouts.front_product', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/product/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.front_product', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/product/category.blade.php ENDPATH**/ ?>

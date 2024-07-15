@@ -175,8 +175,8 @@ input[type=text] {
                      <div class="breadcrumb__menu">
                         <nav>
                            <ul>
-                              <li><span><a href="index.html">Home</a></span></li>
-                              <li><span>Services</span></li>
+                              <li><span><a href="{{url('/')}}">Home</a></span></li>
+                              <li><span>Categories</span></li>
                            </ul>
                         </nav>
                      </div>
@@ -197,245 +197,36 @@ input[type=text] {
                      @foreach($data as $value) 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
-                           <a href="blog-details.html">
-                              <img src="{{$value['product_image']}}" alt="">
+                           <a href="{{ route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']]) }}">
+                              <img src="{{$value['cat_image']}}" alt="{{$value['cat_name']}}">
                            </a>
                         </div>
                         <div class="postbox__content">
-                           {{-- <div class="postbox__meta">
-                              <span>
-                                 <a href="#">
-                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
-                                       xmlns="http://www.w3.org/2000/svg">
-                                       <path
-                                          d="M11.6667 13V11.6667C11.6667 10.9594 11.3857 10.2811 10.8856 9.78105C10.3855 9.28095 9.70724 9 9 9H3.66667C2.95942 9 2.28115 9.28095 1.78105 9.78105C1.28095 10.2811 1 10.9594 1 11.6667V13"
-                                          stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                       <path
-                                          d="M6.33317 6.33333C7.80593 6.33333 8.99984 5.13943 8.99984 3.66667C8.99984 2.19391 7.80593 1 6.33317 1C4.86041 1 3.6665 2.19391 3.6665 3.66667C3.6665 5.13943 4.86041 6.33333 6.33317 6.33333Z"
-                                          stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                    </svg>
-                                    By Alex Manie
-                                 </a>
-                              </span>
-                              <span>
-                                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                       d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                       stroke-linejoin="round" />
-                                    <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor" stroke-width="1.5"
-                                       stroke-linecap="round" stroke-linejoin="round" />
-                                 </svg> January 22, 2022
-                              </span>
-                              <span>
-                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                       d="M12.9718 6.66668C12.9741 7.54659 12.769 8.4146 12.3732 9.20001C11.9039 10.1412 11.1825 10.9328 10.2897 11.4862C9.39697 12.0396 8.36813 12.3329 7.31844 12.3333C6.4406 12.3356 5.57463 12.13 4.79106 11.7333L1 13L2.26369 9.20001C1.86791 8.4146 1.66281 7.54659 1.6651 6.66668C1.66551 5.61452 1.95815 4.58325 2.51025 3.68838C3.06236 2.79352 3.85211 2.0704 4.79106 1.60002C5.57463 1.20331 6.4406 0.997725 7.31844 1.00002H7.65099C9.03729 1.07668 10.3467 1.66319 11.3284 2.64726C12.3102 3.63132 12.8953 4.94378 12.9718 6.33334V6.66668Z"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                       stroke-linejoin="round" />
-                                 </svg>35
-                              </span>
-                           </div> --}}
+                          
                            <h3 class="postbox__title">
-                              <a href="blog-details.html">{{$value['product_name']}}</a>
+                              <a href="{{ route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']]) }}">{{$value['cat_name']}}</a>
                           </h3>
-   @php
-   $price = $value->discounted_amount;
-   $original_price = $value->amount;
 
-   // Calculate discount percentage
-   $discount_percentage = 0;
-   if ($original_price > 0) {
-      $discount_percentage = round((($original_price - $price) / $original_price) * 100);
-   }
-   @endphp
-<div class="hl05eU">
-    <div class="Nx9bqj"><b>${{ number_format($price, 2) }}</b></div>
-    <del class="yRaY8j"><b>${{ number_format($original_price, 2) }}</b></del>
-    <div class="UkUFwK"><span><b>{{ $discount_percentage }}% off</b></span></div>
-</div>
-                           <div class="postbox__text">
-                              <p>{!!$value['product_description']!!}</p>
+                   <div class="postbox__text">
+                    
+                              <p>{!!$value['cat_description']!!}</p>
                            </div>
-                           <div>
-                              <ul class="nav nav-tabs">
-                                 <li class="nav-item" >
-                                   <span class="nav-link active" id="service_desc_{{$value->id}}" onclick="navtab({{$value->id}},'service_desc')" aria-current="page"><b>Service Description</b></span>
-                                 </li>
-                                 <li class="nav-item">
-                                   <span class="nav-link" id="prerequisites_{{$value->id}}" onclick="navtab({{$value->id}},'prerequisites')"><b>Prerequisites</b></span>
-                                 </li>
-                        
-                               </ul>
-                              
+                           <div class="postbox__read-more">
+                              <a class="btn btn-primary" href="{{ route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']]) }}">Explore</a>
                            </div>
-                           <div id="desc_{{$value->id}}">
-                              @if(!empty($value->product_description))
-                              <p>{!! $value->product_description !!}</p>
-                              @else
-                              <p>No Data Found</p>
-                              @endif
-                           </div>
-                           <div id="prerequisites__desc_{{$value->id}}"  style="display:none">
-                              @if(!empty($value->prerequisites))
-                               <p>{!! $value->prerequisites !!}</p>
-                               @else
-                              <p class="mt-4">No Data Found</p>
-                              @endif
-                              </div>
-
-                           <div class="row">
-                              <div class="product__add-cart col-md-3">
-                                 <a href="{{route('productdetails',['slug' => $value['product_slug']])}}" class="fill-btn cart-btn">
-                                    <span class="fill-btn-inner">
-                                       <span class="fill-btn-normal">BUY NOW</span>
-                                       <span class="fill-btn-hover">BUY NOW</span>
-                                    </span>
-                                 </a>
-                              </div>
-                              <div class="product__add-cart col-md-6">
-                                 <a href="{{route('cart')}}" class="fill-btn cart-btn">
-                                    <span class="fill-btn-inner">
-                                       <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
-                                       <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
-                                    </span>
-                                 </a>
-                              </div>
-                           </div>
-                           
                         </div>
                      </article>
                      @endforeach
                      @else
                         <p>{{$data['error']}}</p>
                      @endif
-                     {{-- <article class="postbox__item mb-30 transition-3">
-                        <div class="postbox__thumb postbox__video w-img p-relative mb-30">
-                           <a href="blog-details.html">
-                              <img src="{{url('/product_page')}}/imgs/blog/postbox/postbox-02.jpg" alt="">
-                           </a>
-                           <a href="https://www.youtube.com/watch?v=g-jj4KrmYPI"
-                              class="play-btn pulse-btn popup-video"><i class="fas fa-play"></i></a>
-                        </div>
-                        <div class="postbox__content">
-                           <div class="postbox__meta">
-                              <span>
-                                 <a href="#">
-                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
-                                       xmlns="http://www.w3.org/2000/svg">
-                                       <path
-                                          d="M11.6667 13V11.6667C11.6667 10.9594 11.3857 10.2811 10.8856 9.78105C10.3855 9.28095 9.70724 9 9 9H3.66667C2.95942 9 2.28115 9.28095 1.78105 9.78105C1.28095 10.2811 1 10.9594 1 11.6667V13"
-                                          stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                       <path
-                                          d="M6.33317 6.33333C7.80593 6.33333 8.99984 5.13943 8.99984 3.66667C8.99984 2.19391 7.80593 1 6.33317 1C4.86041 1 3.6665 2.19391 3.6665 3.66667C3.6665 5.13943 4.86041 6.33333 6.33317 6.33333Z"
-                                          stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                    </svg>
-                                    By Alex Manie
-                                 </a>
-                              </span>
-                              <span>
-                                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                       d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                       stroke-linejoin="round" />
-                                    <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor" stroke-width="1.5"
-                                       stroke-linecap="round" stroke-linejoin="round" />
-                                 </svg> January 22, 2022
-                              </span>
-                              <span>
-                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                       d="M12.9718 6.66668C12.9741 7.54659 12.769 8.4146 12.3732 9.20001C11.9039 10.1412 11.1825 10.9328 10.2897 11.4862C9.39697 12.0396 8.36813 12.3329 7.31844 12.3333C6.4406 12.3356 5.57463 12.13 4.79106 11.7333L1 13L2.26369 9.20001C1.86791 8.4146 1.66281 7.54659 1.6651 6.66668C1.66551 5.61452 1.95815 4.58325 2.51025 3.68838C3.06236 2.79352 3.85211 2.0704 4.79106 1.60002C5.57463 1.20331 6.4406 0.997725 7.31844 1.00002H7.65099C9.03729 1.07668 10.3467 1.66319 11.3284 2.64726C12.3102 3.63132 12.8953 4.94378 12.9718 6.33334V6.66668Z"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                       stroke-linejoin="round" />
-                                 </svg>35
-                              </span>
-                           </div>
-                           <h3 class="postbox__title">
-                              <a href="blog-details.html">Four Ways a Clean Workplace Employees Happy and Healthy</a>
-                           </h3>
-                           <div class="postbox__text">
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                 dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                 Excepteur sint occaecat […]</p>
-                           </div>
-                           <div class="postbox__read-more">
-                              <a class="text-btn" href="#">Explore Now<span><i
-                                       class="fa-regular fa-angle-right"></i></span></a>
-                           </div>
-                        </div>
-                     </article> --}}
-                     {{-- <article class="postbox__item format-image mb-50 transition-3">
-                        <div class="postbox__thumb postbox__slider swiper w-img p-relative">
-                           <div class="swiper-wrapper">
-                              <div class="postbox__slider-item swiper-slide mb-30">
-                                 <img src="{{url('/product_page')}}/imgs/blog/postbox/postbox-03.jpg" alt="">
-                              </div>
-                              <div class="postbox__slider-item swiper-slide mb-30">
-                                 <img src="{{url('/product_page')}}/imgs/blog/postbox/postbox-06.jpg" alt="">
-                              </div>
-                              <div class="postbox__slider-item swiper-slide mb-30">
-                                 <img src="{{url('/product_page')}}/imgs/blog/postbox/postbox-07.jpg" alt="">
-                              </div>
-                           </div>
-                           <div class="postbox__nav">
-                              <button class="postbox-slider-button-next"><i
-                                    class="fa-regular fa-angle-right"></i></button>
-                              <button class="postbox-slider-button-prev"><i
-                                    class="fa-regular fa-angle-left"></i></button>
-                           </div>
-                        </div>
-                        <div class="postbox__content">
-                           <div class="postbox__meta">
-                              <span><i class="far fa-calendar-check"></i> July 21, 2020 </span>
-                              <span><a href="#"><i class="far fa-user"></i> By Alex Manie</a></span>
-                              <span><a href="#"><i class="fal fa-comments"></i> 02 Comments</a></span>
-                           </div>
-                           <h3 class="postbox__title">
-                              <a href="blog-details.html">Experimental cancer vaccine both treats</a>
-                           </h3>
-                           <div class="postbox__text">
-                              <p>These are aimed at treating existing cancer by stimulating the immune system to target
-                                 and destroy cancer cells. Several experimental therapeutic cancer vaccines have been
-                                 developed for various types of cancer, including prostate cancer, melanoma, and lung
-                                 cancer.</p>
-                           </div>
-                           <div class="postbox__read-more">
-                              <a class="text-btn" href="#">Explore Now<span><i
-                                       class="fa-regular fa-angle-right"></i></span></a>
-                           </div>
-                        </div>
-                     </article> --}}
+                    
                  
                      
                      <div class="pagination__wrapper">
                         <div class="bd-basic__pagination d-flex align-items-center justify-content-center">
                            <nav>
-                              {{-- <ul>
-                                 <li>
-                                    <a href="#">1</a>
-                                 </li>
-                                 <li>
-                                    <a href="#">2</a>
-                                 </li>
-                                 <li>
-                                    <span class="current">3</span>
-                                 </li>
-                                 <li>
-                                    <a href="#"><i class="fa-regular fa-angle-right"></i></a>
-                                 </li>
-                              </ul> --}}
+               
                               {{$data->links('vendor.pagination.custom')}}
                            </nav>
                         </div>
@@ -468,7 +259,7 @@ input[type=text] {
                            </div>
                         </div>
                      </div>
-                     <div class="sidebar__widget mb-45">
+                     {{-- <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Category</h3>
                         <div class="sidebar__widget-content">
                            <ul>
@@ -478,7 +269,7 @@ input[type=text] {
                               
                            </ul>
                         </div>
-                     </div>
+                     </div> --}}
                      {{-- <div class="sidebar__widget mb-45">
                         <div class="sidebar__widget-content">
                            <div class="sidebar__author">
@@ -786,22 +577,5 @@ input[type=text] {
    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
    autocomplete(document.getElementById("myInput"), countries);
    </script>
-   <script>
-      function navtab(id,type){
-         if(type==='service_desc')
-         {
-            $('#prerequisites_'+id).removeClass('active');
-            $('#service_desc_'+id).addClass('active');
-            $('#desc_'+id).show();
-            $('#prerequisites__desc_'+id).hide();
-         }
-         if(type==='prerequisites')
-         {
-            $('#prerequisites_'+id).addClass('active');
-            $('#service_desc_'+id).removeClass('active');
-            $('#desc_'+id).hide();
-            $('#prerequisites__desc_'+id).show();
-         }
-      }
-   </script>
+  
 @endpush

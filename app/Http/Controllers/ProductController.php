@@ -205,7 +205,7 @@ class ProductController extends Controller
     // for Display Services Page
     // Filter Category Wise
     // Search Bar
-    public function productpage(Request $request){
+    public function productpage(Request $request,$token, $slug){
         
         // if(empty($request->token))
         // {
@@ -223,8 +223,8 @@ class ProductController extends Controller
         // $data_arr = ['user_token'=>$token];
         // $data = json_encode($data_arr);
         // $data = $this->postAPI('product-list', $data);
-
-        $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
+        $category_result=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('slug',$slug)->first();
+        $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id',$category_result->id)->paginate(10);
         $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         //  For Auto Search Complete
@@ -390,6 +390,42 @@ class ProductController extends Controller
              $search = json_encode($finalarray);
              return view('product.index',compact('data','category','search','popular_service'));
         }
+
+        public function productdetails(Request $request){
+        
+            // if(empty($request->token))
+            // {
+            // $token= 'FOREVER-MEDSPA';
+            // $data_arr = ['user_token'=>$token];
+            // $data = json_encode($data_arr);
+    
+            // $data = $this->postAPI('product-list', $data);
+      
+            // return view('product.index',compact('data'));
+            // }
+            // else
+            // {
+            // $token= strtoupper($request->token);
+            // $data_arr = ['user_token'=>$token];
+            // $data = json_encode($data_arr);
+            // $data = $this->postAPI('product-list', $data);
+    
+            $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
+            $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+            $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+            //  For Auto Search Complete
+            $search_category = ProductCategory::where('cat_is_deleted', 0)
+            ->where('user_token', 'FOREVER-MEDSPA')
+            ->pluck('cat_name')
+            ->toArray();
+            $search_product=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
+            $finalarray = array_merge($search_category,$search_product);
+    
+            $search = json_encode($finalarray);
+    
+    
+            return view('product.product_details',compact('data','category','search','popular_service'));
+            }
 
 
     }

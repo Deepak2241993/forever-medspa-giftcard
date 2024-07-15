@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -196,7 +197,7 @@ public function update(Request $request,$id)
 
      public function categorytpage(){
         
-        $date=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
+        $data=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         //  For Auto Search Complete
         $search_category = ProductCategory::where('cat_is_deleted', 0)
@@ -207,7 +208,7 @@ public function update(Request $request,$id)
         $finalarray = array_merge($search_category,$search_product);
 
         $search = json_encode($finalarray);
-        return view('product.index',compact('data','category','search','popular_service'));
+        return view('product.category',compact('data','search','popular_service'));
      }
      
 

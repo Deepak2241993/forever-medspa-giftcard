@@ -71,7 +71,7 @@
                     <ul class="navbar-nav">
                          <li><a class="nav-link @if(Route::currentRouteName()!='product-page'){{'active'}} @endif" href="{{url('/')}}">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
-						<li><a class="nav-link @if(Route::currentRouteName()=='product-page'){{'active'}} @endif" href="{{route('product-page')}}">Services</a></li>
+						<li><a class="nav-link @if(Route::currentRouteName()=='category'|| Route::currentRouteName()=='product-page'){{'active'}} @endif" href="{{route('category')}}">Services</a></li>
                         
                     </ul>
                 </div>
