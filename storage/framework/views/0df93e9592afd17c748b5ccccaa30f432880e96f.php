@@ -1,7 +1,7 @@
 
-@extends('layouts.front_product')
-@section('body')
-@push('css')
+
+<?php $__env->startSection('body'); ?>
+<?php $__env->startPush('css'); ?>
 <!-- CSS here -->
 
 <style>
@@ -57,7 +57,7 @@ input[type=text] {
    
 }
 </style>
-{{-- Search box Style --}}
+
 <style>
    * {
      box-sizing: border-box;
@@ -145,7 +145,7 @@ input[type=text] {
 }
 
    </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
 <body>
 
@@ -162,7 +162,7 @@ input[type=text] {
 
       <!-- Breadcrumb area start  -->
       <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
-         <div class="breadcrumb__thumb" data-background="{{url('/uploads/FOREVER-MEDSPA')}}/med-spa-banner.jpg"></div>
+         <div class="breadcrumb__thumb" data-background="<?php echo e(url('/uploads/FOREVER-MEDSPA')); ?>/med-spa-banner.jpg"></div>
          <div class="container">
             <div class="row justify-content-center">
                <div class="col-xxl-12">
@@ -175,8 +175,8 @@ input[type=text] {
                      <div class="breadcrumb__menu">
                         <nav>
                            <ul>
-                              <li><span><a href="{{url('/')}}">Home</a></span></li>
-                              <li><span>Categories</span></li>
+                              <li><span><a href="index.html">Home</a></span></li>
+                              <li><span>Services</span></li>
                            </ul>
                         </nav>
                      </div>
@@ -193,41 +193,99 @@ input[type=text] {
             <div class="row gy-50">
                <div class="col-xxl-8 col-lg-8">
                   <div class="postbox__wrapper">
-                     @if(isset($data))
-                     @foreach($data as $value) 
+                     <?php if(isset($data)): ?>
+                     <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
-                           <a href="{{ route('product', ['slug' => $value['slug']]) }}">
-                              <img src="{{$value['cat_image']}}" alt="{{$value['cat_name']}}">
+                           <a href="blog-details.html">
+                              <img src="<?php echo e($value['product_image']); ?>" alt="">
                            </a>
                         </div>
                         <div class="postbox__content">
-                          
+                           
                            <h3 class="postbox__title">
-                              <a href="{{ route('product', ['slug' => $value['slug']]) }}">{{$value['cat_name']}}</a>
+                              <a href="blog-details.html"><?php echo e($value['product_name']); ?></a>
                           </h3>
+   <?php
+   $price = $value->discounted_amount;
+   $original_price = $value->amount;
 
-                   <div class="postbox__text">
-                    
-                              <p>{!!$value['cat_description']!!}</p>
+   // Calculate discount percentage
+   $discount_percentage = 0;
+   if ($original_price > 0) {
+      $discount_percentage = round((($original_price - $price) / $original_price) * 100);
+   }
+   ?>
+<div class="hl05eU">
+    <div class="Nx9bqj"><b>$<?php echo e(number_format($price, 2)); ?></b></div>
+    <del class="yRaY8j"><b>$<?php echo e(number_format($original_price, 2)); ?></b></del>
+    <div class="UkUFwK"><span><b><?php echo e($discount_percentage); ?>% off</b></span></div>
+</div>
+                           <div class="postbox__text">
+                              <p><?php echo $value['product_description']; ?></p>
                            </div>
-                           <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="{{ route('product', ['slug' => $value['slug']]) }}">Explore</a>
+                           <div>
+                              <ul class="nav nav-tabs">
+                                 <li class="nav-item" >
+                                   <span class="nav-link active" id="service_desc_<?php echo e($value->id); ?>" onclick="navtab(<?php echo e($value->id); ?>,'service_desc')" aria-current="page"><b>Service Description</b></span>
+                                 </li>
+                                 <li class="nav-item">
+                                   <span class="nav-link" id="prerequisites_<?php echo e($value->id); ?>" onclick="navtab(<?php echo e($value->id); ?>,'prerequisites')"><b>Prerequisites</b></span>
+                                 </li>
+                        
+                               </ul>
+                              
                            </div>
+                           <div id="desc_<?php echo e($value->id); ?>">
+                              <?php if(!empty($value->product_description)): ?>
+                              <p><?php echo $value->product_description; ?></p>
+                              <?php else: ?>
+                              <p>No Data Found</p>
+                              <?php endif; ?>
+                           </div>
+                           <div id="prerequisites__desc_<?php echo e($value->id); ?>"  style="display:none">
+                              <?php if(!empty($value->prerequisites)): ?>
+                               <p><?php echo $value->prerequisites; ?></p>
+                               <?php else: ?>
+                              <p class="mt-4">No Data Found</p>
+                              <?php endif; ?>
+                              </div>
+
+                           <div class="row">
+                              <div class="product__add-cart col-md-3">
+                                 <a href="<?php echo e(route('productdetails',['slug' => $value['product_slug']])); ?>" class="fill-btn cart-btn">
+                                    <span class="fill-btn-inner">
+                                       <span class="fill-btn-normal">BUY NOW</span>
+                                       <span class="fill-btn-hover">BUY NOW</span>
+                                    </span>
+                                 </a>
+                              </div>
+                              <div class="product__add-cart col-md-6">
+                                 <a href="<?php echo e(route('cart')); ?>" class="fill-btn cart-btn">
+                                    <span class="fill-btn-inner">
+                                       <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
+                                       <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
+                                    </span>
+                                 </a>
+                              </div>
+                           </div>
+                           
                         </div>
                      </article>
-                     @endforeach
-                     @else
-                        <p>{{$data['error']}}</p>
-                     @endif
-                    
+                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                     <?php else: ?>
+                        <p><?php echo e($data['error']); ?></p>
+                     <?php endif; ?>
+                     
+                     
                  
                      
                      <div class="pagination__wrapper">
                         <div class="bd-basic__pagination d-flex align-items-center justify-content-center">
                            <nav>
-               
-                              {{$data->links('vendor.pagination.custom')}}
+                              
+                              <?php echo e($data->links('vendor.pagination.custom')); ?>
+
                            </nav>
                         </div>
                      </div>
@@ -239,8 +297,8 @@ input[type=text] {
                      <div class="sidebar__widget mb-20">
                         <div class="sidebar__widget-content">
                            <div class="sidebar__search">
-                              <form autocomplete="off" action="{{route('ServicesSearch')}}" method="post">
-                                 @csrf
+                              <form autocomplete="off" action="<?php echo e(route('ServicesSearch')); ?>" method="post">
+                                 <?php echo csrf_field(); ?>
                                  <div class="sidebar__search-input">
                                     <input type="text" id="myInput"  placeholder="Enter your keywords..." name="search">
                                     <button type="submit">
@@ -259,50 +317,30 @@ input[type=text] {
                            </div>
                         </div>
                      </div>
-                     {{-- <div class="sidebar__widget mb-45">
+                     <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Category</h3>
                         <div class="sidebar__widget-content">
                            <ul>
-                              @foreach($category as $value)
-                              <li><a href="{{ route('productCategory', ['id' => $value->id]) }}">{{substr(ucFirst($value->cat_name),0,20)}}</a></li>
-                              @endforeach
+                              <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                              <li><a href="<?php echo e(route('productCategory', ['id' => $value->id])); ?>"><?php echo e(substr(ucFirst($value->cat_name),0,20)); ?></a></li>
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                               
                            </ul>
                         </div>
-                     </div> --}}
-                     {{-- <div class="sidebar__widget mb-45">
-                        <div class="sidebar__widget-content">
-                           <div class="sidebar__author">
-                              <div class="sidebar__author-thumb">
-                                 <img src="{{url('/product_page')}}/imgs/blog/blog-10.jpg" alt="">
-                              </div>
-                              <div class="sidebar__author-content">
-                                 <h3 class="sidebar__author-title">Colene Landin</h3>
-                                 <p>Adipiscing elit, sed do eiu tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim </p>
-                                 <div
-                                    class="sidebar__author-social d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div> --}}
-                      {{-- Hot Deals --}}
+                     </div>
+                     
+                      
                       <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Our Popular Offers</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-11.jpg" alt=""></a>
+                                    <a href="<?php echo e(route('popularDeals')); ?>"><img src="<?php echo e(url('/product_page')); ?>/imgs/blog/blog-11.jpg" alt=""></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="{{route('popularDeals')}}">Business meeting 2021 in San Francisco</a>
+                                       <a href="<?php echo e(route('popularDeals')); ?>">Business meeting 2021 in San Francisco</a>
                                     </h4>
                                     <div class="rc__meta">
                                        <span>
@@ -321,11 +359,11 @@ input[type=text] {
                               </div>
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-12.jpg" alt=""></a>
+                                    <a href="<?php echo e(route('popularDeals')); ?>"><img src="<?php echo e(url('/product_page')); ?>/imgs/blog/blog-12.jpg" alt=""></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="{{route('popularDeals')}}">Developing privacy user-centric apps</a>
+                                       <a href="<?php echo e(route('popularDeals')); ?>">Developing privacy user-centric apps</a>
                                     </h4>
                                     <div class="rc__meta">
                                        <span>
@@ -344,11 +382,11 @@ input[type=text] {
                               </div>
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-13.jpg" alt=""></a>
+                                    <a href="<?php echo e(route('popularDeals')); ?>"><img src="<?php echo e(url('/product_page')); ?>/imgs/blog/blog-13.jpg" alt=""></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="{{route('popularDeals')}}">Starting and Growing Web Design in 2022</a>
+                                       <a href="<?php echo e(route('popularDeals')); ?>">Starting and Growing Web Design in 2022</a>
                                     </h4>
                                     <div class="rc__meta">
                                        <span>
@@ -368,43 +406,31 @@ input[type=text] {
                            </div>
                         </div>
                      </div>
-                     @if(count($popular_service)>0)
+                     <?php if(count($popular_service)>0): ?>
                      <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Popular Services</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
                              
-                              @foreach($popular_service as $value)
+                              <?php $__currentLoopData = $popular_service; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="{{ route('PopularService', ['id' => $value->id]) }}"><img src="{{$value->product_image}}" alt="{{$value->product_name}}"></a>
+                                    <a href="<?php echo e(route('PopularService', ['id' => $value->id])); ?>"><img src="<?php echo e($value->product_image); ?>" alt="<?php echo e($value->product_name); ?>"></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="{{ route('PopularService', ['id' => $value->id]) }}">{{$value->product_name}}</a>
+                                       <a href="<?php echo e(route('PopularService', ['id' => $value->id])); ?>"><?php echo e($value->product_name); ?></a>
                                     </h4>
-                                    {{-- <div class="rc__meta">
-                                       <span>
-                                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                             <path
-                                                d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                             <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>July 21, 2022
-                                       </span>
-                                    </div> --}}
+                                    
                                  </div>
                               </div>
-                              @endforeach
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                               
                               
                            </div>
                         </div>
                      </div>
-                    @endif
+                    <?php endif; ?>
                      
                   </div>
                </div>
@@ -419,7 +445,7 @@ input[type=text] {
          <div class="container">
             <div class="newsletter-grid p-relative">
                <div class="intro-bg">
-                  <div class="intro-bg-thumb include-bg" data-background="{{url('/product_page')}}/imgs/bg/intro-bg.png"></div>
+                  <div class="intro-bg-thumb include-bg" data-background="<?php echo e(url('/product_page')); ?>/imgs/bg/intro-bg.png"></div>
                </div>
                <div class="row gy-4 align-items-center">
                   <div class="col-xxl-6 col-xl-6 col-lg-6">
@@ -454,25 +480,25 @@ input[type=text] {
 
 
    <!-- JS here -->
-   <script src="{{url('/product_page')}}/js/jquery-3.6.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/waypoints.min.js"></script>
-   <script src="{{url('/product_page')}}/js/bootstrap.bundle.min.js"></script>
-   <script src="{{url('/product_page')}}/js/meanmenu.min.js"></script>
-   <script src="{{url('/product_page')}}/js/swiper.min.js"></script>
-   <script src="{{url('/product_page')}}/js/slick.min.js"></script>
-   <script src="{{url('/product_page')}}/js/magnific-popup.min.js"></script>
-   <script src="{{url('/product_page')}}/js/counterup.js"></script>
-   <script src="{{url('/product_page')}}/js/wow.js"></script>
-   <script src="{{url('/product_page')}}/js/ajax-form.js"></script>
-   <script src="{{url('/product_page')}}/js/beforeafter.jquery-1.0.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/main.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/jquery-3.6.0.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/waypoints.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/bootstrap.bundle.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/meanmenu.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/swiper.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/slick.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/magnific-popup.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/counterup.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/wow.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/ajax-form.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/beforeafter.jquery-1.0.0.min.js"></script>
+   <script src="<?php echo e(url('/product_page')); ?>/js/main.js"></script>
 </body>
 
 </html>
-@endsection
-@push('footerscript')
-<script src="{{url('/')}}/giftcards/js/custom.js"></script>
-<script src="{{url('/')}}/giftcards/js/giftcard.js"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('footerscript'); ?>
+<script src="<?php echo e(url('/')); ?>/giftcards/js/custom.js"></script>
+<script src="<?php echo e(url('/')); ?>/giftcards/js/giftcard.js"></script>
 <script>
    function autocomplete(inp, arr) {
      /*the autocomplete function takes two arguments,
@@ -572,10 +598,28 @@ input[type=text] {
    }
    
    /*An array containing all the country names in the world:*/
-   var countries = {!! $search !!};
+   var countries = <?php echo $search; ?>;
    
    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
    autocomplete(document.getElementById("myInput"), countries);
    </script>
-  
-@endpush
+   <script>
+      function navtab(id,type){
+         if(type==='service_desc')
+         {
+            $('#prerequisites_'+id).removeClass('active');
+            $('#service_desc_'+id).addClass('active');
+            $('#desc_'+id).show();
+            $('#prerequisites__desc_'+id).hide();
+         }
+         if(type==='prerequisites')
+         {
+            $('#prerequisites_'+id).addClass('active');
+            $('#service_desc_'+id).removeClass('active');
+            $('#desc_'+id).hide();
+            $('#prerequisites__desc_'+id).show();
+         }
+      }
+   </script>
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.front_product', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\MedsapGiftCardNew\resources\views/product/index.blade.php ENDPATH**/ ?>

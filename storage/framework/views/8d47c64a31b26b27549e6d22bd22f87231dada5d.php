@@ -197,14 +197,14 @@ input[type=text] {
                      <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
-                           <a href="<?php echo e(route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']])); ?>">
+                           <a href="<?php echo e(route('product', ['slug' => $value['slug']])); ?>">
                               <img src="<?php echo e($value['cat_image']); ?>" alt="<?php echo e($value['cat_name']); ?>">
                            </a>
                         </div>
                         <div class="postbox__content">
                           
                            <h3 class="postbox__title">
-                              <a href="<?php echo e(route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']])); ?>"><?php echo e($value['cat_name']); ?></a>
+                              <a href="<?php echo e(route('product', ['slug' => $value['slug']])); ?>"><?php echo e($value['cat_name']); ?></a>
                           </h3>
 
                    <div class="postbox__text">
@@ -212,7 +212,7 @@ input[type=text] {
                               <p><?php echo $value['cat_description']; ?></p>
                            </div>
                            <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="<?php echo e(route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']])); ?>">Explore</a>
+                              <a class="btn btn-primary" href="<?php echo e(route('product', ['slug' => $value['slug']])); ?>">Explore</a>
                            </div>
                         </div>
                      </article>

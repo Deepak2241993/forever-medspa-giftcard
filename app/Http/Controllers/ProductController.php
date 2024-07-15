@@ -205,7 +205,7 @@ class ProductController extends Controller
     // for Display Services Page
     // Filter Category Wise
     // Search Bar
-    public function productpage(Request $request,$token, $slug){
+    public function productpage(Request $request, $slug){
         
         // if(empty($request->token))
         // {
@@ -224,7 +224,7 @@ class ProductController extends Controller
         // $data = json_encode($data_arr);
         // $data = $this->postAPI('product-list', $data);
         $category_result=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('slug',$slug)->first();
-        $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id',$category_result->id)->paginate(10);
+        $data=Product::where('product_is_deleted',0)->where('cat_id',$category_result->id)->paginate(10);
         $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         //  For Auto Search Complete
