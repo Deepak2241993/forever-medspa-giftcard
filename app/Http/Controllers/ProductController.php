@@ -59,7 +59,7 @@ class ProductController extends Controller
 
     // Add the user's token to the data
     $data['user_token'] = $token;
-
+    $data['cat_id']=implode('|',$request->cat_id);
     if ($request->hasFile('product_image')) {
         $folder = str_replace(" ", "_", $token);
         $image = $request->file('product_image');

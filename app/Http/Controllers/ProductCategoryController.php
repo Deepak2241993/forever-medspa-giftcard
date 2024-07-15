@@ -193,6 +193,22 @@ public function update(Request $request,$id)
              return redirect()->back()->with('error', $response['msg']);
          }
      }
+
+     public function categorytpage(){
+        
+        $date=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
+        $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+        //  For Auto Search Complete
+        $search_category = ProductCategory::where('cat_is_deleted', 0)
+        ->where('user_token', 'FOREVER-MEDSPA')
+        ->pluck('cat_name')
+        ->toArray();
+        $search_product=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
+        $finalarray = array_merge($search_category,$search_product);
+
+        $search = json_encode($finalarray);
+        return view('product.index',compact('data','category','search','popular_service'));
+     }
      
 
   
