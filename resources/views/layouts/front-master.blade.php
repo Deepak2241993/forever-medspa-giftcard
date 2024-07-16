@@ -68,9 +68,9 @@
 				</button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
                     <ul class="navbar-nav">
-                         <li><a class="nav-link @if(Route::currentRouteName()==route('home')) {{'active'}} @endif" href="{{url('/')}}">Giftcards</a></li> 
+                         <li><a class="nav-link active" href="{{url('/')}}">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
-						<li><a class="nav-link @if(Route::currentRouteName() != route('home')){{'active'}} @endif" href="{{route('category',['token'=>'FOREVER-MEDSPA'])}}">Services</a></li>
+						<li><a class="nav-link" href="{{route('category',['token'=>'FOREVER-MEDSPA'])}}">Services</a></li>
                         
                     </ul>
                 </div>

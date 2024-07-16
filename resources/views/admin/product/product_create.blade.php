@@ -70,14 +70,14 @@
                         
                        
                         <div class="mb-12 col-lg-12 self">
-                            <label for="short_description" class="form-label">Short Description</label>
-                            <textarea name="short_description"  id="short_description" class="form-control summernote">{{isset($data)?$data['short_description']:''}}</textarea>
+                            <label for="short_description" class="form-label">Short Description<span class="text-danger"> (Text Limit 500 Characters)</span></label>
+                            <textarea name="short_description"  id="short_description" class="form-control">{{isset($data)?$data['short_description']:''}}</textarea>
                         </div>
-                        <div class="mb-12 col-lg-12 self">
+                        <div class="mb-12 col-lg-12 self mt-3">
                             <label for="product_description" class="form-label">Service Description</label>
                             <textarea name="product_description"  id="product_description" class="form-control summernote">{{isset($data)?$data['product_description']:''}}</textarea>
                         </div>
-                        <div class="mb-12 col-lg-12 self">
+                        <div class="mb-12 col-lg-12 self mt-3">
                             <label for="prerequisites" class="form-label">Prerequisites</label>
                             <textarea name="prerequisites"  id="prerequisites" class="form-control summernote">{{isset($data)?$data['prerequisites']:''}}</textarea>
                         </div>

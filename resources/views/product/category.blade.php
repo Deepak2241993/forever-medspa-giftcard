@@ -211,9 +211,17 @@ input[type=text] {
                     
                               <p>{!!$value['cat_description']!!}</p>
                            </div>
-                           <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="{{ route('product', ['slug' => $value['slug']]) }}">Explore</a>
+                           <div class="product__add-cart col-md-3">
+                              <a href="{{ route('product', ['slug' => $value['slug']]) }}" class="fill-btn cart-btn">
+                                 <span class="fill-btn-inner">
+                                    <span class="fill-btn-normal">Explore</span>
+                                    <span class="fill-btn-hover">Explore</span>
+                                 </span>
+                              </a>
                            </div>
+                           {{-- <div class="postbox__read-more">
+                              <a class="btn btn-primary" href="{{ route('product', ['slug' => $value['slug']]) }}">Explore</a>
+                           </div> --}}
                         </div>
                      </article>
                      @endforeach

@@ -199,6 +199,7 @@ public function update(Request $request,$id)
         
         $data=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+       
         //  For Auto Search Complete
         $search_category = ProductCategory::where('cat_is_deleted', 0)
         ->where('user_token', 'FOREVER-MEDSPA')
