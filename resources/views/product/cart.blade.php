@@ -1,6 +1,10 @@
 @extends('layouts.front_product')
 @section('body')
 <!-- Body main wrapper start -->
+@php
+$cart = session()->get('cart', []);
+$amount=0;
+@endphp
 <main>
 
     <!-- Breadcrumb area start  -->
@@ -14,7 +18,7 @@
                    <div class="breadcrumb__menu">
                       <nav>
                          <ul>
-                            <li><span><a href="index.html">Home</a></span></li>
+                            <li><span><a href="{{url('/')}}">Home</a></span></li>
                             <li><span>Cart</span></li>
                          </ul>
                       </nav>
@@ -25,7 +29,7 @@
        </div>
     </div>
     <!-- Breadcrumb area start  -->
-
+@if(isset($cart) && !empty($cart))
     <!-- Cart area start  -->
     <div class="cart-area section-space">
        <div class="container">
@@ -37,94 +41,57 @@
                          <tr>
                             <th class="product-thumbnail">Images</th>
                             <th class="cart-product-name">Product</th>
-                            <th class="product-price">Unit Price</th>
-                            <th class="product-quantity">Quantity</th>
+                            {{-- <th class="product-price">Unit Price</th> --}}
+                            <th class="product-quantity">No.of Session</th>
                             <th class="product-subtotal">Total</th>
                             <th class="product-remove">Remove</th>
                          </tr>
                       </thead>
                       <tbody>
-                         <tr>
+                    
+                          @foreach ($cart as $item) 
+
+                          @php
+                          $cart_data= App\Models\Product::find($item['product_id']);
+                          $amount += $cart_data->discounted_amount;
+                          
+                          @endphp
+                          {{-- {{dd($cart_data)}} --}}
+                         <tr id="cart-item-{{ $cart_data->id }}">
                             <td class="product-thumbnail"><a href="product-details.html"><img
-                                     src="{{url('/product_page')}}/imgs/product/details/details-01.png" alt="img"></a></td>
-                            <td class="product-name"><a href="product-details.html">Organic Full Cream Milk</a></td>
-                            <td class="product-price"><span class="amount">$24.00</span></td>
+                                     src="{{$cart_data->product_image}}" alt="img"></a></td>
+                            <td class="product-name"><a href="product-details.html">{{$cart_data->product_name}}</a></td>
+                            {{-- <td class="product-price"><span class="amount">$24.00</span></td> --}}
                             <td class="product-quantity text-center">
                                <div class="product-quantity mt-10 mb-10">
                                   <div class="product-quantity-form">
-                                     <form action="#">
-                                        <button class="cart-minus"><i class="far fa-minus"></i></button>
-                                        <input class="cart-input" type="text" value="1">
-                                        <button class="cart-plus"><i class="far fa-plus"></i></button>
-                                     </form>
+                                    
+                                        <input class="cart-input" readonly type="text" value="{{$cart_data->session_number}}">
                                   </div>
                                </div>
                             </td>
-                            <td class="product-subtotal"><span class="amount">$24.00</span></td>
-                            <td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+                            <td class="product-subtotal"><span class="amount">{{$cart_data->discounted_amount}}</span></td>
+                            <td class="product-remove"><a href="#"onclick="removeFromCart({{ $item['product_id'] }})"><i class="fa fa-times"></i></a></td>
                          </tr>
-                         <tr>
-                            <td class="product-thumbnail"><a href="product-details.html"><img
-                                     src="{{url('/product_page')}}/imgs/product/details/details-02.png" alt="img"></a></td>
-                            <td class="product-name"><a href="product-details.html">Organic Fresh Milk</a>
-                            </td>
-                            <td class="product-price"><span class="amount">$12.00</span></td>
-                            <td class="product-quantity text-center">
-                               <div class="product-quantity mt-10 mb-10">
-                                  <div class="product-quantity-form">
-                                     <form action="#">
-                                        <button class="cart-minus"><i class="far fa-minus"></i></button>
-                                        <input class="cart-input" type="text" value="1">
-                                        <button class="cart-plus"><i class="far fa-plus"></i></button>
-                                     </form>
-                                  </div>
-                               </div>
-                            </td>
-                            <td class="product-subtotal"><span class="amount">$12.00</span></td>
-                            <td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-                         </tr>
-                         <tr>
-                            <td class="product-thumbnail"><a href="product-details.html"><img
-                                     src="{{url('/product_page')}}/imgs/product/details/details-03.png" alt="img"></a></td>
-                            <td class="product-name"><a href="product-details.html">Orange Milk Chocolate</a></td>
-                            <td class="product-price"><span class="amount">$42.00</span></td>
-                            <td class="product-quantity text-center">
-                               <div class="product-quantity mt-10 mb-10">
-                                  <div class="product-quantity-form">
-                                     <form action="#">
-                                        <button class="cart-minus"><i class="far fa-minus"></i></button>
-                                        <input class="cart-input" type="text" value="1">
-                                        <button class="cart-plus"><i class="far fa-plus"></i></button>
-                                     </form>
-                                  </div>
-                               </div>
-                            </td>
-                            <td class="product-subtotal"><span class="amount">$42.00</span></td>
-                            <td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-                         </tr>
+                         @endforeach
+                         
+                       
                       </tbody>
                    </table>
                 </div>
+                
                 <div class="row">
                    <div class="col-12">
                       <div class="coupon-all">
-                         <div class="coupon d-flex align-items-center">
-                            <input id="coupon_code" class="input-text" name="coupon_code" placeholder="Coupon code"
-                               type="text">
-                            <button onclick="window.location.reload()" class="fill-btn" type="submit">
-                               <span class="fill-btn-inner">
-                                  <span class="fill-btn-normal">apply coupon</span>
-                                  <span class="fill-btn-hover">apply coupon</span>
-                               </span>
-                            </button>
-                         </div>
+                         
                          <div class="coupon2">
-                            <button onclick="window.location.reload()" class="fill-btn" type="submit">
-                               <span class="fill-btn-inner">
-                                  <span class="fill-btn-normal">Update cart</span>
-                                  <span class="fill-btn-hover">Update cart</span>
-                               </span>
-                            </button>
+                           <button onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'" class="fill-btn" type="button">
+                              <span class="fill-btn-inner">
+                                  <span class="fill-btn-normal">+Add More</span>
+                                  <span class="fill-btn-hover">+Add More</span>
+                              </span>
+                          </button>
+                          
                          </div>
                       </div>
                    </div>
@@ -134,10 +101,12 @@
                       <div class="cart-page-total">
                          <h2>Cart totals</h2>
                          <ul class="mb-20">
-                            <li>Subtotal <span>$78.00</span></li>
-                            <li>Total <span>$78.00</span></li>
+                            <li>Subtotal <span>${{ number_format($amount, 2) }}</span></li>
+                            <li>Shipping <span>$10.00</span></li>
+                            <li>Tax <span>$10.00</span></li>
+                            <li>Total <span>${{ number_format($amount, 2) }}</span></li>
                          </ul>
-                         <a class="fill-btn" href="checkout.html">
+                         <a class="fill-btn" href="{{route('checkout')}}">
                             <span class="fill-btn-inner">
                                <span class="fill-btn-normal">Proceed to checkout</span>
                                <span class="fill-btn-hover">Proceed to checkout</span>
@@ -151,8 +120,40 @@
        </div>
     </div>
     <!-- Cart area end  -->
+@else
+<h3>Your Cart is Empty</h3>
+@endif
 
  </main>
  <!-- Body main wrapper end -->
 
 @endsection
+
+@push('footerscript')
+<script>
+function removeFromCart(id) {
+   $.ajax({
+       url: '{{ route('cartremove') }}',
+       method: "post",
+       dataType: "json",
+       data: {
+           _token: '{{ csrf_token() }}',
+           product_id: id
+       },
+       success: function (response) {
+           if (response.success) {
+               // Update the cart view, e.g., remove the item from the DOM
+               $('#cart-item-' + id).remove();
+               alert(response.success);
+               location.reload();
+           } else {
+               alert(response.error);
+           }
+       },
+       error: function (jqXHR, textStatus, errorThrown) {
+           alert('An error occurred. Please try again.');
+       }
+   });
+}
+</script>
+@endpush

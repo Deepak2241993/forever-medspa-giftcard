@@ -103,14 +103,14 @@
                         <div class="product__quantity">
                            <div class="product-quantity-wrapper">
                               <form action="#">
-                                 <button class="cart-minus"><i class="fa-light fa-minus"></i></button>
+                                 <button class="cart-minus">Number Of Session</button>
                                  <input class="cart-input" type="text" value="1">
-                                 <button class="cart-plus"><i class="fa-light fa-plus"></i></button>
+                                 {{-- <button class="cart-plus"><i class="fa-light fa-plus"></i></button> --}}
                               </form>
                            </div>
                         </div>
                         <div class="product__add-cart">
-                           <a href="javascript:void(0)" class="fill-btn cart-btn">
+                           <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$data->id}})">
                               <span class="fill-btn-inner">
                                  <span class="fill-btn-normal">Add To Cart<i
                                        class="fa-solid fa-basket-shopping"></i></span>
@@ -120,7 +120,7 @@
                            </a>
                         </div>
                         <div class="product__add-wish">
-                           <a href="javascript:void(0)" class="fill-btn cart-btn">
+                           <a href="{{route('checkout')}}" class="fill-btn cart-btn">
                               <span class="fill-btn-inner">
                                  <span class="fill-btn-normal">Buy Now</span>
                                  <span class="fill-btn-hover">Buy Now</span>
@@ -349,5 +349,30 @@
 @endsection
 
 @push('footerscript')
+<script>
+   function addcart(id) {
+    $.ajax({
+        url: '{{ route('cart') }}',
+        method: "post",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            product_id: id,
+            quantity: 1
+        },
+        success: function (response) {
+            if (response.success) {
+                window.location.href = '{{ route('cartview') }}'; 
+            } else {
+                $('.showbalance').html(response.error).show();
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Handle the error here
+            $('.showbalance').html('An error occurred. Please try again.').show();
+        }
+    });
+}
 
+</script>
 @endpush

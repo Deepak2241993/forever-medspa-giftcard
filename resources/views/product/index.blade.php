@@ -298,7 +298,7 @@ input[type=text] {
                                  </a>
                               </div>
                               <div class="product__add-cart col-md-6">
-                                 <a href="{{route('cart')}}" class="fill-btn cart-btn">
+                                 <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$value->id}})">
                                     <span class="fill-btn-inner">
                                        <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
                                        <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
@@ -700,5 +700,31 @@ input[type=text] {
             $('#prerequisites__desc_'+id).show();
          }
       }
+   </script>
+   <script>
+      function addcart(id) {
+       $.ajax({
+           url: '{{ route('cart') }}',
+           method: "post",
+           dataType: "json",
+           data: {
+               _token: '{{ csrf_token() }}',
+               product_id: id,
+               quantity: 1
+           },
+           success: function (response) {
+               if (response.success) {
+                   window.location.href = '{{ route('cartview') }}'; 
+               } else {
+                   $('.showbalance').html(response.error).show();
+               }
+           },
+           error: function (jqXHR, textStatus, errorThrown) {
+               // Handle the error here
+               $('.showbalance').html('An error occurred. Please try again.').show();
+           }
+       });
+   }
+   
    </script>
 @endpush

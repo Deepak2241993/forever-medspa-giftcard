@@ -1,5 +1,9 @@
 @extends('layouts.front_product')
 @section('body')
+@php
+$cart = session()->get('cart', []);
+$amount=0;
+@endphp
    <!-- Body main wrapper start -->
    <main>
 
@@ -14,7 +18,7 @@
                    <div class="breadcrumb__menu">
                       <nav>
                          <ul>
-                            <li><span><a href="index.html">Home</a></span></li>
+                            <li><span><a href="{{url('/')}}">Home</a></span></li>
                             <li><span>checkout</span></li>
                          </ul>
                       </nav>
@@ -29,7 +33,8 @@
     <!-- checkout-area start -->
     <section class="checkout-area section-space">
        <div class="container">
-          <form action="#">
+          <form action="{{ route('checkout_process') }}" method="POST">
+            @csrf
              <div class="row">
                 <div class="col-lg-6">
                    <div class="checkbox-form">
@@ -228,37 +233,28 @@
                                </tr>
                             </thead>
                             <tbody>
+                              @foreach ($cart as $item) 
+
+                              @php
+                              $cart_data= App\Models\Product::find($item['product_id']);
+                              $amount += $cart_data->discounted_amount;
+                              
+                              @endphp
                                <tr class="cart_item">
                                   <td class="product-name">
-                                     Organic Full Cream Milk<strong class="product-quantity"> × 1</strong>
+                                    {{$cart_data->product_name}}<strong class="product-quantity"> × {{$cart_data->session_number?$cart_data->session_number:1}}</strong>
                                   </td>
                                   <td class="product-total">
-                                     <span class="amount">$24.00</span>
+                                     <span class="amount">${{ number_format($amount, 2) }}</span>
                                   </td>
                                </tr>
-                               <tr class="cart_item">
-                                  <td class="product-name">
-                                     Organic Fresh Milk<strong class="product-quantity"> ×
-                                        1</strong>
-                                  </td>
-                                  <td class="product-total">
-                                     <span class="amount">$12.00</span>
-                                  </td>
-                               </tr>
-                               <tr class="cart_item">
-                                  <td class="product-name">
-                                     Orange Milk Chocolate<strong class="product-quantity"> ×
-                                        1</strong>
-                                  </td>
-                                  <td class="product-total">
-                                     <span class="amount">$22.00</span>
-                                  </td>
-                               </tr>
+                               @endforeach
+                               
                             </tbody>
                             <tfoot>
                                <tr class="cart-subtotal">
                                   <th>Cart Subtotal</th>
-                                  <td><span class="amount">$58.00</span></td>
+                                  <td><span class="amount">${{ number_format($amount, 2) }}</span></td>
                                </tr>
                                <tr class="shipping">
                                   <th>Shipping</th>
@@ -279,7 +275,7 @@
                                </tr>
                                <tr class="order-total">
                                   <th>Order Total</th>
-                                  <td><strong><span class="amount">$85.00</span></strong>
+                                  <td><strong><span class="amount">${{ number_format($amount, 2) }}</span></strong>
                                   </td>
                                </tr>
                             </tfoot>

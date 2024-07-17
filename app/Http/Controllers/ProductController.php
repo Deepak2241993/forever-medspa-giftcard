@@ -283,11 +283,11 @@ class ProductController extends Controller
 
             $data=['keywords'=>$request->search];
             Search_keyword::create($data);
-            $search = '%' . $request->search . '%';
+            $getsearch = '%' . $request->search . '%';
                         
             $search_result = ProductCategory::where('cat_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
-                ->where('cat_name', '=', $search) // Assuming $search is defined somewhere
+                ->where('cat_name', '=', $getsearch) // Assuming $search is defined somewhere
                 ->first();
 
                 // For Category List get in frontend
@@ -314,14 +314,25 @@ class ProductController extends Controller
             }
 
             else
-            {
+            {   
                 $data = Product::where('product_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
-                ->where('product_name', 'LIKE', $search)
-                ->orWhere('search_keywords', 'LIKE', $search)
-                ->paginate(50);
-               
-                return view('product.product_details',compact('data','category','search','popular_service'));
+                ->where('product_name', '=', $getsearch)
+                ->first();
+                if(!is_null($data) && $data->count() > 0)
+                {
+                    return view('product.product_details',compact('data','category','search','popular_service'));
+                }
+                else
+                {
+                    $data = Product::where('product_is_deleted', 0)
+                    ->where('user_token', 'FOREVER-MEDSPA')
+                    ->where('product_name', 'LIKE', $getsearch)
+                    ->orWhere('search_keywords', 'LIKE', $getsearch)
+                    ->paginate(50);
+                    
+                    return view('product.index',compact('data','category','search','popular_service'));
+                }              
                 
             }
             return back()->with('message','No Data Found');

@@ -101,6 +101,10 @@
                             <label for="discounted_amount" class="form-label">Service Price</label>
                             <input class="form-control" type="number" min="0" name="discounted_amount" value="{{isset($data)?$data['discounted_amount']:''}}" placeholder="Product Name">
                         </div>
+                        <div class="mb-3 col-lg-6 self">
+                            <label for="session_number" class="form-label">Number of session</label>
+                            <input class="form-control" type="number" min="1" name="session_number" value="{{isset($data)?$data['session_number']:'1'}}" placeholder="Number Of Session">
+                        </div>
                      
                         <div class="mb-12 col-lg-12 self">
                             <label for="search_keywords" class="form-label">Search Keywords</label>

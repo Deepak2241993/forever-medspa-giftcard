@@ -102,15 +102,18 @@ Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('pay
 
 //  Product Page Route
 Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
-Route::get('products/{slug}','ProductController@productpage')->name('product');
-Route::get('product/{slug}','ProductController@productdetails')->name('productdetails');
+Route::get('services/{slug}','ProductController@productpage')->name('product');
+Route::get('service/{slug}','ProductController@productdetails')->name('productdetails');
 // Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
 // Front Route for PopularOffer
 Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
+Route::post('cart','PopularOfferController@Cart')->name('cart');
+Route::get('cartview','PopularOfferController@Cartview')->name('cartview');
+Route::post('/cart/remove','PopularOfferController@CartRemove')->name('cartremove');
 Route::get('checkout','PopularOfferController@Checkout')->name('checkout');
-Route::get('cart','PopularOfferController@Cart')->name('cart');
+Route::post('checkout-process','PopularOfferController@CheckoutProcess')->name('checkout_process');
 
 
 
