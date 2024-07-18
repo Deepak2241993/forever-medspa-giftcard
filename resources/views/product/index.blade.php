@@ -264,7 +264,7 @@ input[type=text] {
                            <div class="postbox__text">
                               <p>{!!$value['product_description']!!}</p>
                            </div>
-                           <div>
+                           {{-- <div>
                               <ul class="nav nav-tabs">
                                  <li class="nav-item" >
                                    <span class="nav-link active" id="service_desc_{{$value->id}}" onclick="navtab({{$value->id}},'service_desc')" aria-current="page"><b>Service Description</b></span>
@@ -275,14 +275,14 @@ input[type=text] {
                         
                                </ul>
                               
-                           </div>
-                           <div id="desc_{{$value->id}}">
+                           </div> --}}
+                           {{-- <div id="desc_{{$value->id}}">
                               @if(!empty($value->short_description))
                               <p>{!! $value->short_description !!}</p>
                               @else
                               <p>No Data Found</p>
                               @endif
-                           </div>
+                           </div> --}}
                            <div id="prerequisites__desc_{{$value->id}}"  style="display:none">
                               @if(!empty($value->prerequisites))
                                <p>{!! $value->prerequisites !!}</p>
