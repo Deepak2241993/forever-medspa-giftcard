@@ -484,9 +484,13 @@ input[type=text] {
                            <div class="sidebar__post">
                              
                               @foreach($popular_service as $value)
+                              @php 
+                              $image= explode('|',$value->product_image)
+                              @endphp
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
-                                    <a href="{{ route('PopularService', ['id' => $value->id]) }}"><img src="{{$value->product_image}}" alt="{{$value->product_name}}"></a>
+                                   
+                                    <a href="{{ route('PopularService', ['id' => $value->id]) }}"><img src="{{$image[0]}}" alt="{{$value->product_name}}"></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
