@@ -55,21 +55,26 @@
                             <label for="cat_description" class="form-label">Category Description</label>
                             <textarea name="cat_description"  id="cat_description" rows="4" class="form-control">{{isset($data)?$data['cat_description']:''}}</textarea>
                         </div>
-                        <div class="mb-3 col-lg-6 self">
+                        @if(isset($data))
+                        <div class="mb-3 col-lg-6 mt-4 self">
                             <label for="image" class="form-label">Category Image</label>
                             @isset($data['cat_image'])
                             <div id="image_class">
-                            
-                            <img src="{{ $data['cat_image'] }}" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger" onclick="hideImage()">X</buttom></span>
-                            
-                        </div>
+                            <img src="{{ $data['cat_image'] }}"style="width:80%; height:100px;"><span> <buttom class="btn btn-danger" onclick="hideImage()">X</buttom></span>
+                             </div>
                             @endisset
-                            <div id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
+                            <div id="image_field"  @if($data['cat_image']!="")style="display:{{isset($data['id'])?'none':'block'}}"@endif>
                             <input class="form-control" id="image" type="file" name="cat_image">
                             </div>
+                        </div>                       
+                        @else
+                        <div class="mb-3 col-lg-6 mt-4">
+                            <label for="from" class="form-label">Category Image</label>
+                            <input class="form-control" id="image" type="file" name="cat_image">
                         </div>
+                        @endif
                        
-                        <div class="mb-3 col-lg-6">
+                        <div class="mb-3 col-lg-6 mt-4">
                             <label for="from" class="form-label">Status</label>
                             <select class="form-control" name="status" id="from">
                                 <option value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }} >Active</option>
@@ -77,7 +82,7 @@
                             </select>
                         </div>
                  
-                        <div class="mb-3 col-lg-6">
+                        <div class="mb-3 col-lg-12">
                             <button class="btn btn-primary" type="submit">Submit</button>
                         </div>
                     </div>

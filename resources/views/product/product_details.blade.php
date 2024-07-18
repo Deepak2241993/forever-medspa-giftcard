@@ -39,40 +39,35 @@
                      <div class="product__details-thumb-tab mr-20">
                         <nav>
                            <div class="nav nav-tabs flex-nowrap flex-sm-column" id="nav-tab" role="tablist">
-                              <button class="nav-link active" id="img-1-tab" data-bs-toggle="tab"
-                                 data-bs-target="#img-1" type="button" role="tab" aria-controls="img-1"
+                              @php 
+                              $image= explode('|',$data->product_image)
+                              @endphp
+                               @foreach($image as $key=>$image_name)
+                               @if($key<=2)
+                              <button class="nav-link {{$key==0?'active':''}}" id="img-{{$key}}-tab" data-bs-toggle="tab"
+                                 data-bs-target="#img-{{$key}}" type="button" role="tab" aria-controls="img-{{$key}}"
                                  aria-selected="true">
-                                 <img src="{{$data->product_image}}" alt="product-sm-thumb">
+                                 <img src="{{$image_name}}" alt="product-sm-thumb">
                               </button>
-                              <button class="nav-link" id="img-2-tab" data-bs-toggle="tab" data-bs-target="#img-2"
-                                 type="button" role="tab" aria-controls="img-3" aria-selected="false">
-                                 <img src="{{$data->product_image}}" alt="product-sm-thumb">
-                              </button>
-                              <button class="nav-link" id="img-3-tab" data-bs-toggle="tab" data-bs-target="#img-3"
-                                 type="button" role="tab" aria-controls="img-3" aria-selected="false">
-                                 <img src="{{$data->product_image}}" alt="product-sm-thumb">
-                              </button>
+                              @endif
+                              @endforeach
                            </div>
                         </nav>
                      </div>
                      <div class="product__details-thumb-tab-content">
                         <div class="tab-content" id="productthumbcontent">
-                           <div class="tab-pane fade show active" id="img-1" role="tabpanel"
-                              aria-labelledby="img-1-tab">
+                          
+                           @foreach($image as $key=>$image_name)
+                           @if($key<=2)
+                           <div class="tab-pane fade {{$key==0?'show active':''}}" id="img-{{$key}}" role="tabpanel"
+                              aria-labelledby="img-{{$key}}-tab">
                               <div class="product__details-thumb-big w-img">
-                                 <img src="{{$data->product_image}}" alt="">
+                                 <img src="{{$image_name}}" alt="">
                               </div>
                            </div>
-                           <div class="tab-pane fade" id="img-2" role="tabpanel" aria-labelledby="img-2-tab">
-                              <div class="product__details-thumb-big w-img">
-                                 <img src="{{$data->product_image}}" alt="">
-                              </div>
-                           </div>
-                           <div class="tab-pane fade" id="img-3" role="tabpanel" aria-labelledby="img-3-tab">
-                              <div class="product__details-thumb-big w-img">
-                                 <img src="{{$data->product_image}}" alt="">
-                              </div>
-                           </div>
+                           @endif
+                           @endforeach
+                          
                         </div>
                      </div>
                   </div>

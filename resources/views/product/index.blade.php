@@ -198,7 +198,10 @@ input[type=text] {
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
                            <a href="{{route('productdetails',['slug' => $value['product_slug']])}}">
-                              <img src="{{$value['product_image']}}" alt="">
+                              @php 
+                              $image= explode('|',$value['product_image'])
+                              @endphp
+                              <img src="{{$image[0]}}" alt="">
                            </a>
                         </div>
                         <div class="postbox__content">

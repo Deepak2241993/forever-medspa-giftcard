@@ -43,11 +43,11 @@
                     @csrf
                     <div class="row">
                         <div class="mb-3 col-lg-6 self">
-                            <label for="product_name" class="form-label">Service Name</label>
-                            <input class="form-control" id="product_name" type="text" name="product_name" value="{{isset($data)?$data['product_name']:''}}" placeholder="Product Name" onkeyup="slugCreate()">
+                            <label for="product_name" class="form-label">Service Name<span class="text-danger">*</span></label>
+                            <input class="form-control" id="product_name" required type="text" name="product_name" value="{{isset($data)?$data['product_name']:''}}" placeholder="Product Name" onkeyup="slugCreate()">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="product_slug" class="form-label">Service Slug</label>
+                            <label for="product_slug" class="form-label">Service Slug<span class="text-danger">*</span></label>
                             <input class="form-control" type="text" name="product_slug" value="{{isset($data)?$data['product_slug']:''}}" placeholder="Slug" id="product_slug">
                         </div>
                         <div class="mb-3 col-lg-12 self">
@@ -56,8 +56,8 @@
                                 @foreach($category as $value)
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" name="cat_id[]" value="{{ $value['id'] }}" 
-                                            {{ isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="cat_{{ $value['id'] }}">
+                                            {{ isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : '' }} >
+                                        <label class="form-check-label" for="cat_{{ $value['id'] }}" >
                                             {{ $value['cat_name'] }}
                                         </label>
                                     </div>
@@ -71,7 +71,7 @@
                        
                         <div class="mb-12 col-lg-12 self">
                             <label for="short_description" class="form-label">Short Description<span class="text-danger"> (Text Limit 500 Characters)</span></label>
-                            <textarea name="short_description"  id="short_description" class="form-control">{{isset($data)?$data['short_description']:''}}</textarea>
+                            <textarea name="short_description"  id="short_description" class="form-control" required>{{ isset($data)?$data['short_description']:''}}</textarea>
                         </div>
                         <div class="mb-12 col-lg-12 self mt-3">
                             <label for="product_description" class="form-label">Service Description</label>
@@ -124,22 +124,22 @@
                    
                         @endif
                         <div class="mb-3 col-lg-6 self" id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
-                            <label for="product_image" class="form-label">Service Image</label><br>                                
-                                <input class="form-control" id="image" type="file" name="product_image[]" multiple>
+                            <label for="product_image" class="form-label">Service Image<span class="text-danger">*</span></label><br>                                
+                                <input class="form-control" id="image" type="file" name="product_image[]" multiple {{isset($data)?'':'required'}}>
                         </div> 
                       
                         <div class="mb-3 col-lg-6 self">
-                            <label for="amount" class="form-label">Service Original Price </label>
-                            <input class="form-control" type="number" min="0" name="amount" value="{{isset($data)?$data['amount']:''}}" placeholder="Product Name">
+                            <label for="amount" class="form-label">Service Original Price<span class="text-danger">*</span> </label>
+                            <input class="form-control" type="number" min="0" name="amount" value="{{isset($data)?$data['amount']:''}}" placeholder="Service Original Price" required>
                             <input class="form-control" type="hidden" min="0" name="id" value="{{isset($data)?$data['id']:''}}">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="discounted_amount" class="form-label">Service Price</label>
-                            <input class="form-control" type="number" min="0" name="discounted_amount" value="{{isset($data)?$data['discounted_amount']:''}}" placeholder="Product Name">
+                            <label for="discounted_amount" class="form-label">Service Price<span class="text-danger">*</span></label>
+                            <input class="form-control" type="number" min="0" name="discounted_amount" value="{{isset($data)?$data['discounted_amount']:''}}" placeholder="Service Price" required>
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="session_number" class="form-label">Number of session</label>
-                            <input class="form-control" type="number" min="1" name="session_number" value="{{isset($data)?$data['session_number']:'1'}}" placeholder="Number Of Session">
+                            <label for="session_number" class="form-label">Number of session<span class="text-danger">*</span></label>
+                            <input class="form-control" type="number" min="1" name="session_number" value="{{isset($data)?$data['session_number']:'1'}}" placeholder="Number Of Session" required>
                         </div>
                      
                         <div class="mb-12 col-lg-12 self">

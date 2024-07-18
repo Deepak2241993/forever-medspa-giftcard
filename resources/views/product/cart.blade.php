@@ -54,12 +54,13 @@ $amount=0;
                           @php
                           $cart_data= App\Models\Product::find($item['product_id']);
                           $amount += $cart_data->discounted_amount;
-                          
+               
+                              $image= explode('|',$cart_data->product_image)
                           @endphp
                           {{-- {{dd($cart_data)}} --}}
                          <tr id="cart-item-{{ $cart_data->id }}">
                             <td class="product-thumbnail"><a href="product-details.html"><img
-                                     src="{{$cart_data->product_image}}" alt="img"></a></td>
+                                     src="{{$image[0]}}" alt="img"></a></td>
                             <td class="product-name"><a href="product-details.html">{{$cart_data->product_name}}</a></td>
                             {{-- <td class="product-price"><span class="amount">$24.00</span></td> --}}
                             <td class="product-quantity text-center">
