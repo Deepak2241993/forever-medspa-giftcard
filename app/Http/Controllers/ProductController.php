@@ -60,13 +60,19 @@ class ProductController extends Controller
     // Add the user's token to the data
     $data['user_token'] = $token;
     $data['cat_id']=implode('|',$request->cat_id);
+    $product_image = array();
+
     if ($request->hasFile('product_image')) {
         $folder = str_replace(" ", "_", $token);
-        $image = $request->file('product_image');
-        $destinationPath = '/uploads/' . $folder."/";
-        $filename = $image->getClientOriginalName();
-        $image->move(public_path($destinationPath), $filename);
-        $data['product_image'] = url('/').$destinationPath.$filename;
+        $destinationPath = '/uploads/' . $folder . "/";
+    
+        foreach ($request->file('product_image') as $image) {
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path($destinationPath), $filename);
+            array_push($product_image, url('/') . $destinationPath . $filename);
+        }
+        $finalImageUrl = implode('|',$product_image);
+        $data['product_image'] = $finalImageUrl;
     }
  
     // Send data to API endpoint using cURL
@@ -159,15 +165,22 @@ class ProductController extends Controller
         $data = $request->except('_token','_method');
         $data['user_token'] = $token;
         $data['cat_id']=implode('|',$request->cat_id);
-            
+         
+        $product_image = array();
+
         if ($request->hasFile('product_image')) {
             $folder = str_replace(" ", "_", $token);
-            $image = $request->file('product_image');
-            $destinationPath = '/uploads/' . $folder."/";
-            $filename = $image->getClientOriginalName();
-            $image->move(public_path($destinationPath), $filename);
-            $data['product_image'] = url('/').$destinationPath.$filename;
+            $destinationPath = '/uploads/' . $folder . "/";
+        
+            foreach ($request->file('product_image') as $image) {
+                $filename = $image->getClientOriginalName();
+                $image->move(public_path($destinationPath), $filename);
+                array_push($product_image, url('/') . $destinationPath . $filename);
+            }
+            $finalImageUrl = implode('|',$product_image);
+            $data['product_image'] = $finalImageUrl;
         }
+        
         
         $data = json_encode($data);
         $data = $this->postAPI('product-update/'.$request->id,$data);

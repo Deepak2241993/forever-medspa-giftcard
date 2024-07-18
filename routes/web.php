@@ -114,6 +114,7 @@ Route::get('cartview','PopularOfferController@Cartview')->name('cartview');
 Route::post('/cart/remove','PopularOfferController@CartRemove')->name('cartremove');
 Route::get('checkout','PopularOfferController@Checkout')->name('checkout');
 Route::post('checkout-process','PopularOfferController@CheckoutProcess')->name('checkout_process');
+Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
 
 
 

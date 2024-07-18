@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
+use Str;
 class ProductCategoryController extends Controller
 {
     /**
@@ -210,6 +211,12 @@ public function update(Request $request,$id)
 
         $search = json_encode($finalarray);
         return view('product.category',compact('data','search','popular_service'));
+     }
+
+
+     function slugCreate(Request $request){
+        $slug= Str::slug($request->product_name);
+        return response()->json(['success' => 'Slug Created!','slug'=>$slug]);
      }
      
 

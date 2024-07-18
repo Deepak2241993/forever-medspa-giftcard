@@ -44,11 +44,11 @@
                     <div class="row">
                         <div class="mb-3 col-lg-6 self">
                             <label for="product_name" class="form-label">Service Name</label>
-                            <input class="form-control" type="text" name="product_name" value="{{isset($data)?$data['product_name']:''}}" placeholder="Product Name">
+                            <input class="form-control" id="product_name" type="text" name="product_name" value="{{isset($data)?$data['product_name']:''}}" placeholder="Product Name" onkeyup="slugCreate()">
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="product_slug" class="form-label">Service Slug</label>
-                            <input class="form-control" type="text" name="product_slug" value="{{isset($data)?$data['product_slug']:''}}" placeholder="Slug">
+                            <input class="form-control" type="text" name="product_slug" value="{{isset($data)?$data['product_slug']:''}}" placeholder="Slug" id="product_slug">
                         </div>
                         <div class="mb-3 col-lg-12 self">
                             <label class="form-label">Select Service Category</label>
@@ -81,17 +81,53 @@
                             <label for="prerequisites" class="form-label">Prerequisites</label>
                             <textarea name="prerequisites"  id="prerequisites" class="form-control summernote">{{isset($data)?$data['prerequisites']:''}}</textarea>
                         </div>
-                        <div class="mb-3 col-lg-6 self">
-                            <label for="product_image" class="form-label">Service Image</label><br>
-                            @isset($data['product_image'])
-                                <div id="image_class">
-                                    <img src="{{ $data['product_image'] }}" class="mb-4" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger" onclick="hideImage()">X</buttom></span>
-                                </div>
+
+
+
+
+                        @php
+                        if(isset($data))
+                        {
+                        $image = explode('|',$data['product_image']);
+                        }
+                        @endphp
+                    <div class="box" style="border:solid 1px;" id="image_class">
+                                            <button type="button" style="
+                        background-color: red;
+                        color: #ffffff;
+                        border: red;
+                        width: 30px;
+                        height: 25px;
+                        justify-content: flex-start;
+                        align-items: center;
+
+                    " onclick="hideImage({{1}})">X</button>  
+                        <div class="row">
+
+                        @if(isset( $image))
+                        @foreach($image as $key=>$imagevalue)
+                            @isset($imagevalue)
+                        
+                           
+                                <div class="mb-3 col-lg-4 self">
+                                    <label for="product_image" class="form-label">Service Image</label><br>
+                                            <img src="{{$imagevalue }}" class="mb-4" style="width:80%; height:100px; margin-right: -20px;">
+                                            
+                                </div>  
+                           
+                
                             @endisset
-                            <div id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
-                                <input class="form-control" id="image" type="file" name="product_image">
-                            </div>
-                        </div>
+                        @endforeach
+                    </div>
+                   
+                </div>
+                   
+                        @endif
+                        <div class="mb-3 col-lg-6 self" id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
+                            <label for="product_image" class="form-label">Service Image</label><br>                                
+                                <input class="form-control" id="image" type="file" name="product_image[]" multiple>
+                        </div> 
+                      
                         <div class="mb-3 col-lg-6 self">
                             <label for="amount" class="form-label">Service Original Price </label>
                             <input class="form-control" type="number" min="0" name="amount" value="{{isset($data)?$data['amount']:''}}" placeholder="Product Name">
@@ -185,5 +221,26 @@ $('#image_field').show();
         }
       });
     });
+    </script>
+    <script>
+        function slugCreate(){
+        $.ajax({
+          url: '{{ route('slugCreate') }}',
+          method: "post",
+          dataType: "json",
+          data: {
+              _token: '{{ csrf_token() }}',
+              product_name: $('#product_name').val(),
+          },
+          success: function (response) {
+              if (response.success) {
+                $('#product_slug').val(response.slug);				
+              } 
+   		else{
+   			$('.showbalance').html(response.error).show();
+   		}
+          }
+      });
+        }
     </script>
 @endpush

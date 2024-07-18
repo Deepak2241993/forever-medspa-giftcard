@@ -44,11 +44,11 @@
                     <div class="row">
                         <div class="mb-3 col-lg-6 self">
                             <label for="title" class="form-label">Category Name</label>
-                            <input class="form-control" type="text" name="cat_name" value="{{isset($data)?$data['cat_name']:''}}" placeholder="Category Name">
+                            <input class="form-control" id="title" type="text" name="cat_name" value="{{isset($data)?$data['cat_name']:''}}" placeholder="Category Name"onkeyup="slugCreate()">
                         </div>
                         <div class="mb-3 col-lg-6 self">
                             <label for="slug" class="form-label">Category Slug</label>
-                            <input class="form-control" type="text" name="slug" value="{{isset($data)?$data['slug']:''}}" placeholder="Category slug">
+                            <input class="form-control" id="slug" type="text" name="slug" value="{{isset($data)?$data['slug']:''}}" placeholder="Category slug">
                         </div>
                        
                         <div class="mb-12 col-lg-12 self">
@@ -58,9 +58,15 @@
                         <div class="mb-3 col-lg-6 self">
                             <label for="image" class="form-label">Category Image</label>
                             @isset($data['cat_image'])
-                            <img src="{{ $data['cat_image'] }}" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger">X</buttom></span>
-                        @endisset
+                            <div id="image_class">
+                            
+                            <img src="{{ $data['cat_image'] }}" style="width:80%; height:100px;"><span> <buttom class="btn btn-danger" onclick="hideImage()">X</buttom></span>
+                            
+                        </div>
+                            @endisset
+                            <div id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
                             <input class="form-control" id="image" type="file" name="cat_image">
+                            </div>
                         </div>
                        
                         <div class="mb-3 col-lg-6">
@@ -95,4 +101,31 @@
      filebrowserUploadUrl: "{{url('/ckeditor')}}/script.php"
     });
 </script>
+<script>
+    function hideImage(){
+    $('#image_class').hide();
+    $('#image_field').show();
+    }
+    </script>
+    <script>
+        function slugCreate(){
+        $.ajax({
+          url: '{{ route('slugCreate') }}',
+          method: "post",
+          dataType: "json",
+          data: {
+              _token: '{{ csrf_token() }}',
+              product_name: $('#title').val(),
+          },
+          success: function (response) {
+              if (response.success) {
+                $('#slug').val(response.slug);				
+              } 
+   		else{
+   			$('.showbalance').html(response.error).show();
+   		}
+          }
+      });
+        }
+    </script>
 @endpush

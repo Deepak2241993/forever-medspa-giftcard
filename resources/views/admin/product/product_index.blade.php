@@ -55,7 +55,14 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $value['product_name'] ? $value['product_name']:'NULL' }}</td>
-                        <td><img src="{{$value['product_image']}}" style="height:100px; width:100px;"></td>
+                        <td>
+                            @php
+                                    $image = explode('|',$value['product_image']);
+                           @endphp
+                           @foreach($image as $imagevalue)
+                            <img src="{{$imagevalue}}" style="height:30px; width:30px;"> |
+                            @endforeach
+                        </td>
                         <td>{!! mb_strimwidth(isset($value['product_description']) ? $value['product_description'] : 'NULL', 0, 200, '...') !!}</td>
 
 
