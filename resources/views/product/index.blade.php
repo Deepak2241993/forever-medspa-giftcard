@@ -257,11 +257,11 @@ input[type=text] {
    }
    @endphp
 <div class="hl05eU">
+   <del class="yRaY8j"><b>${{ number_format($original_price, 2) }}</b></del>&nbsp;&nbsp;
     <div class="Nx9bqj"><b>${{ number_format($price, 2) }}</b></div>
-    <del class="yRaY8j"><b>${{ number_format($original_price, 2) }}</b></del>
-    <div class="UkUFwK"><span><b>{{ $discount_percentage }}% off</b></span></div>
+    <div class="UkUFwK"><span><b>{{ $discount_percentage }}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
 </div>
-                           <div class="postbox__text">
+                           <div class="postbox__text mt-4">
                               <p>{!!$value['product_description']!!}</p>
                            </div>
                            {{-- <div>

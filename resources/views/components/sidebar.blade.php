@@ -273,13 +273,13 @@
                         <li class="nav-item">
                             <a href="{{route('category.index')}}" class="nav-link">
                                 <i class="nav-icon fa-regular fa-circle"></i>
-                                <p>Category Management</p>
+                                <p>Services Deals</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{route('product.index')}}" class="nav-link">
                                 <i class="nav-icon fa-regular fa-circle"></i>
-                                <p>Product Management</p>
+                                <p>Services Management</p>
                             </a>
                         </li>
                         <li class="nav-item">
