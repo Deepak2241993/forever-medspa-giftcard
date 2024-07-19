@@ -101,7 +101,8 @@ Route::post('/balance-check','GiftsendController@knowbalance')->name('balance-ch
 Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('payment_cnf');
 
 //  Product Page Route
-Route::get('product-page/{token?}/{slug}','ProductController@productpage')->name('product');
+Route::get('product-page/{token?}/{slug}', 'ProductController@productpage')->name('product_list');
+
 Route::get('productdetails/{slug}','ProductController@productdetails')->name('productdetails');
 Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
 Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');

@@ -197,14 +197,14 @@ input[type=text] {
                      @foreach($data as $value) 
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
-                           <a href="{{ route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['product_slug']]) }}">
-                              <img src="{{$value['cat_image']}}" alt="{{$value['cat_name']}}">
-                           </a>
+                           <a href="{{ route('product_list', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']]) }}">
+                              <img src="{{ $value['cat_image'] }}" alt="{{ $value['cat_name'] }}">
+                          </a
                         </div>
                         <div class="postbox__content">
                           
                            <h3 class="postbox__title">
-                              <a href="{{ route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['product_slug']]) }}">{{$value['cat_name']}}</a>
+                              <a href="{{ route('product_list',['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']]) }}">{{$value['cat_name']}} </a>
                           </h3>
 
                    <div class="postbox__text">
@@ -212,7 +212,7 @@ input[type=text] {
                               <p>{!!$value['cat_description']!!}</p>
                            </div>
                            <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="{{ route('product', ['token' => 'FOREVER-MEDSPA', 'slug' => $value['product_slug']]) }}">Explore</a>
+                              <a class="btn btn-primary" href="{{ route('product_list',['token' => 'FOREVER-MEDSPA', 'slug' => $value['slug']]) }}">Explore</a>
                            </div>
                         </div>
                      </article>
