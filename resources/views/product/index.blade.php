@@ -401,7 +401,7 @@ input[type=text] {
                         </div>
                      </div> --}}
                       {{-- Hot Deals --}}
-                      <div class="sidebar__widget mb-45">
+                      {{-- <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Our Popular Offers</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
@@ -476,17 +476,18 @@ input[type=text] {
                               </div>
                            </div>
                         </div>
-                     </div>
+                     </div> --}}
                      @if(count($popular_service)>0)
                      <div class="sidebar__widget mb-45">
                         <h3 class="sidebar__widget-title">Popular Services</h3>
                         <div class="sidebar__widget-content">
                            <div class="sidebar__post">
                              
-                              @foreach($popular_service as $value)
+                              @foreach($popular_service as $key=>$value)
                               @php 
                               $image= explode('|',$value->product_image)
                               @endphp
+                              @if($key<=9)
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
                                    
@@ -511,6 +512,7 @@ input[type=text] {
                                     </div> --}}
                                  </div>
                               </div>
+                              @endif
                               @endforeach
                               
                               
