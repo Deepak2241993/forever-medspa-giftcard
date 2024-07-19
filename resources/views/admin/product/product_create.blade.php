@@ -91,6 +91,7 @@
                         $image = explode('|',$data['product_image']);
                         }
                         @endphp
+                        @if(isset( $image))
                     <div class="box" style="border:solid 1px;" id="image_class">
                                             <button type="button" style="
                         background-color: red;
@@ -104,7 +105,6 @@
                     " onclick="hideImage({{1}})">X</button>  
                         <div class="row">
 
-                        @if(isset( $image))
                         @foreach($image as $key=>$imagevalue)
                             @isset($imagevalue)
                         
@@ -119,10 +119,10 @@
                             @endisset
                         @endforeach
                     </div>
-                   
+                    
                 </div>
+                @endif
                    
-                        @endif
                         <div class="mb-3 col-lg-6 self" id="image_field" style="display:{{isset($data['id'])?'none':'block'}}">
                             <label for="product_image" class="form-label">Service Image<span class="text-danger">*</span></label><br>                                
                                 <input class="form-control" id="image" type="file" name="product_image[]" multiple {{isset($data)?'':'required'}}>
