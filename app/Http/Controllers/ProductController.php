@@ -22,7 +22,6 @@ class ProductController extends Controller
         $data_arr = ['user_token'=>$token];
         $data = json_encode($data_arr);
         $data = $this->postAPI('product-list', $data);
-  
         return view('admin.product.product_index',compact('data'));
     }
 
@@ -237,7 +236,14 @@ class ProductController extends Controller
         // $data = json_encode($data_arr);
         // $data = $this->postAPI('product-list', $data);
         $category_result=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('slug',$slug)->first();
-        $data=Product::where('product_is_deleted',0)->where('cat_id',$category_result->id)->paginate(10);
+        $id= $category_result['id'];
+        $data = Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+                   ->orWhere('cat_id', 'LIKE', $id . '|%')
+                   ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                   ->orWhere('cat_id', $id)
+                   ->paginate(20);
+
+        // $data=Product::where('product_is_deleted',0)->where('cat_id',$category_result->id)->paginate(10);
         $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
        
@@ -297,12 +303,13 @@ class ProductController extends Controller
             $data=['keywords'=>$request->search];
             Search_keyword::create($data);
             $getsearch = '%' . $request->search . '%';
-                        
+                       
             $search_result = ProductCategory::where('cat_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
-                ->where('cat_name', '=', $getsearch) // Assuming $search is defined somewhere
+                ->where('cat_name', 'LIKE', $getsearch) 
+                ->orWhere('slug', 'LIKE', $getsearch) 
                 ->first();
-
+               
                 // For Category List get in frontend
                 $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
                 $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
@@ -319,9 +326,13 @@ class ProductController extends Controller
                 $search = json_encode($finalarray);
 
             if (!is_null($search_result) && $search_result->count() > 0) {
+                $id=$search_result->id;
                 $data = Product::where('product_is_deleted', 0)
                     ->where('user_token', 'FOREVER-MEDSPA')
-                    ->where('cat_id', $search_result->id) // Assuming $search_result is defined and has an 'id' attribute
+                    ->where('cat_id', 'LIKE', '%|' . $id . '|%')
+                   ->orWhere('cat_id', 'LIKE', $id . '|%')
+                   ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                   ->orWhere('cat_id', $id)
                     ->paginate(50);
                 return view('product.index',compact('data','category','search','popular_service'));
             }

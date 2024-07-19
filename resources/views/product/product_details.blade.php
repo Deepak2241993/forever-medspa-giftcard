@@ -74,7 +74,7 @@
                </div>
                <div class="col-xxl-6 col-lg-6">
                   <div class="product__details-content pr-80">
-                     <div class="product__details-top d-sm-flex align-items-center mb-15">
+                     {{-- <div class="product__details-top d-sm-flex align-items-center mb-15">
                         <div class="product__details-tag mr-10">
                            <a href="#">Construction</a>
                         </div>
@@ -86,7 +86,7 @@
                         <div class="product__details-review-count">
                            <a href="#">10 Reviews</a>
                         </div>
-                     </div>
+                     </div> --}}
                      <h3 class="product__details-title">{{$data->product_name}}</h3>
                      <div class="product__details-price">
                         <span class="old-price">${{$data->amount}}</span>
@@ -153,10 +153,10 @@
                               <button class="nav-link" id="nav-additional-tab" data-bs-toggle="tab"
                                  data-bs-target="#nav-additional" type="button" role="tab"
                                  aria-controls="nav-additional" aria-selected="false">Prerequisites Information </button>
-                              <button class="nav-link" id="nav-review-tab" data-bs-toggle="tab"
+                              {{-- <button class="nav-link" id="nav-review-tab" data-bs-toggle="tab"
                                  data-bs-target="#nav-review" type="button" role="tab" aria-controls="nav-review"
                                  aria-selected="false">Reviews</button>
-                           </div>
+                           </div> --}}
                         </nav>
                      </div>
                   </div>
@@ -175,7 +175,7 @@
                                  {!! $data->product_description !!}
                               </div>
                            </div>
-                           <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
+                           {{-- <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
                               <div class="product__details-review">
                                  <h3 class="comments-title">03 reviews for “Wide Cotton Tunic extreme hammer”</h3>
                                  <div class="latest-comments mb-50">
@@ -329,7 +329,7 @@
                                     </div>
                                  </div>
                               </div>
-                           </div>
+                           </div> --}}
                         </div>
                      </div>
                   </div>

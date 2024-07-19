@@ -966,7 +966,7 @@ else {
 public function category(Request $request)
 {
     $token = $request->user_token;
-    $categories = ProductCategory::where('user_token', $token)->where('cat_is_deleted', 0)->get();
+    $categories = ProductCategory::where('user_token', $token)->where('cat_is_deleted', 0)->orderBy('id', 'DESC')->get();
 
     if ($categories->isNotEmpty()) {
         return response()->json(['result' => $categories, 'status' => 200, 'success' => 'Product categories found successfully'], 200);
@@ -1690,6 +1690,7 @@ public function product(Request $request)
                     ->select('products.*','product_categories.cat_name')
                   ->where('products.user_token', $token)
                   ->where('products.product_is_deleted', 0)
+                  ->orderBy('id', 'DESC')
                   ->get();
 
     if ($product->isNotEmpty()) {
