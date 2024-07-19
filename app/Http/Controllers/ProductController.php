@@ -60,13 +60,19 @@ class ProductController extends Controller
     // Add the user's token to the data
     $data['user_token'] = $token;
     $data['cat_id']=implode('|',$request->cat_id);
+    $product_image = array();
+
     if ($request->hasFile('product_image')) {
         $folder = str_replace(" ", "_", $token);
-        $image = $request->file('product_image');
-        $destinationPath = '/uploads/' . $folder."/";
-        $filename = $image->getClientOriginalName();
-        $image->move(public_path($destinationPath), $filename);
-        $data['product_image'] = url('/').$destinationPath.$filename;
+        $destinationPath = '/uploads/' . $folder . "/";
+    
+        foreach ($request->file('product_image') as $image) {
+            $filename = $image->getClientOriginalName();
+            $image->move(public_path($destinationPath), $filename);
+            array_push($product_image, url('/') . $destinationPath . $filename);
+        }
+        $finalImageUrl = implode('|',$product_image);
+        $data['product_image'] = $finalImageUrl;
     }
  
     // Send data to API endpoint using cURL
@@ -159,15 +165,22 @@ class ProductController extends Controller
         $data = $request->except('_token','_method');
         $data['user_token'] = $token;
         $data['cat_id']=implode('|',$request->cat_id);
-            
+         
+        $product_image = array();
+
         if ($request->hasFile('product_image')) {
             $folder = str_replace(" ", "_", $token);
-            $image = $request->file('product_image');
-            $destinationPath = '/uploads/' . $folder."/";
-            $filename = $image->getClientOriginalName();
-            $image->move(public_path($destinationPath), $filename);
-            $data['product_image'] = url('/').$destinationPath.$filename;
+            $destinationPath = '/uploads/' . $folder . "/";
+        
+            foreach ($request->file('product_image') as $image) {
+                $filename = $image->getClientOriginalName();
+                $image->move(public_path($destinationPath), $filename);
+                array_push($product_image, url('/') . $destinationPath . $filename);
+            }
+            $finalImageUrl = implode('|',$product_image);
+            $data['product_image'] = $finalImageUrl;
         }
+        
         
         $data = json_encode($data);
         $data = $this->postAPI('product-update/'.$request->id,$data);
@@ -205,7 +218,7 @@ class ProductController extends Controller
     // for Display Services Page
     // Filter Category Wise
     // Search Bar
-    public function productpage(Request $request,$token, $slug){
+    public function productpage(Request $request, $slug){
         
         // if(empty($request->token))
         // {
@@ -224,9 +237,10 @@ class ProductController extends Controller
         // $data = json_encode($data_arr);
         // $data = $this->postAPI('product-list', $data);
         $category_result=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('slug',$slug)->first();
-        $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id',$category_result->id)->paginate(10);
+        $data=Product::where('product_is_deleted',0)->where('cat_id',$category_result->id)->paginate(10);
         $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+       
         //  For Auto Search Complete
         $search_category = ProductCategory::where('cat_is_deleted', 0)
         ->where('user_token', 'FOREVER-MEDSPA')
@@ -246,28 +260,28 @@ class ProductController extends Controller
 
         //  Data Filter Category Wise
         // Advance Search From Category and services 
-        public function productCategory(Request $request, $id){
-            // $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id','LIKE',$id)->paginate(20);
-            $data = Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
-                   ->orWhere('cat_id', 'LIKE', $id . '|%')
-                   ->orWhere('cat_id', 'LIKE', '%|' . $id)
-                   ->orWhere('cat_id', $id)
-                   ->paginate(20);
-            $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
-            $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
-             //  For Auto Search Complete
-             $search_category = ProductCategory::where('cat_is_deleted', 0)
-             ->where('user_token', 'FOREVER-MEDSPA')
-             ->pluck('cat_name')
-             ->toArray();
-             $search_product=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
-             $finalarray = array_merge($search_category,$search_product);
+        // public function productCategory(Request $request, $id){
+        //     // $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id','LIKE',$id)->paginate(20);
+        //     $data = Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+        //            ->orWhere('cat_id', 'LIKE', $id . '|%')
+        //            ->orWhere('cat_id', 'LIKE', '%|' . $id)
+        //            ->orWhere('cat_id', $id)
+        //            ->paginate(20);
+        //     $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+        //     $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+        //      //  For Auto Search Complete
+        //      $search_category = ProductCategory::where('cat_is_deleted', 0)
+        //      ->where('user_token', 'FOREVER-MEDSPA')
+        //      ->pluck('cat_name')
+        //      ->toArray();
+        //      $search_product=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
+        //      $finalarray = array_merge($search_category,$search_product);
  
-             $search = json_encode($finalarray);
-            return view('product.index',compact('data','category','search','popular_service'));
+        //      $search = json_encode($finalarray);
+        //     return view('product.index',compact('data','category','search','popular_service'));
 
 
-        }
+        // }
 
 
 
@@ -277,50 +291,66 @@ class ProductController extends Controller
         public function ServicesSearch(Request $request){
             if(empty($request->search))
             {
-                return redirect(route('product-page'));
+                return back();
             }
 
             $data=['keywords'=>$request->search];
             Search_keyword::create($data);
-            $search = '%' . $request->search . '%';
+            $getsearch = '%' . $request->search . '%';
                         
             $search_result = ProductCategory::where('cat_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
-                ->where('cat_name', '=', $search) // Assuming $search is defined somewhere
+                ->where('cat_name', '=', $getsearch) // Assuming $search is defined somewhere
                 ->first();
 
+                // For Category List get in frontend
+                $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+                $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+                // For Category List get in frontend End
+
+                //  For Auto and Advance Search Complete
+                $search_category = ProductCategory::where('cat_is_deleted', 0)
+                ->where('user_token', 'FOREVER-MEDSPA')
+                ->pluck('cat_name')
+                ->toArray();
+                $search_product=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
+                $finalarray = array_merge($search_category,$search_product);
+
+                $search = json_encode($finalarray);
 
             if (!is_null($search_result) && $search_result->count() > 0) {
                 $data = Product::where('product_is_deleted', 0)
                     ->where('user_token', 'FOREVER-MEDSPA')
                     ->where('cat_id', $search_result->id) // Assuming $search_result is defined and has an 'id' attribute
                     ->paginate(50);
+                return view('product.index',compact('data','category','search','popular_service'));
             }
 
             else
-            {
+            {   
                 $data = Product::where('product_is_deleted', 0)
                 ->where('user_token', 'FOREVER-MEDSPA')
-                ->where('product_name', 'LIKE', $search)
-                ->orWhere('search_keywords', 'LIKE', $search)
-                ->paginate(50);
+                ->where('product_name', '=', $getsearch)
+                ->first();
+                if(!is_null($data) && $data->count() > 0)
+                {
+                    return view('product.product_details',compact('data','category','search','popular_service'));
+                }
+                else
+                {
+                    $data = Product::where('product_is_deleted', 0)
+                    ->where('user_token', 'FOREVER-MEDSPA')
+                    ->where('product_name', 'LIKE', $getsearch)
+                    ->orWhere('search_keywords', 'LIKE', $getsearch)
+                    ->paginate(50);
+                    
+                    return view('product.index',compact('data','category','search','popular_service'));
+                }              
+                
             }
+            return back()->with('message','No Data Found');
             
-            // For Category List get in frontend
-                $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
-                $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
-             // For Category List get in frontend End
-
-            //  For Auto and Advance Search Complete
-            $search_category = ProductCategory::where('cat_is_deleted', 0)
-            ->where('user_token', 'FOREVER-MEDSPA')
-            ->pluck('cat_name')
-            ->toArray();
-            $search_product=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
-            $finalarray = array_merge($search_category,$search_product);
-
-            $search = json_encode($finalarray);
-            return view('product.index',compact('data','category','search','popular_service'));
+    
            
         }
 
@@ -391,26 +421,9 @@ class ProductController extends Controller
              return view('product.index',compact('data','category','search','popular_service'));
         }
 
-        public function productdetails(Request $request){
-        
-            // if(empty($request->token))
-            // {
-            // $token= 'FOREVER-MEDSPA';
-            // $data_arr = ['user_token'=>$token];
-            // $data = json_encode($data_arr);
-    
-            // $data = $this->postAPI('product-list', $data);
-      
-            // return view('product.index',compact('data'));
-            // }
-            // else
-            // {
-            // $token= strtoupper($request->token);
-            // $data_arr = ['user_token'=>$token];
-            // $data = json_encode($data_arr);
-            // $data = $this->postAPI('product-list', $data);
-    
-            $data=Product::where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
+        public function productdetails(Request $request,$slug){
+
+            $data=Product::where('product_is_deleted',0)->where('product_slug',$slug)->first();
             $category=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
             $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
             //  For Auto Search Complete

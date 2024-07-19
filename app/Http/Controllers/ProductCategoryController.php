@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
+use Str;
 class ProductCategoryController extends Controller
 {
     /**
@@ -199,6 +200,7 @@ public function update(Request $request,$id)
         
         $data=ProductCategory::where('cat_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->paginate(10);
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
+       
         //  For Auto Search Complete
         $search_category = ProductCategory::where('cat_is_deleted', 0)
         ->where('user_token', 'FOREVER-MEDSPA')
@@ -209,6 +211,12 @@ public function update(Request $request,$id)
 
         $search = json_encode($finalarray);
         return view('product.category',compact('data','search','popular_service'));
+     }
+
+
+     function slugCreate(Request $request){
+        $slug= Str::slug($request->product_name);
+        return response()->json(['success' => 'Slug Created!','slug'=>$slug]);
      }
      
 

@@ -132,7 +132,7 @@ h6, i[class^=flaticon-], .body__overlay {
   --clr-common-selection: #262626;
   --clr-common-body: #fff;
   --clr-theme-primary: #02AFE5;
-  --clr-theme-secondary: #EB753B;
+  --clr-theme-secondary: #FCA52A;
   --clr-text-primary: #fff;
   --clr-text-secondary: #161616;
   --clr-text-body: #555555;
@@ -10278,7 +10278,7 @@ div[class*=col]:last-child .counter-item-2::after {
   display: inline-block;
   font-weight: var(--bd-fw-sbold);
   text-align: center;
-  background-color: #EB753B;
+  background-color: #fca52a;
   padding: 0px 8px;
   text-transform: uppercase;
   font-size: 14px;
@@ -10316,7 +10316,7 @@ div[class*=col]:last-child .counter-item-2::after {
 }
 .product__details-price .new-price {
   font-size: 32px;
-  color: var(--clr-theme-primary);
+  color: #fca52a;
   font-weight: var(--bd-fw-bold);
   margin-left: 5px;
 }
@@ -10599,13 +10599,13 @@ div[class*=col]:last-child .counter-item-2::after {
   border-radius: 6px;
 }
 .product__details-more-tab .nav-link.active, .product__details-more-tab .nav-link:hover {
-  border-color: var(--clr-theme-primary);
+  border-color: #FCA52A;
   color: var(--clr-common-white);
-  background-color: var(--clr-theme-primary);
+  background-color: #FCA52A;
 }
 .product__quantity .product-quantity-wrapper {
   position: relative;
-  width: 120px;
+  width: 210px;
   height: 60px;
   line-height: 60px;
   border: 1px solid var(--clr-border-2);
@@ -10624,7 +10624,7 @@ div[class*=col]:last-child .counter-item-2::after {
   -ms-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
-  width: 30px;
+  width: 170px;
   height: 30px;
   line-height: 30px;
   display: inline-block;
@@ -10637,7 +10637,7 @@ div[class*=col]:last-child .counter-item-2::after {
 }
 .product__quantity .product-quantity-wrapper .cart-plus:hover, .product__quantity .product-quantity-wrapper .cart-minus:hover {
   cursor: pointer;
-  color: var(--clr-theme-primary);
+  color: #FCA52A;
   background: transparent;
 }
 .product__quantity .product-quantity-wrapper .cart-plus {
@@ -10645,8 +10645,8 @@ div[class*=col]:last-child .counter-item-2::after {
   right: 10px;
 }
 .product__quantity .product-quantity-wrapper .cart-input {
-  height: 60px;
-  width: 120px;
+  height: 65px;
+  width: 385px;
   text-align: center;
   font-size: 16px;
   border: none;
@@ -10655,7 +10655,7 @@ div[class*=col]:last-child .counter-item-2::after {
   margin: 0 -3px;
   padding-bottom: 4px;
   background: transparent;
-  color: var(--clr-theme-primary);
+  color: #FCA52A;
   font-weight: var(--bd-fw-medium);
 }
 .product__quantity .product-quantity-wrapper .cart-input:focus {

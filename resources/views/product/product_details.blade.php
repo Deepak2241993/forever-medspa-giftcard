@@ -14,12 +14,12 @@
             <div class="row justify-content-center">
                <div class="col-xxl-12">
                   <div class="breadcrumb__wrapper text-center">
-                     <h2 class="breadcrumb__title">Project Details</h2>
+                     <h2 class="breadcrumb__title">{{$data->product_name}}</h2>
                      <div class="breadcrumb__menu">
                         <nav>
                            <ul>
-                              <li><span><a href="index.html">Home</a></span></li>
-                              <li><span>Project Details</span></li>
+                              <li><span><a href="{{url('/')}}">Home</a></span></li>
+                              <li><span>{{$data->product_name}}</span></li>
                            </ul>
                         </nav>
                      </div>
@@ -39,40 +39,35 @@
                      <div class="product__details-thumb-tab mr-20">
                         <nav>
                            <div class="nav nav-tabs flex-nowrap flex-sm-column" id="nav-tab" role="tablist">
-                              <button class="nav-link active" id="img-1-tab" data-bs-toggle="tab"
-                                 data-bs-target="#img-1" type="button" role="tab" aria-controls="img-1"
+                              @php 
+                              $image= explode('|',$data->product_image)
+                              @endphp
+                               @foreach($image as $key=>$image_name)
+                               @if($key<=2)
+                              <button class="nav-link {{$key==0?'active':''}}" id="img-{{$key}}-tab" data-bs-toggle="tab"
+                                 data-bs-target="#img-{{$key}}" type="button" role="tab" aria-controls="img-{{$key}}"
                                  aria-selected="true">
-                                 <img src="assets/imgs/product/details/details-01.png" alt="product-sm-thumb">
+                                 <img src="{{$image_name}}" alt="product-sm-thumb">
                               </button>
-                              <button class="nav-link" id="img-2-tab" data-bs-toggle="tab" data-bs-target="#img-2"
-                                 type="button" role="tab" aria-controls="img-3" aria-selected="false">
-                                 <img src="assets/imgs/product/details/details-02.png" alt="product-sm-thumb">
-                              </button>
-                              <button class="nav-link" id="img-3-tab" data-bs-toggle="tab" data-bs-target="#img-3"
-                                 type="button" role="tab" aria-controls="img-3" aria-selected="false">
-                                 <img src="assets/imgs/product/details/details-03.png" alt="product-sm-thumb">
-                              </button>
+                              @endif
+                              @endforeach
                            </div>
                         </nav>
                      </div>
                      <div class="product__details-thumb-tab-content">
                         <div class="tab-content" id="productthumbcontent">
-                           <div class="tab-pane fade show active" id="img-1" role="tabpanel"
-                              aria-labelledby="img-1-tab">
+                          
+                           @foreach($image as $key=>$image_name)
+                           @if($key<=2)
+                           <div class="tab-pane fade {{$key==0?'show active':''}}" id="img-{{$key}}" role="tabpanel"
+                              aria-labelledby="img-{{$key}}-tab">
                               <div class="product__details-thumb-big w-img">
-                                 <img src="assets/imgs/product/details/details-01.png" alt="">
+                                 <img src="{{$image_name}}" alt="">
                               </div>
                            </div>
-                           <div class="tab-pane fade" id="img-2" role="tabpanel" aria-labelledby="img-2-tab">
-                              <div class="product__details-thumb-big w-img">
-                                 <img src="assets/imgs/product/details/details-02.png" alt="">
-                              </div>
-                           </div>
-                           <div class="tab-pane fade" id="img-3" role="tabpanel" aria-labelledby="img-3-tab">
-                              <div class="product__details-thumb-big w-img">
-                                 <img src="assets/imgs/product/details/details-03.png" alt="">
-                              </div>
-                           </div>
+                           @endif
+                           @endforeach
+                          
                         </div>
                      </div>
                   </div>
@@ -92,26 +87,25 @@
                            <a href="#">10 Reviews</a>
                         </div>
                      </div>
-                     <h3 class="product__details-title">Disposable Surgical Face Mask</h3>
+                     <h3 class="product__details-title">{{$data->product_name}}</h3>
                      <div class="product__details-price">
-                        <span class="old-price">$30.35</span>
-                        <span class="new-price">$19.25</span>
+                        <span class="old-price">${{$data->amount}}</span>
+                        <span class="new-price">${{$data->discounted_amount}}</span>
                      </div>
-                     <p>Priyoshop has brought to you the Hijab 3 Pieces Combo Pack PS23. It is a completely modern
-                        design and you feel comfortable to put on this hijab. Buy it at the best price.</p>
+                     <p>{!! $data->short_description !!}</p>
 
                      <div class="product__details-action mb-35">
                         <div class="product__quantity">
                            <div class="product-quantity-wrapper">
                               <form action="#">
-                                 <button class="cart-minus"><i class="fa-light fa-minus"></i></button>
+                                 <button class="cart-minus">Number Of Session</button>
                                  <input class="cart-input" type="text" value="1">
-                                 <button class="cart-plus"><i class="fa-light fa-plus"></i></button>
+                                 {{-- <button class="cart-plus"><i class="fa-light fa-plus"></i></button> --}}
                               </form>
                            </div>
                         </div>
                         <div class="product__add-cart">
-                           <a href="javascript:void(0)" class="fill-btn cart-btn">
+                           <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$data->id}})">
                               <span class="fill-btn-inner">
                                  <span class="fill-btn-normal">Add To Cart<i
                                        class="fa-solid fa-basket-shopping"></i></span>
@@ -121,28 +115,27 @@
                            </a>
                         </div>
                         <div class="product__add-wish">
-                           <a href="#" class="product__add-wish-btn"><i class="fa-solid fa-heart"></i></a>
+                           <a href="{{route('checkout')}}" class="fill-btn cart-btn">
+                              <span class="fill-btn-inner">
+                                 <span class="fill-btn-normal">Buy Now</span>
+                                 <span class="fill-btn-hover">Buy Now</span>
+                              </span>
+                           </a>
                         </div>
                      </div>
-                     <div class="product__details-meta mb-20">
-                        <div class="sku">
-                           <span>SKU:</span>
-                           <a href="#">BO1D0MX8SJ</a>
-                        </div>
+                     {{-- <div class="product__details-meta mb-20">
+                       
                         <div class="categories">
                            <span>Categories:</span> <a href="#">Milk,</a> <a href="#">Cream,</a> <a
                               href="#">Fermented.</a>
                         </div>
-                        <div class="tag">
-                           <span>Tags:</span> <a href="#"> Cheese,</a> <a href="#">Custard,</a> <a href="#">Frozen</a>
-                        </div>
-                     </div>
+                        
+                     </div> --}}
                      <div class="product__details-share">
                         <span>Share:</span>
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-behance"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="http://www.facebook.com/sharer.php?u={{url()->current()}}"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/share?url={{url()->current()}}"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://instagram.com/api/v1/media/upload/{{url()->current()}}"><i class="fa-brands fa-instagram"></i></a>
                         <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                      </div>
                   </div>
@@ -159,10 +152,10 @@
                                  aria-controls="nav-description" aria-selected="true">Description</button>
                               <button class="nav-link" id="nav-additional-tab" data-bs-toggle="tab"
                                  data-bs-target="#nav-additional" type="button" role="tab"
-                                 aria-controls="nav-additional" aria-selected="false">Additional Information </button>
+                                 aria-controls="nav-additional" aria-selected="false">Prerequisites Information </button>
                               <button class="nav-link" id="nav-review-tab" data-bs-toggle="tab"
                                  data-bs-target="#nav-review" type="button" role="tab" aria-controls="nav-review"
-                                 aria-selected="false">Reviews (3)</button>
+                                 aria-selected="false">Reviews</button>
                            </div>
                         </nav>
                      </div>
@@ -173,66 +166,13 @@
                            <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
                               aria-labelledby="nav-description-tab">
                               <div class="product__details-des">
-                                 <p>In marketing a product is an object or system made available for consumer use it is
-                                    anything that can be offered to a market to
-                                    the desire or need of a retailing, products are often referred to as merchandise,
-                                    and in manufacturing, products are bought as
-                                    materials and then sold as finished goods. A service regarded to as a type of
-                                    product. Commodities are usually raw materials
-                                    metals and agricultural products, but a commodity can also be anything wide the open
-                                    market. In project management,
-                                    the formal definition of the project deliverables</p>
-                                 <p>A product can be classified as tangible or intangible. A tangible product is a
-                                    physical object that can be perceived by touch
-                                    building, vehicle, gadget, An intangible product is a product that can only be
-                                    perceived indirectly such as an insurance policy.
-                                    can be broadly classified under intangible be durable or non durable. A product line
-                                    is "a group of products that are closely
-                                    either because they function in a similar manner, are sold to the same
-                                    customergroups.</p>
+                                 {!! $data->product_description !!}
                               </div>
                            </div>
                            <div class="tab-pane fade" id="nav-additional" role="tabpanel"
                               aria-labelledby="nav-additional-tab">
                               <div class="product__details-info">
-                                 <ul>
-                                    <li>
-                                       <h4>Weight</h4>
-                                       <span>2 lbs</span>
-                                    </li>
-                                    <li>
-                                       <h4>Dimensions</h4>
-                                       <span>12 × 16 × 19 in</span>
-                                    </li>
-                                    <li>
-                                       <h4>Product</h4>
-                                       <span>Purchase this product on rag-bone.com</span>
-                                    </li>
-                                    <li>
-                                       <h4>Color</h4>
-                                       <span>Gray, Black</span>
-                                    </li>
-                                    <li>
-                                       <h4>Size</h4>
-                                       <span>S, M, L, XL</span>
-                                    </li>
-                                    <li>
-                                       <h4>Model</h4>
-                                       <span>Model </span>
-                                    </li>
-                                    <li>
-                                       <h4>Shipping</h4>
-                                       <span>Standard shipping: $5,95</span>
-                                    </li>
-                                    <li>
-                                       <h4>Care Info</h4>
-                                       <span>Machine Wash up to 40ºC/86ºF Gentle Cycle</span>
-                                    </li>
-                                    <li>
-                                       <h4>Brand</h4>
-                                       <span>Kazen</span>
-                                    </li>
-                                 </ul>
+                                 {!! $data->product_description !!}
                               </div>
                            </div>
                            <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
@@ -404,5 +344,30 @@
 @endsection
 
 @push('footerscript')
+<script>
+   function addcart(id) {
+    $.ajax({
+        url: '{{ route('cart') }}',
+        method: "post",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            product_id: id,
+            quantity: 1
+        },
+        success: function (response) {
+            if (response.success) {
+                window.location.href = '{{ route('cartview') }}'; 
+            } else {
+                $('.showbalance').html(response.error).show();
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Handle the error here
+            $('.showbalance').html('An error occurred. Please try again.').show();
+        }
+    });
+}
 
+</script>
 @endpush
