@@ -34,6 +34,7 @@ class StripeController extends Controller
 
        public function makepayment(Request $request,Gift $gift,TransactionHistory $transaction,EmailTemplate $template)
        {
+        
         // dd($request->session()->get('gift_details'));
 
        Stripe::setApiKey(env('STRIPE_SECRET'));

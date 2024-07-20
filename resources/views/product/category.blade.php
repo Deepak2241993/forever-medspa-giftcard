@@ -195,6 +195,18 @@ input[type=text] {
                   <div class="postbox__wrapper">
                      @if(isset($data))
                      @foreach($data as $value) 
+                     @php
+                     $id=$value->id;
+                        $product = App\Models\Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+                  ->where('cat_id', 'LIKE', '%|' . $id . '|%')
+                  ->orWhere('cat_id', 'LIKE', $id . '|%')
+                  ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                  ->orWhere('cat_id', $id)
+                  ->first();
+                  
+                     @endphp
+                     {{-- {{dd($product->id)}} --}}
+                     @if($product)
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
                            <a href="{{ route('product', ['slug' => $value['slug']]) }}">
@@ -206,7 +218,21 @@ input[type=text] {
                            <h3 class="postbox__title">
                               <a href="{{ route('product', ['slug' => $value['slug']]) }}">{{$value['cat_name']}}</a>
                           </h3>
-
+                          @php
+                          $price = $value->discounted_amount;
+                          $original_price = $value->amount;
+                       
+                          // Calculate discount percentage
+                          $discount_percentage = 0;
+                          if ($original_price > 0) {
+                             $discount_percentage = round((($original_price - $price) / $original_price) * 100);
+                          }
+                          @endphp
+                       <div class="hl05eU">
+                          <del class="yRaY8j"><b>${{ number_format($original_price, 2) }}</b></del>&nbsp;&nbsp;
+                           <div class="Nx9bqj"><b>${{ number_format($price, 2) }}</b></div>
+                           <div class="UkUFwK"><span><b>{{ $discount_percentage }}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
+                       </div>
                    <div class="postbox__text">
                     
                               <p>{!!$value['cat_description']!!}</p>
@@ -224,6 +250,7 @@ input[type=text] {
                            </div> --}}
                         </div>
                      </article>
+                     @endif
                      @endforeach
                      @else
                         <p>{{$data['error']}}</p>
