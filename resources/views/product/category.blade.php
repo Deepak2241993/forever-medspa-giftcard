@@ -193,19 +193,40 @@ input[type=text] {
             <div class="row gy-50">
                <div class="col-xxl-8 col-lg-8">
                   <div class="postbox__wrapper">
+                  
                      @if(isset($data))
                      @foreach($data as $value) 
                      @php
                      $id=$value->id;
-                        $product = App\Models\Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
-                  ->where('cat_id', 'LIKE', '%|' . $id . '|%')
-                  ->orWhere('cat_id', 'LIKE', $id . '|%')
-                  ->orWhere('cat_id', 'LIKE', '%|' . $id)
-                  ->orWhere('cat_id', $id)
-                  ->first();
+                     $product = App\Models\Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+                     ->where('cat_id', 'LIKE', '%|' . $id . '|%')
+                     ->orWhere('cat_id', 'LIKE', $id . '|%')
+                     ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                     ->orWhere('cat_id', $id)
+                     ->where('status', 1)
+                     ->where('product_is_deleted', 0)
+                     ->first();
+
+                  if(!empty($product))
+                  {
+                     $max_amount = App\Models\Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+                     ->orWhere('cat_id', 'LIKE', $id . '|%')
+                     ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                     ->orWhere('cat_id', $id)
+                     ->max('discount_rate');
+
+                     $min_amount = App\Models\Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+                     ->orWhere('cat_id', 'LIKE', $id . '|%')
+                     ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                     ->orWhere('cat_id', $id)
+                     ->min('discount_rate');
+
+                     
+                  }
+
                   
                      @endphp
-                     {{-- {{dd($product->id)}} --}}
+                     {{-- {{dd($product)}} --}}
                      @if($product)
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
@@ -218,21 +239,11 @@ input[type=text] {
                            <h3 class="postbox__title">
                               <a href="{{ route('product', ['slug' => $value['slug']]) }}">{{$value['cat_name']}}</a>
                           </h3>
-                          @php
-                          $price = $value->discounted_amount;
-                          $original_price = $value->amount;
-                       
-                          // Calculate discount percentage
-                          $discount_percentage = 0;
-                          if ($original_price > 0) {
-                             $discount_percentage = round((($original_price - $price) / $original_price) * 100);
-                          }
-                          @endphp
+                       @if($min_amount > 0)   
                        <div class="hl05eU">
-                          <del class="yRaY8j"><b>${{ number_format($original_price, 2) }}</b></del>&nbsp;&nbsp;
-                           <div class="Nx9bqj"><b>${{ number_format($price, 2) }}</b></div>
-                           <div class="UkUFwK"><span><b>{{ $discount_percentage }}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
+                           <div class="UkUFwK"><span><i><b> {{$min_amount}}% - {{$max_amount}}%  off</b></i>
                        </div>
+                       @endif
                    <div class="postbox__text">
                     
                               <p>{!!$value['cat_description']!!}</p>

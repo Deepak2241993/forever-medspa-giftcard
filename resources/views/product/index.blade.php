@@ -246,20 +246,10 @@ input[type=text] {
                            <h3 class="postbox__title">
                               <a href="{{route('productdetails',['slug' => $value['product_slug']])}}">{{$value['product_name']}}</a>
                           </h3>
-   @php
-   $price = $value->discounted_amount;
-   $original_price = $value->amount;
-
-   // Calculate discount percentage
-   $discount_percentage = 0;
-   if ($original_price > 0) {
-      $discount_percentage = round((($original_price - $price) / $original_price) * 100);
-   }
-   @endphp
 <div class="hl05eU">
-   <del class="yRaY8j"><b>${{ number_format($original_price, 2) }}</b></del>&nbsp;&nbsp;
-    <div class="Nx9bqj"><b>${{ number_format($price, 2) }}</b></div>
-    <div class="UkUFwK"><span><b>{{ $discount_percentage }}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
+   <del class="yRaY8j"><b>${{$value['amount']}}</b></del>&nbsp;&nbsp;
+    <div class="Nx9bqj"><b>${{$value['discounted_amount']}}</b></div>
+    <div class="UkUFwK"><span><b>{{$value['discount_rate']}}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
 </div>
                            <div class="postbox__text mt-4">
                               <p>{!!$value['product_description']!!}</p>
