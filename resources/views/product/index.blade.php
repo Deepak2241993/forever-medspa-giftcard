@@ -249,7 +249,7 @@ input[type=text] {
 <div class="hl05eU">
    <del class="yRaY8j"><b>${{$value['amount']}}</b></del>&nbsp;&nbsp;
     <div class="Nx9bqj"><b>${{$value['discounted_amount']}}</b></div>
-    <div class="UkUFwK"><span><b>{{$value['discount_rate']}}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
+    <div class="UkUFwK"><span><b>{{$value['discount_rate'] >0 ? $value['discount_rate']:0}}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b>
 </div>
                            <div class="postbox__text mt-4">
                               <p>{!!$value['product_description']!!}</p>
@@ -363,7 +363,20 @@ input[type=text] {
                         <div class="sidebar__widget-content">
                            <ul>
                               @foreach($category as $value)
+                              @php
+                              $id=$value->id;
+                              $product = App\Models\Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
+                              ->where('cat_id', 'LIKE', '%|' . $id . '|%')
+                              ->orWhere('cat_id', 'LIKE', $id . '|%')
+                              ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                              ->orWhere('cat_id', $id)
+                              ->where('status', 1)
+                              ->where('product_is_deleted', 0)
+                              ->first();
+                              @endphp
+                               @if($product)
                               <li><a href="{{ route('product', ['slug' => $value['slug']]) }}">{{substr(ucFirst($value->cat_name),0,20)}}</a></li>
+                              @endif
                               @endforeach
                               
                            </ul>

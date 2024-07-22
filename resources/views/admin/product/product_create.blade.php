@@ -145,6 +145,7 @@
                         <div class="mb-12 col-lg-12 self">
                             <label for="search_keywords" class="form-label">Search Keywords</label>
                             <textarea name="search_keywords"  id="search_keywords" rows="4" class="form-control">{{isset($data)?$data['search_keywords']:''}}</textarea>
+                            <input class="form-control" id="image" type="hidden" name="status" value="1">
                         </div>
                         {{-- <div class="mb-12 col-lg-12 self">
                             <label for="meta_title" class="form-label">Meta Title</label>
@@ -166,13 +167,13 @@
                                 <option value="0"{{ isset($data['popular_service']) && $data['popular_service'] == 0 ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
-                        <div class="mb-3 col-lg-6">
+                        {{-- <div class="mb-3 col-lg-6">
                             <label for="from" class="form-label">Status</label>
                             <select class="form-control" name="status" id="from">
                                 <option value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }} >Active</option>
                                 <option value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>Inactive</option>
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="mb-3 col-lg-6 mt-4">
                             <button class="btn btn-primary" type="submit">Submit</button>
                         </div>

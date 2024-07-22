@@ -71,16 +71,17 @@
                         <div class="mb-3 col-lg-6 mt-4">
                             <label for="from" class="form-label">Category Image</label>
                             <input class="form-control" id="image" type="file" name="cat_image">
+                            <input class="form-control" id="image" type="hidden" name="status" value="1">
                         </div>
                         @endif
                        
-                        <div class="mb-3 col-lg-6 mt-4">
+                        {{-- <div class="mb-3 col-lg-6 mt-4">
                             <label for="from" class="form-label">Status</label>
                             <select class="form-control" name="status" id="from">
                                 <option value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }} >Active</option>
                                 <option value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>Inactive</option>
                             </select>
-                        </div>
+                        </div> --}}
                  
                         <div class="mb-3 col-lg-12">
                             <button class="btn btn-primary" type="submit">Submit</button>

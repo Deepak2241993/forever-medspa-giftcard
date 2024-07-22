@@ -329,20 +329,23 @@ class ProductController extends Controller
                 $search = json_encode($finalarray);
 
             if (!is_null($search_result) && $search_result->count() > 0) {
-                $id=$search_result->id;
-                $data = Product::where('product_is_deleted', 0)
-                ->where('status','=',1)
-                    ->where('user_token', 'FOREVER-MEDSPA')
-                    ->where('cat_id', 'LIKE', '%|' . $id . '|%')
-                   ->orWhere('cat_id', 'LIKE', $id . '|%')
-                   ->orWhere('cat_id', 'LIKE', '%|' . $id)
-                   ->orWhere('cat_id', $id)
-                    ->paginate(50);
+                $id = $search_result->id;
+                        $data = Product::where('user_token', 'FOREVER-MEDSPA')
+                            ->where(function ($query) use ($id) {
+                                $query->where('cat_id', 'LIKE', '%|' . $id . '|%')
+                                    ->orWhere('cat_id', 'LIKE', $id . '|%')
+                                    ->orWhere('cat_id', 'LIKE', '%|' . $id)
+                                    ->orWhere('cat_id', $id);
+                            })
+                            ->where('product_is_deleted', 0)
+                            ->where('status', 1)
+                            ->paginate(50);
+
                 return view('product.index',compact('data','category','search','popular_service'));
             }
 
             else
-            {   
+            {  
                 $data = Product::where('product_is_deleted', 0)
                 ->where('status','=',1)
                 ->where('user_token', 'FOREVER-MEDSPA')
