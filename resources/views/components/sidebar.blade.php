@@ -282,12 +282,7 @@
                                 <p>Services Management</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa-regular fa-circle"></i>
-                                <p>Popular Offers</p>
-                            </a>
-                        </li>
+                       
                         <li class="nav-item">
                             <a href="{{route('keywords_reports')}}" class="nav-link">
                                 <i class="nav-icon fa-regular fa-circle"></i>

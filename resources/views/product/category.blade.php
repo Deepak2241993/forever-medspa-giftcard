@@ -477,10 +477,10 @@ input[type=text] {
                   </div>
                   <div class="col-xxl-6 col-xl-6 col-lg-6">
                      <div class="newsletter-form">
-                        <form action="#">
+                       
                            <div class="newsletter-input p-relative">
                              
-                              <button class="fill-btn" type="submit">
+                              <button class="fill-btn" type="submit" onclick="location.href='{{url('/')}}';">
                                 
                                  <span class="fill-btn-inner">
                                    Buy Now
@@ -488,7 +488,6 @@ input[type=text] {
                                  </span>
                               </button>
                            </div>
-                        </form>
                      </div>
                   </div>
                </div>

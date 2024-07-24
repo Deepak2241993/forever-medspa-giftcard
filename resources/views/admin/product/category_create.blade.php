@@ -8,13 +8,13 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Services Deals Create</h3>
+                    <h3 class="mb-0">Service Deals Create</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Services Deals Add/Update
+                            Service Deals Add/Update
                         </li>
                     </ol>
                 </div>
@@ -43,21 +43,21 @@
                     @csrf
                     <div class="row">
                         <div class="mb-3 col-lg-6 self">
-                            <label for="title" class="form-label">Category Name</label>
+                            <label for="title" class="form-label">Deal Name</label>
                             <input class="form-control" id="title" type="text" name="cat_name" value="{{isset($data)?$data['cat_name']:''}}" placeholder="Category Name"onkeyup="slugCreate()">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="slug" class="form-label">Category Slug</label>
+                            <label for="slug" class="form-label">Deal Slug</label>
                             <input class="form-control" id="slug" type="text" name="slug" value="{{isset($data)?$data['slug']:''}}" placeholder="Category slug">
                         </div>
                        
                         <div class="mb-12 col-lg-12 self">
-                            <label for="cat_description" class="form-label">Category Description</label>
+                            <label for="cat_description" class="form-label">Deal Description</label>
                             <textarea name="cat_description"  id="cat_description" rows="4" class="form-control">{{isset($data)?$data['cat_description']:''}}</textarea>
                         </div>
                         @if(isset($data))
                         <div class="mb-3 col-lg-6 mt-4 self">
-                            <label for="image" class="form-label">Category Image</label>
+                            <label for="image" class="form-label">Deal Image</label>
                             @isset($data['cat_image'])
                             <div id="image_class">
                             <img src="{{ $data['cat_image'] }}"style="width:80%; height:100px;"><span> <buttom class="btn btn-danger" onclick="hideImage()">X</buttom></span>
@@ -69,7 +69,7 @@
                         </div>                       
                         @else
                         <div class="mb-3 col-lg-6 mt-4">
-                            <label for="from" class="form-label">Category Image</label>
+                            <label for="from" class="form-label">Deal Image</label>
                             <input class="form-control" id="image" type="file" name="cat_image">
                             <input class="form-control" id="image" type="hidden" name="status" value="1">
                         </div>
