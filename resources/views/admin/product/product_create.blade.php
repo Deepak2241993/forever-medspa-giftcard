@@ -71,7 +71,7 @@
                        
                         <div class="mb-12 col-lg-12 self">
                             <label for="short_description" class="form-label">Short Description
-                                <span class="text-danger"> (Text Limit 150 Word)</span>
+                                <span class="text-danger"> (Text Limit 50 Word)</span>
                             </label>
                             <textarea name="short_description" id="short_description" class="form-control" required>{{ isset($data) ? $data['short_description'] : '' }}</textarea>
                             <span id="count" class="text-danger"></span>
@@ -253,12 +253,12 @@ $('#image_field').show();
         var words = string.trim().split(/\s+/).filter(word => word.length > 0);
         var wordCount = words.length;
         
-        if (wordCount > 150) {
-            document.getElementById('short_description').value = words.slice(0, 150).join(' ');
-            wordCount = 150;
+        if (wordCount > 50) {
+            document.getElementById('short_description').value = words.slice(0, 50).join(' ');
+            wordCount = 50;
         }
 
-        document.getElementById('count').innerHTML = wordCount + " / 150 words";
+        document.getElementById('count').innerHTML = wordCount + " / 50 words";
     };
 
     // Add event listener to count words when the content changes
