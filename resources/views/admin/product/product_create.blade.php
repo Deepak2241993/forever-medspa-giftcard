@@ -70,12 +70,15 @@
                         
                        
                         <div class="mb-12 col-lg-12 self">
-                            <label for="short_description" class="form-label">Short Description<span class="text-danger"> (Text Limit 500 Characters)</span></label>
-                            <textarea name="short_description"  id="short_description" class="form-control" required>{{ isset($data)?$data['short_description']:''}}</textarea>
+                            <label for="short_description" class="form-label">Short Description
+                                <span class="text-danger"> (Text Limit 150 Word)</span>
+                            </label>
+                            <textarea name="short_description" id="short_description" class="form-control" required>{{ isset($data) ? $data['short_description'] : '' }}</textarea>
+                            <span id="count" class="text-danger"></span>
                         </div>
                         <div class="mb-12 col-lg-12 self mt-3">
                             <label for="product_description" class="form-label">Service Description</label>
-                            <textarea name="product_description"  id="product_description" class="form-control summernote">{{isset($data)?$data['product_description']:''}}</textarea>
+                            <textarea name="product_description"  id="product_description" class="form-control summernote" onkeyup="calculate()">{{isset($data)?$data['product_description']:''}}</textarea>
                         </div>
                         <div class="mb-12 col-lg-12 self mt-3">
                             <label for="prerequisites" class="form-label">Prerequisites</label>
@@ -243,5 +246,15 @@ $('#image_field').show();
           }
       });
         }
+    </script>
+    <script>
+        var calculate = function() {
+            var string = document.getElementById('short_description').value;
+            var words = string.trim().split(/\s+/).filter(word => word.length > 0).length;
+            document.getElementById('count').innerHTML = words + ' Words';
+        };
+    
+        // Add event listener to count words when the content changes
+        document.getElementById('short_description').addEventListener('input', calculate);
     </script>
 @endpush
