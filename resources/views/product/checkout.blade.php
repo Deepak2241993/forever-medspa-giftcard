@@ -121,7 +121,7 @@ $amount=0;
                               @endphp
                                <tr class="cart_item">
                                   <td class="product-name">
-                                    {{$cart_data->product_name}}<strong class="product-quantity"> × {{$cart_data->session_number?$cart_data->session_number:1}}</strong>
+                                    {{$cart_data->product_name}}<strong class="product-quantity"> × {{$cart_data->session_number?$cart_data->session_number:1}} Sessions</strong>
                                   </td>
                                   <td class="product-total">
                                      <span class="amount">${{ number_format($amount, 2) }}</span>
@@ -135,23 +135,7 @@ $amount=0;
                                   <th>Cart Subtotal</th>
                                   <td><span class="amount">${{ number_format($amount, 2) }}</span></td>
                                </tr>
-                               <tr class="shipping">
-                                  <th>Shipping</th>
-                                  <td>
-                                     <ul>
-                                        <li>
-                                           <input type="radio">
-                                           <label>
-                                              Flat Rate: <span class="amount">$7.00</span>
-                                           </label>
-                                        </li>
-                                        <li>
-                                           <input type="radio">
-                                           <label>Free Shipping:</label>
-                                        </li>
-                                     </ul>
-                                  </td>
-                               </tr>
+                               
                                <tr class="order-total">
                                   <th>Order Total</th>
                                   <td><strong><span class="amount">${{ number_format($amount, 2) }}</span></strong>

@@ -103,7 +103,6 @@ $amount=0;
                          <h2>Cart totals</h2>
                          <ul class="mb-20">
                             <li>Subtotal <span>${{ number_format($amount, 2) }}</span></li>
-                            <li>Shipping <span>$10.00</span></li>
                             <li>Tax <span>$10.00</span></li>
                             <li>Total <span>${{ number_format($amount, 2) }}</span></li>
                          </ul>

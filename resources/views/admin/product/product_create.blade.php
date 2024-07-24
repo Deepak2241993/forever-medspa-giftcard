@@ -51,9 +51,9 @@
                             <input class="form-control" type="text" name="product_slug" value="{{isset($data)?$data['product_slug']:''}}" placeholder="Slug" id="product_slug">
                         </div>
                         <div class="mb-3 col-lg-12 self">
-                            <label class="form-label">Select Service Category</label>
+                            <label class="form-label">Select Service Category <span class="text-danger">*</span></label>
                             @if($category)
-                                @foreach($category as $value)
+                                {{-- @foreach($category as $value)
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" name="cat_id[]" value="{{ $value['id'] }}" 
                                             {{ isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : '' }} >
@@ -61,7 +61,16 @@
                                             {{ $value['cat_name'] }}
                                         </label>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
+                                @foreach($category as $value)
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="cat_id[]" value="{{ $value['id'] }}" 
+                                        {{ isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : '' }} >
+                                    <label class="form-check-label" for="cat_{{ $value['id'] }}">
+                                        {{ $value['cat_name'] }}
+                                    </label>
+                                </div>
+                            @endforeach
                             @else
                                 <div>No Category Found</div>
                             @endif
@@ -178,7 +187,7 @@
                             </select>
                         </div> --}}
                         <div class="mb-3 col-lg-6 mt-4">
-                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -264,5 +273,22 @@ $('#image_field').show();
     // Add event listener to count words when the content changes
     document.getElementById('short_description').addEventListener('input', calculate);
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('input[name="cat_id[]"]');
+        const submitBtn = document.getElementById('submitBtn');
 
+        function toggleSubmitButton() {
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            submitBtn.disabled = !anyChecked;
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', toggleSubmitButton);
+        });
+
+        // Initial check on page load
+        toggleSubmitButton();
+    });
+</script>
 @endpush
