@@ -220,8 +220,6 @@ input[type=text] {
                      ->orWhere('cat_id', 'LIKE', '%|' . $id)
                      ->orWhere('cat_id', $id)
                      ->min('discount_rate');
-
-                     
                   }
 
                   
@@ -241,7 +239,7 @@ input[type=text] {
                           </h3>
                        @if($min_amount > 0)   
                        <div class="hl05eU">
-                           <div class="UkUFwK"><span><i><b> {{$min_amount}}% - {{$max_amount}}%  off</b></i>
+                           <div class="UkUFwK"><span><i><b>Up to {{$max_amount}}%  off</b></i>
                        </div>
                        @endif
                    <div class="postbox__text">
