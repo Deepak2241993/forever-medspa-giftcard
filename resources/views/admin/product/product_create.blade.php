@@ -247,14 +247,22 @@ $('#image_field').show();
       });
         }
     </script>
-    <script>
-        var calculate = function() {
-            var string = document.getElementById('short_description').value;
-            var words = string.trim().split(/\s+/).filter(word => word.length > 0).length;
-            document.getElementById('count').innerHTML = words + ' Words';
-        };
-    
-        // Add event listener to count words when the content changes
-        document.getElementById('short_description').addEventListener('input', calculate);
-    </script>
+  <script>
+    var calculate = function() {
+        var string = document.getElementById('short_description').value;
+        var words = string.trim().split(/\s+/).filter(word => word.length > 0);
+        var wordCount = words.length;
+        
+        if (wordCount > 150) {
+            document.getElementById('short_description').value = words.slice(0, 150).join(' ');
+            wordCount = 150;
+        }
+
+        document.getElementById('count').innerHTML = wordCount + " / 150 words";
+    };
+
+    // Add event listener to count words when the content changes
+    document.getElementById('short_description').addEventListener('input', calculate);
+</script>
+
 @endpush
