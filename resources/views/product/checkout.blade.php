@@ -44,55 +44,55 @@ $amount=0;
                          <div class="col-md-6">
                             <div class="checkout-form-list">
                                <label>First Name <span class="required">*</span></label>
-                               <input type="text" placeholder="">
+                               <input type="text" placeholder="" name="fname">
                             </div>
                          </div>
                          <div class="col-md-6">
                             <div class="checkout-form-list">
                                <label>Last Name <span class="required">*</span></label>
-                               <input type="text" placeholder="">
+                               <input type="text" placeholder="" name="lname">
                             </div>
                          </div>
     
                          <div class="col-md-12">
                             <div class="checkout-form-list">
                                <label>Address <span class="required">*</span></label>
-                               <input type="text" placeholder="Street address">
+                               <input type="text" placeholder="Street address" name="address">
                             </div>
                          </div>
                          <div class="col-md-12">
                             <div class="checkout-form-list">
-                               <input type="text" placeholder="Apartment, suite, unit etc. (optional)">
+                               <input type="text" placeholder="Apartment, suite, unit etc. (optional)" name="address2">
                             </div>
                          </div>
                          <div class="col-md-12">
                             <div class="checkout-form-list">
                                <label>Town / City <span class="required">*</span></label>
-                               <input type="text" placeholder="Town / City">
+                               <input type="text" placeholder="Town / City" name="city">
                             </div>
                          </div>
                          <div class="col-md-6">
                             <div class="checkout-form-list">
                                <label>State / County <span class="required">*</span></label>
-                               <input type="text" placeholder="">
+                               <input type="text" placeholder="" name="country">
                             </div>
                          </div>
                          <div class="col-md-6">
                             <div class="checkout-form-list">
                                <label>Postcode / Zip <span class="required">*</span></label>
-                               <input type="text" placeholder="Postcode / Zip">
+                               <input type="text" placeholder="Postcode / Zip" name="zip_code">
                             </div>
                          </div>
                          <div class="col-md-6">
                             <div class="checkout-form-list">
                                <label>Email Address <span class="required">*</span></label>
-                               <input type="email" placeholder="">
+                               <input type="email" placeholder="" name="email">
                             </div>
                          </div>
                          <div class="col-md-6">
                             <div class="checkout-form-list">
                                <label>Phone <span class="required">*</span></label>
-                               <input type="text" placeholder="Postcode / Zip">
+                               <input type="text" placeholder="Phone">
                             </div>
                          </div>
            

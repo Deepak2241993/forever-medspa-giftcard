@@ -147,43 +147,6 @@ class PopularOfferController extends Controller
         return view('product.checkout',compact('cart'));
     }
 
-    public function CheckoutProcess(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'address' => 'required|string|max:255',
-            'payment_method' => 'required|string',
-            'stripeToken' => 'required|string',
-        ]);
-
-        $cart = session()->get('cart', []);
-        $totalAmount = $this->calculateTotalAmount($cart);
-
-        // Set Stripe secret key
-        Stripe::setApiKey(config('services.stripe.secret'));
-
-        // Create Stripe charge
-        try {
-            $charge = Charge::create([
-                'amount' => $totalAmount * 100, // Amount in cents
-                'currency' => 'usd',
-                'description' => 'Order from ' . $request->name,
-                'source' => $request->stripeToken,
-                'metadata' => [
-                    'email' => $request->email,
-                    'address' => $request->address
-                ]
-            ]);
-
-            // Clear the cart
-            session()->forget('cart');
-
-            return redirect()->route('checkout.thankyou');
-
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
-    }
+    
 
 }

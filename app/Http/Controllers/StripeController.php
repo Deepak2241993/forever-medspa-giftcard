@@ -9,6 +9,7 @@ use App\Models\GiftCoupon;
 use App\Models\TransactionHistory;
 use Illuminate\Http\Request;
 use Validator;
+// use Stripe;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
@@ -115,6 +116,7 @@ class StripeController extends Controller
        Stripe::setApiKey(env('STRIPE_SECRET'));
 
        try {
+
            // Create a charge
           $data= Charge::create([
                 'amount' => ($giftsend['amount'] - $giftsend['discount']) * 100, // Amount in cents
@@ -187,7 +189,56 @@ class StripeController extends Controller
        }
     }
 
+    public function CheckoutProcess(Request $request)
+    {
+        // $request->validate([
+        //     'fname' => 'required|string|max:255',
+        //     'lname' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255',
+        //     'address' => 'required|string|max:255',
+        // ]);
+        // dd($request->validate);
+        try {
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $redirecturl = route('strip_checkout_success').'?session_id={CHECKOUT_SESSION_ID}';
+        // dd($stripe);
+        $response = $stripe->checkout->sessions->create([
+            'success_url'=> $redirecturl,
+            'customer_email'=>$request->email,
+            'payment_method_types'=>['link','card'],
+            'line_items' => [
+                [
+                    'price_data'=>[
+                        'product_data' => [
+                            'name' => $request->fname,
+                        ],
+                        'unit_amount' => 100*200,
+                        'currency' => 'USD',
+                    ],
+                    'quantity' => 1
+                ],
+            ],
+            'mode' => 'payment',
+            'allow_promotion_codes' => true,
+        ]);
 
+        return redirect($response['url']);
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function stripcheckoutSuccess(Request $request)
+    {
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $response = $stripe->checkout->sessions->retrieve($request->session_id);
+        dd($response);
+
+        return view('stripe.thanks',compact('data'))->with('success', 'Payment successful.');
+        return redirect()->route('strip.index')->with('success','payment successful.');
+
+    }
 
 
 
