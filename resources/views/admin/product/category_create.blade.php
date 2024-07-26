@@ -50,6 +50,14 @@
                             <label for="slug" class="form-label">Deal Slug</label>
                             <input class="form-control" id="slug" type="text" name="slug" value="{{isset($data)?$data['slug']:''}}" placeholder="Category slug">
                         </div>
+                        <div class="mb-3 col-lg-6 self">
+                            <label for="deal_start_date" class="form-label">Deal Seart Date</label>
+                            <input class="form-control" id="deal_start_date" type="date" name="deal_start_date" value="{{isset($data)?$data['deal_start_date']:''}}" >
+                        </div>
+                        <div class="mb-3 col-lg-6 self">
+                            <label for="deal_end_date" class="form-label">Deal End Date</label>
+                            <input class="form-control" id="deal_end_date" type="date" name="deal_end_date" value="{{isset($data)?$data['deal_end_date']:''}}">
+                        </div>
                        
                         <div class="mb-12 col-lg-12 self">
                             <label for="cat_description" class="form-label">Deal Description</label>
@@ -134,4 +142,16 @@
       });
         }
     </script>
+    <script>
+        // Get the current date
+        var today = new Date().toISOString().split('T')[0];
+        // Set the min attribute of the date input field to today
+        document.getElementById('deal_start_date').setAttribute('min', today);
+     </script>
+     <script>
+        // Get the current date
+        var today = new Date().toISOString().split('T')[0];
+        // Set the min attribute of the date input field to today
+        document.getElementById('deal_end_date').setAttribute('min', today);
+     </script>
 @endpush
