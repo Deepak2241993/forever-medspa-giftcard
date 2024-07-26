@@ -197,8 +197,14 @@ public function update(Request $request,$id)
      }
 
      public function categorytpage(){
-        
-        $data=ProductCategory::where('cat_is_deleted',0)->where('status',1)->where('user_token','FOREVER-MEDSPA')->orderBy('id','DESC')->paginate(10);
+        $date=date('Y-m-d');
+        $data=ProductCategory::where('cat_is_deleted',0)
+        ->where('status',1)
+        ->where('user_token','FOREVER-MEDSPA')
+        ->where('deal_start_date','<=',$date)
+        ->where('deal_end_date','>=',$date)
+        ->orderBy('id','DESC')
+        ->paginate(10);
         $popular_service=Product::where('popular_service',1)->where('product_is_deleted',0)->where('user_token','FOREVER-MEDSPA')->get();
        
         //  For Auto Search Complete
