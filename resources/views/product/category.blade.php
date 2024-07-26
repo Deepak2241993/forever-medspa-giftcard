@@ -1,6 +1,9 @@
 
 @extends('layouts.front_product')
 @section('body')
+@php
+    use Carbon\Carbon;
+@endphp
 @push('css')
 <!-- CSS here -->
 
@@ -237,11 +240,53 @@ input[type=text] {
                            <h3 class="postbox__title">
                               <a href="{{ route('product', ['slug' => $value['slug']]) }}">{{$value['cat_name']}}</a>
                           </h3>
-                       @if($min_amount > 0)   
+                          @php
+    $today = Carbon::now();
+    $dealEndDate = Carbon::parse($value['deal_end_date']);
+    $daysLeft = $dealEndDate->diffInDays($today, false); // The 'false' parameter ensures negative values for past dates
+@endphp
+                      
                        <div class="hl05eU">
-                           <div class="UkUFwK"><span><i><b>Up to {{$max_amount}}%  off</b></i>
+                           <div class="UkUFwK">
+                              <span><i><b>Up to {{$max_amount}}%  off</br> </i></span>
+                              @if($daysLeft!=0)
+                              <span><i><b> {{ str_replace('-','', $daysLeft) }} days left</b> </i></span>
+
+                              @elseif ($daysLeft == 0)
+                              <i><b>  Deal ends today. Time left: <span id="countdown" ></span></b></i>
+                              </p>
+                              @else
+                              <p>Deal has ended.</p>
+                           @endif
+                           </i>
+                           @if ($daysLeft == 0)
+                              <script>
+                                 function updateCountdown() {
+                                     var now = new Date().getTime();
+                                     var endOfDay = new Date();
+                                     endOfDay.setHours(23, 59, 59, 999); // Set to end of day
+                                     var distance = endOfDay - now;
+                     
+                                     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                     
+                                     document.getElementById("countdown").innerHTML = hours + "h "
+                                     + minutes + "m " + seconds + "s ";
+                     
+                                     if (distance < 0) {
+                                         clearInterval(x);
+                                         document.getElementById("countdown").innerHTML = "EXPIRED";
+                                     }
+                                 }
+                     
+                                 var x = setInterval(updateCountdown, 1000);
+                                 updateCountdown(); // initial call to display countdown immediately
+                             </script>
+                             
+                             @endif
                        </div>
-                       @endif
+                      
                    <div class="postbox__text">
                     
                               <p>{!!$value['cat_description']!!}</p>
