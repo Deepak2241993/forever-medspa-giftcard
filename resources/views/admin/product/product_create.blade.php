@@ -179,13 +179,13 @@
                                 <option value="0"{{ isset($data['popular_service']) && $data['popular_service'] == 0 ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
-                        {{-- <div class="mb-3 col-lg-6">
-                            <label for="from" class="form-label">Status</label>
-                            <select class="form-control" name="status" id="from">
-                                <option value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }} >Active</option>
-                                <option value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>Inactive</option>
+                        <div class="mb-3 col-lg-6">
+                            <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
+                            <select class="form-control" name="giftcard_redemption" id="from">
+                                <option value="1"{{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }} >Yes</option>
+                                <option value="0"{{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}selected>No</option>
                             </select>
-                        </div> --}}
+                        </div>
                         <div class="mb-3 col-lg-6 mt-4">
                             <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
                         </div>
