@@ -43,6 +43,7 @@ $amount=0;
                             <th class="cart-product-name">Product</th>
                             {{-- <th class="product-price">Unit Price</th> --}}
                             <th class="product-quantity">No.of Session</th>
+                            <th class="product-quantity">Giftcard Redeem</th>
                             <th class="product-subtotal">Total</th>
                             <th class="product-remove">Remove</th>
                          </tr>
@@ -71,8 +72,18 @@ $amount=0;
                                   </div>
                                </div>
                             </td>
+                            <td class="product-quantity text-center">
+                               @if($cart_data->giftcard_redemption==1)
+                              <div class="product-quantity mt-10 mb-10">
+                                 <div class="product-quantity-form">
+                                   
+                                       <input class="cart-input" readonly type="text" value="{{$cart_data->session_number}}">
+                                 </div>
+                              </div>
+                              @endif
+                           </td>
                             <td class="product-subtotal"><span class="amount">{{$cart_data->discounted_amount}}</span></td>
-                            <td class="product-remove"><a href="#"onclick="removeFromCart({{ $item['product_id'] }})"><i class="fa fa-times"></i></a></td>
+                            <td class="product-remove"><a href="#"onclick="removeFromCart({{ $item['product_id'] }})"><i class="fa fa-trash"></i></a></td>
                          </tr>
                          @endforeach
                          
@@ -103,8 +114,13 @@ $amount=0;
                          <h2>Cart totals</h2>
                          <ul class="mb-20">
                             <li>Subtotal <span>${{ number_format($amount, 2) }}</span></li>
-                            <li>Tax <span>$10.00</span></li>
-                            <li>Total <span>${{ number_format($amount, 2) }}</span></li>
+                            <li>Tax 10% <span>
+                              @php
+                                   $discountedprice = ($amount*10)/100;
+                                   echo $discountedprice;
+                              @endphp
+                              </span></li>
+                            <li>Total <span>${{ number_format($amount+$discountedprice, 2) }}</span></li>
                          </ul>
                          <a class="fill-btn" href="{{route('checkout')}}">
                             <span class="fill-btn-inner">
