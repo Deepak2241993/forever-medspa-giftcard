@@ -94,8 +94,8 @@ $amount=0;
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <input class="form-control mt-3" id="gift_number_{{$key}}" onkeypress="validategiftnumber({{$key}})" placeholder="Enter Gift Card Number" readonly type="text">
-                           <input class="form-control mt-3" id="giftcard_amount_{{$key}}" placeholder="Enter Redeem Amount" readonly type="text">
+                           <input class="form-control mt-3" id="gift_number_{{$key}}" onkeyup="validategiftnumber({{$key}})" placeholder="Enter Gift Card Number"  type="text">
+                           <input class="form-control mt-3" id="giftcard_amount_{{$key}}" placeholder="Enter Redeem Amount"  type="text">
                            <button type="button"class=" btn btn-success mt-3">Add More Giftcard</button>
                         </div>
                         <div class="modal-footer">
@@ -105,6 +105,30 @@ $amount=0;
                      </div>
                      </div>
                   </div>
+                  @push('footerscript')
+                  <script>
+                     $(document).ready(function() {
+                         let alertShownCount = 0;
+                  
+                         $('#giftcard_amount_{{$key}}').on('input', function() {
+                             var maxValue = parseFloat($(this).attr('max'));
+                             var currentValue = parseFloat($(this).val());
+                  
+                             if (currentValue > maxValue) {
+                                 if (alertShownCount === 0) {
+                                     alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. Please enter a valid amount.');
+                                     alertShownCount++;
+                                     $(this).val(maxValue);
+                                 } else {
+                                     $(this).val(maxValue);
+                                     $(this).prop('disabled', true);
+                                     alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. The value has been set to the maximum and the input field is now disabled.');
+                                 }
+                             }
+                         });
+                     });
+                  </script>
+                  @endpush
                 {{-- Modal Code End --}}
                          @endforeach
                          
@@ -208,13 +232,16 @@ function validategiftnumber(key) {
            user_token: 'FOREVER-MEDSPA',
        },
        success: function (response) {
-           if (response.success) {
+           if (response.status===200) {
                // Update the cart view, e.g., remove the item from the DOM
-               $('#giftcard_amount_' + id).val(response['total_amount']);
-               alert(response.success);
-               location.reload();
+               console.log(response.success);
+               console.log(response.result[0]['total_amount']);
+               // location.reload();
+               $('#giftcard_amount_'+key).val(response.result[0]['total_amount']);
+               $('#giftcard_amount_' + key).attr('max', response.result[0]['total_amount']);
+
            } else {
-               alert(response.error);
+               console.log(response.error);
            }
        },
        error: function (jqXHR, textStatus, errorThrown) {
@@ -222,5 +249,9 @@ function validategiftnumber(key) {
        }
    });
 }
+// function validategiftAmount(){
+// alert('dfadf');
+// }
 </script>
+
 @endpush
