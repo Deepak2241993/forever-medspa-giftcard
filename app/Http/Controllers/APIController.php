@@ -1413,8 +1413,48 @@ public function categoryDelete(Request $request, $id)
  *                      format="integer",
  *                      example=21
  *                  ),
- *                  @OA\Property(
- *                      property="parent_id",
+ *                 @OA\Property(
+ *                      property="cat_id",
+ *                      type="integer",
+ *                      example="1"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="search_keywords",
+ *                      type="string",
+ *                      example="This is Test"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="prerequisites",
+ *                      type="string",
+ *                      example="This is Test"
+ *                  ),
+ *                       @OA\Property(
+ *                      property="short_description",
+ *                      type="string",
+ *                      example="This is Test"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="product_slug",
+ *                      type="string",
+ *                      example="product-name"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="popular_service",
+ *                      type="integer",
+ *                      example="1"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="session_number",
+ *                      type="integer",
+ *                      example="5"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="discount_rate",
+ *                      type="float",
+ *                      example="5"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="giftcard_redemption",
  *                      type="integer",
  *                      example="1"
  *                  ),
@@ -1608,7 +1648,47 @@ public function productDelete(Request $request, $id)
  *                      example=21
  *                  ),
  *                  @OA\Property(
- *                      property="parent_id",
+ *                      property="cat_id",
+ *                      type="integer",
+ *                      example="1"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="search_keywords",
+ *                      type="string",
+ *                      example="This is Test"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="prerequisites",
+ *                      type="string",
+ *                      example="This is Test"
+ *                  ),
+ *                       @OA\Property(
+ *                      property="short_description",
+ *                      type="string",
+ *                      example="This is Test"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="product_slug",
+ *                      type="string",
+ *                      example="product-name"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="popular_service",
+ *                      type="integer",
+ *                      example="1"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="session_number",
+ *                      type="integer",
+ *                      example="5"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="discount_rate",
+ *                      type="float",
+ *                      example="5"
+ *                  ),
+ *                      @OA\Property(
+ *                      property="giftcard_redemption",
  *                      type="integer",
  *                      example="1"
  *                  ),

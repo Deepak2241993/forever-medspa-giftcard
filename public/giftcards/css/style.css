@@ -1,3 +1,4 @@
+
 /*------------------------------------------------------------------
     IMPORT FONTS
 -------------------------------------------------------------------*/
@@ -22,6 +23,52 @@
 /*------------------------------------------------------------------
     SKELETON
 -------------------------------------------------------------------*/
+/* For Header Cart Css */
+#cart {
+    display: inline-block;
+    margin-top: 0;
+    width: auto;
+}
+#cart > .btn {
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: #fca52a;
+    font-size: 0px;
+    border: none;
+    text-align: right;
+    padding: 5px 0 10px;
+}
+.btn-group .dropdown-toggle:active, .btn-group.open .dropdown-toggle {
+    outline: 0;
+}
+#cart > .btn i, #wishlist-total i {
+    color: #fca52a;
+    margin: 0 8px;
+    font-size: 25px;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+span#cart-total {
+    background: #fff;
+    border: 1px solid #fca52a;
+    color: #000;
+    border-radius: 50%;
+    position: absolute;
+    left: 22px;
+    top: 18px;
+    width: 20px;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 10px;
+}
 
 body {
     color: #666666;

@@ -138,4 +138,9 @@ class MedsapGiftController extends Controller
         $result->delete();
         return back()->with('message', 'Giftcard Deleted Successfully');
     }
+
+    public function giftcardValidate(Request $request){
+        $data=$request->all();
+        dd($data);
+    }
 }

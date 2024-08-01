@@ -1163,7 +1163,39 @@
                                         "format": "integer",
                                         "example": 21
                                     },
-                                    "parent_id": {
+                                    "cat_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "search_keywords": {
+                                        "type": "string",
+                                        "example": "This is Test"
+                                    },
+                                    "prerequisites": {
+                                        "type": "string",
+                                        "example": "This is Test"
+                                    },
+                                    "short_description": {
+                                        "type": "string",
+                                        "example": "This is Test"
+                                    },
+                                    "product_slug": {
+                                        "type": "string",
+                                        "example": "product-name"
+                                    },
+                                    "popular_service": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "session_number": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "discount_rate": {
+                                        "type": "float",
+                                        "example": "5"
+                                    },
+                                    "giftcard_redemption": {
                                         "type": "integer",
                                         "example": "1"
                                     }
@@ -1322,7 +1354,39 @@
                                         "format": "integer",
                                         "example": 21
                                     },
-                                    "parent_id": {
+                                    "cat_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "search_keywords": {
+                                        "type": "string",
+                                        "example": "This is Test"
+                                    },
+                                    "prerequisites": {
+                                        "type": "string",
+                                        "example": "This is Test"
+                                    },
+                                    "short_description": {
+                                        "type": "string",
+                                        "example": "This is Test"
+                                    },
+                                    "product_slug": {
+                                        "type": "string",
+                                        "example": "product-name"
+                                    },
+                                    "popular_service": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "session_number": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "discount_rate": {
+                                        "type": "float",
+                                        "example": "5"
+                                    },
+                                    "giftcard_redemption": {
                                         "type": "integer",
                                         "example": "1"
                                     }

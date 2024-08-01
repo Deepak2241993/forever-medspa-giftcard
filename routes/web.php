@@ -116,7 +116,7 @@ Route::post('cart','PopularOfferController@Cart')->name('cart');
 Route::get('cartview','PopularOfferController@Cartview')->name('cartview');
 Route::post('/cart/remove','PopularOfferController@CartRemove')->name('cartremove');
 Route::get('checkout','PopularOfferController@Checkout')->name('checkout');
-
+Route::post('/giftcards-validate', 'GiftController@giftcardValidate')->name('giftcards-validate');
 
 //  for Product payment URL
 Route::post('checkout-process','StripeController@CheckoutProcess')->name('checkout_process');

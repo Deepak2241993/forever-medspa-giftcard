@@ -40,6 +40,7 @@
   margin-left: 25px;
 }
 }
+
 </style>
 
 </head>
@@ -71,8 +72,26 @@
                          <li><a class="nav-link active" href="{{url('/')}}">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
 						<li><a class="nav-link" href="{{route('category',['token'=>'FOREVER-MEDSPA'])}}">Services</a></li>
+                        {{-- Cart Code --}}
+                        @php
+                        $cart = session()->get('cart', []);
+                        $amount=0;
+                        
+                        @endphp
+                        @if(count(session()->get('cart', []))>0)
+                        <div id="cart" class="btn-group btn-block">
+                            <button onclick="window.location.href='{{route('cartview')}}'" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-bag"></i> <span id="cart-total" class="hidden-xs">{{ count(session()->get('cart', [])) ? count(session()->get('cart', [])) : 0 }}
+                            </span></button>
+                            {{-- <ul class="dropdown-menu pull-right">    <li>
+                                <p class="text-center">Your shopping cart is empty!</p>
+                              </li>  </ul> --}}
+                        </div>
+                        @endif
+                       
+                        {{-- Cart Code END --}}
                         
                     </ul>
+                  
                 </div>
             </div>
         </nav>

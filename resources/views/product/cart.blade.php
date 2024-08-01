@@ -50,7 +50,7 @@ $amount=0;
                       </thead>
                       <tbody>
                     
-                          @foreach ($cart as $item) 
+                          @foreach ($cart as $key=>$item) 
 
                           @php
                           $cart_data= App\Models\Product::find($item['product_id']);
@@ -68,6 +68,7 @@ $amount=0;
                                <div class="product-quantity mt-10 mb-10">
                                   <div class="product-quantity-form">
                                     
+                                
                                         <input class="cart-input" readonly type="text" value="{{$cart_data->session_number}}">
                                   </div>
                                </div>
@@ -75,23 +76,43 @@ $amount=0;
                             <td class="product-quantity text-center">
                                @if($cart_data->giftcard_redemption==1)
                               <div class="product-quantity mt-10 mb-10">
-                                 <div class="product-quantity-form">
-                                   
-                                       <input class="cart-input" readonly type="text" value="{{$cart_data->session_number}}">
-                                 </div>
+                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal_{{$key}}">
+                                    Giftcard Redeem
+                                  </button>
                               </div>
                               @endif
                            </td>
                             <td class="product-subtotal"><span class="amount">{{$cart_data->discounted_amount}}</span></td>
                             <td class="product-remove"><a href="#"onclick="removeFromCart({{ $item['product_id'] }})"><i class="fa fa-trash"></i></a></td>
                          </tr>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal_{{$key}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Giftcard Redeem</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <input class="form-control mt-3" id="gift_number_{{$key}}" onkeypress="validategiftnumber({{$key}})" placeholder="Enter Gift Card Number" readonly type="text">
+                           <input class="form-control mt-3" id="giftcard_amount_{{$key}}" placeholder="Enter Redeem Amount" readonly type="text">
+                           <button type="button"class=" btn btn-success mt-3">Add More Giftcard</button>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                           <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                     </div>
+                     </div>
+                  </div>
+                {{-- Modal Code End --}}
                          @endforeach
                          
                        
                       </tbody>
                    </table>
                 </div>
-                
+
                 <div class="row">
                    <div class="col-12">
                       <div class="coupon-all">
@@ -160,6 +181,36 @@ function removeFromCart(id) {
            if (response.success) {
                // Update the cart view, e.g., remove the item from the DOM
                $('#cart-item-' + id).remove();
+               alert(response.success);
+               location.reload();
+           } else {
+               alert(response.error);
+           }
+       },
+       error: function (jqXHR, textStatus, errorThrown) {
+           alert('An error occurred. Please try again.');
+       }
+   });
+}
+
+// For Validate Gift Number
+
+function validategiftnumber(key) {
+   $.ajax({
+       url: '{{ route('giftcards-validate') }}',
+       method: "post",
+       dataType: "json",
+       data: {
+           _token: '{{ csrf_token() }}',
+            name: "",
+            email: "",
+           giftcardnumber: $('#gift_number_'+key).val(),
+           user_token: 'FOREVER-MEDSPA',
+       },
+       success: function (response) {
+           if (response.success) {
+               // Update the cart view, e.g., remove the item from the DOM
+               $('#giftcard_amount_' + id).val(response['total_amount']);
                alert(response.success);
                location.reload();
            } else {
