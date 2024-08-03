@@ -556,6 +556,75 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
         return response()->json(['error' => 'Cards Number Not Found', 'status' => 404]);
     }
 }
+// For Validate Gift Cards
+/**
+ * @OA\Post(
+ *      tags={"Gift-Cards"},
+ *     path="/gift-card-validate",
+ *     summary="For Gift Card Search ",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 @OA\Property(property="giftcardnumber", type="string", example="FEMS-2024-8147"),
+ *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="Result Found"),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated",
+ *      ),
+ * @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
+
+ public function GiftCardvalidate(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers)
+{
+    $token = $request->user_token;
+    $giftcardnumber = $request->giftcardnumber;
+
+    $query = DB::table('giftsends')
+    ->join('giftcards_numbers', 'giftcards_numbers.user_id', '=', 'giftsends.id')
+    ->select(
+        'giftsends.recipient_name',
+        'giftsends.your_name',
+        'giftsends.gift_send_to',
+        'giftsends.user_token',
+        'giftcards_numbers.giftnumber',
+        'giftcards_numbers.user_id',
+        'giftcards_numbers.status',
+        DB::raw('SUM(giftcards_numbers.amount) as total_amount')
+    );
+
+    if (!empty($giftcardnumber)) {
+        $query->where('giftcards_numbers.giftnumber', $giftcardnumber);
+    }
+
+    $query->where('giftcards_numbers.user_token', $token)
+    ->groupBy(
+        'giftsends.recipient_name',
+        'giftsends.your_name',
+        'giftsends.gift_send_to',
+        'giftsends.user_token',
+        'giftcards_numbers.giftnumber',
+        'giftcards_numbers.user_id',
+        'giftcards_numbers.status',
+    );
+    $result = $query->first();
+
+    
+    if ($result) {
+        return response()->json(['result' => $result, 'status' => 200, 'success' => 'Gift Cards Found'], 200);
+    } else {
+        return response()->json(['error' => 'Cards Number Not Found', 'status' => 404]);
+    }
+}
 
 //  for Giftcards Redeem
 /**
