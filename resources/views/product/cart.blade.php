@@ -48,18 +48,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($cart as $key => $item)
+                                            @php
+                                                $redeem = [];
+                                                $cart_data = App\Models\Product::find($item['product_id']);
+                                                $amount += $cart_data->discounted_amount;
 
-                                       @foreach ($cart as $key => $item)
-                                       @php
-                                           $redeem = [];
-                                           $cart_data = App\Models\Product::find($item['product_id']);
-                                           $amount += $cart_data->discounted_amount;
-                                   
-                                           $image = explode('|', $cart_data->product_image);
-                                           if($cart_data->giftcard_redemption == 1) {
-                                               $redeem[] = $cart_data->giftcard_redemption;
-                                           }
-                                       @endphp
+                                                $image = explode('|', $cart_data->product_image);
+                                                if ($cart_data->giftcard_redemption == 1) {
+                                                    $redeem[] = $cart_data->giftcard_redemption;
+                                                }
+                                            @endphp
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
                                                 <td class="product-thumbnail"><a href="product-details.html"><img
@@ -79,109 +78,118 @@
                                                 </td>
                                                 <td class="product-subtotal"><span
                                                         class="amount">{{ $cart_data->discounted_amount }}</span></td>
-                                                <td class="product-remove"><span
-                                                        onclick="removeFromCart({{ $item['product_id'] }})"><i
-                                                            class="fa fa-trash"></i></span></td>
+                                                <td class="product-remove">
+                                                    <a  href="javascript:void(0)" onclick="removeFromCart({{ $item['product_id'] }})">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                    
+                                                </td>
                                             </tr>
-                                          
-                                            
                                         @endforeach
 
 
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
-                                       @if(count($redeem)>0)
-                                        <div class="coupon d-flex align-items-center">
-                                            <div class="row">
-                                                <div class="col-9">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <input id="gift_number_0" placeholder="Enter Gift Card Number"
-                                                                class="input-text" name="coupon_code" type="text" required>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                         <input id="giftcard_amount_0" placeholder="$0.00" class="input-text" name="coupon_code" type="number" min="0" value="0" onkeyup="validateGiftAmount(this)">
+                                        @if (count($redeem) > 0)
+                                            <div class="coupon d-flex align-items-center">
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <input id="gift_number_0"
+                                                                    placeholder="Enter Gift Card Number" class="input-text"
+                                                                    name="coupon_code" type="text" required>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input id="giftcard_amount_0" placeholder="$0.00"
+                                                                    class="input-text" name="coupon_code" type="number"
+                                                                    min="0" value="0"
+                                                                    onkeyup="validateGiftAmount(this)">
 
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <button onclick="validategiftnumber({{ 0 }})"
+                                                                    class="fill-btn" type="button">
+                                                                    <span class="fill-btn-inner">
+                                                                        <span class="fill-btn-normal">apply coupon</span>
+                                                                        <span class="fill-btn-hover">apply coupon</span>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <span class="text-danger mt-4" id="error_0"></span>
+                                                                <span class="text-success mt-4" id="success_0"></span>
+                                                            </div>
+                                                            <div id="parentElement"></div>
+                                                            <div class="col-md-5  mt-4">
+                                                                <button class="fill-btn" id="addGiftCardButton"
+                                                                    type="button">
+                                                                    <span class="fill-btn-inner">
+                                                                        <span class="fill-btn-normal">Apply More
+                                                                            Giftcard</span>
+                                                                        <span class="fill-btn-hover">Apply More
+                                                                            Giftcard</span>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-3">
-                                                            <button onclick="validategiftnumber({{ 0 }})"
+
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="coupon2">
+                                                            <button
+                                                                onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
                                                                 class="fill-btn" type="button">
                                                                 <span class="fill-btn-inner">
-                                                                    <span class="fill-btn-normal">apply coupon</span>
-                                                                    <span class="fill-btn-hover">apply coupon</span>
+                                                                    <span class="fill-btn-normal">+Add More</span>
+                                                                    <span class="fill-btn-hover">+Add More</span>
                                                                 </span>
                                                             </button>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <span class="text-danger mt-4" id="error_0"></span>
-                                                            <span class="text-success mt-4" id="success_0"></span>
-                                                        </div>
-                                                        <div id="parentElement"></div>
-                                                        <div class="col-md-5  mt-4">
-                                                            <button class="fill-btn" id="addGiftCardButton" type="button">
-                                                                <span class="fill-btn-inner">
-                                                                    <span class="fill-btn-normal">Apply More
-                                                                        Giftcard</span>
-                                                                    <span class="fill-btn-hover">Apply More Giftcard</span>
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                   
-                                                </div>
-                                                <div class="col-3">
-                                                    <div class="coupon2">
-                                                        <button
-                                                            onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
-                                                            class="fill-btn" type="button">
-                                                            <span class="fill-btn-inner">
-                                                                <span class="fill-btn-normal">+Add More</span>
-                                                                <span class="fill-btn-hover">+Add More</span>
-                                                            </span>
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                          </div>
-                                          @endif
-                                          {{-- when No date --}}
-                                          @if(count($redeem)==0)
-                                          <div class="coupon2">
-                                           <button
-                                               onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
-                                               class="fill-btn" type="button">
-                                               <span class="fill-btn-inner">
-                                                   <span class="fill-btn-normal">+Add More</span>
-                                                   <span class="fill-btn-hover">+Add More</span>
-                                               </span>
-                                           </button>
-                                       </div>
-                                       @endif
-                                       {{-- no data --}}
+                                        @endif
+                                        {{-- when No date --}}
+                                        @if (count($redeem) == 0)
+                                            <div class="coupon2">
+                                                <button
+                                                    onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
+                                                    class="fill-btn" type="button">
+                                                    <span class="fill-btn-inner">
+                                                        <span class="fill-btn-normal">+Add More</span>
+                                                        <span class="fill-btn-hover">+Add More</span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        @endif
+                                        {{-- no data --}}
                                     </div>
                                 </div>
                             </div>
-                           
-                            
+
+
                             <div class="row">
                                 <div class="col-lg-6 ml-auto">
                                     <div class="cart-page-total">
                                         <h2>Cart totals</h2>
                                         <ul class="mb-20">
                                             <li>Subtotal <span>${{ number_format($amount, 2) }}</span></li>
-                                            <li>Total Giftcard  Applied <span  id="giftcard_applied">$0</span></li>
+                                            <li>Total Giftcard Applied <span id="giftcard_applied">$0</span></li>
                                             <li>Tax 10% <span id="tax_amount">
                                                     @php
                                                         $discountedprice = ($amount * 10) / 100;
-                                                        echo "+$".$discountedprice;
+                                                        echo "+$" . $discountedprice;
                                                     @endphp
                                                 </span></li>
-                                            <li>Total <span id="totalValue">${{ number_format($amount + $discountedprice, 2) }}</span></li>
+                                            <li>Total <span
+                                                    id="totalValue">${{ number_format($amount + $discountedprice, 2) }}</span>
+                                            </li>
                                         </ul>
                                         <a class="fill-btn" href="{{ route('checkout') }}">
                                             <span class="fill-btn-inner">
@@ -208,23 +216,60 @@
 
 @push('footerscript')
     <script>
-        function removeFromCart(id) {
+       function removeFromCart(id) {
+    $.ajax({
+        url: '{{ route('cartremove') }}',
+        method: "POST",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            product_id: id
+        },
+        success: function(response) {
+            if (response.success) {
+                // Update the cart view, e.g., remove the item from the DOM
+                $('#cart-item-' + id).remove();
+                alert(response.success);
+                location.reload();
+            } else {
+                alert(response.error);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+
+        // For Validate Gift Number
+
+        function validategiftnumber(key) {
             $.ajax({
-                url: '{{ route('cartremove') }}',
+                url: '{{ route('giftcards-validate') }}',
                 method: "post",
                 dataType: "json",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    product_id: id
+                    name: "",
+                    email: "",
+                    giftcardnumber: $('#gift_number_' + key).val(),
+                    user_token: 'FOREVER-MEDSPA',
                 },
                 success: function(response) {
-                    if (response.success) {
+                    if (response.status === 200) {
                         // Update the cart view, e.g., remove the item from the DOM
-                        $('#cart-item-' + id).remove();
-                        alert(response.success);
-                        location.reload();
+                        console.log(response.success);
+                        console.log(response.result.total_amount);
+                        $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' +
+                            response.result.total_amount);
+                        $('#giftcard_amount_' + key).val(response.result.total_amount);
+                        $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
+                        sumValues();
                     } else {
-                        alert(response.error);
+                        alert('Invalid Gift Card');
+                        console.log(response.error);
+                        $('#error_' + key).html(response.error || 'An error occurred');
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -233,53 +278,18 @@
             });
         }
 
-        // For Validate Gift Number
 
-        function validategiftnumber(key) {
-    $.ajax({
-        url: '{{ route('giftcards-validate') }}',
-        method: "post",
-        dataType: "json",
-        data: {
-            _token: '{{ csrf_token() }}',
-            name: "",
-            email: "",
-            giftcardnumber: $('#gift_number_' + key).val(),
-            user_token: 'FOREVER-MEDSPA',
-        },
-        success: function(response) {
-            if (response.status === 200) {
-                // Update the cart view, e.g., remove the item from the DOM
-                console.log(response.success);
-                console.log(response.result.total_amount);
-                $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' +response.result.total_amount);
-                $('#giftcard_amount_' + key).val(response.result.total_amount);
-                $('#giftcard_amount_' + key).attr('max',response.result.total_amount);
-                sumValues();
-            } else {
-                alert('Invalid Gift Card');
-                console.log(response.error);
-                $('#error_' + key).html(response.error || 'An error occurred');
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('An error occurred. Please try again.');
-        }
-    });
-   }
- 
+        // Attach the click event to the button
+        $(document).ready(function() {
+            // Initialize key to a starting value
+            var key = 0;
 
-    // Attach the click event to the button
-    $(document).ready(function() {
-    // Initialize key to a starting value
-    var key = 0;
+            // Attach the click event to the button
+            $('#addGiftCardButton').click(function() {
+                // Increment the key for each new set of input fields
+                key++;
 
-    // Attach the click event to the button
-    $('#addGiftCardButton').click(function() {
-        // Increment the key for each new set of input fields
-        key++;
-
-        var html = `
+                var html = `
        <div class="row mt-4">
         <div class="col-md-4">
           <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
@@ -305,59 +315,61 @@
        </div>
     `;
 
-        // Append the HTML to the desired parent element
-        $('#parentElement').append(html); // Use the actual ID of the parent element
-    });
+                // Append the HTML to the desired parent element
+                $('#parentElement').append(html); // Use the actual ID of the parent element
+            });
 
-    // Event delegation for dynamically added Remove buttons
-    $(document).on('click', '.remove-button', function() {
-        var keyToRemove = $(this).data('key');
-        $('#row_' + keyToRemove).remove();
-    });
-});
+            // Event delegation for dynamically added Remove buttons
+            $(document).on('click', '.remove-button', function() {
+                var keyToRemove = $(this).data('key');
+                $('#row_' + keyToRemove).remove();
+            });
+        });
 
 
-let alertShownCount = 0;
-function validateGiftAmount(inputElement) {
-    var maxValue = parseFloat($(inputElement).attr('max'));
-    var currentValue = parseFloat($(inputElement).val());
-    sumValues();
-    if (currentValue > maxValue) {
-        if (alertShownCount === 0) {
-            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. Please enter a valid amount.');
-            alertShownCount++;
-            $(inputElement).val(maxValue);
-        } else {
-            $(inputElement).val(maxValue);
-            // $(inputElement).prop('disabled', true);
-            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. The value has been set to the maximum and the input field is now disabled.');
+        let alertShownCount = 0;
+
+        function validateGiftAmount(inputElement) {
+            var maxValue = parseFloat($(inputElement).attr('max'));
+            var currentValue = parseFloat($(inputElement).val());
+            sumValues();
+            if (currentValue > maxValue) {
+                if (alertShownCount === 0) {
+                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
+                        '. Please enter a valid amount.');
+                    alertShownCount++;
+                    $(inputElement).val(maxValue);
+                } else {
+                    $(inputElement).val(maxValue);
+                    // $(inputElement).prop('disabled', true);
+                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
+                        '. The value has been set to the maximum and the input field is now disabled.');
+                }
+            }
         }
-    }
-}
 
-//  For Sum Calculation
-function sumValues() {
-    let sum = 0;
+        //  For Sum Calculation
+        function sumValues() {
+            let sum = 0;
 
-    $('input[id^="giftcard_amount_"]').each(function() {
-        let value = parseFloat($(this).val());
-        if (!isNaN(value)) {
-            sum += value;
+            $('input[id^="giftcard_amount_"]').each(function() {
+                let value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            });
+
+            var total_value_from_cart = {{ $amount }};
+            var new_final_amount = (total_value_from_cart - sum);
+
+            // Tax calculation 10%
+            var taxamount = (new_final_amount * 10) / 100;
+
+            $('#totalValue').text('$' + (new_final_amount + taxamount));
+            $('#giftcard_applied').text('-$' + sum);
+            $('#giftcard_applied').text('-$' + sum);
+            $('#tax_amount').text('+$' + taxamount);
+            //  $('#totalValue').text('Total Value: $' + sum.toFixed(2));
         }
-    });
-
-   var total_value_from_cart={{ number_format($amount, 2) }};
-   var new_final_amount = (total_value_from_cart-sum);
-
-   // Tax calculation 10%
-   var taxamount = (new_final_amount * 10)/100;
-
-   $('#totalValue').text('$' + (new_final_amount + taxamount));
-   $('#giftcard_applied').text('-$' + sum);
-   $('#giftcard_applied').text('-$' + sum);
-   $('#tax_amount').text('+$' + taxamount);
-   //  $('#totalValue').text('Total Value: $' + sum.toFixed(2));
-}
-
     </script>
 @endpush
