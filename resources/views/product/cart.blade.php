@@ -6,7 +6,40 @@
         $amount = 0;
     @endphp
     <main>
+@push('css')
+.giftcartbutton {
+    font-size: 14px;
+    font-weight: var(--bd-fw-medium);
+    color: var(--clr-common-white);
+    background: #198754;
+    height: 30px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 27px;
 
+
+}
+.giftcartdelete{
+    font-size: 14px;
+    font-weight: var(--bd-fw-medium);
+    color: var(--clr-common-white);
+    background: #dc3545;
+    height: 30px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 27px;
+}
+@endpush
         <!-- Breadcrumb area start  -->
         <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
             <div class="breadcrumb__thumb" data-background="{{ url('/product_page') }}/imgs/bg/breadcrumb-bg.jpg"></div>
@@ -99,9 +132,22 @@
                                         @if($redeem != 0)
                                             <div class="coupon d-flex align-items-center">
                                                 <div class="row">
-                                                    <div class="col-9">
+                                                    <div class="col-12">
+                                                        <div class="coupon2">
+                                                            <button
+                                                                onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
+                                                                class="fill-btn" type="button">
+                                                                <span class="fill-btn-inner">
+                                                                    <span class="fill-btn-normal">+Add More</span>
+                                                                    <span class="fill-btn-hover">+Add More</span>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-9 mt-4">
+                                                        <h5>Apply Giftcard</h5>
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-5">
                                                                 <input id="gift_number_0"
                                                                     placeholder="Enter Gift Card Number" class="input-text"
                                                                     name="coupon_code" type="text" required>
@@ -113,12 +159,12 @@
                                                                     onkeyup="validateGiftAmount(this)">
 
                                                             </div>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3 mt-4">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
-                                                                    class="fill-btn" type="button">
+                                                                    class="btn btn-success giftcartbutton" type="button">
                                                                     <span class="fill-btn-inner">
-                                                                        <span class="fill-btn-normal">apply coupon</span>
-                                                                        <span class="fill-btn-hover">apply coupon</span>
+                                                                        <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                                        <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
                                                                     </span>
                                                                 </button>
                                                             </div>
@@ -141,35 +187,11 @@
                                                         </div>
 
                                                     </div>
-                                                    <div class="col-3">
-                                                        <div class="coupon2">
-                                                            <button
-                                                                onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
-                                                                class="fill-btn" type="button">
-                                                                <span class="fill-btn-inner">
-                                                                    <span class="fill-btn-normal">+Add More</span>
-                                                                    <span class="fill-btn-hover">+Add More</span>
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         @endif
-                                        {{-- when No date --}}
-                                        @if($redeem == 0)
-                                            <div class="coupon2">
-                                                <button
-                                                    onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
-                                                    class="fill-btn" type="button">
-                                                    <span class="fill-btn-inner">
-                                                        <span class="fill-btn-normal">+Add More</span>
-                                                        <span class="fill-btn-hover">+Add More</span>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        @endif
-                                        {{-- no data --}}
+                                     
                                     </div>
                                 </div>
                             </div>
@@ -292,22 +314,33 @@
 
                 var html = `
        <div class="row mt-4">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
                 class="input-text" name="coupon_code" type="text" required>
        </div>
        <div class="col-md-2">
           <input id="giftcard_amount_${key}" placeholder="$0.00"
-                class="input-text" name="coupon_code" type="number" min="0">
+                class="input-text" name="coupon_code" type="number" min="0" value="0">
        </div>
-       <div class="col-md-3">
+       <div class="col-md-3 mt-4" style="display:flex;">
           <button onclick="validategiftnumber(${key})"
-                class="fill-btn" type="button">
+                class="btn btn-success giftcartbutton" type="button">
                 <span class="fill-btn-inner">
-                   <span class="fill-btn-normal">Apply Coupon</span>
-                   <span class="fill-btn-hover">Apply Coupon</span>
+                   <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
+                   <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
+                </span>
+          </button> 
+         |
+          <button onclick="validategiftnumber(${key})"
+                class="btn btn-danger giftcartdelete" type="button">
+                <span class="fill-btn-inner">
+                   <span class="fill-btn-normal">X</span>
+                   <span class="fill-btn-hover">X</span>
                 </span>
           </button>
+       </div>
+          <div class="col-md-3 mt-4">
+          
        </div>
        <div class="col-md-12">
           <span class="text-danger mt-4" id="error_${key}"></span>

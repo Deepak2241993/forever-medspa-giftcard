@@ -53,13 +53,6 @@ $amount=0;
                                <input type="text" placeholder="" name="lname">
                             </div>
                          </div>
-    
-                         <div class="col-md-12">
-                            <div class="checkout-form-list">
-                               <label>Address <span class="required">*</span></label>
-                               <input type="text" placeholder="Street address" name="address">
-                            </div>
-                         </div>
                          <div class="col-md-12">
                             <div class="checkout-form-list">
                                <input type="text" placeholder="Apartment, suite, unit etc. (optional)" name="address2">

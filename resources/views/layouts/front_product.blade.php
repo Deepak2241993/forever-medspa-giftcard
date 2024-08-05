@@ -30,8 +30,10 @@
    <link rel="stylesheet" href="{{url('/product_page')}}/css/spacing.css">
    <link rel="stylesheet" href="{{url('/product_page')}}/css/main.css">
 
-     
-    @stack('css')
+     <style>
+
+         @stack('css')
+     </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
