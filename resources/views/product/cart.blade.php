@@ -79,9 +79,9 @@
                                                 </td>
                                                 <td class="product-subtotal"><span
                                                         class="amount">{{ $cart_data->discounted_amount }}</span></td>
-                                                <td class="product-remove"><a
-                                                        href="#"onclick="removeFromCart({{ $item['product_id'] }})"><i
-                                                            class="fa fa-trash"></i></a></td>
+                                                <td class="product-remove"><span
+                                                        onclick="removeFromCart({{ $item['product_id'] }})"><i
+                                                            class="fa fa-trash"></i></span></td>
                                             </tr>
                                           
                                             
