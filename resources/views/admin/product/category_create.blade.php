@@ -51,7 +51,7 @@
                             <input class="form-control" id="slug" type="text" name="slug" value="{{isset($data)?$data['slug']:''}}" placeholder="Category slug">
                         </div>
                         <div class="mb-3 col-lg-6 self">
-                            <label for="deal_start_date" class="form-label">Deal Seart Date</label>
+                            <label for="deal_start_date" class="form-label">Deal Start Date</label>
                             <input class="form-control" id="deal_start_date" type="date" name="deal_start_date" value="{{isset($data)?$data['deal_start_date']:''}}" >
                         </div>
                         <div class="mb-3 col-lg-6 self">
