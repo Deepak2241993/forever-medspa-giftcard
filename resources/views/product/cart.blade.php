@@ -50,15 +50,16 @@
                                     <tbody>
                                         @foreach ($cart as $key => $item)
                                             @php
-                                                $redeem = [];
+                                                $redeem=0;
                                                 $cart_data = App\Models\Product::find($item['product_id']);
                                                 $amount += $cart_data->discounted_amount;
-
                                                 $image = explode('|', $cart_data->product_image);
                                                 if ($cart_data->giftcard_redemption == 1) {
-                                                    $redeem[] = $cart_data->giftcard_redemption;
+                                                    $redeem=1;
                                                 }
+
                                             @endphp
+                                           
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
                                                 <td class="product-thumbnail"><a href="product-details.html"><img
@@ -95,7 +96,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
-                                        @if (count($redeem) > 0)
+                                        @if($redeem != 0)
                                             <div class="coupon d-flex align-items-center">
                                                 <div class="row">
                                                     <div class="col-9">
@@ -156,7 +157,7 @@
                                             </div>
                                         @endif
                                         {{-- when No date --}}
-                                        @if (count($redeem) == 0)
+                                        @if($redeem == 0)
                                             <div class="coupon2">
                                                 <button
                                                     onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
