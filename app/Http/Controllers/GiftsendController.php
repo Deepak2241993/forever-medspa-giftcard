@@ -454,6 +454,10 @@ public function giftcardValidate(Request $request){
     if (isset($result['status']) && $result['status'] == 200) {
     return $result;
     }
+    else
+    {
+        return "Something Went Wrong";
+    }
 
 }
 }

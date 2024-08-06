@@ -592,13 +592,9 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     $query = DB::table('giftsends')
     ->join('giftcards_numbers', 'giftcards_numbers.user_id', '=', 'giftsends.id')
     ->select(
-        'giftsends.recipient_name',
-        'giftsends.your_name',
-        'giftsends.gift_send_to',
         'giftsends.user_token',
         'giftcards_numbers.giftnumber',
-        'giftcards_numbers.user_id',
-        'giftcards_numbers.status',
+
         DB::raw('SUM(giftcards_numbers.amount) as total_amount')
     );
 
@@ -608,13 +604,9 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
 
     $query->where('giftcards_numbers.user_token', $token)
     ->groupBy(
-        'giftsends.recipient_name',
-        'giftsends.your_name',
-        'giftsends.gift_send_to',
+       
         'giftsends.user_token',
         'giftcards_numbers.giftnumber',
-        'giftcards_numbers.user_id',
-        'giftcards_numbers.status',
     );
     $result = $query->first();
 

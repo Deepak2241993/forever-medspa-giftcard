@@ -267,98 +267,186 @@
 
         // For Validate Gift Number
 
-        function validategiftnumber(key) {
-            $.ajax({
-                url: '{{ route('giftcards-validate') }}',
-                method: "post",
-                dataType: "json",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    name: "",
-                    email: "",
-                    giftcardnumber: $('#gift_number_' + key).val(),
-                    user_token: 'FOREVER-MEDSPA',
-                },
-                success: function(response) {
-                    if (response.status === 200) {
-                        // Update the cart view, e.g., remove the item from the DOM
-                        console.log(response.success);
-                        console.log(response.result.total_amount);
-                        $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' +
-                            response.result.total_amount);
-                        $('#giftcard_amount_' + key).val(response.result.total_amount);
-                        $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
-                        sumValues();
-                    } else {
-                        alert('Invalid Gift Card');
-                        console.log(response.error);
-                        $('#error_' + key).html(response.error || 'An error occurred');
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('An error occurred. Please try again.');
-                }
-            });
-        }
+        // function validategiftnumber(key) {
+        //     $.ajax({
+        //         url: '{{ route('giftcards-validate') }}',
+        //         method: "post",
+        //         dataType: "json",
+        //         data: {
+        //             _token: '{{ csrf_token() }}',
+        //             giftcardnumber: $('#gift_number_' + key).val(),
+        //             user_token: 'FOREVER-MEDSPA',
+        //         },
+        //         success: function(response) {
+        //             if (response.status === 200) {
+        //                 // Update the cart view, e.g., remove the item from the DOM
+        //                 console.log(response.success);
+        //                 console.log(response.result.total_amount);
+        //                 $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' +
+        //                     response.result.total_amount);
+        //                 $('#giftcard_amount_' + key).val(response.result.total_amount);
+        //                 $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
+        //                 sumValues();
+        //             } else {
+        //                 alert('Invalid Gift Card');
+        //                 console.log(response.error);
+        //                 $('#error_' + key).html(response.error || 'An error occurred');
+        //             }
+        //         },
+        //         error: function(jqXHR, textStatus, errorThrown) {
+        //             alert('An error occurred. Please try again.');
+        //         }
+        //     });
+        // }
 
 
         // Attach the click event to the button
         $(document).ready(function() {
-            // Initialize key to a starting value
-            var key = 0;
+    // Initialize key to a starting value
+    var key = 0;
+    // Array to store gift card numbers
+    var giftCardNumbers = [];
 
-            // Attach the click event to the button
-            $('#addGiftCardButton').click(function() {
-                // Increment the key for each new set of input fields
-                key++;
+    // Attach the click event to the button
+    $(document).ready(function() {
+    // Initialize key to a starting value
+    var key = 0;
+    // Array to store gift card numbers
+    var giftCardNumbers = [];
 
-                var html = `
-       <div class="row mt-4">
-        <div class="col-md-5">
-          <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
-                class="input-text" name="coupon_code" type="text" required>
-       </div>
-       <div class="col-md-2">
-          <input id="giftcard_amount_${key}" placeholder="$0.00"
-                class="input-text" name="coupon_code" type="number" min="0" value="0">
-       </div>
-       <div class="col-md-3 mt-4" style="display:flex;">
-          <button onclick="validategiftnumber(${key})"
-                class="btn btn-success giftcartbutton" type="button">
-                <span class="fill-btn-inner">
-                   <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
-                   <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
-                </span>
-          </button> 
-         |
-          <button onclick="validategiftnumber(${key})"
-                class="btn btn-danger giftcartdelete" type="button">
-                <span class="fill-btn-inner">
-                   <span class="fill-btn-normal">X</span>
-                   <span class="fill-btn-hover">X</span>
-                </span>
-          </button>
-       </div>
-          <div class="col-md-3 mt-4">
-          
-       </div>
-       <div class="col-md-12">
-          <span class="text-danger mt-4" id="error_${key}"></span>
-          <span class="text-success mt-4" id="success_${key}"></span>
-       </div>
-       </div>
-    `;
+    // Attach the click event to the button
+    $('#addGiftCardButton').click(function() {
+        // Increment the key for each new set of input fields
+        key++;
 
-                // Append the HTML to the desired parent element
-                $('#parentElement').append(html); // Use the actual ID of the parent element
-            });
+        var html = `
+            <div class="row mt-4" id="row_${key}">
+                <div class="col-md-5">
+                    <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
+                        class="input-text" name="coupon_code" type="text" required>
+                </div>
+                <div class="col-md-2">
+                    <input id="giftcard_amount_${key}" placeholder="$0.00"
+                        class="input-text" name="coupon_code" type="number" min="0" value="0">
+                </div>
+                <div class="col-md-3 mt-4" style="display:flex;">
+                    <button onclick="validategiftnumber(${key})"
+                        class="btn btn-success giftcartbutton" type="button">
+                        <span class="fill-btn-inner">
+                            <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        </span>
+                    </button> 
+                    |
+                    <button 
+                        class="btn btn-danger giftcartdelete remove-button" type="button" data-key="${key}">
+                        <span class="fill-btn-inner">
+                            <span class="fill-btn-normal">X</span>
+                            <span class="fill-btn-hover">X</span>
+                        </span>
+                    </button>
+                </div>
+                <div class="col-md-3 mt-4">
+                </div>
+                <div class="col-md-12">
+                    <span class="text-danger mt-4" id="error_${key}"></span>
+                    <span class="text-success mt-4" id="success_${key}"></span>
+                </div>
+            </div>
+        `;
 
-            // Event delegation for dynamically added Remove buttons
-            $(document).on('click', '.remove-button', function() {
-                var keyToRemove = $(this).data('key');
-                $('#row_' + keyToRemove).remove();
-            });
+        // Append the HTML to the desired parent element
+        $('#parentElement').append(html); // Use the actual ID of the parent element
+    });
+
+    // Event delegation for dynamically added Remove buttons
+    $(document).on('click', '.remove-button', function() {
+        var keyToRemove = $(this).data('key');
+        // Remove gift card number from the array
+        var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
+        giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
+        $('#row_' + keyToRemove).remove();
+    });
+
+    // Function to validate gift card number
+    window.validategiftnumber = function(key) {
+        var giftNumber = $('#gift_number_' + key).val();
+
+        if (giftCardNumbers.includes(giftNumber)) {
+            alert('Duplicate Gift Card Number.');
+            $('#gift_number_' + key).val('');
+            $('#error_' + key).html('Duplicate Gift Card Number.');
+            $('#success_' + key).html('');
+            return;
+        }
+
+        $.ajax({
+            url: '{{ route('giftcards-validate') }}',
+            method: "post",
+            dataType: "json",
+            data: {
+                _token: '{{ csrf_token() }}',
+                giftcardnumber: giftNumber,
+                user_token: 'FOREVER-MEDSPA',
+            },
+            success: function(response) {
+                if (response.status === 200) {
+                    // Add the gift card number to the array
+                    giftCardNumbers.push(giftNumber);
+
+                    console.log(response.success);
+                    console.log(response.result.total_amount);
+                    $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' + response.result.total_amount);
+                    $('#giftcard_amount_' + key).val(response.result.total_amount);
+                    $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
+                    sumValues();
+                    $('#error_' + key).html('');
+                } else {
+                    alert('Invalid Gift Card');
+                    console.log(response.error);
+                    $('#error_' + key).html(response.error || 'An error occurred');
+                    $('#success_' + key).html('');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('An error occurred. Please try again.');
+                $('#error_' + key).html('An error occurred. Please try again.');
+                $('#success_' + key).html('');
+            }
         });
+    };
+});
+
+
+    // Event delegation for dynamically added Remove buttons
+    $(document).on('click', '.remove-button', function() {
+        var keyToRemove = $(this).data('key');
+        // Remove gift card number from the array
+        var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
+        giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
+        $('#row_' + keyToRemove).remove();
+    });
+
+    // Function to validate gift card number
+    window.validategiftnumber = function(key) {
+
+
+
+
+
+        // var giftNumber = $('#gift_number_' + key).val();
+        // if (giftCardNumbers.includes(giftNumber)) {
+        //     alert('Gift Card Number must be unique!');
+        //     $('#gift_number_' + key).val('');
+        // } else {
+        //     giftCardNumbers.push(giftNumber);
+        //     $('#success_' + key).text('Gift Card Number is valid.');
+        //     $('#error_' + key).text('');
+        // }
+    };
+});
+
+
 
 
         let alertShownCount = 0;
