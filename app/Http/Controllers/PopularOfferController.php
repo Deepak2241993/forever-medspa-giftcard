@@ -6,7 +6,7 @@ use App\Models\PopularOffer;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Charge;
-
+use Session;
 class PopularOfferController extends Controller
 {
     /**
@@ -141,30 +141,35 @@ class PopularOfferController extends Controller
         }
     }
 
-    public function Checkout(Request $request){
+    public function Checkout(Request $request) {
         $cart = session()->get('cart', []);
-
-        // dd($request->all());
-        if($request->giftcards!=null)
-        {
-        // Iterate over the giftcards array from the request
-        foreach ($request->giftcards as $giftcard) {
-            // Add each gift card to the session array
-            $giftcards[] = [
-                'number' => $giftcard['number'],
-                'amount' => $giftcard['amount'],
-            ];
-        }
-        // Store the updated giftcards array back into the session
-        $giftcards =  session()->put('giftcards', $giftcards);
-        // dd(session()->get('giftcards'));
-        return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.']);
-            // return view('product.checkout',compact('cart','giftcards'));
-        }
-        else{
+    
+        if ($request->giftcards != null) {
+            // Initialize the giftcards array
+            $giftcards = session()->get('giftcards', []);
+    
+            // Iterate over the giftcards array from the request
+            foreach ($request->giftcards as $giftcard) {
+                // Add each gift card to the session array
+                $giftcards[] = [
+                    'number' => $giftcard['number'],
+                    'amount' => $giftcard['amount'],
+                ];
+            }
+    
+            // Store the updated giftcards array and other values back into the session
+            session()->put([
+                'giftcards' => $giftcards,
+                'total_gift_applyed' => $request->total_gift_applyed,
+                'tax_amount' => $request->tax_amount,
+                'totalValue' => $request->totalValue,
+            ]);
+            return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.']);
+        } else {
             return response()->json(['status' => 200, 'message' => 'No Giftcard Apply']);
         }
     }
+    
 
 
 

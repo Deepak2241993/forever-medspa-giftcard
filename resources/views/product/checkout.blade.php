@@ -5,9 +5,10 @@ $cart = session()->get('cart', []);
 $amount=0;
 @endphp
 {{-- {{dd(session()->get('giftcards'))}} --}}
+
    <!-- Body main wrapper start -->
    <main>
-
+ 
     <!-- Breadcrumb area start  -->
     <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
        <div class="breadcrumb__thumb" data-background="{{url('/product_page')}}/imgs/bg/breadcrumb-bg.jpg"></div>
@@ -129,10 +130,23 @@ $amount=0;
                                   <th>Cart Subtotal</th>
                                   <td><span class="amount">${{ number_format($amount, 2) }}</span></td>
                                </tr>
-                               
+                               @if (session()->has('total_gift_applyed'))
+                               <tr class="cart-subtotal">
+                               <td>Total Gift Applied:</td>
+                               <td> -${{ session('total_gift_applyed') }}</td>
+                               </tr>
+                               @endif
+
+                               @if (session()->has('total_gift_applyed'))
+                               <tr class="cart-subtotal">
+                               <td>Tax 10%:</td>
+                               <td> +${{ session('tax_amount') }}</td>
+                               </tr>
+                               @endif
+
                                <tr class="order-total">
                                   <th>Order Total</th>
-                                  <td><strong><span class="amount">${{ number_format($amount, 2) }}</span></strong>
+                                  <td><strong><span class="amount">${{session('totalValue')? number_format(session('totalValue'), 2):number_format($amount, 2) }}</span></strong>
                                   </td>
                                </tr>
                             </tfoot>

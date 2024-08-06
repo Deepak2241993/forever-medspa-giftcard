@@ -81,17 +81,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                        $redeem = 0;
+                                        @endphp
+                                        
                                         @foreach ($cart as $key => $item)
-                                            @php
-                                                $redeem=0;
-                                                $cart_data = App\Models\Product::find($item['product_id']);
-                                                $amount += $cart_data->discounted_amount;
-                                                $image = explode('|', $cart_data->product_image);
-                                                if ($cart_data->giftcard_redemption == 1) {
-                                                    $redeem=1;
-                                                }
-
-                                            @endphp
+                                        @php
+                                        $cart_data = App\Models\Product::find($item['product_id']);
+                                        $amount += $cart_data->discounted_amount;
+                                        $image = explode('|', $cart_data->product_image);
+                                        if ($cart_data->giftcard_redemption == 1) {
+                                            $redeem += 1;  // Corrected increment logic
+                                        }
+                                        @endphp
                                            
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
@@ -129,21 +131,22 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
-                                        @if($redeem != 0)
+                                        <div class="col-12">
+                                            <div class="coupon2">
+                                                <button
+                                                    onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
+                                                    class="fill-btn" type="button">
+                                                    <span class="fill-btn-inner">
+                                                        <span class="fill-btn-normal">+Add More</span>
+                                                        <span class="fill-btn-hover">+Add More</span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
                                             <div class="coupon d-flex align-items-center">
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="coupon2">
-                                                            <button
-                                                                onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
-                                                                class="fill-btn" type="button">
-                                                                <span class="fill-btn-inner">
-                                                                    <span class="fill-btn-normal">+Add More</span>
-                                                                    <span class="fill-btn-hover">+Add More</span>
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    
+                                                    @if($redeem != 0)
                                                     <div class="col-9 mt-4">
                                                         <h5>Apply Giftcard</h5>
                                                         <div class="row">
@@ -152,7 +155,7 @@
                                                                     placeholder="Enter Gift Card Number" class="input-text"
                                                                     name="coupon_code" type="text" required>
                                                             </div>
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
                                                                 <input id="giftcard_amount_0" placeholder="$0.00"
                                                                     class="input-text" name="coupon_code" type="number"
                                                                     min="0"
@@ -172,7 +175,7 @@
                                                                 <span class="text-danger mt-4" id="error_0"></span>
                                                                 <span class="text-success mt-4" id="success_0"></span>
                                                             </div>
-                                                            <div id="parentElement"></div>
+                                                            <div id="parentElement"class="mt-4"></div>
                                                             <div class="col-md-5  mt-4">
                                                                 <button class="fill-btn" id="addGiftCardButton"
                                                                     type="button">
@@ -185,12 +188,12 @@
                                                                 </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
+                                                    @endif
                                                     
                                                 </div>
                                             </div>
-                                        @endif
+                                       
                                      
                                     </div>
                                 </div>
@@ -280,12 +283,12 @@
         key++;
 
         var html = `
-            <div class="row mt-4" id="row_${key}">
+            <div class="row mt-5" id="row_${key}">
                 <div class="col-md-5">
                     <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
                         class="input-text" name="coupon_code" type="text" required>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <input id="giftcard_amount_${key}" placeholder="$0.00"
                         class="input-text" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" readonly style="padding-left: 22px;">
                 </div>
