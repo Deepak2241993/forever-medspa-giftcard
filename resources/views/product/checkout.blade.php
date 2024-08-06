@@ -4,6 +4,7 @@
 $cart = session()->get('cart', []);
 $amount=0;
 @endphp
+{{-- {{dd(session()->get('giftcards'))}} --}}
    <!-- Body main wrapper start -->
    <main>
 

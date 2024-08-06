@@ -214,7 +214,7 @@
                                                     id="totalValue">${{ number_format($amount + $discountedprice, 2) }}</span>
                                             </li>
                                         </ul>
-                                        <a class="fill-btn" href="{{ route('checkout') }}">
+                                        <a class="fill-btn" href="javascript:void()" id="submitGiftCards">
                                             <span class="fill-btn-inner">
                                                 <span class="fill-btn-normal">Proceed to checkout</span>
                                                 <span class="fill-btn-hover">Proceed to checkout</span>
@@ -265,41 +265,8 @@
 }
 
 
-        // For Validate Gift Number
 
-        // function validategiftnumber(key) {
-        //     $.ajax({
-        //         url: '{{ route('giftcards-validate') }}',
-        //         method: "post",
-        //         dataType: "json",
-        //         data: {
-        //             _token: '{{ csrf_token() }}',
-        //             giftcardnumber: $('#gift_number_' + key).val(),
-        //             user_token: 'FOREVER-MEDSPA',
-        //         },
-        //         success: function(response) {
-        //             if (response.status === 200) {
-        //                 // Update the cart view, e.g., remove the item from the DOM
-        //                 console.log(response.success);
-        //                 console.log(response.result.total_amount);
-        //                 $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' +
-        //                     response.result.total_amount);
-        //                 $('#giftcard_amount_' + key).val(response.result.total_amount);
-        //                 $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
-        //                 sumValues();
-        //             } else {
-        //                 alert('Invalid Gift Card');
-        //                 console.log(response.error);
-        //                 $('#error_' + key).html(response.error || 'An error occurred');
-        //             }
-        //         },
-        //         error: function(jqXHR, textStatus, errorThrown) {
-        //             alert('An error occurred. Please try again.');
-        //         }
-        //     });
-        // }
-
-
+//  Gift card validation code start
 
     $(document).ready(function() {
     // Initialize key to a starting value
@@ -359,6 +326,7 @@
         var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
         giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
         $('#row_' + keyToRemove).remove();
+        sumValues();
     });
 
     // Function to validate gift card number
@@ -419,9 +387,66 @@
     };
 });
 
+// Gift card validatuon code end
+
+// Adding Value in session
+$(document).ready(function() {
+    $('#submitGiftCards').click(function() {
+        var giftCards = [];
+
+        // Add the initial gift card input fields
+        var initialGiftNumber = $('#gift_number_0').val();
+        var initialGiftAmount = $('#giftcard_amount_0').val();
+
+        if (initialGiftNumber && initialGiftAmount) {
+            giftCards.push({
+                number: initialGiftNumber,
+                amount: initialGiftAmount
+            });
+        }
+
+        // Add dynamically added gift card input fields
+        $('#parentElement .row').each(function() {
+            var rowId = $(this).attr('id').split('_')[1];
+            var giftNumber = $('#gift_number_' + rowId).val();
+            var giftAmount = $('#giftcard_amount_' + rowId).val();
+
+            if (giftNumber && giftAmount) {
+                giftCards.push({
+                    number: giftNumber,
+                    amount: giftAmount
+                });
+            }
+        });
+
+        $.ajax({
+            url: '{{ route('checkout') }}',
+            method: "post",
+            dataType: "json",
+            data: {
+                _token: '{{ csrf_token() }}',
+                giftcards: giftCards,
+                total_gift_applyed:$('#giftcard_applied').html().replace(/[\$-]/g, '').trim(),
+                tax_amount:$('#tax_amount').html().replace(/[\$+]/g, '').trim(),
+                totalValue:$('#totalValue').html().replace(/[\$]/g, '').trim()
+                
+            },
+            success: function(response) {
+                if (response.status === 200) {
+                    window.location = "{{ route('checkout_view') }}";
+                } else {
+                    alert('Error submitting Gift Cards: ' + response.error);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('An error occurred while submitting the Gift Cards. Please try again.');
+            }
+        });
+    });
+});
 
 
-
+// Giftcard number adding in session 
 
         let alertShownCount = 0;
         function validateGiftAmount(inputElement) {

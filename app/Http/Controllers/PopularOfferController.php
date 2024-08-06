@@ -141,12 +141,40 @@ class PopularOfferController extends Controller
         }
     }
 
-    public function Checkout(){
+    public function Checkout(Request $request){
         $cart = session()->get('cart', []);
-        // $totalAmount = $this->calculateTotalAmount($cart);
-        return view('product.checkout',compact('cart'));
+
+        dd($request->all());
+        if($request->giftcards!=null)
+        {
+        // Iterate over the giftcards array from the request
+        foreach ($request->giftcards as $giftcard) {
+            // Add each gift card to the session array
+            $giftcards[] = [
+                'number' => $giftcard['number'],
+                'amount' => $giftcard['amount'],
+            ];
+        }
+        // Store the updated giftcards array back into the session
+        $giftcards =  session()->put('giftcards', $giftcards);
+        // dd(session()->get('giftcards'));
+        return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.']);
+            // return view('product.checkout',compact('cart','giftcards'));
+        }
+        else{
+            return response()->json(['status' => 200, 'message' => 'No Giftcard Apply']);
+        }
     }
 
+
+
+
+
+
+//  For checkout page call
+        public function checkoutView(Request $request){
+            return view('product.checkout');
+        }
     
 
 }
