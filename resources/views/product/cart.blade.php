@@ -6,40 +6,40 @@
         $amount = 0;
     @endphp
     <main>
-@push('css')
-.giftcartbutton {
-    font-size: 14px;
-    font-weight: var(--bd-fw-medium);
-    color: var(--clr-common-white);
-    background: #198754;
-    height: 30px;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 27px;
+        @push('css')
+            .giftcartbutton {
+            font-size: 14px;
+            font-weight: var(--bd-fw-medium);
+            color: var(--clr-common-white);
+            background: #198754;
+            height: 30px;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 27px;
 
 
-}
-.giftcartdelete{
-    font-size: 14px;
-    font-weight: var(--bd-fw-medium);
-    color: var(--clr-common-white);
-    background: #dc3545;
-    height: 30px;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 27px;
-}
-@endpush
+            }
+            .giftcartdelete{
+            font-size: 14px;
+            font-weight: var(--bd-fw-medium);
+            color: var(--clr-common-white);
+            background: #dc3545;
+            height: 30px;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 27px;
+            }
+        @endpush
         <!-- Breadcrumb area start  -->
         <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
             <div class="breadcrumb__thumb" data-background="{{ url('/product_page') }}/imgs/bg/breadcrumb-bg.jpg"></div>
@@ -82,19 +82,19 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                        $redeem = 0;
+                                            $redeem = 0;
                                         @endphp
-                                        
+
                                         @foreach ($cart as $key => $item)
-                                        @php
-                                        $cart_data = App\Models\Product::find($item['product_id']);
-                                        $amount += $cart_data->discounted_amount;
-                                        $image = explode('|', $cart_data->product_image);
-                                        if ($cart_data->giftcard_redemption == 1) {
-                                            $redeem += 1;  // Corrected increment logic
-                                        }
-                                        @endphp
-                                           
+                                            @php
+                                                $cart_data = App\Models\Product::find($item['product_id']);
+                                                $amount += $cart_data->discounted_amount;
+                                                $image = explode('|', $cart_data->product_image);
+                                                if ($cart_data->giftcard_redemption == 1) {
+                                                    $redeem += 1; // Corrected increment logic
+                                                }
+                                            @endphp
+
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
                                                 <td class="product-thumbnail"><a href="product-details.html"><img
@@ -115,10 +115,11 @@
                                                 <td class="product-subtotal"><span
                                                         class="amount">{{ $cart_data->discounted_amount }}</span></td>
                                                 <td class="product-remove">
-                                                    <a  href="javascript:void(0)" onclick="removeFromCart({{ $item['product_id'] }})">
+                                                    <a href="javascript:void(0)"
+                                                        onclick="removeFromCart({{ $item['product_id'] }})">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
-                                                    
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -143,10 +144,10 @@
                                                 </button>
                                             </div>
                                         </div>
-                                            <div class="coupon d-flex align-items-center">
-                                                <div class="row">
-                                                    
-                                                    @if($redeem != 0)
+                                        <div class="coupon d-flex align-items-center">
+                                            <div class="row">
+
+                                                @if ($redeem != 0)
                                                     <div class="col-9 mt-4">
                                                         <h5>Apply Giftcard</h5>
                                                         <div class="row">
@@ -158,16 +159,18 @@
                                                             <div class="col-md-3">
                                                                 <input id="giftcard_amount_0" placeholder="$0.00"
                                                                     class="input-text" name="coupon_code" type="number"
-                                                                    min="0"
-                                                                    onkeyup="validateGiftAmount(this)" readonly style="padding-left: 22px;">
+                                                                    min="0" onkeyup="validateGiftAmount(this)"
+                                                                    readonly style="padding-left: 22px;">
 
                                                             </div>
                                                             <div class="col-md-3 mt-4">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
                                                                     class="btn btn-success giftcartbutton" type="button">
                                                                     <span class="fill-btn-inner">
-                                                                        <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                                                        <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                                                        <span class="fill-btn-normal"><i class="fa fa-check"
+                                                                                aria-hidden="true"></i></span>
+                                                                        <span class="fill-btn-hover"><i class="fa fa-check"
+                                                                                aria-hidden="true"></i></span>
                                                                     </span>
                                                                 </button>
                                                             </div>
@@ -189,12 +192,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @endif
-                                                    
-                                                </div>
+                                                @endif
+
                                             </div>
-                                       
-                                     
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -242,47 +245,47 @@
 
 @push('footerscript')
     <script>
-       function removeFromCart(id) {
-    $.ajax({
-        url: '{{ route('cartremove') }}',
-        method: "POST",
-        dataType: "json",
-        data: {
-            _token: '{{ csrf_token() }}',
-            product_id: id
-        },
-        success: function(response) {
-            if (response.success) {
-                // Update the cart view, e.g., remove the item from the DOM
-                $('#cart-item-' + id).remove();
-                alert(response.success);
-                location.reload();
-            } else {
-                alert(response.error);
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('An error occurred. Please try again.');
+        function removeFromCart(id) {
+            $.ajax({
+                url: '{{ route('cartremove') }}',
+                method: "POST",
+                dataType: "json",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Update the cart view, e.g., remove the item from the DOM
+                        $('#cart-item-' + id).remove();
+                        alert(response.success);
+                        location.reload();
+                    } else {
+                        alert(response.error);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('An error occurred. Please try again.');
+                }
+            });
         }
-    });
-}
 
 
 
-//  Gift card validation code start
+        //  Gift card validation code start
 
-    $(document).ready(function() {
-    // Initialize key to a starting value
-    var key = 0;
-    // Array to store gift card numbers
-    var giftCardNumbers = [];
+        $(document).ready(function() {
+            // Initialize key to a starting value
+            var key = 0;
+            // Array to store gift card numbers
+            var giftCardNumbers = [];
 
-    // Attach the click event to the button
-    $('#addGiftCardButton').click(function() {
-        // Increment the key for each new set of input fields
-        key++;
+            // Attach the click event to the button
+            $('#addGiftCardButton').click(function() {
+                // Increment the key for each new set of input fields
+                key++;
 
-        var html = `
+                var html = `
             <div class="row mt-5" id="row_${key}">
                 <div class="col-md-5">
                     <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
@@ -318,140 +321,145 @@
             </div>
         `;
 
-        // Append the HTML to the desired parent element
-        $('#parentElement').append(html); // Use the actual ID of the parent element
-    });
-
-    // Event delegation for dynamically added Remove buttons
-    $(document).on('click', '.remove-button', function() {
-        var keyToRemove = $(this).data('key');
-        // Remove gift card number from the array
-        var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
-        giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
-        $('#row_' + keyToRemove).remove();
-        sumValues();
-    });
-
-    // Function to validate gift card number
-    window.validategiftnumber = function(key) {
-        var giftNumber = $('#gift_number_' + key).val();
-
-            // Check if the gift card number is not null or empty
-            if (!giftNumber) {
-                alert('Gift Card Number cannot be empty!');
-                $('#error_' + key).html('Gift Card Number cannot be empty.');
-                $('#success_' + key).html('');
-                return;
-            }
-
-        if (giftCardNumbers.includes(giftNumber)) {
-            alert('Duplicate Gift Card Number.');
-            $('#gift_number_' + key).val('');
-            $('#error_' + key).html('Duplicate Gift Card Number.');
-            $('#success_' + key).html('');
-            return;
-        }
-
-        $.ajax({
-            url: '{{ route('giftcards-validate') }}',
-            method: "post",
-            dataType: "json",
-            data: {
-                _token: '{{ csrf_token() }}',
-                giftcardnumber: giftNumber,
-                user_token: 'FOREVER-MEDSPA',
-            },
-            success: function(response) {
-                if (response.status === 200) {
-                    // Add the gift card number to the array
-                    giftCardNumbers.push(giftNumber);
-
-                    console.log(response.success);
-                    console.log(response.result.total_amount);
-                    $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' + response.result.total_amount);
-                    $('#giftcard_amount_' + key).val(response.result.total_amount);
-                    $('#giftcard_amount_' + key).removeAttr('readonly');
-                    $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
-                    sumValues();
-                    $('#error_' + key).html('');
-                } else {
-                    alert('Invalid Gift Card');
-                    console.log(response.error);
-                    $('#error_' + key).html(response.error || 'An error occurred');
-                    $('#success_' + key).html('');
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('An error occurred. Please try again.');
-                $('#error_' + key).html('An error occurred. Please try again.');
-                $('#success_' + key).html('');
-            }
-        });
-    };
-});
-
-// Gift card validatuon code end
-
-// Adding Value in session
-$(document).ready(function() {
-    $('#submitGiftCards').click(function() {
-        var giftCards = [];
-
-        // Add the initial gift card input fields
-        var initialGiftNumber = $('#gift_number_0').val();
-        var initialGiftAmount = $('#giftcard_amount_0').val();
-
-        if (initialGiftNumber && initialGiftAmount) {
-            giftCards.push({
-                number: initialGiftNumber,
-                amount: initialGiftAmount
+                // Append the HTML to the desired parent element
+                $('#parentElement').append(html); // Use the actual ID of the parent element
             });
-        }
 
-        // Add dynamically added gift card input fields
-        $('#parentElement .row').each(function() {
-            var rowId = $(this).attr('id').split('_')[1];
-            var giftNumber = $('#gift_number_' + rowId).val();
-            var giftAmount = $('#giftcard_amount_' + rowId).val();
+            // Event delegation for dynamically added Remove buttons
+            $(document).on('click', '.remove-button', function() {
+                var keyToRemove = $(this).data('key');
+                // Remove gift card number from the array
+                var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
+                giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
+                $('#row_' + keyToRemove).remove();
+                sumValues();
+            });
 
-            if (giftNumber && giftAmount) {
-                giftCards.push({
-                    number: giftNumber,
-                    amount: giftAmount
-                });
-            }
-        });
+            // Function to validate gift card number
+            window.validategiftnumber = function(key) {
+                var giftNumber = $('#gift_number_' + key).val();
 
-        $.ajax({
-            url: '{{ route('checkout') }}',
-            method: "post",
-            dataType: "json",
-            data: {
-                _token: '{{ csrf_token() }}',
-                giftcards: giftCards,
-                total_gift_applyed:$('#giftcard_applied').html().replace(/[\$-]/g, '').trim(),
-                tax_amount:$('#tax_amount').html().replace(/[\$+]/g, '').trim(),
-                totalValue:$('#totalValue').html().replace(/[\$]/g, '').trim()
-                
-            },
-            success: function(response) {
-                if (response.status === 200) {
-                    window.location = "{{ route('checkout_view') }}";
-                } else {
-                    alert('Error submitting Gift Cards: ' + response.error);
+                // Check if the gift card number is not null or empty
+                if (!giftNumber) {
+                    alert('Gift Card Number cannot be empty!');
+                    $('#error_' + key).html('Gift Card Number cannot be empty.');
+                    $('#success_' + key).html('');
+                    return;
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('An error occurred while submitting the Gift Cards. Please try again.');
-            }
+
+                if (giftCardNumbers.includes(giftNumber)) {
+                    alert('Duplicate Gift Card Number.');
+                    $('#gift_number_' + key).val('');
+                    $('#error_' + key).html('Duplicate Gift Card Number.');
+                    $('#success_' + key).html('');
+                    return;
+                }
+
+                $.ajax({
+                    url: '{{ route('giftcards-validate') }}',
+                    method: "post",
+                    dataType: "json",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        giftcardnumber: giftNumber,
+                        user_token: 'FOREVER-MEDSPA',
+                    },
+                    success: function(response) {
+                        if (response.status === 200) {
+                            // Add the gift card number to the array
+                            giftCardNumbers.push(giftNumber);
+
+                            console.log(response.success);
+                            console.log(response.result.total_amount);
+                            $('#success_' + key).html(
+                                'This Gift Card is valid. Your total available amount is $' +
+                                response.result.total_amount);
+                            $('#giftcard_amount_' + key).val(response.result.total_amount);
+                            $('#giftcard_amount_' + key).removeAttr('readonly');
+                            $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
+                            sumValues();
+                            $('#error_' + key).html('');
+                        } else {
+                            alert('Invalid Gift Card');
+                            console.log(response.error);
+                            $('#error_' + key).html(response.error || 'An error occurred');
+                            $('#success_' + key).html('');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('An error occurred. Please try again.');
+                        $('#error_' + key).html('An error occurred. Please try again.');
+                        $('#success_' + key).html('');
+                    }
+                });
+            };
         });
-    });
-});
+
+        // Gift card validatuon code end
+
+        // Adding Value in session
+        $(document).ready(function() {
+            $('#submitGiftCards').click(function() {
+                var giftCards = [];
+
+                // Add the initial gift card input fields
+                var initialGiftNumber = $('#gift_number_0').val();
+                var initialGiftAmount = $('#giftcard_amount_0').val();
+
+                if (initialGiftNumber && initialGiftAmount) {
+                    giftCards.push({
+                        number: initialGiftNumber,
+                        amount: initialGiftAmount
+                    });
+                }
+
+                // Add dynamically added gift card input fields
+                $('#parentElement .row').each(function() {
+                    var rowId = $(this).attr('id').split('_')[1];
+                    var giftNumber = $('#gift_number_' + rowId).val();
+                    var giftAmount = $('#giftcard_amount_' + rowId).val();
+
+                    if (giftNumber && giftAmount) {
+                        giftCards.push({
+                            number: giftNumber,
+                            amount: giftAmount
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: '{{ route('checkout') }}',
+                    method: "post",
+                    dataType: "json",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        giftcards: giftCards,
+                        total_gift_applyed: $('#giftcard_applied').html().replace(/[\$-]/g, '')
+                            .trim(),
+                        tax_amount: $('#tax_amount').html().replace(/[\$+]/g, '').trim(),
+                        totalValue: $('#totalValue').html().replace(/[\$]/g, '').trim()
+
+                    },
+                    success: function(response) {
+                        if (response.status === 200) {
+                            window.location = "{{ route('checkout_view') }}";
+                        } else {
+                            alert('Error submitting Gift Cards: ' + response.error);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert(
+                            'An error occurred while submitting the Gift Cards. Please try again.');
+                    }
+                });
+            });
+        });
 
 
-// Giftcard number adding in session 
+        // Giftcard number adding in session 
 
         let alertShownCount = 0;
+
         function validateGiftAmount(inputElement) {
             var maxValue = parseFloat($(inputElement).attr('max'));
             var currentValue = parseFloat($(inputElement).val());
