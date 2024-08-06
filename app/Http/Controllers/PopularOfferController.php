@@ -144,7 +144,7 @@ class PopularOfferController extends Controller
     public function Checkout(Request $request){
         $cart = session()->get('cart', []);
 
-        dd($request->all());
+        // dd($request->all());
         if($request->giftcards!=null)
         {
         // Iterate over the giftcards array from the request
