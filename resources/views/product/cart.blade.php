@@ -155,8 +155,8 @@
                                                             <div class="col-md-2">
                                                                 <input id="giftcard_amount_0" placeholder="$0.00"
                                                                     class="input-text" name="coupon_code" type="number"
-                                                                    min="0" value="0"
-                                                                    onkeyup="validateGiftAmount(this)">
+                                                                    min="0"
+                                                                    onkeyup="validateGiftAmount(this)" readonly style="padding-left: 22px;">
 
                                                             </div>
                                                             <div class="col-md-3 mt-4">
@@ -300,14 +300,7 @@
         // }
 
 
-        // Attach the click event to the button
-        $(document).ready(function() {
-    // Initialize key to a starting value
-    var key = 0;
-    // Array to store gift card numbers
-    var giftCardNumbers = [];
 
-    // Attach the click event to the button
     $(document).ready(function() {
     // Initialize key to a starting value
     var key = 0;
@@ -327,7 +320,7 @@
                 </div>
                 <div class="col-md-2">
                     <input id="giftcard_amount_${key}" placeholder="$0.00"
-                        class="input-text" name="coupon_code" type="number" min="0" value="0">
+                        class="input-text" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" readonly style="padding-left: 22px;">
                 </div>
                 <div class="col-md-3 mt-4" style="display:flex;">
                     <button onclick="validategiftnumber(${key})"
@@ -372,6 +365,14 @@
     window.validategiftnumber = function(key) {
         var giftNumber = $('#gift_number_' + key).val();
 
+            // Check if the gift card number is not null or empty
+            if (!giftNumber) {
+                alert('Gift Card Number cannot be empty!');
+                $('#error_' + key).html('Gift Card Number cannot be empty.');
+                $('#success_' + key).html('');
+                return;
+            }
+
         if (giftCardNumbers.includes(giftNumber)) {
             alert('Duplicate Gift Card Number.');
             $('#gift_number_' + key).val('');
@@ -398,6 +399,7 @@
                     console.log(response.result.total_amount);
                     $('#success_' + key).html('This Gift Card is valid. Your total available amount is $' + response.result.total_amount);
                     $('#giftcard_amount_' + key).val(response.result.total_amount);
+                    $('#giftcard_amount_' + key).removeAttr('readonly');
                     $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
                     sumValues();
                     $('#error_' + key).html('');
@@ -418,39 +420,10 @@
 });
 
 
-    // Event delegation for dynamically added Remove buttons
-    $(document).on('click', '.remove-button', function() {
-        var keyToRemove = $(this).data('key');
-        // Remove gift card number from the array
-        var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
-        giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
-        $('#row_' + keyToRemove).remove();
-    });
-
-    // Function to validate gift card number
-    window.validategiftnumber = function(key) {
-
-
-
-
-
-        // var giftNumber = $('#gift_number_' + key).val();
-        // if (giftCardNumbers.includes(giftNumber)) {
-        //     alert('Gift Card Number must be unique!');
-        //     $('#gift_number_' + key).val('');
-        // } else {
-        //     giftCardNumbers.push(giftNumber);
-        //     $('#success_' + key).text('Gift Card Number is valid.');
-        //     $('#error_' + key).text('');
-        // }
-    };
-});
-
 
 
 
         let alertShownCount = 0;
-
         function validateGiftAmount(inputElement) {
             var maxValue = parseFloat($(inputElement).attr('max'));
             var currentValue = parseFloat($(inputElement).val());
