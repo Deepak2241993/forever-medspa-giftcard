@@ -5,6 +5,7 @@ $cart = session()->get('cart', []);
 $amount=0;
 @endphp
 {{-- {{dd(session()->get('giftcards'))}} --}}
+{{-- {{dd(session()->get('cart'))}} --}}
 
    <!-- Body main wrapper start -->
    <main>
@@ -119,7 +120,7 @@ $amount=0;
                                     {{$cart_data->product_name}}<strong class="product-quantity"> × {{$cart_data->session_number?$cart_data->session_number:1}} Sessions</strong>
                                   </td>
                                   <td class="product-total">
-                                     <span class="amount">${{ number_format($amount, 2) }}</span>
+                                     <span class="amount">${{ $cart_data->discounted_amount, 2}}</span>
                                   </td>
                                </tr>
                                @endforeach
