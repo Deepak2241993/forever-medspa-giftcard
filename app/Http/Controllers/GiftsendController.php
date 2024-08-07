@@ -451,13 +451,9 @@ public function giftcardValidate(Request $request){
     $data_arr = $request->except('_token');
     $data = json_encode($data_arr);
     $result = $this->postAPI('gift-card-validate', $data);
-    if (isset($result['status']) && $result['status'] == 200) {
+   
     return $result;
-    }
-    else
-    {
-        return "Something Went Wrong";
-    }
+    
 
 }
 }

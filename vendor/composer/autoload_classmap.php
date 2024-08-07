@@ -62,6 +62,7 @@ return array(
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
     'App\\Models\\ProductCategory' => $baseDir . '/app/Models/ProductCategory.php',
     'App\\Models\\Search_keyword' => $baseDir . '/app/Models/Search_keyword.php',
+    'App\\Models\\ServiceOrder' => $baseDir . '/app/Models/ServiceOrder.php',
     'App\\Models\\TransactionHistory' => $baseDir . '/app/Models/TransactionHistory.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

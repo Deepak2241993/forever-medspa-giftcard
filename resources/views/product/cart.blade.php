@@ -212,12 +212,12 @@
                                             <li>Total Giftcard Applied <span id="giftcard_applied">$0</span></li>
                                             <li>Tax 10% <span id="tax_amount">
                                                     @php
-                                                        $discountedprice = ($amount * 10) / 100;
-                                                        echo "+$" . $discountedprice;
+                                                        $texamount = ($amount * 10) / 100;
+                                                        // echo "+$" . $texamount;
                                                     @endphp
                                                 </span></li>
                                             <li>Total <span
-                                                    id="totalValue">${{ number_format($amount + $discountedprice, 2) }}</span>
+                                                    id="totalValue">${{ number_format($amount + $texamount, 2) }}</span>
                                             </li>
                                         </ul>
                                         <a class="fill-btn" href="javascript:void()" id="submitGiftCards">
@@ -380,9 +380,9 @@
                             sumValues();
                             $('#error_' + key).html('');
                         } else {
-                            alert('Invalid Gift Card');
+                            alert('Invalid Giftcard. Please enter the correct number');
                             console.log(response.error);
-                            $('#error_' + key).html(response.error || 'An error occurred');
+                            $('#error_' + key).html(response.error || 'Invalid Giftcard. Please enter the correct number');
                             $('#success_' + key).html('');
                         }
                     },

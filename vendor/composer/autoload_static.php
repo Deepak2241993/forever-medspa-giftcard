@@ -640,6 +640,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\ProductCategory' => __DIR__ . '/../..' . '/app/Models/ProductCategory.php',
         'App\\Models\\Search_keyword' => __DIR__ . '/../..' . '/app/Models/Search_keyword.php',
+        'App\\Models\\ServiceOrder' => __DIR__ . '/../..' . '/app/Models/ServiceOrder.php',
         'App\\Models\\TransactionHistory' => __DIR__ . '/../..' . '/app/Models/TransactionHistory.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

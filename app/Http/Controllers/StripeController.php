@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Gift;
+use App\Models\Product;
 use App\Models\Giftsend;
 use App\Models\EmailTemplate;
 use App\Models\GiftcardsNumbers;
@@ -9,16 +10,29 @@ use App\Models\GiftCoupon;
 use App\Models\TransactionHistory;
 use Illuminate\Http\Request;
 use Validator;
-// use Stripe;
+use Illuminate\Support\Str;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
 use Mail;
 use App\Mail\GeftcardMail;
 use App\Mail\GiftReceipt;
+use Illuminate\Support\Facades\Log;
 
 class StripeController extends Controller
 {
+
+    protected $transactionHistoryController;
+    protected $ServiceOrderController;
+    
+
+    public function __construct(TransactionHistoryController $transactionHistoryController,ServiceOrderController $ServiceOrderController)
+    {
+        $this->transactionHistoryController = $transactionHistoryController;
+        $this->ServiceOrderController = $ServiceOrderController;
+    }
+
+
     public function formview(Request $request){
         $giftDetails = $request->session()->get('gift_details');
         if( $giftDetails)
@@ -191,50 +205,185 @@ class StripeController extends Controller
 
     public function CheckoutProcess(Request $request)
     {
-        // $request->validate([
-        //     'fname' => 'required|string|max:255',
-        //     'lname' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255',
-        //     'address' => 'required|string|max:255',
-        // ]);
-        // dd($request->validate);
-        try {
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-        $redirecturl = route('strip_checkout_success').'?session_id={CHECKOUT_SESSION_ID}';
-        // dd($stripe);
-        $response = $stripe->checkout->sessions->create([
-            'success_url'=> $redirecturl,
-            'customer_email'=>$request->email,
-            'payment_method_types'=>['link','card'],
-            'line_items' => [
-                [
-                    'price_data'=>[
-                        'product_data' => [
-                            'name' => $request->fname,
-                        ],
-                        'unit_amount' => 100*200,
-                        'currency' => 'USD',
-                    ],
-                    'quantity' => 1
-                ],
-            ],
-            'mode' => 'payment',
-            'allow_promotion_codes' => true,
+        $request->validate([
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'zip_code' => 'required|digits:6',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
         ]);
 
-        return redirect($response['url']);
+        try{
+        // Generate New Order For this 
+        $orderId = 'ORD-' . uniqid() . '-' . Str::random(5);
+        $cartItems = session('cart', []);
+        $gift_number = null;
+        $gift_amount = null;
+        $totalAmount =null;
+        if (session()->has('total_gift_applyed')) {
+            $giftcards = session('giftcards'); // Retrieve giftcards from the session
 
+            // Collect all "number" values
+            $gift_numbers = [];
+            $gift_amounts = [];
+            foreach ($giftcards as $giftcard) {
+
+                if (isset($giftcard['number'])) {
+                    $gift_numbers[] = $giftcard['number'];
+                    $gift_amounts[] = $giftcard['amount'];
+                }
+            }
+            // Concatenate the "number" values with '|'
+            $gift_number = implode('|', $gift_numbers);
+            $gift_amount = implode('|', $gift_amounts);
+            // Reverse Process for finding  sub_amount
+            $sub_amount = session('totalValue', 0) + session('total_gift_applyed', 0) - session('tax_amount', 0);
+            // Reverse Process for finding  sub_amount
+            $final_amount = session('totalValue', 0);
+            $taxamount = session('tax_amount', 0);
+        }
+        else{
+            foreach ($cartItems as $item) {
+                $cart_data = Product::find($item['product_id']);
+                $totalAmount += $cart_data->discounted_amount;
+
+            }
+            // Calculate Tax
+            $taxamount = ($totalAmount * 10) / 100;
+            $sub_amount = $totalAmount;
+            $final_amount = $totalAmount + $taxamount;
+
+        }
+        
+
+        $data = [];
+        $data['fname'] = $request->fname;
+        $data['lname'] = $request->lname;
+        $data['city'] = $request->city;
+        $data['country'] = $request->country;
+        $data['zip_code'] = $request->zip_code;
+        $data['email'] = $request->email;
+        $data['phone'] = $request->phone;
+        $data['order_id'] =  $orderId;
+        $data['gift_card_applyed'] = $gift_number;
+        $data['gift_card_amount'] = $gift_amount;
+        $data['sub_amount'] = $sub_amount;
+        $data['final_amount'] = $final_amount;
+        $data['address'] = $request->address;
+        $data['tax_amount'] = $taxamount;
+        
+        $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
+    }
+    catch (\Exception $e) {
+        // Log the error message
+        Log::error('Order Number Generation : ' . $e->getMessage());
+        // Return back with error message
+        return back()->withErrors(['error' => $e->getMessage()]);
+    }
+
+    // Data Entry in Service Order Table
+    try{
+        foreach ($cartItems as $item) {
+            $cart_data = Product::find($item['product_id']);
+
+        $order_data = [];
+        $order_data['order_id'] =  $orderId;
+        $order_data['service_id'] = $item['product_id'];
+        $order_data['status'] = 0;
+        $order_data['number_of_session'] = $cart_data->session_number;
+        $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
+        }
+    }
+    catch (\Exception $e) {
+        // Log the error message
+        Log::error('Service_Order_Entry : ' . $e->getMessage());
+        // Return back with error message
+        return back()->withErrors(['error' => $e->getMessage()]);
+    }
+    // Data Entry in Service Order Table End
+
+
+
+        try {
+            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+            $redirecturl = route('strip_checkout_success') . '?session_id={CHECKOUT_SESSION_ID}';
+            
+            $response = $stripe->checkout->sessions->create([
+                'success_url' => $redirecturl,
+                'customer_email' => $request->email,
+                'payment_method_types' => ['link', 'card'],
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'product_data' => [
+                                'name' => $orderId ? $orderId:'',
+                            ],
+                            'unit_amount' => session()->get('totalValue') * 100,
+                            'currency' => 'USD',
+                        ],
+                        'quantity' => 1
+                    ],
+                ],
+                'mode' => 'payment',
+                'allow_promotion_codes' => false,
+            ]);   
+            // Insert Session Id 
+            $transaction_data = \App\Models\TransactionHistory::where('order_id', $orderId)->first(); 
+            if ($transaction_data) {
+                // Prepare the data to be updated
+                $data = [];
+                $data['payment_session_id'] = $response->id;
+                // Update the transaction history record
+                $transaction_data->update($data); 
+            }
+            
+            return redirect($response['url']);
         } catch (\Exception $e) {
+            // Log the error message
+            Log::error('Stripe Checkout Session Error: ' . $e->getMessage());
+            
+            // Return back with error message
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
     public function stripcheckoutSuccess(Request $request)
     {
+        
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
         $response = $stripe->checkout->sessions->retrieve($request->session_id);
-        dd($response);
+        // dd($response);
+        // dd($response->customer_email);
+        $transaction_data = \App\Models\TransactionHistory::where('payment_session_id', $response->id)->first(); 
+        $ServiceOrder = \App\Models\ServiceOrder::where('order_id', $transaction_data->order_id)->first(); 
+        if ($transaction_data) {
+            // Prepare the data to be updated
+            $data = [];
+            $data['payment_status'] = $response->payment_status;
+            $data['status'] = ($response->status=='complete') ? 1:0;
+            $data['payment_intent'] = $response->payment_intent;
+            $data['transaction_status'] = $response->status;
+            $data['transaction_amount'] = ($response->amount_total)/100;
+            // Update the transaction history record
+            $transaction_data->update($data); 
+            $ServiceOrder->update(['status'=>1]); 
 
+        }
+
+
+        // $data_arr = $request->except('_token');
+        // $data = json_encode($data_arr);
+        // $result = $this->postAPI('gift-card-redeem', $data);
+        // if($result['status']==200){
+        //     $data_arr = $request->except('_token','amount','comments','user_id');
+        //     $data = json_encode($data_arr);
+        //     $statement = $this->postAPI('gift-card-statment', $data);
+        //     $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
+            
+        //     Mail::to($result['giftCardHolderDetails']['gift_send_to'])->send(new GiftCardStatement($statement));
+        // }
         return view('stripe.thanks',compact('data'))->with('success', 'Payment successful.');
         return redirect()->route('strip.index')->with('success','payment successful.');
 

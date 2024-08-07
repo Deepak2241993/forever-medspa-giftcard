@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TransactionHistory;
+use App\Models\ServiceOrder;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
-class TransactionHistoryController extends Controller
+
+class ServiceOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(TransactionHistory $transaction)
+    public function index()
     {
-        if(Auth::user()->user_type==1)
-        {
-        $data=$transaction->all();
-        }
-        else{
-            $id=Auth::user()->id;
-            $data=$transaction->where('user_id',$id)->orderBy('id','DESC')->get();
-        }
-        return view('gift.order_history',compact('data'));
+        //
     }
 
     /**
@@ -44,16 +37,16 @@ class TransactionHistoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        TransactionHistory::create($data);
+        ServiceOrder::create($data);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TransactionHistory  $transactionHistory
+     * @param  \App\Models\ServiceOrder  $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(TransactionHistory $transactionHistory)
+    public function show(ServiceOrder $serviceOrder)
     {
         //
     }
@@ -61,10 +54,10 @@ class TransactionHistoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TransactionHistory  $transactionHistory
+     * @param  \App\Models\ServiceOrder  $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function edit(TransactionHistory $transactionHistory)
+    public function edit(ServiceOrder $serviceOrder)
     {
         //
     }
@@ -73,10 +66,10 @@ class TransactionHistoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TransactionHistory  $transactionHistory
+     * @param  \App\Models\ServiceOrder  $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TransactionHistory $transactionHistory)
+    public function update(Request $request, ServiceOrder $serviceOrder)
     {
         //
     }
@@ -84,10 +77,10 @@ class TransactionHistoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TransactionHistory  $transactionHistory
+     * @param  \App\Models\ServiceOrder  $serviceOrder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TransactionHistory $transactionHistory)
+    public function destroy(ServiceOrder $serviceOrder)
     {
         //
     }
