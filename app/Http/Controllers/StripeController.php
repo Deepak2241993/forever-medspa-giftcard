@@ -406,14 +406,31 @@ class StripeController extends Controller
                     }
                 }
             }
+            session::pull('giftcards');
+            session::pull('total_gift_applyed');
+            session::pull('tax_amount');
+            session::pull('totalValue');
+            session::pull('cart');
         }
 
-        return view('stripe.service_thanks')->with('success', 'Payment successful.');
+        return redirect()->route('invoice')
+                     ->with('transaction_data', $transaction_data)
+                     ->with('success', 'Payment successful.');
+   
     } catch (\Exception $e) {
         // Log the error message
         \Log::error('Giftcard_Redeem_Statement : ' . $e->getMessage());
-        return view('stripe.service_thanks')->with('error', 'Payment processing failed. Please contact support.');
+        return view('stripe.failed')->with('error', 'Payment processing failed. Please contact support.');
     }
+}
+
+
+public function invoice()
+{
+    // Retrieve flash data
+    $transaction_data = session('transaction_data');
+
+    return view('invoice.service_invoice', compact('transaction_data'));
 }
 
 

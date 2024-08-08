@@ -125,6 +125,7 @@ Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->n
 //  for Product payment URL
 
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
+Route::get('invoice','StripeController@invoice')->name('invoice');
 
 
 

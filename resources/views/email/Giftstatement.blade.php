@@ -99,7 +99,7 @@
                                                                                             </td>
                                                                                             <td>{{ $item['comments'] }}
                                                                                             </td>
-                                                                                            <td>{{ $item['amount'] }}
+                                                                                            <td>${{ $item['amount'] }}
                                                                                             </td>
                                                                                         </tr>
                                                                                     @endforeach
@@ -107,7 +107,7 @@
                                                                                     <tr>
                                                                                         <td colspan="4"></td>
                                                                                         <th>Total Amount</th>
-                                                                                        <td>{{ $statement['TotalAmount'] }}
+                                                                                        <td>${{ $statement['TotalAmount'] }}
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
