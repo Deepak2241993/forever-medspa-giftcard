@@ -328,9 +328,10 @@ class StripeController extends Controller
                 ],
                 'mode' => 'payment',
                 'allow_promotion_codes' => false,
-            ]);   
+            ]);  
+
             // Insert Session Id 
-            $transaction_data = \App\Models\TransactionHistory::where('order_id', $orderId)->first(); 
+            $transaction_data = TransactionHistory::where('order_id', $orderId)->first(); 
             if ($transaction_data) {
                 // Prepare the data to be updated
                 $data = [];
@@ -350,44 +351,71 @@ class StripeController extends Controller
     }
 
     public function stripcheckoutSuccess(Request $request)
-    {
-        
+{
+    try {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
         $response = $stripe->checkout->sessions->retrieve($request->session_id);
-        // dd($response);
-        // dd($response->customer_email);
+
         $transaction_data = \App\Models\TransactionHistory::where('payment_session_id', $response->id)->first(); 
         $ServiceOrder = \App\Models\ServiceOrder::where('order_id', $transaction_data->order_id)->first(); 
+        
         if ($transaction_data) {
             // Prepare the data to be updated
-            $data = [];
-            $data['payment_status'] = $response->payment_status;
-            $data['status'] = ($response->status=='complete') ? 1:0;
-            $data['payment_intent'] = $response->payment_intent;
-            $data['transaction_status'] = $response->status;
-            $data['transaction_amount'] = ($response->amount_total)/100;
-            // Update the transaction history record
-            $transaction_data->update($data); 
-            $ServiceOrder->update(['status'=>1]); 
+            $data = [
+                'payment_status' => $response->payment_status,
+                'status' => ($response->status == 'complete') ? 1 : 0,
+                'payment_intent' => $response->payment_intent,
+                'transaction_status' => $response->status,
+                'transaction_amount' => $response->amount_total / 100,
+            ];
 
+            // Update the transaction history record
+            $transaction_data->update($data);
+            $ServiceOrder->update(['status' => 1]);
+
+            if ($transaction_data->gift_card_applyed != null) {
+                $giftcardnumbers = explode('|', $transaction_data->gift_card_applyed);
+                $giftcardamounts = explode('|', $transaction_data->gift_card_amount);
+
+                foreach ($giftcardnumbers as $key => $value) {
+                    $giftcard_result = \App\Models\GiftcardsNumbers::where('giftnumber', $value)->first();
+
+                    if ($giftcard_result) {
+                        $data_arr = [
+                            'gift_card_number' => $value,
+                            'amount' => $giftcardamounts[$key],
+                            'comments' => "You have redeemed your giftcard " . $giftcardnumbers[$key] . " on the purchase of the service Order Number: " . $transaction_data->order_id,
+                            'user_id' => $giftcard_result->user_id,
+                            'user_token' => 'FOREVER-MEDSPA',
+                        ];
+
+                        $data = json_encode($data_arr);
+
+                        $result = $this->postAPI('gift-card-redeem', $data);
+
+                        if ($result['status'] == 200) {
+                            $data_arr['gift_card_number'] = $value;
+                            $data_arr['user_token'] = 'FOREVER-MEDSPA';
+
+                            $data = json_encode($data_arr);
+                            $statement = $this->postAPI('gift-card-statment', $data);
+                            $giftcard_result = \App\Models\GiftcardsNumbers::where('giftnumber', $value)->first();
+                            $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
+                            \Mail::to($result['giftCardHolderDetails']['gift_send_to'])->send(new \App\Mail\GiftCardStatement($statement));
+                        }
+                    }
+                }
+            }
         }
 
-
-        // $data_arr = $request->except('_token');
-        // $data = json_encode($data_arr);
-        // $result = $this->postAPI('gift-card-redeem', $data);
-        // if($result['status']==200){
-        //     $data_arr = $request->except('_token','amount','comments','user_id');
-        //     $data = json_encode($data_arr);
-        //     $statement = $this->postAPI('gift-card-statment', $data);
-        //     $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
-            
-        //     Mail::to($result['giftCardHolderDetails']['gift_send_to'])->send(new GiftCardStatement($statement));
-        // }
-        return view('stripe.thanks',compact('data'))->with('success', 'Payment successful.');
-        return redirect()->route('strip.index')->with('success','payment successful.');
-
+        return view('stripe.service_thanks')->with('success', 'Payment successful.');
+    } catch (\Exception $e) {
+        // Log the error message
+        \Log::error('Giftcard_Redeem_Statement : ' . $e->getMessage());
+        return view('stripe.service_thanks')->with('error', 'Payment processing failed. Please contact support.');
     }
+}
+
 
 
 }
