@@ -114,14 +114,14 @@
                               </span>
                            </a>
                         </div>
-                        <div class="product__add-wish">
+                        {{-- <div class="product__add-wish">
                            <a href="{{route('checkout')}}" class="fill-btn cart-btn">
                               <span class="fill-btn-inner">
                                  <span class="fill-btn-normal">Buy Now</span>
                                  <span class="fill-btn-hover">Buy Now</span>
                               </span>
                            </a>
-                        </div>
+                        </div> --}}
                      </div>
                      {{-- <div class="product__details-meta mb-20">
                        

@@ -282,14 +282,14 @@ input[type=text] {
                               </div>
 
                            <div class="row">
-                              <div class="product__add-cart col-md-3">
+                              {{-- <div class="product__add-cart col-md-3">
                                  <a href="{{route('productdetails',['slug' => $value['product_slug']])}}" class="fill-btn cart-btn">
                                     <span class="fill-btn-inner">
                                        <span class="fill-btn-normal">BUY NOW</span>
                                        <span class="fill-btn-hover">BUY NOW</span>
                                     </span>
                                  </a>
-                              </div>
+                              </div> --}}
                               <div class="product__add-cart col-md-6">
                                  <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$value->id}})">
                                     <span class="fill-btn-inner">
@@ -545,7 +545,7 @@ input[type=text] {
                         <h3 class="newsletter-title">Buy Our Awesome Giftcards</h3>
                      </div>
                   </div>
-                  <div class="col-xxl-6 col-xl-6 col-lg-6">
+                  {{-- <div class="col-xxl-6 col-xl-6 col-lg-6">
                      <div class="newsletter-form">
                         <form action="#">
                            <div class="newsletter-input p-relative">
@@ -560,7 +560,7 @@ input[type=text] {
                            </div>
                         </form>
                      </div>
-                  </div>
+                  </div> --}}
                </div>
             </div>
          </div>
