@@ -111,7 +111,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Phone <span class="required">*</span></label>
-                                            <input type="text" placeholder="Phone" name="phone" value="{{ old('phone') }}">
+                                            <input type="number" placeholder="Phone" name="phone" value="{{ old('phone') }}">
                                             @error('phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror

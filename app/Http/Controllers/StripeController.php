@@ -212,7 +212,7 @@ class StripeController extends Controller
             'country' => 'required|string|max:255',
             'zip_code' => 'required|digits:6',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|digits_between:7,10',
         ]);
 
         try{
@@ -273,6 +273,32 @@ class StripeController extends Controller
         $data['final_amount'] = $final_amount;
         $data['address'] = $request->address;
         $data['tax_amount'] = $taxamount;
+
+        //  Api Code for Storing Data in Lead capture
+        $api_data=["first_name"=>$request->fname,"last_name"=>$request->lname,"email"=>$request->email,"phone"=>$request->phone,"message"=>"This is Comes Form Giftcart Payment Page", "source"=> "Giftcart Website"];
+        $api_data = json_encode($api_data);
+        
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => env('LEAD_API_URL')."capture",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>$api_data,
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+        // dd($response);
+        // Lead Capture code end 
         
         $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
     }
@@ -293,6 +319,7 @@ class StripeController extends Controller
         $order_data['service_id'] = $item['product_id'];
         $order_data['status'] = 0;
         $order_data['number_of_session'] = $cart_data->session_number;
+
         $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
         }
     }
@@ -320,7 +347,7 @@ class StripeController extends Controller
                             'product_data' => [
                                 'name' => $orderId ? $orderId:'',
                             ],
-                            'unit_amount' => session()->get('totalValue') * 100,
+                            'unit_amount' => session()->get('totalValue') ? session()->get('totalValue') * 100 : $final_amount*100, // for check if gift card not apply
                             'currency' => 'USD',
                         ],
                         'quantity' => 1
