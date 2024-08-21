@@ -88,7 +88,7 @@
                                         <th>Sender's Email</th>
                                         <th>Coupon Code</th>
                                         <th>Number of Giftcards</th>
-                                        <th>Amount Per Giftcard</th>
+                                        <th>Giftcard Total</th>
                                         <th>Discount</th>
                                         <th>Paid Amount</th>
                                         <th>Payment Status</th>

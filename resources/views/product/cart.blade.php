@@ -213,7 +213,7 @@
                                             <li>Tax 10% <span id="tax_amount">
                                                     @php
                                                         $texamount = ($amount * 10) / 100;
-                                                        // echo "+$" . $texamount;
+                                                        echo "+$" . $texamount;
                                                     @endphp
                                                 </span></li>
                                             <li>Total <span
