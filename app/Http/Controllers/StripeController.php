@@ -232,11 +232,11 @@ class StripeController extends Controller
 
 //  If Gift card applyed for redeem
         if (session()->has('total_gift_applyed')) {
-           
+            $cards = session('cart', []);
             $giftcards = session('giftcards', []);
             $gift_numbers = [];
             $gift_amounts = [];
-    
+  
             foreach ($giftcards as $giftcard) {
                 if (isset($giftcard['number'])) {
                     $gift_numbers[] = $giftcard['number'];
@@ -254,9 +254,9 @@ class StripeController extends Controller
         //  If Gift card Not applyed for redeem
         else {
            
-                $giftcards = session('cart', []);
+                $cards = session('cart', []);
            
-            foreach ($giftcards as $item) {
+            foreach ($cards as $item) {
                 $cart_data = Product::find($item['product_id']);
                 $totalAmount += $cart_data->discounted_amount;
             }
@@ -283,13 +283,14 @@ class StripeController extends Controller
             'tax_amount' => $taxamount,
         ];
 
+        
         // Store data in TransactionHistory
         // TransactionHistory::create($data);
-        $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
+        $result =  $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
         
-
         // Store data in ServiceOrder table
-        foreach ($giftcards as $item) {
+       
+        foreach ($cards as $item) {
             $cart_data = Product::find($item['product_id']);
 
             $order_data = [
@@ -299,6 +300,7 @@ class StripeController extends Controller
                 'number_of_session' => $cart_data->session_number,
             ];
 
+            // ServiceOrderController::create($order_data);
             $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
         }
 
