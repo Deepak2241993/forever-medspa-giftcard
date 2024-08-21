@@ -15,7 +15,9 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
 use Mail;
+use Illuminate\Support\Facades\DB;
 use App\Mail\GeftcardMail;
+use App\Mail\ServicePurchaseConfirmation;
 use App\Mail\GiftReceipt;
 use Illuminate\Support\Facades\Log;
 
@@ -203,179 +205,173 @@ class StripeController extends Controller
        }
     }
 
-    public function CheckoutProcess(Request $request)
-    {
-        $request->validate([
-            'fname' => 'required|string|max:255',
-            'lname' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'zip_code' => 'required|digits:6',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|digits_between:7,10',
-        ]);
+   public function CheckoutProcess(Request $request)
+{
+    $request->validate([
+        'fname' => 'required|string|max:255',
+        'lname' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
+        'country' => 'required|string|max:255',
+        'zip_code' => 'required|digits:6',
+        'email' => 'required|email|max:255',
+        'phone' => 'required|digits_between:7,10',
+        'address' => 'required|string|max:255',
+    ]);
 
-        try{
+    DB::beginTransaction();  // Start transaction
+
+    try {
+       
         // Generate New Order For this 
         $orderId = 'ORD-' . uniqid() . '-' . Str::random(5);
         $cartItems = session('cart', []);
         $gift_number = null;
         $gift_amount = null;
-        $totalAmount =null;
-        if (session()->has('total_gift_applyed')) {
-            $giftcards = session('giftcards'); // Retrieve giftcards from the session
+        $totalAmount = 0;
 
-            // Collect all "number" values
+//  If Gift card applyed for redeem
+        if (session()->has('total_gift_applyed')) {
+           
+            $giftcards = session('giftcards', []);
             $gift_numbers = [];
             $gift_amounts = [];
+    
             foreach ($giftcards as $giftcard) {
-
                 if (isset($giftcard['number'])) {
                     $gift_numbers[] = $giftcard['number'];
                     $gift_amounts[] = $giftcard['amount'];
                 }
             }
-            // Concatenate the "number" values with '|'
+
             $gift_number = implode('|', $gift_numbers);
             $gift_amount = implode('|', $gift_amounts);
-            // Reverse Process for finding  sub_amount
             $sub_amount = session('totalValue', 0) + session('total_gift_applyed', 0) - session('tax_amount', 0);
-            // Reverse Process for finding  sub_amount
             $final_amount = session('totalValue', 0);
             $taxamount = session('tax_amount', 0);
+            
         }
-        else{
-            foreach ($cartItems as $item) {
+        //  If Gift card Not applyed for redeem
+        else {
+           
+                $giftcards = session('cart', []);
+
+            foreach ($giftcards as $item) {
                 $cart_data = Product::find($item['product_id']);
                 $totalAmount += $cart_data->discounted_amount;
-
             }
-            // Calculate Tax
+
             $taxamount = ($totalAmount * 10) / 100;
             $sub_amount = $totalAmount;
             $final_amount = $totalAmount + $taxamount;
-
         }
-        
 
-        $data = [];
-        $data['fname'] = $request->fname;
-        $data['lname'] = $request->lname;
-        $data['city'] = $request->city;
-        $data['country'] = $request->country;
-        $data['zip_code'] = $request->zip_code;
-        $data['email'] = $request->email;
-        $data['phone'] = $request->phone;
-        $data['order_id'] =  $orderId;
-        $data['gift_card_applyed'] = $gift_number;
-        $data['gift_card_amount'] = $gift_amount;
-        $data['sub_amount'] = $sub_amount;
-        $data['final_amount'] = $final_amount;
-        $data['address'] = $request->address;
-        $data['tax_amount'] = $taxamount;
+        $data = [
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'city' => $request->city,
+            'country' => $request->country,
+            'zip_code' => $request->zip_code,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'order_id' => $orderId,
+            'gift_card_applyed' => $gift_number,
+            'gift_card_amount' => $gift_amount,
+            'sub_amount' => $sub_amount,
+            'final_amount' => $final_amount,
+            'address' => $request->address,
+            'tax_amount' => $taxamount,
+        ];
 
-        //  Api Code for Storing Data in Lead capture
-        $api_data=["first_name"=>$request->fname,"last_name"=>$request->lname,"email"=>$request->email,"phone"=>$request->phone,"message"=>"This is Comes Form Giftcart Payment Page", "source"=> "Giftcart Website"];
-        $api_data = json_encode($api_data);
-        
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => env('LEAD_API_URL')."capture",
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS =>$api_data,
-          CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json'
-          ),
-        ));
-        
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
-        // dd($response);
-        // Lead Capture code end 
-        
-        $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
-    }
-    catch (\Exception $e) {
-        // Log the error message
-        Log::error('Order Number Generation : ' . $e->getMessage());
-        // Return back with error message
-        return back()->withErrors(['error' => $e->getMessage()]);
-    }
+        // Store data in TransactionHistory
+       $result = $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
+       
+        dd('dfasdf');
 
-    // Data Entry in Service Order Table
-    try{
-        foreach ($cartItems as $item) {
+        // Store data in ServiceOrder table
+        foreach ($giftcards as $item) {
             $cart_data = Product::find($item['product_id']);
 
-        $order_data = [];
-        $order_data['order_id'] =  $orderId;
-        $order_data['service_id'] = $item['product_id'];
-        $order_data['status'] = 0;
-        $order_data['number_of_session'] = $cart_data->session_number;
+            $order_data = [
+                'order_id' => $orderId,
+                'service_id' => $item['product_id'],
+                'status' => 0,
+                'number_of_session' => $cart_data->session_number,
+            ];
 
-        $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
+            $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
         }
-    }
-    catch (\Exception $e) {
-        // Log the error message
-        Log::error('Service_Order_Entry : ' . $e->getMessage());
-        // Return back with error message
+
+        // API Code for Storing Data in Lead Capture
+        $api_data = [
+            "first_name" => $request->fname,
+            "last_name" => $request->lname,
+            "email" => $request->email,
+            "phone" => $request->phone,
+            "message" => "This is Comes From Giftcart Payment Page",
+            "source" => "Giftcart Website"
+        ];
+
+        $this->sendLeadCaptureRequest($api_data);
+
+        DB::commit();  // Commit transaction
+
+    } catch (\Exception $e) {
+        DB::rollBack();  // Rollback transaction
+        Log::error('Checkout Process Error: ' . $e->getMessage());
         return back()->withErrors(['error' => $e->getMessage()]);
     }
-    // Data Entry in Service Order Table End
 
+    // Stripe Checkout Session
+    try {
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $redirecturl = route('strip_checkout_success') . '?session_id={CHECKOUT_SESSION_ID}';
 
-
-        try {
-            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-            $redirecturl = route('strip_checkout_success') . '?session_id={CHECKOUT_SESSION_ID}';
-            
-            $response = $stripe->checkout->sessions->create([
-                'success_url' => $redirecturl,
-                'customer_email' => $request->email,
-                'payment_method_types' => ['link', 'card'],
-                'line_items' => [
-                    [
-                        'price_data' => [
-                            'product_data' => [
-                                'name' => $orderId ? $orderId:'',
-                            ],
-                            'unit_amount' => session()->get('totalValue') ? session()->get('totalValue') * 100 : $final_amount*100, // for check if gift card not apply
-                            'currency' => 'USD',
+        $response = $stripe->checkout->sessions->create([
+            'success_url' => $redirecturl,
+            'customer_email' => $request->email,
+            'payment_method_types' => ['link', 'card'],
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'product_data' => [
+                            'name' => $orderId ?: '',
                         ],
-                        'quantity' => 1
+                        'unit_amount' => session()->get('totalValue') ? session()->get('totalValue') * 100 : $final_amount * 100,
+                        'currency' => 'USD',
                     ],
+                    'quantity' => 1
                 ],
-                'mode' => 'payment',
-                'allow_promotion_codes' => false,
-            ]);  
+            ],
+            'mode' => 'payment',
+            'allow_promotion_codes' => false,
+        ]);
 
-            // Insert Session Id 
-            $transaction_data = TransactionHistory::where('order_id', $orderId)->first(); 
-            if ($transaction_data) {
-                // Prepare the data to be updated
-                $data = [];
-                $data['payment_session_id'] = $response->id;
-                // Update the transaction history record
-                $transaction_data->update($data); 
-            }
-            
-            return redirect($response['url']);
-        } catch (\Exception $e) {
-            // Log the error message
-            Log::error('Stripe Checkout Session Error: ' . $e->getMessage());
-            
-            // Return back with error message
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
+        // Update payment_session_id in TransactionHistory
+        TransactionHistory::where('order_id', $orderId)->update(['payment_session_id' => $response->id]);
+
+        return redirect($response['url']);
+
+    } catch (\Exception $e) {
+        Log::error('Stripe Checkout Session Error: ' . $e->getMessage());
+        return back()->withErrors(['error' => $e->getMessage()]);
     }
+}
+
+private function sendLeadCaptureRequest(array $api_data)
+{
+    try {
+        $api_data = json_encode($api_data);
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json'
+        ])->post(env('LEAD_API_URL') . "capture", $api_data);
+
+        return $response->json();
+    } catch (\Exception $e) {
+        Log::error('Lead Capture API Error: ' . $e->getMessage());
+    }
+}
+
 
     public function stripcheckoutSuccess(Request $request)
 {
@@ -440,6 +436,10 @@ class StripeController extends Controller
             session::pull('cart');
         }
 
+        //  For Purchase Confirmation Mail
+        // dd($transaction_data);
+        Mail::to($transaction_data->email)->send(new ServicePurchaseConfirmation($transaction_data));
+
         return redirect()->route('invoice')
                      ->with('transaction_data', $transaction_data)
                      ->with('success', 'Payment successful.');
@@ -456,7 +456,6 @@ public function invoice()
 {
     // Retrieve flash data
     $transaction_data = session('transaction_data');
-
     return view('invoice.service_invoice', compact('transaction_data'));
 }
 
