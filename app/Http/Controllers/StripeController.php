@@ -20,6 +20,7 @@ use App\Mail\GeftcardMail;
 use App\Mail\ServicePurchaseConfirmation;
 use App\Mail\GiftReceipt;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class StripeController extends Controller
 {
@@ -254,7 +255,7 @@ class StripeController extends Controller
         else {
            
                 $giftcards = session('cart', []);
-
+           
             foreach ($giftcards as $item) {
                 $cart_data = Product::find($item['product_id']);
                 $totalAmount += $cart_data->discounted_amount;
@@ -274,8 +275,8 @@ class StripeController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'order_id' => $orderId,
-            'gift_card_applyed' => $gift_number,
-            'gift_card_amount' => $gift_amount,
+            'gift_card_applyed' => $gift_number ? $gift_number:null,
+            'gift_card_amount' => $gift_amount ? $gift_amount :null,
             'sub_amount' => $sub_amount,
             'final_amount' => $final_amount,
             'address' => $request->address,
@@ -283,9 +284,9 @@ class StripeController extends Controller
         ];
 
         // Store data in TransactionHistory
-       $result = $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
-       
-        dd('dfasdf');
+        // TransactionHistory::create($data);
+        $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
+        
 
         // Store data in ServiceOrder table
         foreach ($giftcards as $item) {
