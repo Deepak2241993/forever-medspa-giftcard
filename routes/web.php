@@ -39,7 +39,6 @@ Route::get('/giftcards-redeem-view', 'GiftController@history_view')->name('giftc
 Route::post('/giftcards-redeem', 'GiftController@redeem_store')->name('giftcards-redeem');
 Route::post('/ckeditor-image-post', 'CkeditorController@uploadImage')->name('ckeditor-image-upload');
 
-// New Route
 Route::get('/cardgenerated-list','GiftsendController@cardgeneratedList')->name('cardgenerated-list');
 Route::post('/cardview-route','APIController@cardview')->name('cardview-route');
 Route::get('/giftcardredeem-view','GiftsendController@giftcardredeemView')->name('giftcardredeem-view');
@@ -52,7 +51,6 @@ Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
 // Popular Officers
 Route::resource('/popular-offers', PopularOfferController::class);
-
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
 Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess')->name('giftcard-purchases-success');
 Route::post('/giftcard-payment-update','GiftsendController@updatePaymentStatus')->name('giftcard-payment-update');

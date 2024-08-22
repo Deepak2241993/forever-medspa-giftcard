@@ -227,8 +227,14 @@ input[type=text] {
 
                   
                      @endphp
+                         @php
+                        
+                         $today = Carbon::now();
+                         $dealEndDate = Carbon::parse($value['deal_end_date']);
+                         $daysLeft = $dealEndDate->diffInDays($today, false); // 'false' allows for negative values if the date is in the past
+                       @endphp
                      {{-- {{dd($product)}} --}}
-                     @if($product)
+                     @if($product && $daysLeft < 0 || $daysLeft == 0)
                      <article class="postbox__item mb-50 transition-3">
                         <div class="postbox__thumb w-img mb-30">
                            <a href="{{ route('product', ['slug' => $value['slug']]) }}">
@@ -240,18 +246,18 @@ input[type=text] {
                            <h3 class="postbox__title">
                               <a href="{{ route('product', ['slug' => $value['slug']]) }}">{{$value['cat_name']}}</a>
                           </h3>
-                          @php
-                        $today = Carbon::now();
-                        $dealEndDate = Carbon::parse($value['deal_end_date']);
-                        $daysLeft = $dealEndDate->diffInDays($today, false); // The 'false' parameter ensures negative values for past dates
-                     @endphp
+                      
+                      
                      
                        <div class="hl05eU">
                            <div class="UkUFwK">
                               <span><i><b>Up to {{$max_amount}}%  off</b></i></span>
                            {{-- For Countdown Code --}}
-                           @if($daysLeft!=0)
-                        </br><span><i><b> {{ str_replace('-','', $daysLeft) }} days left</b> </i></span>
+                           @if($daysLeft < 0)
+                        </br><span><i>
+                           <b> {{ str_replace('-','', $daysLeft) }} days left</b>
+                           {{-- <b> {{ $daysLeft }} days left</b> --}}
+                         </i></span>
 
                            @elseif ($daysLeft == 0)
                         </br><span> <i><b>  Deal ends today. Time left: 

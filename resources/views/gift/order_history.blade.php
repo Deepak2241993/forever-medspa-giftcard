@@ -31,7 +31,7 @@
         <div class="container-fluid">
             <!--begin::Row-->
             {{ $data->onEachSide(5)->links() }}
-            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+            <table id="datatable-buttons" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>#</th>
