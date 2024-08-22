@@ -1944,5 +1944,148 @@ public function product_view(Request $request, $id)
 
  }
 
+ // Order Search
+/**
+ * @OA\Post(
+ *      tags={"Order Details"},
+ *     path="/order-search",
+ *     summary="For Order Search ",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 @OA\Property(property="order_id", type="string", example="ORD-66c46b7083b2b-jq0Z2"),
+ *                 @OA\Property(property="email", type="string", example="deepak@thetemz.com"),
+ *                 @OA\Property(property="phone", type="string", example="0987654321"),
+ *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="Result Found"),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated",
+ *      ),
+ * @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
+
+ public function OrderSearch(Request $request)
+{
+    $token = $request->user_token;
+    $order_id = $request->order_id;
+    $email = $request->email;
+    $phone = $request->phone;
+
+    // Start the query with necessary joins and selections
+    $query = DB::table('transaction_histories')
+        ->join('service_orders', 'service_orders.order_id', '=', 'transaction_histories.order_id')
+        ->select(
+            'transaction_histories.fname',
+            'transaction_histories.lname',
+            'transaction_histories.email',
+            'transaction_histories.phone',
+            'transaction_histories.payment_intent',
+            'transaction_histories.transaction_status',
+            'transaction_histories.payment_status',
+            'service_orders.service_id',
+            'service_orders.number_of_session'
+        );
+
+    // Apply filters based on the request
+    if (!empty($email)) {
+        $query->where('transaction_histories.email', 'like', '%' . $email . '%');
+    }
+
+    if (!empty($phone)) {
+        $query->where('transaction_histories.phone', 'like', '%' . $phone . '%');
+    }
+
+    if (!empty($order_id)) {
+        $query->where('service_orders.order_id', $order_id);
+    }
+
+    // Filter by user token and group by necessary fields
+    $query->where('service_orders.user_token', $token)
+          ->groupBy(
+              'transaction_histories.fname',
+              'transaction_histories.lname',
+              'transaction_histories.email',
+              'transaction_histories.phone',
+              'transaction_histories.payment_intent',
+              'transaction_histories.transaction_status',
+              'transaction_histories.payment_status',
+              'service_orders.service_id',
+              'service_orders.number_of_session',
+              'service_orders.order_id'
+          );
+
+    // Paginate the results
+    $results = $query->paginate(10); // 10 items per page
+
+    if ($results->isNotEmpty()) {
+        return response()->json(['result' => $results, 'status' => 200, 'success' => 'Order Details Found'], 200);
+    } else {
+        return response()->json(['error' => 'Order Details Not Found', 'status' => 404]);
+    }
+}
+
+//  for Service Redeem
+/**
+ * @OA\Post(
+ *      tags={"Order Details"},
+ *     path="/service-redeem",
+ *     summary="For Service Redeem ",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 @OA\Property(property="order_id", type="string", example="ORD-66c4697701bed-JQZAn"),
+ *                 @OA\Property(property="comments", type="string", example="I Want To Redeem My Service"),
+ *                 @OA\Property(property="number_of_session", type="flout", example="1"),
+ *                 @OA\Property(property="service_id", type="integer", example="1"),
+ *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="Result Found"),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated",
+ *      ),
+ * @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
+
+ public function ServiceRedeem(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers){
+    $data=[
+        'giftnumber'=>$request->gift_card_number,
+        'user_token'=>$request->user_token,
+        'amount'=>'-'.$request->amount,
+        'comments'=>$request->comments,
+        'user_id'=>$request->user_id,
+        'transaction_id' => 'REDEEM' . date('YmdHis'),
+        ];
+      $result = $numbers->create($data);
+    //    Adding Gift Sender And Receive Details Add
+        $id=$request->user_id;
+        $receiverAndSenderDetails = Giftsend::where('id', $id)->get();
+        if ($result) {
+            return response()->json(['result' => $result,'giftCardHolderDetails'=>$receiverAndSenderDetails[0],'status' => 200, 'success' => 'Gift Cards redeem successfully'], 200);
+        } else {
+            return response()->json(['error' => 'Something Went Wrong Plese Contact to Admin', 'status' => 404]);
+        }
+
+ }
+
+
 }
 

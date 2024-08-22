@@ -61,3 +61,7 @@ Route::post('/product-update/{id}', 'APIController@product_update')->name('produ
 Route::post('/product-created', 'APIController@productcreated')->name('product-created');
 Route::post('/productDelete/{id}','APIController@productDelete')->name('productDelete');
 
+
+//  For Orders Search
+Route::post('/order-search','APIController@OrderSearch')->name('order-search');
+

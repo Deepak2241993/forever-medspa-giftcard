@@ -8,14 +8,14 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Redeem Process</h3>
+                    <h3 class="mb-0">Service Redeem Process</h3>
                 </div>
                 <div class="sucess"></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Redeem Process
+                            Service Redeem Process
                         </li>
                     </ol>
                 </div>
@@ -40,20 +40,20 @@
                     {{ session()->get('success') }}
                 @endif
             </div> --}}
-            <form method="get" action="{{ route('giftcard-search') }}">
+            <form method="get" action="{{ route('service-order-search') }}">
                 <div style="flex-direction: row; align-items: center;" class="form-control mb-4">
                     <div Class="row mb-4">
                         <div Class="col-md-4">
-                    <label for="name" style="margin-right: 10px;">Gift Card Holder Name:</label><br>
-                    <input  class="form-control"type="text" id="name" name="name" placeholder="Enter Gift Card Holder Name" style="margin-right: 20px;">
+                    <label for="name" style="margin-right: 10px;">Order Number:</label><br>
+                    <input  class="form-control"type="text" id="name" name="order_id" placeholder="Order Number" style="margin-right: 20px;">
                         </div>
                         <div Class="col-md-4">
-                    <label for="email" style="margin-right: 10px;">Gift Card Holder Email:</label><br>
-                    <input  class="form-control"type="email" id="email" name="email" placeholder="Enter Gift Card Holder Email" style="margin-right: 20px;">
+                    <label for="email" style="margin-right: 10px;">Email:</label><br>
+                    <input  class="form-control"type="email" id="email" name="email" placeholder="Enter Email" style="margin-right: 20px;">
                         </div>
                         <div Class="col-md-3">
-                    <label for="giftcardnumber" style="margin-right: 10px;">Gift Card Number:</label><br>
-                    <input  class="form-control"type="text" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147" style="margin-right: 20px;">
+                    <label for="phone" style="margin-right: 10px;">Phone Number:</label><br>
+                    <input  class="form-control"type="text" id="phone" name="phone" placeholder="Phone Number" style="margin-right: 20px;">
                         </div>
                     <div Class="col-md-1">
                     <input  class="form-control"type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
@@ -71,12 +71,11 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Gift Card Holder Name</th>
-                    <th>Gift Card Holder Email </th>
-                    <th>Gift Card Number</th>
-                    <th>Gift Card Amount</th>
-                    <th>Gift Card Status</th>
-                    {{-- <th>Created Time</th> --}}
+                    <th>Full Name</th>
+                    <th>Email </th>
+                    <th>Phone</th>
+                    <th>Transaction Id</th>
+                    
                     <th>Action</th>
                                   </tr>
                 </thead>
@@ -85,13 +84,11 @@
                     
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $value['recipient_name'] ? $value['recipient_name']:$value['your_name'] }}</td>
-                        <td>{{ $value['gift_send_to'] }}</td>
-                        <td>{{ $value['giftnumber'] }}</td>
-                        <td>{{ '$'.$value['total_amount'] }}</td>
-                        <td>{!! $value['status']!=0?'<span class="badge text-bg-success">Active</span>':'<span class="badge text-bg-danger">Inactive</span>' !!}</td>
-                        {{-- <td>{{ date('M-d-Y h:i:s', strtotime($value['updated_at'])) }}</td> --}}
-                        <td>
+                        <td>{{ $value['fname'] ? $value['fname']:$value['fname'] ." ".$value['lname'] }}</td>
+                        <td>{{ $value['email'] }}</td>
+                        <td>{{ $value['payment_intent'] }}</td>
+                        
+                        {{-- <td>
                             @if($value['status']!=0 && $value['total_amount']!=0)
                             <a type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#redeem_{{$value['user_id']}}" onclick="modalopen({{$value['user_id']}},'{{$value['giftnumber']}}','{{$value['total_amount']}}')">
                            Redeem
@@ -102,7 +99,7 @@
                         <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Statment_{{$value['user_id']}}" onclick="Statment({{$value['user_id']}},'{{$value['giftnumber']}}')">
                             View Statement
                         
-                    </td>
+                    </td> --}}
                         
                         <!-- Button trigger modal -->
 

@@ -75,6 +75,12 @@
                                 <p>Redeem Giftcards</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('service-redeem') }}" class="nav-link">
+                                <i class="nav-icon fa-regular fa-circle"></i>
+                                <p>Redeem Services</p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>
