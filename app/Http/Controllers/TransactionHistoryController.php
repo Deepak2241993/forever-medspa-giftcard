@@ -16,7 +16,7 @@ class TransactionHistoryController extends Controller
     {
         if(Auth::user()->user_type==1)
         {
-        $data=$transaction->all();
+        $data=$transaction->orderBy('id','DESC')->paginate(10);
         }
         else{
             $id=Auth::user()->id;

@@ -28,7 +28,7 @@ Route::get('/admin-dashboard', 'HomeController@root')->name('root');
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 Route::resource('/gift', GiftController::class);
-Route::resource('/all-order-history', TransactionHistoryController::class);
+Route::resource('/service-order-history', TransactionHistoryController::class);
 Route::resource('/coupon', GiftCouponController::class);
 Route::resource('/gift-category', GiftCategoryController::class);
 Route::resource('/medspa-gift', MedsapGiftController::class);
