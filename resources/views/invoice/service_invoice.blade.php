@@ -43,8 +43,8 @@
                             <p class="tm_mb2"><b class="tm_primary_color">Invoice To:</b></p>
                             <p>
                                 {{ $transaction_data->fname }} {{ $transaction_data->lname }}<br>
-                                {{ $transaction_data->address }}<br>{{ $transaction_data->city }},{{ $transaction_data->country }}
-                                - {{ $transaction_data->zip_code }}<br>
+                                {{-- {{ $transaction_data->address }}<br>{{ $transaction_data->city }},{{ $transaction_data->country }}
+                                - {{ $transaction_data->zip_code }}<br> --}}
                                 {{ $transaction_data->email }}
                             </p>
                         </div>

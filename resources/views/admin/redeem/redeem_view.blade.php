@@ -41,19 +41,26 @@
                 @endif
             </div> --}}
             <form method="get" action="{{ route('giftcard-search') }}">
-                <div style="display: flex; flex-direction: row; align-items: center;">
-                    <label for="name" style="margin-right: 10px;">Gift Card Holder Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter Gift Card Holder Name" style="margin-right: 20px;">
-            
-                    <label for="email" style="margin-right: 10px;">Gift Card Holder Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Enter Gift Card Holder Email" style="margin-right: 20px;">
-            
-                    <label for="giftcardnumber" style="margin-right: 10px;">Gift Card Number:</label>
-                    <input type="text" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147" style="margin-right: 20px;">
-            
-                    <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-            
-                    <button type="submit" class="btn btn-primary">Search</button>
+                <div style="flex-direction: row; align-items: center;" class="form-control mb-4">
+                    <div Class="row mb-4">
+                        <div Class="col-md-4">
+                    <label for="name" style="margin-right: 10px;">Gift Card Holder Name:</label><br>
+                    <input  class="form-control"type="text" id="name" name="name" placeholder="Enter Gift Card Holder Name" style="margin-right: 20px;">
+                        </div>
+                        <div Class="col-md-4">
+                    <label for="email" style="margin-right: 10px;">Gift Card Holder Email:</label><br>
+                    <input  class="form-control"type="email" id="email" name="email" placeholder="Enter Gift Card Holder Email" style="margin-right: 20px;">
+                        </div>
+                        <div Class="col-md-3">
+                    <label for="giftcardnumber" style="margin-right: 10px;">Gift Card Number:</label><br>
+                    <input  class="form-control"type="text" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147" style="margin-right: 20px;">
+                        </div>
+                    <div Class="col-md-1">
+                    <input  class="form-control"type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
+                    
+                    <button  class="btn btn-success mt-4"type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
                 </div>
             </form>
             
