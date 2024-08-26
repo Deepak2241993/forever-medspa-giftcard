@@ -10,6 +10,7 @@ use App\Models\GiftCategory;
 use App\Models\Giftsend;
 use App\Models\GiftcardsNumbers;
 use App\Models\User;
+use App\Models\TransactionHistory;
 use App\Models\GiftcardRedeem;
 use App\Models\ProductCategory;
 use App\Models\Product;
@@ -1984,16 +1985,10 @@ public function product_view(Request $request, $id)
     // Start the query with necessary joins and selections
     $query = DB::table('transaction_histories')
         ->join('service_orders', 'service_orders.order_id', '=', 'transaction_histories.order_id')
+        ->join('products', 'products.id', '=', 'service_orders.service_id')
         ->select(
-            'transaction_histories.fname',
-            'transaction_histories.lname',
-            'transaction_histories.email',
-            'transaction_histories.phone',
-            'transaction_histories.payment_intent',
-            'transaction_histories.transaction_status',
-            'transaction_histories.payment_status',
-            'service_orders.service_id',
-            'service_orders.number_of_session'
+            'products.product_name',
+            'service_orders.number_of_session',
         );
 
     // Apply filters based on the request
@@ -2012,27 +2007,20 @@ public function product_view(Request $request, $id)
     // Filter by user token and group by necessary fields
     $query->where('service_orders.user_token', $token)
           ->groupBy(
-              'transaction_histories.fname',
-              'transaction_histories.lname',
-              'transaction_histories.email',
-              'transaction_histories.phone',
-              'transaction_histories.payment_intent',
-              'transaction_histories.transaction_status',
-              'transaction_histories.payment_status',
-              'service_orders.service_id',
               'service_orders.number_of_session',
-              'service_orders.order_id'
+              'products.product_name',
           );
 
-    // Paginate the results
-    $results = $query->paginate(10); // 10 items per page
-
+    // Get the results without pagination
+    $results = $query->get();
+    // $transaction_history= TransactionHistory::where('order_id',$order_id)->where('user_token',$token)->get();
     if ($results->isNotEmpty()) {
-        return response()->json(['result' => $results, 'status' => 200, 'success' => 'Order Details Found'], 200);
+        return response()->json(['result' => $results,'status' => 200, 'success' => 'Order Details Found'], 200);
     } else {
         return response()->json(['error' => 'Order Details Not Found', 'status' => 404]);
     }
 }
+
 
 //  for Service Redeem
 /**

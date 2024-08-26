@@ -100,7 +100,7 @@
                                  </a> |
                             @endif
                         <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Statment_{{$value['user_id']}}" onclick="Statment({{$value['user_id']}},'{{$value['giftnumber']}}')">
-                            View Statement
+                            View Statement</a>
                         
                     </td>
                         

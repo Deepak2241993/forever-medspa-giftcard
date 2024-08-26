@@ -281,6 +281,7 @@ class StripeController extends Controller
             'final_amount' => $final_amount,
             'address' => $request->address,
             'tax_amount' => $taxamount,
+            'user_token' => 'FOREVER-MEDSPA',
         ];
 
         
@@ -298,6 +299,7 @@ class StripeController extends Controller
                 'service_id' => $item['product_id'],
                 'status' => 0,
                 'number_of_session' => $cart_data->session_number,
+                'user_token' => 'FOREVER-MEDSPA',
             ];
 
             // ServiceOrderController::create($order_data);
