@@ -1,5 +1,6 @@
 @extends('layouts.admin_layout')
 @section('body')
+
 <main class="app-main">
     <!--begin::App Content Header-->
     <div class="app-content-header">
@@ -28,7 +29,7 @@
     <!--begin::App Content-->
     <div class="app-content">
         <!--begin::Container-->
-        <form method="get" action="{{ route('service-order-search') }}">
+        <form method="get" action="#">
                 <div style="flex-direction: row; align-items: center;" class="form-control mb-4">
                     <div Class="row mb-4">
                         <div Class="col-md-4">
@@ -116,8 +117,10 @@
          </div>
         <div class="modal-body">
                 <div style="display: flex; flex-direction: column;">
-                    <label for="cancel_giftnumber_" style="margin-right: 10px;">Gift Number:</label>
-                    <input  class="cancel_giftnumber_ form-control"type="text" id="cancel_giftnumber_" name="giftnumber" value="" style="margin-right: 20px;" readonly>
+                    {{-- <h5 id="client_name"></h5>
+                    <h5 id="client_email"></h5>
+                    <h5 id="client_phone"></h5> --}}
+                    {{-- <h5 id="client_Order_number"></h5> --}}
                     <h3> Order Details</h3>
                     <h2 id="giftcardsshow" class="mt-4"></h2>
                    
@@ -140,79 +143,115 @@ function OrderView(id, order_id) {
     $('#staticBackdrop_' + id).modal('show');
 
     $.ajax({
-    url: '{{ route('order-search') }}',
-    method: "post",
-    dataType: "json",
-    data: {
-        _token: '{{ csrf_token() }}',
-        order_id: order_id,
-        email: "",
-        phone: "",
-        user_token: '{{ Auth::user()->user_token }}',
-    },
-    success: function(response) {
-        if (response.success) {
-            // Clear previous table content
-            $('#giftcardsshow').empty();
+        url: '{{ route('order-search') }}',
+        method: "post",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            order_id: order_id,
+            email: "",
+            phone: "",
+            user_token: '{{ Auth::user()->user_token }}',
+        },
+        success: function(response) {
+            if (response.success) {
+                // Clear previous table content
+                $('#giftcardsshow').empty();
 
-            // Create table structure
-            var table = $('<table class="table table-bordered table-striped">');
-            var thead = $('<thead>').html(
-                '<tr>' +
-                '<th>#</th>' +
-                '<th>Product Name</th>' +
-                '<th>Total Session</th>' +
-                '<th>How Much Use</th>' +
-                '<th>Message</th>' +
-                '<th>Action</th>' +
-                '</tr>'
-            );
-            var tbody = $('<tbody>');
+                // Create form and table structure
+                var form = $('<form>', { action: '{{ route("redeem-services") }}', method: 'POST' });
+                var table = $('<table class="table table-bordered table-striped">');
+                var thead = $('<thead>').html(
+                    '<tr>' +
+                    '<th>#</th>' +
+                    '<th>Product Name</th>' +
+                    '<th>Total Session</th>' +
+                    '<th>How Much Use</th>' +
+                    '<th>Message</th>' +
+                    '<th>Action</th>' +
+                    '</tr>'
+                );
+                var tbody = $('<tbody>');
 
-            // Append header to the table
-            table.append(thead);
+                // Append header to the table
+                table.append(thead);
 
-            // Loop through the response result array
-            $.each(response.result, function(index, element) {
-                // Create a new row for each element
-                var row = $('<tr>').html(
-                `<td>${index + 1}</td>
-                <td>${element.product_name}</td>
-                <td>${element.number_of_session}</td>
-                <td>
-                    <input type="number" min="0" name="service_id[]">
-                    <input type="hidden" min="0" name="session_number[]">
-                </td>
-                 <td>
-                    <textarea class="form-control"></textarea>
-                </td>
-                 <td>
-                    <button type="submit" class="btn btn-primary mt-2">Redeem</button
-                </td>`
-            );
+                // Loop through the response result array
+                $.each(response.result, function(index, element) {
+                    // Create a new row for each element
+                    var row = $('<tr>').html(
+                        `<td>${index + 1}</td>
+                        <td>${element.product_name}</td>
+                        <td>${element.number_of_session}</td>
+                        <td>
+                            <input type="hidden" name="service_id" value="${element.service_id}">
+                            <input type="hidden" name="order_id" value="${element.order_id}">
+                            <input type="number" max="${element.number_of_session}" name="session_number" value="${element.number_of_session}" class="form-control">
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="message"></textarea>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary mt-2 submit-btn">Redeem</button>
+                        </td>`
+                    );
 
-                // Append the row to the tbody
-                tbody.append(row);
-            });
+                    // Append the row to the tbody
+                    tbody.append(row);
+                });
 
-            // Append tbody to the table
-            table.append(tbody);
+                // Append tbody to the table
+                table.append(tbody);
 
-            // Append the table to #giftcardsshow
-            $('#giftcardsshow').append(table);
-        } else {
-            // Handle the case when the response is not successful
-            $('#giftcardsshow').html('<p>No services found.</p>');
+                // Append table to form
+                form.append(table);
+
+                // Append form to #giftcardsshow
+                $('#giftcardsshow').append(form);
+
+                // Add event listener for submit button clicks
+                $('.submit-btn').click(function() {
+                    var currentRow = $(this).closest('tr');
+                    var rowData = {
+                        _token: '{{ csrf_token() }}', // Add CSRF token
+                        service_id: currentRow.find('input[name="service_id"]').val(),
+                        session_number: currentRow.find('input[name="session_number"]').val(),
+                        message: currentRow.find('textarea[name="message"]').val()
+                    };
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: rowData, // Send only the current row data
+                        success: function(response) {
+                            if (response.success) {
+                                // Display a success message
+                                alert('Action completed successfully.');
+                                // Disable the current row's input fields and button
+                                currentRow.find('input, textarea, button').prop('disabled', true);
+                            } else {
+                                alert('Action failed. Please try again.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('An error occurred. Please try again later.');
+                        }
+                    });
+                });
+
+            } else {
+                // Handle the case when the response is not successful
+                $('#giftcardsshow').html('<p>No services found.</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle error response
+            $('#giftcardsshow').html('<p>An error occurred. Please try again later.</p>');
         }
-    },
-    error: function(xhr, status, error) {
-        // Handle error response
-        $('#giftcardsshow').html('<p>An error occurred. Please try again later.</p>');
-    }
-});
-
-
+    });
 }
+
+
 </script>
 @endpush
 

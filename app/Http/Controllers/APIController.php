@@ -1989,6 +1989,12 @@ public function product_view(Request $request, $id)
         ->select(
             'products.product_name',
             'service_orders.number_of_session',
+            'transaction_histories.email',
+            'transaction_histories.phone',
+            'transaction_histories.fname',
+            'transaction_histories.lname',
+            'transaction_histories.order_id',
+            'service_orders.service_id',
         );
 
     // Apply filters based on the request
@@ -2009,6 +2015,12 @@ public function product_view(Request $request, $id)
           ->groupBy(
               'service_orders.number_of_session',
               'products.product_name',
+              'transaction_histories.email',
+            'transaction_histories.phone',
+            'transaction_histories.fname',
+            'transaction_histories.lname',
+            'transaction_histories.order_id',
+            'service_orders.service_id',
           );
 
     // Get the results without pagination

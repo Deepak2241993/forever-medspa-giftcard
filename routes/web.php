@@ -42,8 +42,8 @@ Route::post('/ckeditor-image-post', 'CkeditorController@uploadImage')->name('cke
 Route::get('/cardgenerated-list','GiftsendController@cardgeneratedList')->name('cardgenerated-list');
 Route::post('/cardview-route','APIController@cardview')->name('cardview-route');
 Route::get('/giftcardredeem-view','GiftsendController@giftcardredeemView')->name('giftcardredeem-view');
-Route::get('/service-redeem','ServiceOrderController@ServiceRedeem')->name('service-redeem');
-Route::get('/service-order-search','ServiceOrderController@ServiceOrderSearch')->name('service-order-search');
+Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('service-redeem-view');
+Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('redeem-services');
 Route::get('/giftcardsearch','GiftsendController@GiftCardSearch')->name('giftcard-search');
 Route::post('/giftcardredeem','GiftsendController@giftcardredeem')->name('giftcardredeem');
 Route::post('/giftcardstatment','GiftsendController@giftcardstatment')->name('giftcardstatment');

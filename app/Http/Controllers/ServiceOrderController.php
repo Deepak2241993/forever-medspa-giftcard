@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ServiceOrder;
 use App\Models\TransactionHistory;
+use App\Models\Service_redeem;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -95,9 +96,8 @@ class ServiceOrderController extends Controller
 
       //  for giftcard redeem
 
-public function ServiceRedeem(Request $request,TransactionHistory $transaction)
+public function ServiceRedeemView(Request $request,TransactionHistory $transaction)
       {
-
 
         if(Auth::user()->user_type==1)
         {
@@ -109,68 +109,22 @@ public function ServiceRedeem(Request $request,TransactionHistory $transaction)
         }
         return view('admin.redeem.service_redeem',compact('data'));
 
-
-        //   $token = Auth::user()->user_token;
-        //   $data_arr = ['name' => '', 'email' => '', 'giftcardnumber' => '', 'user_token' => $token];
-        //   $data = json_encode($data_arr);
-        //   $result = $this->postAPI('order-search', $data);
-      
-        //   if (isset($result['status']) && $result['status'] == 200) {
-        //       $results = $result['result']; // Service data
-        //       // Pagination logic
-        //       $currentPage = $request->input('page', 1); // Current page from query string
-        //       $perPage = 10; // Number of items per page
-      
-        //       // Create a new LengthAwarePaginator instance with the API response data
-        //       $paginatedTransactions = new LengthAwarePaginator(
-        //           collect($results)->forPage($currentPage, $perPage),
-        //           count($results),
-        //           $perPage,
-        //           $currentPage,
-        //           [
-        //               'path' => $request->url(),
-        //               'query' => $request->query(),
-        //           ]
-        //       );
-      
-        //       return view('admin.redeem.service_redeem', [
-        //           'results' => $results
-        //       ]);
-        //   } else {
-        //       $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
-        //       return view('admin.redeem.service_redeem')->with('error', $error);
-        //   }
       }
-// public function ServiceOrderSearch(Request $request)
-// {
-//     // Collect all request data except the '_token'
-//     $data_arr = $request->except('_token');
-//     $data = json_encode($data_arr);
-    
-//     // Make the API call
-//     $result = $this->postAPI('order-search', $data);
 
-//     if (isset($result['status']) && $result['status'] == 200) {
-//         // Get the result data
-//         $getdata = $result['result'];
-
-//         // Extract the data array and pagination details
-//         $items = $getdata['data'] ?? []; // Safely handle if 'data' key is not present
-//         $currentPage = $getdata['current_page'] ?? 1; // Default to 1 if not present
-//         $perPage = $getdata['per_page'] ?? 10; // Default to 10 if not present
-//         $total = $getdata['total'] ?? count($items); // Default to count of items if not present
-
-//         // Create a LengthAwarePaginator instance
-//         $paginatedItems = new LengthAwarePaginator($items, $total, $perPage, $currentPage, [
-//             'path' => $request->url(), // Get the full URL path of the current request
-//             'query' => $request->query(), // Retain the existing query string parameters
-//             'pageName' => 'page', // Match the API's pagination parameter
-//         ]);
-
-//         return view('admin.redeem.service_redeem', compact('paginatedItems'));
-//     } else {
-//         $error = $result['error'] ?? 'Unknown error occurred.';
-//         return view('admin.redeem.service_redeem')->with('error', $error);
-//     }
-// }
+      public function ServiceRedeem(Request $request, Service_redeem $service_redeem)
+      {
+          // Validate the request data
+          $validatedData = $request->validate([
+              'service_id' => 'required|integer',
+              'session_number' => 'required|integer|min:1',
+              'message' => 'nullable|string|max:255',
+          ]);
+      
+          // Create a new record using the validated data
+          $service_redeem->create($validatedData);
+      
+          // Return a JSON response indicating success
+          return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
+      }
+      
 }
