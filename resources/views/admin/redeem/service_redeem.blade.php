@@ -122,6 +122,8 @@
                     <h5 id="client_phone"></h5> --}}
                     {{-- <h5 id="client_Order_number"></h5> --}}
                     <h3> Order Details</h3>
+                    <span class="text-danger" id="error"></span>
+                    <span class="text-success" id="success"></span>
                     <h2 id="giftcardsshow" class="mt-4"></h2>
                    
                 </div>
@@ -166,6 +168,7 @@ function OrderView(id, order_id) {
                     '<th>#</th>' +
                     '<th>Product Name</th>' +
                     '<th>Total Session</th>' +
+                    '<th>Remaining Session</th>' +
                     '<th>How Much Use</th>' +
                     '<th>Message</th>' +
                     '<th>Action</th>' +
@@ -178,21 +181,34 @@ function OrderView(id, order_id) {
 
                 // Loop through the response result array
                 $.each(response.result, function(index, element) {
+                    // Determine if the row should be disabled
+                    var isDisabled = element.remaining_sessions === 0 ? 'disabled' : '';
+                    var rowClass = element.remaining_sessions === 0 ? 'class="disabled-row"' : '';
+
                     // Create a new row for each element
-                    var row = $('<tr>').html(
+                    var row = $('<tr ' + rowClass + '>').html(
                         `<td>${index + 1}</td>
                         <td>${element.product_name}</td>
                         <td>${element.number_of_session}</td>
+                        <td id="row_${index + 1}">${element.remaining_sessions}</td>
                         <td>
                             <input type="hidden" name="service_id" value="${element.service_id}">
                             <input type="hidden" name="order_id" value="${element.order_id}">
-                            <input type="number" max="${element.number_of_session}" name="session_number" value="${element.number_of_session}" class="form-control">
+                            <input onkeyup="valueValidate(this, ${element.remaining_sessions})" 
+       onchange="valueValidate(this, ${element.remaining_sessions})" 
+       type="number" 
+       max="${element.remaining_sessions}" 
+       min="0" 
+       name="number_of_session_use" 
+       value="${element.remaining_sessions}" 
+       class="form-control" 
+       ${isDisabled}>
                         </td>
                         <td>
-                            <textarea class="form-control" name="message"></textarea>
+                            <textarea class="form-control" name="comments" ${isDisabled}></textarea>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary mt-2 submit-btn">Redeem</button>
+                            <button type="button" class="btn btn-primary mt-2 submit-btn" ${isDisabled}>Redeem</button>
                         </td>`
                     );
 
@@ -212,11 +228,21 @@ function OrderView(id, order_id) {
                 // Add event listener for submit button clicks
                 $('.submit-btn').click(function() {
                     var currentRow = $(this).closest('tr');
+                    var number_of_session_use = currentRow.find('input[name="number_of_session_use"]').val();
+                    var remaining_sessions = currentRow.find('td:nth-child(4)').text(); // get remaining sessions value from table cell
+
+                    // Validate that the number of sessions to use does not exceed remaining sessions
+                    if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
+                        alert('You cannot redeem more sessions than the remaining sessions.');
+                        return; // Stop the form submission
+                    }
+
                     var rowData = {
                         _token: '{{ csrf_token() }}', // Add CSRF token
                         service_id: currentRow.find('input[name="service_id"]').val(),
-                        session_number: currentRow.find('input[name="session_number"]').val(),
-                        message: currentRow.find('textarea[name="message"]').val()
+                        order_id: currentRow.find('input[name="order_id"]').val(),
+                        number_of_session_use: number_of_session_use,
+                        comments: currentRow.find('textarea[name="comments"]').val()
                     };
 
                     $.ajax({
@@ -227,6 +253,7 @@ function OrderView(id, order_id) {
                             if (response.success) {
                                 // Display a success message
                                 alert('Action completed successfully.');
+                                $('#success').html();
                                 // Disable the current row's input fields and button
                                 currentRow.find('input, textarea, button').prop('disabled', true);
                             } else {
@@ -250,6 +277,46 @@ function OrderView(id, order_id) {
         }
     });
 }
+
+
+// For Value Validate 
+function valueValidate(inputElement, maxValue) {
+    var currentValue = parseInt(inputElement.value);
+    
+    if (currentValue > maxValue) {
+        alert('Entered value is greater than the remaining value.');
+        inputElement.value = maxValue; // Set the value to the max value
+    } else if (currentValue < 0) {
+        alert('Value cannot be less than 0.');
+        inputElement.value = 0; // Set the value to the minimum value
+    }
+}
+
+// Inspect Page Lock
+// Disable right-click context menu
+document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+});
+
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, and Ctrl+U (view source)
+document.addEventListener('keydown', function(event) {
+    // F12 key
+    if (event.keyCode === 123) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+I (Inspect)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+J (Console)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 74) {
+        event.preventDefault();
+    }
+    // Ctrl+U (View Source)
+    if (event.ctrlKey && event.keyCode === 85) {
+        event.preventDefault();
+    }
+});
 
 
 </script>

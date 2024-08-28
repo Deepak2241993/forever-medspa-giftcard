@@ -214,6 +214,31 @@
     <!-- Body main wrapper end -->
 @endsection
 
-@push('script')
+@push('footerscript')
+<script>
+// Disable right-click context menu
+document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+});
 
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, and Ctrl+U (view source)
+document.addEventListener('keydown', function(event) {
+    // F12 key
+    if (event.keyCode === 123) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+I (Inspect)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+J (Console)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 74) {
+        event.preventDefault();
+    }
+    // Ctrl+U (View Source)
+    if (event.ctrlKey && event.keyCode === 85) {
+        event.preventDefault();
+    }
+});
+</script>
 @endpush

@@ -116,12 +116,16 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
           // Validate the request data
           $validatedData = $request->validate([
               'service_id' => 'required|integer',
-              'session_number' => 'required|integer|min:1',
-              'message' => 'nullable|string|max:255',
+              'order_id' => 'required|string|max:255',
+              'number_of_session_use' => 'required|integer|min:1',
+              'comments' => 'nullable|string|max:255',
           ]);
       
           // Create a new record using the validated data
-          $service_redeem->create($validatedData);
+          $data = $request->all();
+          $data['user_token']='FOREVER-MEDSPA';
+          $data['transaction_id']='SER-RED'.time();
+          $service_redeem->create($data);
       
           // Return a JSON response indicating success
           return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);

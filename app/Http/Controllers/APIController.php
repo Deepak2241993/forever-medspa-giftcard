@@ -1986,6 +1986,10 @@ public function product_view(Request $request, $id)
     $query = DB::table('transaction_histories')
         ->join('service_orders', 'service_orders.order_id', '=', 'transaction_histories.order_id')
         ->join('products', 'products.id', '=', 'service_orders.service_id')
+        ->leftJoin('service_redeems', function($join) {
+            $join->on('service_redeems.order_id', '=', 'service_orders.order_id')
+                 ->on('service_redeems.service_id', '=', 'service_orders.service_id');
+        })
         ->select(
             'products.product_name',
             'service_orders.number_of_session',
@@ -1995,6 +1999,18 @@ public function product_view(Request $request, $id)
             'transaction_histories.lname',
             'transaction_histories.order_id',
             'service_orders.service_id',
+            DB::raw('IFNULL(SUM(service_redeems.number_of_session_use), 0) as total_redeemed_sessions'),
+            DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions')
+        )
+        ->groupBy(
+            'products.product_name',
+            'service_orders.number_of_session',
+            'transaction_histories.email',
+            'transaction_histories.phone',
+            'transaction_histories.fname',
+            'transaction_histories.lname',
+            'transaction_histories.order_id',
+            'service_orders.service_id'
         );
 
     // Apply filters based on the request
@@ -2010,28 +2026,19 @@ public function product_view(Request $request, $id)
         $query->where('service_orders.order_id', $order_id);
     }
 
-    // Filter by user token and group by necessary fields
-    $query->where('service_orders.user_token', $token)
-          ->groupBy(
-              'service_orders.number_of_session',
-              'products.product_name',
-              'transaction_histories.email',
-            'transaction_histories.phone',
-            'transaction_histories.fname',
-            'transaction_histories.lname',
-            'transaction_histories.order_id',
-            'service_orders.service_id',
-          );
+    // Filter by user token
+    $query->where('service_orders.user_token', $token);
 
     // Get the results without pagination
     $results = $query->get();
-    // $transaction_history= TransactionHistory::where('order_id',$order_id)->where('user_token',$token)->get();
+
     if ($results->isNotEmpty()) {
-        return response()->json(['result' => $results,'status' => 200, 'success' => 'Order Details Found'], 200);
+        return response()->json(['result' => $results, 'status' => 200, 'success' => 'Order Details Found'], 200);
     } else {
         return response()->json(['error' => 'Order Details Not Found', 'status' => 404]);
     }
 }
+
 
 
 //  for Service Redeem
@@ -2079,7 +2086,7 @@ public function product_view(Request $request, $id)
         $id=$request->user_id;
         $receiverAndSenderDetails = Giftsend::where('id', $id)->get();
         if ($result) {
-            return response()->json(['result' => $result,'giftCardHolderDetails'=>$receiverAndSenderDetails[0],'status' => 200, 'success' => 'Gift Cards redeem successfully'], 200);
+            return response()->json(['result' => $result,'giftCardHolderDetails'=>$receiverAndSenderDetails[0],'status' => 200, 'success' => 'Service redeem successfully'], 200);
         } else {
             return response()->json(['error' => 'Something Went Wrong Plese Contact to Admin', 'status' => 404]);
         }
