@@ -1,6 +1,26 @@
 @extends('layouts.admin_layout')
 @section('body')
+@push('css')
 
+    .spinner-border {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+    border: 0.1em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+    @endpush()
 <main class="app-main">
     <!--begin::App Content Header-->
     <div class="app-content-header">
@@ -194,20 +214,23 @@ function OrderView(id, order_id) {
                             <input type="hidden" name="service_id" value="${element.service_id}">
                             <input type="hidden" name="order_id" value="${element.order_id}">
                             <input onkeyup="valueValidate(this, ${element.remaining_sessions})" 
-       onchange="valueValidate(this, ${element.remaining_sessions})" 
-       type="number" 
-       max="${element.remaining_sessions}" 
-       min="0" 
-       name="number_of_session_use" 
-       value="${element.remaining_sessions}" 
-       class="form-control" 
-       ${isDisabled}>
+                                   onchange="valueValidate(this, ${element.remaining_sessions})" 
+                                   type="number" 
+                                   max="${element.remaining_sessions}" 
+                                   min="0" 
+                                   name="number_of_session_use" 
+                                   value="${element.remaining_sessions}" 
+                                   class="form-control" 
+                                   ${isDisabled}>
                         </td>
                         <td>
                             <textarea class="form-control" name="comments" ${isDisabled}></textarea>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary mt-2 submit-btn" ${isDisabled}>Redeem</button>
+                            <button type="button" class="btn btn-primary mt-2 submit-btn" ${isDisabled}>
+                                <span class="spinner-border spinner-border-sm" style="display: none;"></span>
+                                Redeem
+                            </button>
                         </td>`
                     );
 
@@ -226,13 +249,22 @@ function OrderView(id, order_id) {
 
                 // Add event listener for submit button clicks
                 $('.submit-btn').click(function() {
-                    var currentRow = $(this).closest('tr');
+                    var button = $(this);
+                    var spinner = button.find('.spinner-border');
+
+                    // Show the spinner
+                    spinner.show();
+                    button.prop('disabled', true);
+
+                    var currentRow = button.closest('tr');
                     var number_of_session_use = currentRow.find('input[name="number_of_session_use"]').val();
                     var remaining_sessions = currentRow.find('td:nth-child(4)').text(); // get remaining sessions value from table cell
 
                     // Validate that the number of sessions to use does not exceed remaining sessions
                     if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
                         alert('You cannot redeem more sessions than the remaining sessions.');
+                        spinner.hide();
+                        button.prop('disabled', false);
                         return; // Stop the form submission
                     }
 
@@ -261,6 +293,11 @@ function OrderView(id, order_id) {
                         },
                         error: function(xhr, status, error) {
                             alert('An error occurred. Please try again later.');
+                        },
+                        complete: function() {
+                            // Hide the spinner and enable the button after the request completes
+                            spinner.hide();
+                            button.prop('disabled', true);
                         }
                     });
                 });
@@ -276,6 +313,7 @@ function OrderView(id, order_id) {
         }
     });
 }
+
 
 
 // For Value Validate 

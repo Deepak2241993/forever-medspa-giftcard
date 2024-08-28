@@ -32,7 +32,7 @@
 
      <style>
 
-         @stack('css')
+         @stack('css');
      </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
