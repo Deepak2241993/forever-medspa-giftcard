@@ -183,4 +183,29 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
             return view('admin.redeem.service_redeem', compact('data'));
         }
 
+        public function getServiceStatement(Request $request)
+        {
+            $orderId = $request->order_id;
+            
+            $servicePurchases = ServiceOrder::select('service_orders.*', 'products.product_name')
+                ->join('products', 'service_orders.service_id', '=', 'products.id')
+                ->where('service_orders.order_id', $orderId)
+                ->get();
+        
+            $serviceRedeem = Service_redeem::select('service_redeems.*', 'products.product_name')
+                ->join('products', 'service_redeems.service_id', '=', 'products.id')
+                ->where('service_redeems.order_id', $orderId)
+                ->get();
+        
+            $totalAmount = $servicePurchases->sum('number_of_session') - $serviceRedeem->sum('number_of_session_use');
+        
+            return response()->json([
+                'success' => true,
+                'servicePurchases' => $servicePurchases,
+                'serviceRedeem' => $serviceRedeem,
+                'totalAmount' => $totalAmount
+            ]);
+        }
+        
+
 }

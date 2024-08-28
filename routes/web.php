@@ -54,6 +54,8 @@ Route::resource('/product', ProductController::class);
 Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('service-redeem-view');
 Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('redeem-services');
 Route::get('/search-service-order','ServiceOrderController@SearchServiceOrder')->name('search-service-order');
+Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')->name('service-statement');
+
 // Popular Officers
 Route::resource('/popular-offers', PopularOfferController::class);
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
