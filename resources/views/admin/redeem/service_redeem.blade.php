@@ -29,29 +29,28 @@
     <!--begin::App Content-->
     <div class="app-content">
         <!--begin::Container-->
-        <form method="get" action="#">
-                <div style="flex-direction: row; align-items: center;" class="form-control mb-4">
-                    <div Class="row mb-4">
-                        <div Class="col-md-4">
-                    <label for="name" style="margin-right: 10px;">Order Number:</label><br>
-                    <input  class="form-control"type="text" id="name" name="order_id" placeholder="Order Number" style="margin-right: 20px;">
-                        </div>
-                        <div Class="col-md-4">
-                    <label for="email" style="margin-right: 10px;">Email:</label><br>
-                    <input  class="form-control"type="email" id="email" name="email" placeholder="Enter Email" style="margin-right: 20px;">
-                        </div>
-                        <div Class="col-md-3">
-                    <label for="phone" style="margin-right: 10px;">Phone Number:</label><br>
-                    <input  class="form-control"type="text" id="phone" name="phone" placeholder="Phone Number" style="margin-right: 20px;">
-                        </div>
-                    <div Class="col-md-1">
-                    <input  class="form-control"type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                    
-                    <button  class="btn btn-success mt-4"type="submit" class="btn btn-primary">Search</button>
-                    </div>
+        <form method="get" action="{{ route('search-service-order') }}">
+            @csrf
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label for="order_id">Order Number:</label>
+                    <input type="text" class="form-control" id="order_id" name="order_id" placeholder="Order Number">
                 </div>
+                <div class="col-md-4">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
                 </div>
-            </form>
+                <div class="col-md-3">
+                    <label for="phone">Phone Number:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+                </div>
+                <div class="col-md-1">
+                    <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
+                    <button type="submit" class="btn btn-success mt-4">Search</button>
+                </div>
+            </div>
+        </form>
+        
         <div class="container-fluid">
             <!--begin::Row-->
             {{ $data->onEachSide(5)->links() }}
@@ -59,8 +58,8 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Order Number</th>
                     <th>View Order</th>
+                    <th>Order Number</th>
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone</th>
@@ -77,12 +76,12 @@
                     
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$value->order_id}}</td>
                     <td><a type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                         onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
                         View Card
                     </a></td>
+                    <td>{{$value->order_id}}</td>
                     <td>{{$value->fname ." ".$value->lname}}</td>
                     <td>{{$value->email}}</td>
                     <td>{{$value->phone}}</td>
@@ -294,29 +293,33 @@ function valueValidate(inputElement, maxValue) {
 
 // Inspect Page Lock
 // Disable right-click context menu
-document.addEventListener('contextmenu', function(event) {
-    event.preventDefault();
-});
 
-// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, and Ctrl+U (view source)
-document.addEventListener('keydown', function(event) {
-    // F12 key
-    if (event.keyCode === 123) {
-        event.preventDefault();
-    }
-    // Ctrl+Shift+I (Inspect)
-    if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
-        event.preventDefault();
-    }
-    // Ctrl+Shift+J (Console)
-    if (event.ctrlKey && event.shiftKey && event.keyCode === 74) {
-        event.preventDefault();
-    }
-    // Ctrl+U (View Source)
-    if (event.ctrlKey && event.keyCode === 85) {
-        event.preventDefault();
-    }
-});
+
+
+
+// document.addEventListener('contextmenu', function(event) {
+//     event.preventDefault();
+// });
+
+// // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, and Ctrl+U (view source)
+// document.addEventListener('keydown', function(event) {
+//     // F12 key
+//     if (event.keyCode === 123) {
+//         event.preventDefault();
+//     }
+//     // Ctrl+Shift+I (Inspect)
+//     if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+//         event.preventDefault();
+//     }
+//     // Ctrl+Shift+J (Console)
+//     if (event.ctrlKey && event.shiftKey && event.keyCode === 74) {
+//         event.preventDefault();
+//     }
+//     // Ctrl+U (View Source)
+//     if (event.ctrlKey && event.keyCode === 85) {
+//         event.preventDefault();
+//     }
+// });
 
 
 </script>

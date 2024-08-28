@@ -1,3 +1,19 @@
+@php
+    $servicePurchases = App\Models\ServiceOrder::select('service_orders.*', 'products.product_name')
+        ->join('products', 'service_orders.service_id', '=', 'products.id')
+        ->where('service_orders.order_id', $data->order_id)
+        ->get();
+
+    $serviceRedeem = App\Models\Service_redeem::select('service_redeems.*', 'products.product_name')
+        ->join('products', 'service_redeems.service_id', '=', 'products.id')
+        ->where('service_redeems.order_id', $data->order_id)
+        ->get();
+
+    // Calculate total amount
+    $totalAmount = $servicePurchases->sum('number_of_session') - $serviceRedeem->sum('number_of_session_use');
+@endphp
+
+
 <div id=":18p" class="a3s aiL msg-1377519352946152473">
     <u></u>
     <div bgcolor="#f5f7fb">
@@ -54,90 +70,139 @@
                                                             <td
                                                                 style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif">
                                                                 <table cellpadding="0" cellspacing="0"
-                                                                    style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;border-collapse:collapse;width:100%">
+                                                                    style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;border-collapse:collapse;width:100%; background-color: #f9f9f9; margin: 20px 0;">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="content" align="center"
                                                                                 style="padding:40px 48px; background-color: #fca52a; color: #ffffff;">
                                                                                 <h1
                                                                                     style="font-weight:300;font-size:28px;line-height:130%;margin:16px 0; text-align:center;">
-                                                                                    Giftcard Redeem Statement
+                                                                                    Service Redeem Statement</h1>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="m_-1377519352946152473content"
-                                                                                style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;padding:40px 48px">
+                                                                            <td class="content"
+                                                                                style="padding:40px 48px; background-color: #ffffff;">
                                                                                 <p style="margin:0 0 1em">Dear
-                                                                                    {{ $statement['giftCardHolderDetails']['recipient_name'] ? $statement['giftCardHolderDetails']['recipient_name'] : $statement['giftCardHolderDetails']['your_name'] }},
+                                                                                    {{ $data->fname ? $data->fname . ' ' . $data->lname : '' }},
                                                                                 </p>
-                                                                                <p>We’ve attached your latest Giftcard
+                                                                                <p>We’ve attached your latest Service
                                                                                     Redeem Statement. You’ll be able to
                                                                                     see the summary of transactions made
-                                                                                    for the giftcard
-                                                                                    {{ $statement['result'][0]['giftnumber'] }}.
-                                                                                </p>
+                                                                                    for the Service use.</p>
+
                                                                                 <table border="1" cellspacing="0"
-                                                                                    cellpadding="0"
+                                                                                    cellpadding="10"
                                                                                     style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;border-collapse:collapse;width:100%; border: 1px solid #ddd; margin-top: 20px;">
-                                                                                    <tr style="background-color: #fca52a; color: white;">
-                                                                                        <th style="padding: 10px; text-align: left;">Sl No.</th>
-                                                                                        <th style="padding: 10px; text-align: left;">Transaction Number</th>
-                                                                                        <th style="padding: 10px; text-align: left;">Card Number</th>
-                                                                                        <th style="padding: 10px; text-align: left;">Date</th>
-                                                                                        <th style="padding: 10px; text-align: left;">Message</th>
-                                                                                        <th style="padding: 10px; text-align: left;">Amount</th>
+                                                                                    <tr
+                                                                                        style="background-color: #fca52a; color: white;">
+                                                                                        <th
+                                                                                            style="padding: 10px; text-align: left;">
+                                                                                            Transaction Date</th>
+                                                                                        <th
+                                                                                            style="padding: 10px; text-align: left;">
+                                                                                            Transaction Number</th>
+                                                                                        <th
+                                                                                            style="padding: 10px; text-align: left;">
+                                                                                            Service Name</th>
+                                                                                        <th
+                                                                                            style="padding: 10px; text-align: left;">
+                                                                                            Message</th>
+                                                                                        <th
+                                                                                            style="padding: 10px; text-align: left;">
+                                                                                            Service Session Purchases
+                                                                                        </th>
+                                                                                        <th
+                                                                                            style="padding: 10px; text-align: left;">
+                                                                                            Service Session Redeem</th>
                                                                                     </tr>
-                                                                                    @foreach ($statement['result'] as $key => $item)
-                                                                                        <tr style="background-color: #f2f2f2;">
-                                                                                            <td style="padding: 10px;">{{ $key + 1 }}</td>
-                                                                                            <td style="padding: 10px;">{{ $item['transaction_id'] }}</td>
-                                                                                            <td style="padding: 10px;">{{ $item['giftnumber'] }}</td>
-                                                                                            <td style="padding: 10px;">{{ date('m-d-Y', strtotime($item['updated_at'])) }}</td>
-                                                                                            <td style="padding: 10px;">{{ $item['comments'] }}</td>
-                                                                                            <td style="padding: 10px;">${{ $item['amount'] }}</td>
+
+                                                                                    @php
+                                                                                        $balance = 0; // Initial balance
+                                                                                    @endphp
+
+                                                                                    <!-- Loop through each purchase to show credits -->
+                                                                                    @foreach ($servicePurchases as $item)
+                                                                                        <tr
+                                                                                            style="background-color: #f2f2f2;">
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ date('m-d-Y', strtotime($item->updated_at)) }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $item->order_id }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $item->product_name }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                Buy</td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $item->number_of_session }}
+                                                                                            </td> <!-- Credit -->
+                                                                                            <td style="padding: 10px;">
+                                                                                                --</td>
                                                                                         </tr>
                                                                                     @endforeach
 
-                                                                                    <tr>
-                                                                                        <td colspan="4"></td>
-                                                                                        <th>Total Amount</th>
-                                                                                        <td>${{ $statement['TotalAmount'] }}</td>
-                                                                                    </tr>
+                                                                                    <!-- Loop through each redemption to show debits -->
+                                                                                    @foreach ($serviceRedeem as $value)
+                                                                                        @php
+                                                                                            $balance -=
+                                                                                                $value->number_of_session_use; // Subtract from balance for each redemption
+                                                                                        @endphp
+                                                                                        <tr>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ date('m-d-Y', strtotime($value->updated_at)) }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $value->transaction_id }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $value->product_name }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $value->comments ?: '' }}
+                                                                                            </td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                --</td>
+                                                                                            <td style="padding: 10px;">
+                                                                                                {{ $value->number_of_session_use }}
+                                                                                            </td> <!-- Debit -->
+                                                                                        </tr>
+                                                                                    @endforeach
                                                                                 </table>
 
                                                                                 <p>Got a question? Please email to <a
-                                                                                        href="mail:info@forevermedspanj.com">
-                                                                                        info@forevermedspanj.com</a> or
-                                                                                    visit the nearest MedSpa Wellness
+                                                                                        href="mail:info@forevermedspanj.com">info@forevermedspanj.com</a>
+                                                                                    or visit the nearest MedSpa Wellness
                                                                                     Center.</p>
-                                                                                <p></p>
+
                                                                                 <table cellspacing="0" cellpadding="0"
-                                                                                    style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;border-collapse:collapse;width:100%">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;width:1%;padding-right:16px"
-                                                                                                valign="top"><img
-                                                                                                    src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
-                                                                                                    width="150"
-                                                                                                    height="60"
-                                                                                                    alt=""
-                                                                                                    style="line-height:100%;border:0 none;outline:none;text-decoration:none;vertical-align:baseline;font-size:0;"
-                                                                                                    class="CToWUd"
-                                                                                                    data-bit="iit"></td>
-                                                                                            <td style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif"
-                                                                                                valign="middle"></td>
-                                                                                    </tbody>
+                                                                                    style="border-collapse:collapse;width:100%; margin-top: 20px;">
+                                                                                    <tr>
+                                                                                        <td style="width:1%;padding-right:16px"
+                                                                                            valign="top">
+                                                                                            <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                                width="150"
+                                                                                                height="60"
+                                                                                                alt=""
+                                                                                                style="line-height:100%;border:0 none;outline:none;text-decoration:none;vertical-align:baseline;font-size:0;">
+                                                                                        </td>
+                                                                                        <td valign="middle"></td>
+                                                                                    </tr>
                                                                                 </table>
-                                                                                <table>
-                                                                                    <tr cellpadding="5">
-                                                                                        <td style="margin-top: 5px;">
-                                                                                            Team Forever Medspa</td>
+
+                                                                                <table style="margin-top: 10px;">
+                                                                                    <tr>
+                                                                                        <td>Team Forever Medspa</td>
                                                                                     </tr>
                                                                                 </table>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
+
+
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -223,10 +288,17 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </center>
         </div>
+        <img alt="" src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+            style="display:none;width:1px;height:1px" class="CToWUd" data-bit="iit">
+        <div class="yj6qo"></div>
+        <div class="adL"></div>
+    </div>
+    <div class="adL">
     </div>
 </div>

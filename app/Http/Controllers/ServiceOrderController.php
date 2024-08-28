@@ -13,6 +13,11 @@ use Illuminate\Support\Collection;
 use Auth;
 use Session;
 use Validator;
+use Mail;
+use App\Mail\ServiceRedeemReceipt;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
 
 class ServiceOrderController extends Controller
 {
@@ -122,13 +127,60 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
           ]);
       
           // Create a new record using the validated data
+        //   try {
           $data = $request->all();
           $data['user_token']='FOREVER-MEDSPA';
           $data['transaction_id']='SER-RED'.time();
-          $service_redeem->create($data);
+         $result= $service_redeem->create($data);
+            // } catch (\Exception $e) {
+            //     Log::error('Service Redeem Data Entry: ' . $e->getMessage());
+            //     return back()->withErrors(['error' => $e->getMessage()]);
+            // }
+         if($result)
+         {
+            // try {
+            $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
+            Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
+            // } catch (\Exception $e) {
+            //     Log::error('Service Redeem Statment Email: ' . $e->getMessage());
+            //     return back()->withErrors(['error' => $e->getMessage()]);
+            // }
+         }
       
           // Return a JSON response indicating success
           return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
       }
       
+      public function SearchServiceOrder(Request $request, TransactionHistory $transaction)
+        {
+            // Start with a base query
+            $query = $transaction->query();
+
+            // Apply different logic based on user type
+            if (Auth::user()->user_type == 1) {
+                // Admin user type logic: filter based on form inputs
+                if ($request->filled('order_id')) {
+                    $query->where('order_id', 'LIKE', '%' . $request->order_id . '%');
+                }
+
+                if ($request->filled('email')) {
+                    $query->where('email', 'LIKE', '%' . $request->email . '%');
+                }
+
+                if ($request->filled('phone')) {
+                    $query->where('phone', 'LIKE', '%' . $request->phone . '%');
+                }
+
+            } else {
+                // Non-admin user logic: filter based on user ID
+                $id = Auth::user()->id;
+                $query->where('user_id', $id);
+            }
+
+            // Order and paginate results
+            $data = $query->orderBy('id', 'DESC')->paginate(10);
+
+            return view('admin.redeem.service_redeem', compact('data'));
+        }
+
 }
