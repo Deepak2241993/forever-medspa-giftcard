@@ -33,56 +33,64 @@
             {{ $data->onEachSide(5)->links() }}
             <table id="datatable-buttons" class="table table-bordered table-striped">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Order Number</th>
-                    <th>View Order</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>City</th>
-                    <th>Country</th>
-                    <th>Transaction Id</th>
-                    <th>Total Amount</th>
-                    <th>Transaction Amount</th>
-                    <th>Gift Card Use</th>
-                    <th>Payment Status</th>
-                    <th>Transaction Status</th>
-                    <th>Created Date & Time</th>
-                   
-                </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Order Number</th>
+                        <th>View Order</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Transaction Id</th>
+                        <th>Total Amount</th>
+                        <th>Transaction Amount</th>
+                        <th>Gift Card Use</th>
+                        <th>Payment Status</th>
+                        <th>Transaction Status</th>
+                        <th>Created Date & Time</th>
+                    </tr>
                 </thead>
-
-
+            
                 <tbody>
-                    @foreach($data as $key=>$value)
-                    
-                <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$value->order_id}}</td>
-                    <td><a type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop_{{ $value['id'] }}"
-                        onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
-                        View Orders
-                    </a></td>
-                    <td>{{$value->fname ." ".$value->lname}}</td>
-                    <td>{{$value->email}}</td>
-                    <td>{{$value->phone}}</td>
-                    <td>{{$value->city}}</td>
-                    <td>{{$value->country}}</td>
-                    <td>{{$value->payment_intent}}</td>
-                    <td>{{$value->final_amount}}</td>
-                    <td>{{$value->transaction_amount}}</td>
-                    <td>{{$value->gift_card_applyed}}</td>
-                    <td><span class="badge text-bg-{{$value->payment_status =='paid'?'success':'danger'}}">{{ucFirst($value->payment_status)}}</span></td>
-                    <td><span class="badge text-bg-{{$value->transaction_status =='complete'?'success':'danger'}}">{{ucFirst($value->transaction_status)}}</span></td>
-                    <td>{{date('m-d-Y h:i:m',strtotime($value->updated_at))}}</td>
-                
-                </tr>
-                @endforeach
-                
+                    @foreach($data as $key => $value)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $value->order_id }}</td>
+                            <td>
+                                <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop_{{ $value->id }}" onclick="OrderView({{ $key }}, '{{ $value->order_id }}')">
+                                    Orders
+                                </a> 
+                                |
+                                <a class="btn btn-warning" href="{{ route('service-invoice', ['transaction_data' => $value->id]) }}">
+                                    Invoice
+                                </a>
+                            </td>
+                            <td>{{ $value->fname . " " . $value->lname }}</td>
+                            <td>{{ $value->email }}</td>
+                            <td>{{ $value->phone }}</td>
+                            <td>{{ $value->city }}</td>
+                            <td>{{ $value->country }}</td>
+                            <td>{{ $value->payment_intent }}</td>
+                            <td>${{ number_format($value->final_amount, 2) }}</td>
+                            <td>${{ number_format($value->transaction_amount, 2) }}</td>
+                            <td>{{ $value->gift_card_applyed ? 'Yes' : 'No' }}</td>
+                            <td>
+                                <span class="badge text-bg-{{ $value->payment_status == 'paid' ? 'success' : 'danger' }}">
+                                    {{ ucfirst($value->payment_status) }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge text-bg-{{ $value->transaction_status == 'complete' ? 'success' : 'danger' }}">
+                                    {{ ucfirst($value->transaction_status) }}
+                                </span>
+                            </td>
+                            <td>{{ date('m-d-Y h:i:s', strtotime($value->updated_at)) }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
+            
             {{ $data->onEachSide(5)->links() }}
             <!--end::Row-->               
                 <!-- /.Start col -->

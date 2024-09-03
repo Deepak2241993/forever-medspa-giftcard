@@ -4,11 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\PopularOffer;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\TransactionHistory;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
+use Mail;
+use Illuminate\Support\Facades\DB;
+use App\Mail\ServicePurchaseConfirmation;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use App\Models\GiftcardsNumbers;
 class PopularOfferController extends Controller
 {
+    protected $transactionHistoryController;
+    protected $ServiceOrderController;
+    
+
+    public function __construct(TransactionHistoryController $transactionHistoryController,ServiceOrderController $ServiceOrderController)
+    {
+        $this->transactionHistoryController = $transactionHistoryController;
+        $this->ServiceOrderController = $ServiceOrderController;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -184,6 +202,210 @@ class PopularOfferController extends Controller
         public function checkoutView(Request $request){
             return view('product.checkout');
         }
+
+        public function AdminPaymentProcess(Request $request){
+            return view('admin.cart.payment-process');
+        }
+    
+        public function CheckoutProcess(Request $request)
+        {
+            
+            $request->validate([
+                'fname' => 'required|string|max:255',
+                'lname' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'country' => 'required|string|max:255',
+                'zip_code' => 'required|digits:6',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|digits_between:7,10',
+                'address' => 'required|string|max:255',
+            ]);
+
+            DB::beginTransaction();  // Start transaction
+
+            try {
+            
+                // Generate New Order For this 
+                $orderId = 'MSWC-SER-CT-'.date('Y')."-".time();
+                $cartItems = session('cart', []);
+                $gift_number = null;
+                $gift_amount = null;
+                $totalAmount = 0;
+
+        //  If Gift card applyed for redeem
+                if (session()->has('total_gift_applyed')) {
+                    $cards = session('cart', []);
+                    $giftcards = session('giftcards', []);
+                    $gift_numbers = [];
+                    $gift_amounts = [];
+        
+                    foreach ($giftcards as $giftcard) {
+                        if (isset($giftcard['number'])) {
+                            $gift_numbers[] = $giftcard['number'];
+                            $gift_amounts[] = $giftcard['amount'];
+                        }
+                    }
+
+                    $gift_number = implode('|', $gift_numbers);
+                    $gift_amount = implode('|', $gift_amounts);
+                    $sub_amount = session('totalValue', 0) + session('total_gift_applyed', 0) - session('tax_amount', 0);
+                    $final_amount = session('totalValue', 0);
+                    $taxamount = session('tax_amount', 0);
+                    
+                }
+                //  If Gift card Not applyed for redeem
+                else {
+                
+                        $cards = session('cart', []);
+                
+                    foreach ($cards as $item) {
+                        $cart_data = Product::find($item['product_id']);
+                        $totalAmount += $cart_data->discounted_amount;
+                    }
+
+                    $taxamount = ($totalAmount * 10) / 100;
+                    $sub_amount = $totalAmount;
+                    $final_amount = $totalAmount + $taxamount;
+                }
+
+                $data = [
+                    'fname' => $request->fname,
+                    'lname' => $request->lname,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'zip_code' => $request->zip_code,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'order_id' => $orderId,
+                    'gift_card_applyed' => $gift_number ? $gift_number:null,
+                    'gift_card_amount' => $gift_amount ? $gift_amount :null,
+                    'sub_amount' => $sub_amount,
+                    'final_amount' => $final_amount,
+                    'address' => $request->address,
+                    'tax_amount' => $taxamount,
+                    'user_token' => 'FOREVER-MEDSPA',
+                    'transaction_amount'=>$final_amount,
+                    'status'=>1,
+                    'payment_status'=>$request->transaction_status=='complete'?'paid':'not-paid',
+                    'transaction_status'=>$request->transaction_status,
+                    'payment_session_id'=>'Service-Purchse_From-Center',
+                    'payment_intent'=>time(),
+                ];
+
+                
+                // Store data in TransactionHistory
+                // TransactionHistory::create($data);
+                $result =  $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
+                
+                // Store data in ServiceOrder table
+            
+                foreach ($cards as $item) {
+                    $cart_data = Product::find($item['product_id']);
+
+                    $order_data = [
+                        'order_id' => $orderId,
+                        'service_id' => $item['product_id'],
+                        'status' => 0,
+                        'number_of_session' => $cart_data->session_number,
+                        'user_token' => 'FOREVER-MEDSPA',
+                    ];
+
+                    // ServiceOrderController::create($order_data);
+                    $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
+                }
+
+                // API Code for Storing Data in Lead Capture
+                $api_data = [
+                    "first_name" => $request->fname,
+                    "last_name" => $request->lname,
+                    "email" => $request->email,
+                    "phone" => $request->phone,
+                    "message" => "This is Comes From Giftcart Payment Page",
+                    "source" => "Giftcart Website"
+                ];
+
+                $this->sendLeadCaptureRequest($api_data);
+
+                DB::commit();  // Commit transaction
+                $transaction_data = \App\Models\TransactionHistory::where('order_id',$orderId)->first(); 
+                $ServiceOrder = \App\Models\ServiceOrder::where('order_id', $transaction_data->order_id)->first(); 
+
+                if ($transaction_data) {
+                    // Prepare the data to be updated
+     
+                    $ServiceOrder->update(['status' => 1]);
+        
+                    if ($transaction_data->gift_card_applyed != null) {
+                        $giftcardnumbers = explode('|', $transaction_data->gift_card_applyed);
+                        $giftcardamounts = explode('|', $transaction_data->gift_card_amount);
+        
+                        foreach ($giftcardnumbers as $key => $value) {
+                            $giftcard_result = \App\Models\GiftcardsNumbers::where('giftnumber', $value)->first();
+        
+                            if ($giftcard_result) {
+                                $data_arr = [
+                                    'gift_card_number' => $value,
+                                    'amount' => $giftcardamounts[$key],
+                                    'comments' => "You have redeemed your giftcard " . $giftcardnumbers[$key] . " on the purchase of the service Order Number: " . $transaction_data->order_id,
+                                    'user_id' => $giftcard_result->user_id,
+                                    'user_token' => 'FOREVER-MEDSPA',
+                                ];
+        
+                                $data = json_encode($data_arr);
+        
+                                $result = $this->postAPI('gift-card-redeem', $data);
+        
+                                if ($result['status'] == 200) {
+                                    $data_arr['gift_card_number'] = $value;
+                                    $data_arr['user_token'] = 'FOREVER-MEDSPA';
+        
+                                    $data = json_encode($data_arr);
+                                    $statement = $this->postAPI('gift-card-statment', $data);
+                                    $giftcard_result = \App\Models\GiftcardsNumbers::where('giftnumber', $value)->first();
+                                    $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
+                                    \Mail::to($result['giftCardHolderDetails']['gift_send_to'])->send(new \App\Mail\GiftCardStatement($statement));
+                                }
+                            }
+                        }
+                    }
+                    session::pull('giftcards');
+                    session::pull('total_gift_applyed');
+                    session::pull('tax_amount');
+                    session::pull('totalValue');
+                    session::pull('cart');
+                }
+
+        Mail::to($transaction_data->email)->send(new ServicePurchaseConfirmation($transaction_data));
+        return redirect()->route('service-invoice', ['transaction_data' => $transaction_data]);
+            } catch (\Exception $e) {
+                DB::rollBack();  // Rollback transaction
+                Log::error('Checkout Process Error: ' . $e->getMessage());
+                return back()->withErrors(['error' => $e->getMessage()]);
+            }
+
+           
+        }
+
+    private function sendLeadCaptureRequest(array $api_data)
+    {
+        try {
+            $api_data = json_encode($api_data);
+
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json'
+            ])->post(env('LEAD_API_URL') . "capture", $api_data);
+
+            return $response->json();
+        } catch (\Exception $e) {
+            Log::error('Lead Capture API Error: ' . $e->getMessage());
+        }
+    }
+
+
+    public function invoice($transaction_data) {
+        $transaction_data = TransactionHistory::where('id',$transaction_data)->first();
+        return view('admin.cart.invoice', compact('transaction_data'));
+    }
     
 
 }

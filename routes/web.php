@@ -71,6 +71,10 @@ Route::get('export-keywords','ProductController@ExportDate')->name('export_date'
 
 // For cart Page
 Route::get('service-cart','PopularOfferController@AdminCartview')->name('service-cart');
+Route::get('payment-process','PopularOfferController@AdminPaymentProcess')->name('payment-process');
+Route::post('servic-checkout-process','PopularOfferController@CheckoutProcess')->name('servic-checkout-process');
+Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
+
 
 });
 

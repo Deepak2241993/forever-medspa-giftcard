@@ -1,4 +1,5 @@
 @if(isset($transaction_data))
+
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -158,7 +159,7 @@
                 </div>
             </div>
             <div class="tm_invoice_btns tm_hide_print">
-                <a href="javascript:window.print()" class="tm_invoice_btn tm_color1">
+                <a href="javascript:void(0)" onclick="printDiv('tm_download_section')" class="tm_invoice_btn tm_color1">
                     <span class="tm_btn_icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                             <path
@@ -173,6 +174,7 @@
                     </span>
                     <span class="tm_btn_text">Print</span>
                 </a>
+                
                 <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
                   <span class="tm_btn_icon">
                       <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -196,7 +198,32 @@
     <script src="{{ url('/') }}/invoice_assets/assets/js/jquery.min.js"></script>
     <script src="{{ url('/') }}/invoice_assets/assets/js/jspdf.min.js"></script>
     <script src="{{ url('/') }}/invoice_assets/assets/js/html2canvas.min.js"></script>
-    <script src="{{ url('/') }}/invoice_assets/assets/js/main.js"></script>
+    <script src="{{ url('/') }}/invoice_assets/assets/js/main.js" defer></script>
+    <script>
+        function printDiv(divId) {
+            // Get the div content using the ID
+            var content = document.getElementById(divId).innerHTML;
+    
+            // Create a new window
+            var printWindow = window.open('', '', 'height=600,width=800');
+    
+            // Add the content to the new window
+            printWindow.document.write('<html><head><title>Print</title>');
+            // You can include your CSS styles here
+            printWindow.document.write('<link rel="stylesheet" href="{{ url('/') }}/invoice_assets/assets/css/style.css" type="text/css" media="print">');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(content);
+            printWindow.document.write('</body></html>');
+    
+            // Close the document to finish loading the content
+            printWindow.document.close();
+    
+            // Focus on the window and call the print function
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }
+    </script>
 </body>
 
 </html>

@@ -15,10 +15,10 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
 use Mail;
-use Illuminate\Support\Facades\DB;
 use App\Mail\GeftcardMail;
-use App\Mail\ServicePurchaseConfirmation;
 use App\Mail\GiftReceipt;
+use Illuminate\Support\Facades\DB;
+use App\Mail\ServicePurchaseConfirmation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
@@ -224,7 +224,7 @@ class StripeController extends Controller
     try {
        
         // Generate New Order For this 
-        $orderId = 'ORD-' . uniqid() . '-' . Str::random(5);
+        $orderId = 'MSWC-SER-'.date('Y')."-".time();
         $cartItems = session('cart', []);
         $gift_number = null;
         $gift_amount = null;

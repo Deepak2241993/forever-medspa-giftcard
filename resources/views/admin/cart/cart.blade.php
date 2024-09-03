@@ -248,10 +248,8 @@
                                             <li class="cart-totals-item">Total <span class="cart-totals-value" id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span></li>
                                         </ul>
                                         <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
-                                            <span class="fill-btn-inner">
-                                                <span class="fill-btn-normal">Proceed to checkout</span>
-                                                <span class="fill-btn-hover">Proceed to checkout</span>
-                                            </span>
+                                            Proceed to checkout
+                                           
                                         </a>
                                     </div>
                                 </div>
@@ -469,7 +467,7 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
-                            window.location = "{{ route('checkout_view') }}";
+                            window.location = "{{ route('payment-process') }}";
                         } else {
                             alert('Error submitting Gift Cards: ' + response.error);
                         }
