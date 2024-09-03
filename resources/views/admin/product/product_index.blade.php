@@ -59,6 +59,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Product Name</th>
+                                <th>Buy</th>
                                 <th>Product Image</th>
                                 <th>Product Description</th>
                                 <th>Created At</th>
@@ -71,6 +72,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $value['product_name'] ? $value['product_name'] : 'NULL' }}</td>
+                                    <td><a class="btn btn-primary" onclick="addcart({{$value['id']}})">Buy</a></td>
                                     <td>
                                         @php
                                             $image = explode('|', $value['product_image']);
@@ -168,4 +170,30 @@
             });
         }
     </script>
+    <script>
+        function addcart(id) {
+         $.ajax({
+             url: '{{route("cart")}}',
+             method: "post",
+             dataType: "json",
+             data: {
+                 _token: '{{csrf_token() }}',
+                 product_id: id,
+                 quantity: 1
+             },
+             success: function (response) {
+                 if (response.success) {
+                    location.reload();
+                 } else {
+                     $('.showbalance').html(response.error).show();
+                 }
+             },
+             error: function (jqXHR, textStatus, errorThrown) {
+                 // Handle the error here
+                 $('.showbalance').html('An error occurred. Please try again.').show();
+             }
+         });
+     }
+     
+     </script>
 @endpush

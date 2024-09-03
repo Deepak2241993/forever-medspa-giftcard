@@ -123,6 +123,10 @@ class PopularOfferController extends Controller
     public function Cartview(Request $request){
         return view('product.cart');
     }
+
+    public function AdminCartview(Request $request){
+        return view('admin.cart.cart');
+    }
     //  For Items Remove From Carts
     public function CartRemove(Request $request){
         $request->validate([

@@ -14,7 +14,7 @@
            @if(count(session()->get('cart', []))>0)
            <li class="nav-item d-none d-md-block">
                         <div id="cart" class="btn-group btn-block">
-                            <button onclick="window.location.href='{{route('cartview')}}'" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-bag"></i> <span id="cart-total" class="hidden-xs">{{ count(session()->get('cart', [])) ? count(session()->get('cart', [])) : 0 }}
+                            <button onclick="window.location.href='{{route('service-cart')}}'" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-bag"></i> <span id="cart-total" class="hidden-xs">{{ count(session()->get('cart', [])) ? count(session()->get('cart', [])) : 0 }}
                             </span></button>
                             {{-- <ul class="dropdown-menu pull-right">    <li>
                                 <p class="text-center">Your shopping cart is empty!</p>

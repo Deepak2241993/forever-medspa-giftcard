@@ -99,14 +99,25 @@
                                 <p>Sale Gift Card</p>
                             </a>
                         </li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" class="nav-link">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <p>
+                           Service & Deals Sale
+                            <i class="nav-arrow fa-solid fa-angle-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('giftcards-sale') }}" class="nav-link">
+                            <a href="{{ route('product.index') }}" class="nav-link">
                                 <i class="nav-icon fa-regular fa-circle"></i>
                                 <p>Service & Deals Sale</p>
                             </a>
                         </li>
-
-
+                        
                     </ul>
                 </li>
                 <li class="nav-item">

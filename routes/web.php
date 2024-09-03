@@ -69,6 +69,9 @@ Route::post('/resendmail','GiftsendController@Resendmail')->name('resendmail');
 Route::get('search-keywords-reports','ProductController@KeywordsReports')->name('keywords_reports');
 Route::get('export-keywords','ProductController@ExportDate')->name('export_date');
 
+// For cart Page
+Route::get('service-cart','PopularOfferController@AdminCartview')->name('service-cart');
+
 });
 
 

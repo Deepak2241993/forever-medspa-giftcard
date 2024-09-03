@@ -340,7 +340,7 @@ function OrderView(id, order_id) {
                     '<th>Product Name</th>' +
                     '<th>Total Session</th>' +
                     '<th>Remaining Session</th>' +
-                    '<th>How Much Use</th>' +
+                    '<th>Session Usage</th>' +
                     '<th>Message</th>' +
                     '<th>Action</th>' +
                     '</tr>'
