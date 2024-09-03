@@ -99,6 +99,13 @@
                                 <p>Sale Gift Card</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('giftcards-sale') }}" class="nav-link">
+                                <i class="nav-icon fa-regular fa-circle"></i>
+                                <p>Service & Deals Sale</p>
+                            </a>
+                        </li>
+
 
                     </ul>
                 </li>

@@ -63,7 +63,7 @@
                     <td><a type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                         onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
-                        View Card
+                        View Orders
                     </a></td>
                     <td>{{$value->fname ." ".$value->lname}}</td>
                     <td>{{$value->email}}</td>

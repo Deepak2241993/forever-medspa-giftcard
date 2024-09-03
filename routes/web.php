@@ -115,6 +115,7 @@ Route::get('service/{slug}','ProductController@productdetails')->name('productde
 // Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
+
 // Front Route for PopularOffer
 Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
 Route::post('cart','PopularOfferController@Cart')->name('cart');
@@ -130,6 +131,7 @@ Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->n
 //  for Product payment URL
 
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
+Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
 Route::get('invoice','StripeController@invoice')->name('invoice');
 
 

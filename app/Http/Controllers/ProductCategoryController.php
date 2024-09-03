@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Str;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 class ProductCategoryController extends Controller
 {
     /**
@@ -17,14 +19,46 @@ class ProductCategoryController extends Controller
      */
 
 
-public function index(Request $request)
-{
-    $token= Auth::user()->user_token;
-    $data_arr = ['user_token'=>$token];
-    $data = json_encode($data_arr);
-    $data = $this->postAPI('category-list', $data);
-    return view('admin.product.category_index',compact('data'));
-}
+     public function index(Request $request)
+     {
+         $token = Auth::user()->user_token;
+         
+         // Prepare the data for the API request
+         $data_arr = ['user_token' => $token];
+         $data = json_encode($data_arr);
+         
+         // Call the external API to get deals
+         $response = $this->postAPI('category-list', $data);
+     
+         // Check if the response is valid and contains the expected structure
+         if ($response && isset($response['status']) && $response['status'] == 200 && isset($response['result'])) {
+             // Convert the API result to a collection
+             $deals = collect($response['result']);
+             
+             // Pagination parameters
+             $currentPage = LengthAwarePaginator::resolveCurrentPage();
+             $perPage = 10; // Number of items per page
+             
+             // Slicing the collection to get the items for the current page
+             $currentPageDeals = $deals->slice(($currentPage - 1) * $perPage, $perPage)->values();
+             
+             // Creating a paginator instance
+             $paginator = new LengthAwarePaginator(
+                 $currentPageDeals, // Items for the current page
+                 $deals->count(),   // Total number of items
+                 $perPage,          // Items per page
+                 $currentPage,      // Current page
+                 ['path' => $request->url(), 'query' => $request->query()] // Maintain URL and query parameters
+             );
+             
+             // Pass the paginator to the view
+             return view('admin.product.category_index', ['deals' => $paginator]);
+         } else {
+             // Handle error if response is not valid or does not contain deals
+             $errorMsg = $response['msg'] ?? 'Failed to retrieve deals. Please try again.';
+             return redirect()->back()->with('error', $errorMsg);
+         }
+     }
 
 
 
@@ -226,9 +260,54 @@ public function update(Request $request,$id)
         $slug= Str::slug($request->product_name);
         return response()->json(['success' => 'Slug Created!','slug'=>$slug]);
      }
-     
 
-  
+     public function FindDeals(Request $request)
+{
+    $token = Auth::user()->user_token;
+    dd($token);
+
+    // Validate request data
+    $validatedData = $request->validate([
+        'cat_name' => 'required|string',
+    ]);
+    // Prepare data for API request
+    $data = $request->except('_token');
+    $data['user_token'] = $token;
+
+    // Get pagination parameters
+    $currentPage = $request->input('page', 1); // Default to page 1 if not provided
+    $perPage = 10; // Define how many items you want per page
+    $data['page'] = $currentPage;
+    $data['limit'] = $perPage;
+
+    // Call the external API
+    $response = $this->postAPI('deals-search', $data);
+
+    // Check the response and handle success or error
+    if ($response && isset($response['status']) && $response['status'] == 200) {
+        // Assuming response contains 'data' array and 'total' for pagination
+        $deals = collect($response['data'] ?? []);
+        $total = $response['total'] ?? 0; // Use the total from the API response
+
+        // Create a paginator instance
+        $paginator = new LengthAwarePaginator(
+            $deals->forPage($currentPage, $perPage), // Items for the current page
+            $total, // Total number of items
+            $perPage, // Items per page
+            $currentPage, // Current page
+            ['path' => $request->url(), 'query' => $request->query()] // Maintain URL and query parameters
+        );
+       
+
+        // Pass the paginator to the view
+        return view('admin.product.category_index', ['deals' => $paginator])
+            ->with('success', $response['success'] ?? 'Deals found successfully.');
+    } else {
+        // Provide a default error message if 'success' is not set in the response
+        $errorMsg = $response['success'] ?? 'An error occurred while searching for deals. Please try again.';
+        return redirect()->back()->with('error', $errorMsg);
+    }
+}
 
 
 }

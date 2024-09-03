@@ -31,6 +31,20 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <a href="{{ route('email-template.create') }}" class="btn btn-primary">Add More</a>
+                <form class="mt-2" method="get" action="{{route('ServicesSearch') }}">
+                    @csrf
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="Email Name">Template Name:</label>
+                            <input type="text" class="form-control" id="Email Name" name="Email Name" placeholder="Template Name">
+                        </div>
+                        
+                        <div class="col-md-1">
+                            <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
+                            <button type="submit" class="btn btn-success mt-4">Search</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="card-header">
                     @if (session()->has('error'))
                         {{ session()->get('error') }}

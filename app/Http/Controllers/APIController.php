@@ -2093,6 +2093,104 @@ public function product_view(Request $request, $id)
 
  }
 
+ //  for Deals Search
+/**
+ * @OA\Post(
+ *      tags={"Order Details"},
+ *      path="/deals-search",
+ *      summary="For Service Redeem",
+ *      @OA\RequestBody(
+ *          required=true,
+ *          @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  type="object",
+ *                  required={"cat_name", "user_token"},
+ *                  @OA\Property(property="cat_name", type="string", example="September Deals"),
+ *                  @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=200,
+ *          description="Result Found",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="result", type="array", @OA\Items(type="object")),
+ *              @OA\Property(property="status", type="integer", example=200),
+ *              @OA\Property(property="success", type="string", example="Deals Found")
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="No deals found",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="error", type="string", example="No deals found"),
+ *              @OA\Property(property="status", type="integer", example=404)
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="error", type="string", example="Unauthenticated"),
+ *              @OA\Property(property="status", type="integer", example=401)
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden",
+ *          @OA\JsonContent(
+ *              @OA\Property(property="error", type="string", example="Forbidden"),
+ *              @OA\Property(property="status", type="integer", example=403)
+ *          )
+ *      )
+ * )
+ */
+public function DealsSearch(Request $request)
+{
+    // Validate input
+    $validated = $request->validate([
+        'cat_name' => 'required|string',
+        'user_token' => 'required|string',
+        'page' => 'nullable|integer|min:1',
+        'limit' => 'nullable|integer|min:1|max:100',
+    ]);
+
+    $page = $validated['page'] ?? 1;
+    $limit = $validated['limit'] ?? 10;
+
+    $query = ProductCategory::where('user_token', $validated['user_token'])
+                ->where(function ($query) use ($validated) {
+                    $query->where('cat_name', 'LIKE', '%' . $validated['cat_name'] . '%')
+                          ->orWhere('slug', 'LIKE', '%' . $validated['cat_name'] . '%');
+                });
+
+    $total = $query->count(); // Get total number of items
+
+    $result = $query->skip(($page - 1) * $limit)
+                    ->take($limit)
+                    ->get();
+
+    // Return response
+    if ($result->isNotEmpty()) {
+        return response()->json([
+            'data' => $result,
+            'status' => 200,
+            'success' => 'Deals Found',
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit
+        ], 200);
+    } else {
+        return response()->json([
+            'error' => 'No deals found',
+            'status' => 404
+        ], 404);
+    }
+}
+
+
+
 
 }
 

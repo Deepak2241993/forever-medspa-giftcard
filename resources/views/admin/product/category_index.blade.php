@@ -31,55 +31,70 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
+                <form class="mt-2" method="get" action="{{ route('find-deals') }}">
+                    @csrf
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="cat_name">Deals Name:</label>
+                            <input type="text" class="form-control" id="cat_name" name="cat_name" placeholder="Deals Name">
+                            <input type="hidden" class="form-control" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                        </div>
+                        
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-success mt-4">Search</button>
+                        </div>
+                    </div>
+                </form>
+                
                 <div class="card-header text-success">
                     @if (session()->has('success'))
                         {{ session()->get('success') }}
                     @endif
                 </div>
-                @if ($data['status'] == 200)
-                    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
-                        <thead>
+                
+                <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Categories Name</th>
+                            <th>Categories Image</th>
+                            <th>Categories Description</th>
+                            <th>Categories At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($deals as $value)
                             <tr>
-                                <th>#</th>
-                                <th>Categories Name</th>
-                                <th>Categories Image</th>
-                                <th>Categories Description</th>
-                                <th>Categories At</th>
-                                <th>Action</th>
-
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $value['cat_name'] ?? 'NULL' }}</td>
+                                <td>
+                                    @if (isset($value['cat_image']))
+                                        <img src="{{ $value['cat_image'] }}" style="height:100px; width:100px;">
+                                    @else
+                                        No Image
+                                    @endif
+                                </td>
+                                <td>{!! mb_strimwidth($value['cat_description'] ?? 'NULL', 0, 200, '...') !!}</td>
+                                <td>{{ isset($value['created_at']) ? date('m-d-Y h:i:s', strtotime($value['created_at'])) : 'No Date' }}</td>
+                                <td>
+                                    <a href="{{ route('category.edit', $value['id']) }}" class="btn btn-primary">Edit</a>
+                                    <form action="{{ route('category.destroy', $value['id']) }}" method="POST" style="display:inline;">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['result'] as $key => $value)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $value['cat_name'] ? $value['cat_name'] : 'NULL' }}</td>
-                                    <td>
-                                        @if (isset($value['cat_image']))
-                                            <img src="{{ $value['cat_image'] }}" style="height:100px; width:100px;">
-                                        @endif
-                                    </td>
-                                    <td>{!! mb_strimwidth(isset($value['cat_description']) ? $value['cat_description'] : 'NULL', 0, 200, '...') !!}</td>
-                                    <td>{{ date('m-d-Y h:i:s', strtotime($value['created_at'])) }}</td>
-                                    <td>
-                                        <a href="{{ route('category.edit', $value['id']) }}"
-                                            class="btn btn-primary">Edit</a>
-                                        <form action="{{ route('category.destroy', $value['id']) }}" method="POST">
-                                            @method('DELETE')
-                                            @csrf <!-- Include CSRF token for security -->
-                                            <button class="btn btn-danger" type="submit">Delete</button>
-                                        </form>
-                                    </td>
-
-
-                                    <!-- Button trigger modal -->
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    {{ $data['error'] }}
-                @endif
+                        @endforeach
+                    </tbody><br>
+                    {{ $deals->links() }}
+                </table>
+                
+                <!-- Display pagination links -->
+                {{ $deals->links() }}
+                
+                
                 <!--end::Row-->
                 <!-- /.Start col -->
             </div>

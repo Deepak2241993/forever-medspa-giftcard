@@ -98,8 +98,8 @@
                         <div class="product__quantity">
                            <div class="product-quantity-wrapper">
                               <form action="#">
-                                 <button class="cart-minus">Number Of Session</button>
-                                 <input class="cart-input" type="text" value="1">
+                                 <button class="cart-minus">Session : {{$data->session_number}}</button>
+                                 {{-- <input class="cart-input" type="text" value="1"> --}}
                                  {{-- <button class="cart-plus"><i class="fa-light fa-plus"></i></button> --}}
                               </form>
                            </div>
