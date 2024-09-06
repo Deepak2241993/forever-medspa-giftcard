@@ -206,6 +206,41 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 'totalAmount' => $totalAmount
             ]);
         }
+     
         
+        public function DoCancel(Request $request, Service_redeem $service_redeem)
+        {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'service_id' => 'required|integer',
+                'order_id' => 'required|string|max:255',
+                'number_of_session_use' => 'required|integer|min:1',
+                'comments' => 'nullable|string|max:255',
+            ]);
+        
+            // Create a new record using the validated data
+          //   try {
+            $data = $request->all();
+            $data['user_token']='FOREVER-MEDSPA';
+            $data['transaction_id']='SER-CAN'.time();
+           $result= $service_redeem->create($data);
+              // } catch (\Exception $e) {
+              //     Log::error('Service Redeem Data Entry: ' . $e->getMessage());
+              //     return back()->withErrors(['error' => $e->getMessage()]);
+              // }
+           if($result)
+           {
+              // try {
+              $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
+              Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
+              // } catch (\Exception $e) {
+              //     Log::error('Service Redeem Statment Email: ' . $e->getMessage());
+              //     return back()->withErrors(['error' => $e->getMessage()]);
+              // }
+           }
+        
+            // Return a JSON response indicating success
+            return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
+        }
 
 }

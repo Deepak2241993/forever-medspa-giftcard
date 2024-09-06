@@ -2000,7 +2000,13 @@ public function product_view(Request $request, $id)
             'transaction_histories.order_id',
             'service_orders.service_id',
             DB::raw('IFNULL(SUM(service_redeems.number_of_session_use), 0) as total_redeemed_sessions'),
-            DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions')
+            DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions'),
+            'service_orders.discounted_amount',
+            'service_orders.actual_amount',
+            // Correct calculation for refund_amount
+            DB::raw('(service_orders.discounted_amount - (service_orders.actual_amount / service_orders.number_of_session) * IFNULL(SUM(service_redeems.number_of_session_use), 0)) as refund_amount')
+            //          Discounted Amount-Actualamount/
+
         )
         ->groupBy(
             'products.product_name',
@@ -2010,7 +2016,9 @@ public function product_view(Request $request, $id)
             'transaction_histories.fname',
             'transaction_histories.lname',
             'transaction_histories.order_id',
-            'service_orders.service_id'
+            'service_orders.service_id',
+            'service_orders.discounted_amount',
+            'service_orders.actual_amount'
         );
 
     // Apply filters based on the request
@@ -2038,6 +2046,7 @@ public function product_view(Request $request, $id)
         return response()->json(['error' => 'Order Details Not Found', 'status' => 404]);
     }
 }
+
 
 
 

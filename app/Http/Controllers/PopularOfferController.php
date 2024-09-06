@@ -308,6 +308,8 @@ class PopularOfferController extends Controller
                         'status' => 0,
                         'number_of_session' => $cart_data->session_number,
                         'user_token' => 'FOREVER-MEDSPA',
+                        'actual_amount' => $cart_data->amount,
+                        'discounted_amount' => $cart_data->discounted_amount,
                     ];
 
                     // ServiceOrderController::create($order_data);
@@ -321,7 +323,8 @@ class PopularOfferController extends Controller
                     "email" => $request->email,
                     "phone" => $request->phone,
                     "message" => "This is Comes From Giftcart Payment Page",
-                    "source" => "Giftcart Website"
+                    "source" => "Giftcart Website",
+                  
                 ];
 
                 $this->sendLeadCaptureRequest($api_data);
