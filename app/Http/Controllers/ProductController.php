@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 class ProductController extends Controller
 {
     /**
@@ -16,13 +17,40 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Product $product)
     {
-        $token= Auth::user()->user_token;
-        $data_arr = ['user_token'=>$token];
+        $token = Auth::user()->user_token;
+        $page = $request->input('page', 1); // Current page, default is 1
+        $perPage = 10; // Number of items per page
+
+        // Prepare data for API request
+        $data_arr = [
+            'user_token' => $token,
+            'service_name' => $request->input('service_name'),
+            'product_slug' => $request->input('product_slug'),
+            'page' => $page,
+            'perPage' => $perPage
+        ];
+
         $data = json_encode($data_arr);
-        $data = $this->postAPI('product-list', $data);
-        return view('admin.product.product_index',compact('data'));
+
+        // Make API request
+        $apiResponse = $this->postAPI('product-list', $data);
+        $products = $apiResponse['result']; // Array of products
+        $total = $apiResponse['total']; // Total number of products
+        $perPage = $apiResponse['perPage']; // Number of items per page
+        $currentPage = $apiResponse['currentPage']; // Current page
+
+        // Create paginator manually
+        $paginator = new LengthAwarePaginator(
+            $products,    // Items for the current page
+            $total,       // Total items
+            $perPage,     // Items per page
+            $currentPage, // Current page
+            ['path' => $request->url(), 'query' => $request->query()] // Append query parameters
+        );
+
+        return view('admin.product.product_index', compact('paginator'));
     }
 
     /**

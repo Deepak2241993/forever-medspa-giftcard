@@ -1827,20 +1827,45 @@ public function product_update(Request $request, $id)
 public function product(Request $request)
 {
     $token = $request->user_token;
-    // $product = Product::where('user_token', $token)->where('product_is_deleted', 0)->get();
-    $product = Product::join('product_categories', 'products.cat_id', '=', 'product_categories.id')
-                    ->select('products.*','product_categories.cat_name')
-                  ->where('products.user_token', $token)
-                  ->where('products.product_is_deleted', 0)
-                  ->orderBy('id', 'DESC')
-                  ->get();
+    $service_name = $request->service_name;
+    $product_slug = $request->product_slug;
+    $perPage = $request->perPage ?? 10; // Number of items per page, default to 10
+    $page = $request->page ?? 1; // Current page, default to 1
 
-    if ($product->isNotEmpty()) {
-        return response()->json(['result' => $product, 'status' => 200, 'success' => 'Product  found successfully'], 200);
-    } else {
-        return response()->json(['error' => 'Sorry, no product  found!', 'status' => 404]);
+    // Initialize the query builder
+    $query = Product::join('product_categories', 'products.cat_id', '=', 'product_categories.id')
+        ->select('products.*', 'product_categories.cat_name')
+        ->where('products.user_token', $token)
+        ->where('products.product_is_deleted', 0)
+        ->orderBy('products.id', 'DESC');
+
+    // Apply filters if service_name is provided
+    if (!empty($service_name)) {
+        $query->where('products.product_name', 'like', '%' . $service_name . '%');
     }
+
+    // Apply filters if product_slug is provided
+    if (!empty($product_slug)) {
+        $query->where('products.product_slug', 'like', '%' . $product_slug . '%');
+    }
+
+    // Pagination
+    $total = $query->count(); // Total number of items
+    $products = $query->skip(($page - 1) * $perPage)->take($perPage)->get(); // Get paginated results
+
+    // Return paginated results
+    return response()->json([
+        'result' => $products,
+        'total' => $total, // Total number of items
+        'perPage' => $perPage, // Number of items per page
+        'currentPage' => $page, // Current page
+        'status' => 200,
+        'success' => 'Products found successfully'
+    ], 200);
 }
+
+
+
 
 //  Product view
 /**

@@ -30,7 +30,7 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <a href="{{ route('product.create') }}" class="btn btn-primary">Add More</a>
-                <form class="mt-2" method="get" action="{{ route('ServicesSearch') }}">
+                <form class="mt-2" method="get" action="{{ route('product.index') }}">
                     @csrf
                     <div class="row mb-4">
                         <div class="col-md-4">
@@ -44,23 +44,25 @@
                         </div>
                     </div>
                 </form>
-                <div class="card-header">
+                
 
                     <span class="text-success">
                         @if (session()->has('success'))
                             {{ session()->get('success') }}
                         @endif
                     </span>
-                </div>
+                
 
-                @if ($data['status'] == 200)
+                
                     <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Product Name</th>
                                 <th>Buy</th>
-                                <th>Product Image</th>
+                                <th>Product Name</th>
+                                <th>Image</th>
+                                <th>Actual Price</th>
+                                <th>Deal Price</th>
                                 <th>Product Description</th>
                                 <th>Created At</th>
                                 <th>Action</th>
@@ -68,19 +70,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data['result'] as $key => $value)
+                            @foreach ($paginator as $value)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $value['product_name'] ? $value['product_name'] : 'NULL' }}</td>
                                     <td><a class="btn btn-primary" onclick="addcart({{$value['id']}})">Buy</a></td>
+                                    <td>{{ $value['product_name'] ? $value['product_name'] : 'NULL' }}</td>
                                     <td>
                                         @php
                                             $image = explode('|', $value['product_image']);
                                         @endphp
-                                        @foreach ($image as $imagevalue)
+                                        {{-- @foreach ($image as $imagevalue)
                                             <img src="{{ $imagevalue }}" style="height:30px; width:30px;"> |
-                                        @endforeach
+                                        @endforeach --}}
+                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;">
                                     </td>
+                                    <td>{{$value['amount']}}</td>
+                                    <td>{{$value['discounted_amount']}}</td>
                                     <td>{!! mb_strimwidth(isset($value['product_description']) ? $value['product_description'] : 'NULL', 0, 200, '...') !!}</td>
 
 
@@ -104,10 +109,9 @@
                                 </tr>
                             @endforeach
                         </tbody>
+                        {{ $paginator->links() }}
                     </table>
-                @else
-                    <p class="text-danger"> {{ $data['error'] }}</p>
-                @endif
+                    {{ $paginator->links() }}
                 <!--end::Row-->
                 <!-- /.Start col -->
             </div>
