@@ -324,7 +324,8 @@ class PopularOfferController extends Controller
                     "email" => $request->email,
                     "phone" => $request->phone,
                     "message" => "This is Comes From Giftcart Payment Page",
-                    "source" => "Giftcart Website"
+                    "source" => "Giftcart Website",
+                  
                 ];
 
                 $this->sendLeadCaptureRequest($api_data);

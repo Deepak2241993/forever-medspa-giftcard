@@ -113,8 +113,8 @@
                     <td>{{$value->fname ." ".$value->lname}}</td>
                     <td>{{$value->email}}</td>
                     <td>{{$value->phone}}</td>
-                    <td>{{$value->payment_intent}}</td>
                     <td>{{$value->final_amount}}</td>
+                    <td>{{$value->payment_intent}}</td>
                     <td>{{date('m-d-Y h:i:m',strtotime($value->updated_at))}}</td>
                 
                 </tr>
@@ -188,11 +188,11 @@
 
 {{-- Service Order Cancel Modal --}}
 <div class="modal fade cancel" id="cancel_view_" data-bs-backdrop="static" data-bs-keyboard="false"
-tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+tabindex="-1" aria-labelledby="staticBackdropLabel_cancel" aria-hidden="true">
 <div class="modal-dialog modal-xl">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">All Services </h5>
+            <h5 class="modal-title" id="staticBackdropLabel_cancel">All Services </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
        <div class="modal-body">
@@ -201,8 +201,7 @@ tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                    <h3>Order Cancel</h3>
                    <span class="text-danger" id="error"></span>
                    <span class="text-success" id="success"></span>
-                   <h2 id="giftcardsshow" class="mt-4"></h2>
-                  
+                   <h2 id="cancelorder" class="mt-4"></h2>
                </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -309,8 +308,165 @@ function StatementView(id, order_id) {
 function CancelView(id, order_id) {
     $('.cancel').attr('id', 'cancel_view_' + id);
     $('#cancel_view_' + id).modal('show');
-}
+    $.ajax({
+        url: '{{ route('order-search') }}',
+        method: "post",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            order_id: order_id,
+            email: "",
+            phone: "",
+            user_token: '{{ Auth::user()->user_token }}',
+        },
+        success: function(response) {
+            if (response.success) {
+                // Clear previous table content
+                $('#cancelorder').empty();
 
+                // Create form and table structure
+                var form = $('<form>', { action: '{{ route("do-cancel") }}', method: 'POST' });
+                var table = $('<table class="table table-bordered table-striped">');
+                var thead = $('<thead>').html(
+                    '<tr>' +
+                    '<th>#</th>' +
+                    '<th>Product Name</th>' +
+                    '<th>Total Session</th>' +
+                    '<th>Remaining Session</th>' +
+                    '<th>Session Usage</th>' +
+                    '<th>Refund Amount</th>' +
+                    '<th>Remarks</th>' +
+                    '<th>Action</th>' +
+                    '</tr>'
+                );
+                var tbody = $('<tbody>');
+
+                // Append header to the table
+                table.append(thead);
+
+                // Loop through the response result array
+                $.each(response.result, function(index, element) {
+                    // Determine if the row should be disabled
+                    var isDisabled = element.remaining_sessions === 0 ? 'disabled' : '';
+                    var rowClass = element.remaining_sessions === 0 ? 'class="disabled-row"' : '';
+
+                    // Create a new row for each element
+                    var row = $('<tr ' + rowClass + '>').html(
+                        `<td>${index + 1}</td>
+                        <td>${element.product_name}</td>
+                        <td>${element.number_of_session}</td>
+                        <td id="row_${index + 1}">${element.remaining_sessions}</td>
+                        <td>
+                            <input type="hidden" name="service_id" value="${element.service_id}">
+                            <input type="hidden" name="order_id" value="${element.order_id}">
+                            <input  onkeyup="valueValidate(this, ${element.remaining_sessions})" 
+                                   onchange="valueValidate(this, ${element.remaining_sessions})" 
+                                   type="hidden" 
+                                   max="${element.remaining_sessions}" 
+                                   min="0" 
+                                   name="number_of_session_use" 
+                                   value="${element.remaining_sessions}" 
+                                   class="form-control" 
+                                   ${isDisabled}>${element.remaining_sessions}
+                        </td>
+                         <td>
+                           ${element.refund_amount > 0 ? element.refund_amount : '0'}
+
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="comments" ${isDisabled}></textarea>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger mt-2 submit-btn" ${isDisabled}>
+                                <span class="spinner-border spinner-border-sm" style="display: none;"></span>
+                                Do Cancel
+                            </button>
+                        </td>`
+                        
+                    );
+
+                    // Append the row to the tbody
+                    tbody.append(row);
+                });
+
+                // Append tbody to the table
+                table.append(tbody);
+
+                // Append table to form
+                form.append(table);
+
+                // Append form to #cancelorder
+                $('#cancelorder').append(form);
+
+                // Add event listener for submit button clicks
+                $('.submit-btn').click(function() {
+                    var button = $(this);
+                    var spinner = button.find('.spinner-border');
+
+                    // Show the spinner
+                    spinner.show();
+                    button.prop('disabled', true);
+
+                    var currentRow = button.closest('tr');
+                    var number_of_session_use = currentRow.find('input[name="number_of_session_use"]').val();
+                    var remaining_sessions = currentRow.find('td:nth-child(4)').text(); // get remaining sessions value from table cell
+
+                    // Validate that the number of sessions to use does not exceed remaining sessions
+                    if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
+                        alert('You cannot redeem more sessions than the remaining sessions.');
+                        spinner.hide();
+                        button.prop('disabled', false);
+                        return; // Stop the form submission
+                    }
+
+                    var rowData = {
+                        _token: '{{ csrf_token() }}', // Add CSRF token
+                        service_id: currentRow.find('input[name="service_id"]').val(),
+                        order_id: currentRow.find('input[name="order_id"]').val(),
+                        number_of_session_use: number_of_session_use,
+                        comments: currentRow.find('textarea[name="comments"]').val()
+                    };
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: rowData, // Send only the current row data
+                        success: function(response) {
+                            if (response.success) {
+                                // Display a success message
+                                alert('Action completed successfully.');
+                                $('#success').html();
+                                // Disable the current row's input fields and button
+                                currentRow.find('input, textarea, button').prop('disabled', true);
+                            } else {
+                                alert('Action failed. Please try again.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('An error occurred. Please try again later.');
+                        },
+                        complete: function() {
+                            // Hide the spinner and enable the button after the request completes
+                            spinner.hide();
+                            button.prop('disabled', true);
+                        }
+                    });
+                });
+
+            } else {
+                // Handle the case when the response is not successful
+                $('#cancel_order').html('<p>No services found.</p>');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle error response
+            $('#cancel_order').html('<p>An error occurred. Please try again later.</p>');
+        }
+    });
+}
+//  Order Cancel Code End
+
+//  For Order View Code Start
 function OrderView(id, order_id) {
     $('.deepak').attr('id', 'staticBackdrop_' + id);
     $('#staticBackdrop_' + id).modal('show');

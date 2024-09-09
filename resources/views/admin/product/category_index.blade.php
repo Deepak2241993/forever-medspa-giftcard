@@ -31,7 +31,7 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
-                <form class="mt-2" method="get" action="{{ route('find-deals') }}">
+                <form class="mt-2" method="get" action="{{ route('category.index') }}">
                     @csrf
                     <div class="row mb-4">
                         <div class="col-md-4">
@@ -64,7 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($deals as $value)
+                        @foreach ($paginator as $value)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $value['cat_name'] ?? 'NULL' }}</td>
@@ -88,11 +88,11 @@
                             </tr>
                         @endforeach
                     </tbody><br>
-                    {{ $deals->links() }}
+                    {{ $paginator->links() }}
                 </table>
                 
                 <!-- Display pagination links -->
-                {{ $deals->links() }}
+                {{ $paginator->links() }}
                 
                 
                 <!--end::Row-->

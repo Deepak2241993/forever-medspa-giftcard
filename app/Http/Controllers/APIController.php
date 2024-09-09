@@ -1028,14 +1028,42 @@ else {
 public function category(Request $request)
 {
     $token = $request->user_token;
-    $categories = ProductCategory::where('user_token', $token)->where('cat_is_deleted', 0)->orderBy('id', 'DESC')->get();
+    $cat_name = $request->cat_name; // Search term for category name
+    $perPage = $request->input('per_page', 10); // Items per page
+    $page = $request->input('page', 1); // Current page
 
+    // Initialize the query builder
+    $query = ProductCategory::where('user_token', $token)
+        ->where('cat_is_deleted', 0)
+        ->orderBy('id', 'DESC');
+
+    // Apply filters if cat_name is provided
+    if (!empty($cat_name)) {
+        $query->where('product_categories.cat_name', 'like', '%' . $cat_name . '%');
+    }
+
+    // Paginate the results
+    $total = $query->count(); // Total categories
+    $categories = $query->skip(($page - 1) * $perPage)->take($perPage)->get(); // Get current page items
+
+    // Check if categories were found and return the appropriate response
     if ($categories->isNotEmpty()) {
-        return response()->json(['result' => $categories, 'status' => 200, 'success' => 'Product categories found successfully'], 200);
+        return response()->json([
+            'result' => $categories,
+            'total' => $total,
+            'page' => $page,
+            'per_page' => $perPage,
+            'status' => 200,
+            'success' => 'Product categories found successfully'
+        ], 200);
     } else {
-        return response()->json(['error' => 'Sorry, no categories found!', 'status' => 404]);
+        return response()->json([
+            'error' => 'Sorry, no categories found!',
+            'status' => 404
+        ]);
     }
 }
+
 
 /**
  * View the list of product categories.
@@ -1827,20 +1855,45 @@ public function product_update(Request $request, $id)
 public function product(Request $request)
 {
     $token = $request->user_token;
-    // $product = Product::where('user_token', $token)->where('product_is_deleted', 0)->get();
-    $product = Product::join('product_categories', 'products.cat_id', '=', 'product_categories.id')
-                    ->select('products.*','product_categories.cat_name')
-                  ->where('products.user_token', $token)
-                  ->where('products.product_is_deleted', 0)
-                  ->orderBy('id', 'DESC')
-                  ->get();
+    $service_name = $request->service_name;
+    $product_slug = $request->product_slug;
+    $perPage = $request->perPage ?? 10; // Number of items per page, default to 10
+    $page = $request->page ?? 1; // Current page, default to 1
 
-    if ($product->isNotEmpty()) {
-        return response()->json(['result' => $product, 'status' => 200, 'success' => 'Product  found successfully'], 200);
-    } else {
-        return response()->json(['error' => 'Sorry, no product  found!', 'status' => 404]);
+    // Initialize the query builder
+    $query = Product::join('product_categories', 'products.cat_id', '=', 'product_categories.id')
+        ->select('products.*', 'product_categories.cat_name')
+        ->where('products.user_token', $token)
+        ->where('products.product_is_deleted', 0)
+        ->orderBy('products.id', 'DESC');
+
+    // Apply filters if service_name is provided
+    if (!empty($service_name)) {
+        $query->where('products.product_name', 'like', '%' . $service_name . '%');
     }
+
+    // Apply filters if product_slug is provided
+    if (!empty($product_slug)) {
+        $query->where('products.product_slug', 'like', '%' . $product_slug . '%');
+    }
+
+    // Pagination
+    $total = $query->count(); // Total number of items
+    $products = $query->skip(($page - 1) * $perPage)->take($perPage)->get(); // Get paginated results
+
+    // Return paginated results
+    return response()->json([
+        'result' => $products,
+        'total' => $total, // Total number of items
+        'perPage' => $perPage, // Number of items per page
+        'currentPage' => $page, // Current page
+        'status' => 200,
+        'success' => 'Products found successfully'
+    ], 200);
 }
+
+
+
 
 //  Product view
 /**
@@ -2000,7 +2053,13 @@ public function product_view(Request $request, $id)
             'transaction_histories.order_id',
             'service_orders.service_id',
             DB::raw('IFNULL(SUM(service_redeems.number_of_session_use), 0) as total_redeemed_sessions'),
-            DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions')
+            DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions'),
+            'service_orders.discounted_amount',
+            'service_orders.actual_amount',
+            // Correct calculation for refund_amount
+            DB::raw('(service_orders.discounted_amount - (service_orders.actual_amount / service_orders.number_of_session) * IFNULL(SUM(service_redeems.number_of_session_use), 0)) as refund_amount')
+            //          Discounted Amount-Actualamount/
+
         )
         ->groupBy(
             'products.product_name',
@@ -2010,7 +2069,9 @@ public function product_view(Request $request, $id)
             'transaction_histories.fname',
             'transaction_histories.lname',
             'transaction_histories.order_id',
-            'service_orders.service_id'
+            'service_orders.service_id',
+            'service_orders.discounted_amount',
+            'service_orders.actual_amount'
         );
 
     // Apply filters based on the request
@@ -2038,6 +2099,7 @@ public function product_view(Request $request, $id)
         return response()->json(['error' => 'Order Details Not Found', 'status' => 404]);
     }
 }
+
 
 
 
@@ -2093,103 +2155,7 @@ public function product_view(Request $request, $id)
 
  }
 
- //  for Deals Search
-/**
- * @OA\Post(
- *      tags={"Order Details"},
- *      path="/deals-search",
- *      summary="For Service Redeem",
- *      @OA\RequestBody(
- *          required=true,
- *          @OA\MediaType(
- *              mediaType="application/json",
- *              @OA\Schema(
- *                  type="object",
- *                  required={"cat_name", "user_token"},
- *                  @OA\Property(property="cat_name", type="string", example="September Deals"),
- *                  @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
- *              )
- *          )
- *      ),
- *      @OA\Response(
- *          response=200,
- *          description="Result Found",
- *          @OA\JsonContent(
- *              @OA\Property(property="result", type="array", @OA\Items(type="object")),
- *              @OA\Property(property="status", type="integer", example=200),
- *              @OA\Property(property="success", type="string", example="Deals Found")
- *          )
- *      ),
- *      @OA\Response(
- *          response=404,
- *          description="No deals found",
- *          @OA\JsonContent(
- *              @OA\Property(property="error", type="string", example="No deals found"),
- *              @OA\Property(property="status", type="integer", example=404)
- *          )
- *      ),
- *      @OA\Response(
- *          response=401,
- *          description="Unauthenticated",
- *          @OA\JsonContent(
- *              @OA\Property(property="error", type="string", example="Unauthenticated"),
- *              @OA\Property(property="status", type="integer", example=401)
- *          )
- *      ),
- *      @OA\Response(
- *          response=403,
- *          description="Forbidden",
- *          @OA\JsonContent(
- *              @OA\Property(property="error", type="string", example="Forbidden"),
- *              @OA\Property(property="status", type="integer", example=403)
- *          )
- *      )
- * )
- */
-public function DealsSearch(Request $request)
-{
-    // Validate input
-    $validated = $request->validate([
-        'cat_name' => 'required|string',
-        'user_token' => 'required|string',
-        'page' => 'nullable|integer|min:1',
-        'limit' => 'nullable|integer|min:1|max:100',
-    ]);
-
-    $page = $validated['page'] ?? 1;
-    $limit = $validated['limit'] ?? 10;
-
-    $query = ProductCategory::where('user_token', $validated['user_token'])
-                ->where(function ($query) use ($validated) {
-                    $query->where('cat_name', 'LIKE', '%' . $validated['cat_name'] . '%')
-                          ->orWhere('slug', 'LIKE', '%' . $validated['cat_name'] . '%');
-                });
-
-    $total = $query->count(); // Get total number of items
-
-    $result = $query->skip(($page - 1) * $limit)
-                    ->take($limit)
-                    ->get();
-
-    // Return response
-    if ($result->isNotEmpty()) {
-        return response()->json([
-            'data' => $result,
-            'status' => 200,
-            'success' => 'Deals Found',
-            'total' => $total,
-            'page' => $page,
-            'limit' => $limit
-        ], 200);
-    } else {
-        return response()->json([
-            'error' => 'No deals found',
-            'status' => 404
-        ], 404);
-    }
-}
-
-
+ 
 
 
 }

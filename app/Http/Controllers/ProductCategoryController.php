@@ -22,40 +22,40 @@ class ProductCategoryController extends Controller
      public function index(Request $request)
      {
          $token = Auth::user()->user_token;
-         
-         // Prepare the data for the API request
-         $data_arr = ['user_token' => $token];
+     
+         // Prepare data for API request, including search filters and pagination parameters
+         $data_arr = ['user_token' => $token] + $request->except('_token');
+         $data_arr['page'] = $request->input('page', 1); // Current page
+         $data_arr['per_page'] = 10; // Items per page
          $data = json_encode($data_arr);
-         
-         // Call the external API to get deals
+     
+         // Call the external API to get categories
          $response = $this->postAPI('category-list', $data);
      
          // Check if the response is valid and contains the expected structure
          if ($response && isset($response['status']) && $response['status'] == 200 && isset($response['result'])) {
              // Convert the API result to a collection
-             $deals = collect($response['result']);
-             
+             $categories = collect($response['result']);
+     
              // Pagination parameters
              $currentPage = LengthAwarePaginator::resolveCurrentPage();
-             $perPage = 10; // Number of items per page
-             
-             // Slicing the collection to get the items for the current page
-             $currentPageDeals = $deals->slice(($currentPage - 1) * $perPage, $perPage)->values();
-             
+             $perPage = $data_arr['per_page'];
+             $total = $response['total'];
+     
              // Creating a paginator instance
              $paginator = new LengthAwarePaginator(
-                 $currentPageDeals, // Items for the current page
-                 $deals->count(),   // Total number of items
+                 $categories,       // Items for the current page
+                 $total,            // Total items
                  $perPage,          // Items per page
                  $currentPage,      // Current page
                  ['path' => $request->url(), 'query' => $request->query()] // Maintain URL and query parameters
              );
-             
+     
              // Pass the paginator to the view
-             return view('admin.product.category_index', ['deals' => $paginator]);
+             return view('admin.product.category_index', ['paginator' => $paginator]);
          } else {
-             // Handle error if response is not valid or does not contain deals
-             $errorMsg = $response['msg'] ?? 'Failed to retrieve deals. Please try again.';
+             // Handle error if response is not valid or does not contain categories
+             $errorMsg = $response['error'] ?? 'Failed to retrieve categories. Please try again.';
              return redirect()->back()->with('error', $errorMsg);
          }
      }
@@ -264,7 +264,6 @@ public function update(Request $request,$id)
      public function FindDeals(Request $request)
 {
     $token = Auth::user()->user_token;
-    dd($token);
 
     // Validate request data
     $validatedData = $request->validate([
