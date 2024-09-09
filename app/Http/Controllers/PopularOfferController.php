@@ -290,6 +290,7 @@ class PopularOfferController extends Controller
                     'transaction_status'=>$request->transaction_status,
                     'payment_session_id'=>'Service-Purchse_From-Center',
                     'payment_intent'=>time(),
+                    
                 ];
 
                 
@@ -308,6 +309,8 @@ class PopularOfferController extends Controller
                         'status' => 0,
                         'number_of_session' => $cart_data->session_number,
                         'user_token' => 'FOREVER-MEDSPA',
+                        'actual_amount' => $cart_data->amount,
+                        'discounted_amount' => $cart_data->discounted_amount,
                     ];
 
                     // ServiceOrderController::create($order_data);
