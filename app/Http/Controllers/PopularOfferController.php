@@ -290,6 +290,7 @@ class PopularOfferController extends Controller
                     'transaction_status'=>$request->transaction_status,
                     'payment_session_id'=>'Service-Purchse_From-Center',
                     'payment_intent'=>time(),
+                    
                 ];
 
                 
