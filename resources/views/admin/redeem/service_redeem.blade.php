@@ -357,6 +357,7 @@ function CancelView(id, order_id) {
                         <td>${element.number_of_session}</td>
                         <td id="row_${index + 1}">${element.remaining_sessions}</td>
                         <td>
+                            <input type="hidden" name="refund_amount" value="${element.refund_amount > 0 ? element.refund_amount : 0}">
                             <input type="hidden" name="service_id" value="${element.service_id}">
                             <input type="hidden" name="order_id" value="${element.order_id}">
                             <input  onkeyup="valueValidate(this, ${element.remaining_sessions})" 
@@ -370,7 +371,7 @@ function CancelView(id, order_id) {
                                    ${isDisabled}>${element.remaining_sessions}
                         </td>
                          <td>
-                           ${element.refund_amount > 0 ? element.refund_amount : '0'}
+                           ${element.refund_amount > 0 ? element.refund_amount : 0}
 
                         </td>
                         <td>
@@ -422,6 +423,7 @@ function CancelView(id, order_id) {
                     var rowData = {
                         _token: '{{ csrf_token() }}', // Add CSRF token
                         service_id: currentRow.find('input[name="service_id"]').val(),
+                        refund_amount: currentRow.find('input[name="refund_amount"]').val(),
                         order_id: currentRow.find('input[name="order_id"]').val(),
                         number_of_session_use: number_of_session_use,
                         comments: currentRow.find('textarea[name="comments"]').val()

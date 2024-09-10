@@ -14,6 +14,7 @@ use Auth;
 use Session;
 use Validator;
 use Mail;
+use App\Mail\DealsCancle;
 use App\Mail\ServiceRedeemReceipt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -219,28 +220,27 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
             ]);
         
             // Create a new record using the validated data
-          //   try {
+         try {
             $data = $request->all();
             $data['user_token']='FOREVER-MEDSPA';
             $data['transaction_id']='SER-CAN'.time();
            $result= $service_redeem->create($data);
-              // } catch (\Exception $e) {
-              //     Log::error('Service Redeem Data Entry: ' . $e->getMessage());
-              //     return back()->withErrors(['error' => $e->getMessage()]);
-              // }
+            
            if($result)
            {
               // try {
               $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
-              Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
-              // } catch (\Exception $e) {
-              //     Log::error('Service Redeem Statment Email: ' . $e->getMessage());
-              //     return back()->withErrors(['error' => $e->getMessage()]);
-              // }
+              Mail::to($transactionresult->email)->send(new DealsCancle($transactionresult));
+             
            }
         
             // Return a JSON response indicating success
             return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
         }
+          catch (\Exception $e) {
+                  Log::error('Deals Cancle Statment: ' . $e->getMessage());
+                  return back()->withErrors(['error' => $e->getMessage()]);
+              }
+            }
 
 }
