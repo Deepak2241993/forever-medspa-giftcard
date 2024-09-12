@@ -78,7 +78,7 @@
                                                                                 style="padding:40px 48px; background-color: #fca52a; color: #ffffff;">
                                                                                 <h1
                                                                                     style="font-weight:300;font-size:28px;line-height:130%;margin:16px 0; text-align:center;">
-                                                                                    Deals Cancel</h1>
+                                                                                    Forever Medspa - Service Cancelled</h1>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

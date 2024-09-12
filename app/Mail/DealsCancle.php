@@ -32,7 +32,7 @@ class DealsCancle extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Deals Cancle',
+            subject: 'Forever Medspa - Service Cancelled',
         );
     }
 
