@@ -371,7 +371,8 @@ function CancelView(id, order_id) {
                                    ${isDisabled}>${element.remaining_sessions}
                         </td>
                          <td>
-                           ${element.refund_amount > 0 ? element.refund_amount : 0}
+                           $${(element.refund_amount > 0 ? element.refund_amount : 0).toFixed(2)}
+
 
                         </td>
                         <td>

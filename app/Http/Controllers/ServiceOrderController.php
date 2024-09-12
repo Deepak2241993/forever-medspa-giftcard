@@ -18,7 +18,8 @@ use App\Mail\DealsCancle;
 use App\Mail\ServiceRedeemReceipt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-
+use Stripe\Stripe;
+use Stripe\Refund;
 
 class ServiceOrderController extends Controller
 {
@@ -233,6 +234,18 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
               Mail::to($transactionresult->email)->send(new DealsCancle($transactionresult));
              
            }
+
+            //     Payment Refund Process
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            $refund = Refund::create([
+                'payment_intent' => 'pi_3PyEN7HXhy3bfGAt1oc03a6A', // Replace with the actual Payment Intent ID
+                'amount' => 1000,  // For $10 (amount is in cents)
+                'reason' => 'requested_by_customer',  // Recommended reasons: 'requested_by_customer', 'duplicate', or 'fraudulent'
+            ]);
+                
+             //     Payment Refund Process End    
+            $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
         
             // Return a JSON response indicating success
             return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
