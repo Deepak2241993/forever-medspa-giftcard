@@ -372,7 +372,7 @@
                             console.log(response.success);
                             console.log(response.result.total_amount);
                             $('#success_' + key).html(
-                                'This Gift Card is valid. Your total available amount is $' +
+                                'Your total available amount is $' +
                                 response.result.total_amount);
                             $('#giftcard_amount_' + key).val(response.result.total_amount);
                             $('#giftcard_amount_' + key).removeAttr('readonly');
