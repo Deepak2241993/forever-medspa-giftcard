@@ -289,7 +289,7 @@ class PopularOfferController extends Controller
                     'payment_status'=>$request->transaction_status=='complete'?'paid':'not-paid',
                     'transaction_status'=>$request->transaction_status,
                     'payment_session_id'=>'Service-Purchse_From-Center',
-                    'payment_intent'=>time(),
+                    'payment_intent'=>'Store-Purchases-'.date('m-d-Y'),
                     'payment_mode' => 'store-purchase',
                     
                 ];

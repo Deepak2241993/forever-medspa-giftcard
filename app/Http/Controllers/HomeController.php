@@ -10,6 +10,8 @@ use App\Models\GiftCoupon;
 use App\Models\Giftsend;
 use App\Models\GiftcardRedeem;
 use App\Models\Search_keyword;
+use App\Models\Service_redeem;
+use App\Models\TransactionHistory;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -56,7 +58,11 @@ class HomeController extends Controller
             $Product = Product::count();
             $user=User::where('user_type',1)->count();
             $search_keyword=Search_keyword::all()->count();
-            return view('admin.admin_dashboad',compact('cardnumbers','alltransaction','user','successTransaction','faildTransaction','processingTransaction','giftCoupon','ProductCategory','Product','search_keyword'));
+            $cancel_deals=Service_redeem::where('status',0)->count();
+            $TotalServiceSale=TransactionHistory::where('payment_status','paid')->count();
+            
+
+            return view('admin.admin_dashboad',compact('cancel_deals','TotalServiceSale','cardnumbers','alltransaction','user','successTransaction','faildTransaction','processingTransaction','giftCoupon','ProductCategory','Product','search_keyword'));
         }
         else{
             $user_email=Auth::user()->email;

@@ -16,6 +16,7 @@ use Validator;
 use Mail;
 use App\Mail\DealsCancle;
 use App\Mail\ServiceRedeemReceipt;
+use App\Mail\RefundReceiptMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Stripe\Stripe;
@@ -223,7 +224,8 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
     try {
         $data = $request->all();
         $data['user_token'] = 'FOREVER-MEDSPA';
-        $data['transaction_id'] = 'SER-CAN' . time();
+        $data['transaction_id'] = 'SER-CAN-' . time();
+        
 
         $result = $service_redeem->create($data);
 
@@ -251,11 +253,20 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                     ]);
 
                     $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
+
+                    // After a successful refund, send a receipt
+                    $this->sendRefundReceipt($transactionresult->email, $refund);
+                    // for update status 
+                    $result->update(['status' => 0]);
+
                 } catch (\Exception $e) {
                     // Log if refund process fails
                     Log::error('Stripe Refund failed: ' . $e->getMessage());
                     return response()->json(['success' => false, 'message' => 'Failed to process refund.']);
                 }
+            }
+            else{
+                $result->update(['status' => 0]);
             }
 
             // Success Response
@@ -269,6 +280,37 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
         return back()->withErrors(['error' => $e->getMessage()]);
     }
 }
+
+/**
+ * Function to send refund receipt to the customer
+ */
+private function sendRefundReceipt($email, $refund)
+{
+    try {
+        // Send the refund receipt email
+        Mail::to($email)->send(new RefundReceiptMail($refund));
+
+        // Log the successful sending of the refund receipt
+        Log::info('Refund receipt sent successfully to ' . $email);
+    } catch (\Exception $e) {
+        // Log if sending receipt fails
+        Log::error('Failed to send refund receipt to ' . $email . ': ' . $e->getMessage());
+    }
+}
+
+
+public function ServiceCancel(Request $request)
+{
+    $cancel_deals = Service_redeem::where('service_redeems.status', 0)  // Fully qualify 'status' with table name
+        ->select('service_redeems.*', 'products.product_name as service_name', 'transaction_histories.payment_intent')
+        ->join('products', 'products.id', '=', 'service_redeems.service_id')
+        ->join('transaction_histories', 'transaction_histories.order_id', '=', 'service_redeems.order_id')  // Updated join condition
+        ->orderBy('service_redeems.id', 'DESC')
+        ->paginate(10);
+
+    return view('admin.redeem.all_redeemed', compact('cancel_deals'));
+}
+
 
 
 

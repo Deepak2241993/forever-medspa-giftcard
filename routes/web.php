@@ -56,6 +56,7 @@ Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('re
 Route::get('/search-service-order','ServiceOrderController@SearchServiceOrder')->name('search-service-order');
 Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')->name('service-statement');
 Route::post('/do-cancel', 'ServiceOrderController@DoCancel')->name('do-cancel');
+Route::get('/cancel-service', 'ServiceOrderController@ServiceCancel')->name('cancel-service');
 
 // Popular Officers
 Route::resource('/popular-offers', PopularOfferController::class);
