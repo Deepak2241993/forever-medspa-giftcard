@@ -30,12 +30,11 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                
-                <form class="mt-2" method="get" action="{{ route('product.index') }}">
-                    @csrf
+                <form class="mt-2" method="get" action="{{ route('cancel-service') }}">
                     <div class="row mb-4">
                         <div class="col-md-4">
-                            <label for="service_name">Service Name:</label>
-                            <input type="text" class="form-control" id="service_name" name="service_name" placeholder="Service Name">
+                            <label for="transaction_id">Transaction/Strip/OrderNumber</label>
+                            <input type="text" class="form-control" id="transaction_id" name="transaction_id" placeholder="Transaction/Strip/OrderNumber" value="{{ request('transaction_id') }}">
                         </div>
                         
                         <div class="col-md-1">
@@ -44,6 +43,7 @@
                         </div>
                     </div>
                 </form>
+                
                 
 
                     <span class="text-success">

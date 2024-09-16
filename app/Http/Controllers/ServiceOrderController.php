@@ -301,15 +301,27 @@ private function sendRefundReceipt($email, $refund)
 
 public function ServiceCancel(Request $request)
 {
-    $cancel_deals = Service_redeem::where('service_redeems.status', 0)  // Fully qualify 'status' with table name
+    $query = Service_redeem::where('service_redeems.status', 0)
         ->select('service_redeems.*', 'products.product_name as service_name', 'transaction_histories.payment_intent')
         ->join('products', 'products.id', '=', 'service_redeems.service_id')
-        ->join('transaction_histories', 'transaction_histories.order_id', '=', 'service_redeems.order_id')  // Updated join condition
-        ->orderBy('service_redeems.id', 'DESC')
-        ->paginate(10);
+        ->join('transaction_histories', 'transaction_histories.order_id', '=', 'service_redeems.order_id')
+        ->orderBy('service_redeems.id', 'DESC');
+
+    // Check if the transaction_id parameter is present in the request
+    if ($request->filled('transaction_id')) {
+        $transaction_id = $request->input('transaction_id');
+        $query->where(function($q) use ($transaction_id) {
+            $q->where('service_redeems.transaction_id', 'like', "%$transaction_id%")
+            ->orWhere('service_redeems.order_id', 'like', "%$transaction_id%")
+              ->orWhere('transaction_histories.payment_intent', 'like', "%$transaction_id%");
+        });
+    }
+
+    $cancel_deals = $query->paginate(10);
 
     return view('admin.redeem.all_redeemed', compact('cancel_deals'));
 }
+
 
 
 
