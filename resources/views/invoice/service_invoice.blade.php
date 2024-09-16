@@ -105,7 +105,7 @@
                                             <tbody>
                                                 <tr class="tm_gray_bg tm_border_top tm_border_left tm_border_right">
                                                     <td class="tm_width_3 tm_primary_color tm_border_none tm_bold">
-                                                        Subtoal</td>
+                                                        Subtotal</td>
                                                     <td
                                                         class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_bold">
                                                         ${{ $transaction_data->sub_amount }}</td>

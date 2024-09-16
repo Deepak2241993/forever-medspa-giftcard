@@ -211,49 +211,65 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
      
         
         public function DoCancel(Request $request, Service_redeem $service_redeem)
-        {
-            // Validate the request data
-            $validatedData = $request->validate([
-                'service_id' => 'required|integer',
-                'order_id' => 'required|string|max:255',
-                'number_of_session_use' => 'required|integer|min:1',
-                'comments' => 'nullable|string|max:255',
-            ]);
-        
-            // Create a new record using the validated data
-         try {
-            $data = $request->all();
-            $data['user_token']='FOREVER-MEDSPA';
-            $data['transaction_id']='SER-CAN'.time();
-           $result= $service_redeem->create($data);
-            
-           if($result)
-           {
-              // try {
-              $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
-              Mail::to($transactionresult->email)->send(new DealsCancle($transactionresult));
-             
-           }
+{
+    // Validate the request data
+    $validatedData = $request->validate([
+        'service_id' => 'required|integer',
+        'order_id' => 'required|string|max:255',
+        'number_of_session_use' => 'required|integer|min:1',
+        'comments' => 'nullable|string|max:255',
+    ]);
 
-            //     Payment Refund Process
-            Stripe::setApiKey(env('STRIPE_SECRET'));
+    try {
+        $data = $request->all();
+        $data['user_token'] = 'FOREVER-MEDSPA';
+        $data['transaction_id'] = 'SER-CAN' . time();
 
-            $refund = Refund::create([
-                'payment_intent' => 'pi_3PyEN7HXhy3bfGAt1oc03a6A', // Replace with the actual Payment Intent ID
-                'amount' => 1000,  // For $10 (amount is in cents)
-                'reason' => 'requested_by_customer',  // Recommended reasons: 'requested_by_customer', 'duplicate', or 'fraudulent'
-            ]);
-            
-             //     Payment Refund Process End    
-            $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
-        
-            // Return a JSON response indicating success
-            return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
-        }
-          catch (\Exception $e) {
-                  Log::error('Deals Cancle Statment: ' . $e->getMessage());
-                  return back()->withErrors(['error' => $e->getMessage()]);
-              }
+        $result = $service_redeem->create($data);
+
+        if ($result) {
+            $transactionresult = TransactionHistory::where('order_id', $result->order_id)->first();
+
+            try {
+                // Send cancellation email
+                Mail::to($transactionresult->email)->send(new DealsCancle($transactionresult));
+            } catch (\Exception $e) {
+                // Log if email sending fails
+                Log::error('Email sending failed: ' . $e->getMessage());
+                return response()->json(['success' => false, 'message' => 'Failed to send cancellation email.']);
             }
+
+            // For online payment refund
+            if ($transactionresult->payment_mode == 'online') {
+                try {
+                    // Payment Refund Process
+                    Stripe::setApiKey(env('STRIPE_SECRET'));
+                    $refund = Refund::create([
+                        'payment_intent' => $transactionresult->payment_intent,  // Use actual Payment Intent ID
+                        'amount' => $request->refund_amount * 100,  // Amount is in cents
+                        'reason' => 'requested_by_customer',  // Reason for refund
+                    ]);
+
+                    $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
+                } catch (\Exception $e) {
+                    // Log if refund process fails
+                    Log::error('Stripe Refund failed: ' . $e->getMessage());
+                    return response()->json(['success' => false, 'message' => 'Failed to process refund.']);
+                }
+            }
+
+            // Success Response
+            return response()->json(['success' => true, 'message' => 'Service redeemed and refund processed successfully.']);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Service redeemed successfully.', 'return_process' => 'store-purchase']);
+    } catch (\Exception $e) {
+        // Log any general failure
+        Log::error('DoCancel Process failed: ' . $e->getMessage());
+        return back()->withErrors(['error' => $e->getMessage()]);
+    }
+}
+
+
 
 }
