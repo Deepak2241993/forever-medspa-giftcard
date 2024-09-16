@@ -215,7 +215,7 @@
 @endsection
 
 @push('footerscript')
-<script>
+{{-- <script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
@@ -240,5 +240,5 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
     }
 });
-</script>
+</script> --}}
 @endpush
