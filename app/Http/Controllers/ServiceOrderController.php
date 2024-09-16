@@ -243,7 +243,7 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 'amount' => 1000,  // For $10 (amount is in cents)
                 'reason' => 'requested_by_customer',  // Recommended reasons: 'requested_by_customer', 'duplicate', or 'fraudulent'
             ]);
-                
+            
              //     Payment Refund Process End    
             $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
         
