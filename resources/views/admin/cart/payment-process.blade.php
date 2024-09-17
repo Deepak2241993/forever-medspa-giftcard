@@ -329,7 +329,7 @@ body {
                                           <select class="form-control" name="transaction_status" required>
                                             <option value="" >Select Status</option>
                                             <option value="complete">Complete</option>
-                                            <option value="under process">Under <P></P>rocess</option>
+                                            <option value="under process">Under Process</option>
                                           </select>
                                             @error('transaction_status')
                                                 <span class="text-danger">{{ $message }}</span>
