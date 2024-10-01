@@ -1,44 +1,21 @@
-# Laravel
-/vendor
-vendor
-/node_modules
-/public/storage
-/storage/*.key
-.env
-.phpunit.result.cache
-Homestead.yaml
-Homestead.json
-.env.backup
-
-# IDE
-.idea
-.vscode
-
-# Logs
-/storage/logs/*.log
-
-# Cache
-/storage/framework/cache/data
-/storage/framework/sessions
-/storage/framework/views
-
-# Compiled view files
-/storage/framework/views/*.php
-
-# Backup files
-*.bak
-
-# Ignore composer.lock if you do not want it to be tracked
-# composer.lock
-
-# Ignore built assets
-/public/hot
-/public/mix-manifest.json
-
-# NPM
+node_modules/
 npm-debug.log
 yarn-error.log
 
-# Other files
-.DS_Store
-Thumbs.db
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+
+# Laravel 5 & Lumen specific with changed public path
+public_html/storage
+public_html/hot
+
+storage/*.key
+storage
+#vendor
+.env
+Homestead.yaml
+Homestead.json
+/.vagrant
+.phpunit.result.cache

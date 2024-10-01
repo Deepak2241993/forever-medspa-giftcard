@@ -19,8 +19,7 @@ class InstallCommand extends Command
      */
     protected $signature = 'sail:install
                 {--with= : The services that should be included in the installation}
-                {--devcontainer : Create a .devcontainer configuration directory}
-                {--php=8.3 : The PHP version that should be used}';
+                {--devcontainer : Create a .devcontainer configuration directory}';
 
     /**
      * The console command description.
@@ -66,7 +65,8 @@ class InstallCommand extends Command
         $this->output->writeln('<fg=gray>➜</> <options=bold>./vendor/bin/sail up</>');
 
         if (in_array('mysql', $services) ||
-            in_array('mariadb', $services) ||
+            in_array('mariadb10', $services) ||
+            in_array('mariadb11', $services) ||
             in_array('pgsql', $services)) {
             $this->components->warn('A database service was installed. Run "artisan migrate" to prepare your database:');
 
