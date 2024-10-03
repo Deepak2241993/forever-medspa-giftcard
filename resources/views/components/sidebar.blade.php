@@ -1,395 +1,222 @@
 @if (Auth::user()->user_type == 1)
     {{-- for admin side bar --}}
-    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-        <!--begin::Sidebar Brand-->
-        <div class="sidebar-brand">
-            <!--begin::Brand Link-->
-            <a href="{{ route('root') }}" class="brand-link">
-                <!--begin::Brand Image-->
-                <img src="{{ url('/medspa.png') }}" alt="Medspa Logo" class="brand-image opacity-75 shadow">
-                <!--end::Brand Image-->
-                <!--begin::Brand Text-->
-                <span class="brand-text fw-light">Forever Medspa</span>
-                <!--end::Brand Text-->
+
+      <!-- Main Sidebar Container -->
+       
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ route('root') }}" class="brand-link">
+      <img src="{{ url('/medspa.png') }}" alt="Forever Medspa" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Forever Medspa</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="@if (Auth::user()->avatar != '') {{ URL::asset(Auth::user()->avatar) }}@else{{ URL::asset('medspa.png') }} @endif" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block"> {{ Auth::user()->name }}</a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+                <i class="right fas fa-angle-left"></i>
+              </p>
             </a>
-            <!--end::Brand Link-->
-        </div>
-        <!--end::Sidebar Brand-->
-        <!--begin::Sidebar Wrapper-->
-        <div class="sidebar-wrapper">
-            <nav class="mt-2">
-                <!--begin::Sidebar Menu-->
-                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
-                    data-accordion="false">
-                    {{-- Dashboard Start --}}
-                    <li class="nav-item menu-open">
-                        <a href="{{ route('root') }}" class="nav-link active">
-                            <i class="fa-solid fa-desktop"></i>
-                            <p>
-                                Dashboard
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-
-                    </li>
-                     {{-- Dashboard End --}}
-                     {{--  Giftcards Start--}}
-                    <li class="nav-header">Giftcards</li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-receipt"></i>
-                            <p>
-                                Giftcard Orders
-
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('cardgenerated-list') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Giftcard Orders</p>
-
-                                </a>
-                            </li>
-
-
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-barcode"></i>
-                            <p>
-                                Giftcard Redeem
-
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('giftcardredeem-view') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Redeem Giftcards</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-gift"></i>
-                            <p>
-                                Gift Card Sale
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('giftcards-sale') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Sale Gift Card</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                   
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-ticket"></i>
-                            <p>
-                                Coupon Management
-
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('coupon.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Coupon Management</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-regular fa-envelope"></i>
-                            <p>
-                                Email Template
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('email-template.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Template Management</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                     {{--  Giftcards End--}}
-                    {{--  Service Management Section  --}}
-                    <li class="nav-header">Services</li>
-
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-receipt"></i>
-                            <p>
-                                Service Orders
-
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-
-                            <li class="nav-item">
-                                <a href="{{ route('service-order-history.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Service & Deals Orders</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('root') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product-dashboard') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Product Dashboard</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-header">GIFTCARDS</li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-solid fa-gift"></i>
+              <p>
+              Giftcards
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">3</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('cardgenerated-list') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Giftcard Orders</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('giftcardredeem-view') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Giftcard Redeem</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('giftcards-sale') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sale Gift Card</p>
+                </a>
+              </li>
+            </ul>
+          </li>
 
 
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-barcode"></i>
-                            <p>
-                                Service Redeem
+          
+          
+          <li class="nav-header">SERVICES</li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa-solid fa-receipt"></i>
+              <p>
+              Services
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">3</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
 
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('service-redeem-view') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Redeem Services</p>
-                                </a>
-                            </li>
+              <li class="nav-item">
+                <a href="{{ route('service-order-history.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Service Orders</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('service-redeem-view') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p> Service Redeem</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Service & Deals Sale</p>
+                </a>
+              </li>
+            </ul>
+          </li>
 
-                        </ul>
-                    </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa-solid fa-receipt"></i>
+              <p>
+             Deals Management
+             <i class="fas fa-angle-left right"></i>
+             <span class="badge badge-info right">2</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
 
+            <li class="nav-item">
+            <a href="{{ route('category.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+              Create Deals
+                
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('product.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+              Create Services
+              </p>
+            </a>
+          </li>
+          
+            </ul>
+          </li>
+      
+          
+       
+          
+          <li class="nav-header">MISCELLANEOUS</li>
+          <li class="nav-item">
+            <a href="{{ route('coupon.index') }}" class="nav-link">
+              <i class="nav-icon fa-solid fa-ticket"></i>
+              <p>
+              Coupon Management
+                <!-- <span class="right badge badge-danger">New</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('keywords_reports') }}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+              Search Keywords Report
+              </p>
+            </a>
+          </li>
 
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            <p>
-                                Service & Deals Sale
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('product.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Service & Deals Sale</p>
-                                </a>
-                            </li>
+          <li class="nav-item">
+            <a href="{{ route('email-template.index') }}" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+              Email Template
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('banner.index') }}" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+              Slider Management
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('logout') }}" class="nav-link">
+              <i class="nav-icon far fa-user"></i>
+              <p>
+              Logout
+              </p>
+            </a>
+          </li>
+          
+          
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
 
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-brands fa-product-hunt"></i>
-                            <p>
-                                Services & Offers
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('category.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Services Deals</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('product.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Services Management</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ route('keywords_reports') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Search Keywords Report</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {{--  Service Management Section  --}}
-
-                    {{--  Keyword Reports  --}}
-                    <li class="nav-header">Keyword Reports</li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-brands fa-product-hunt"></i>
-                            <p>
-                                Search Keywords
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('keywords_reports') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Search Keywords Report</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                     {{--  Keyword End  --}}
-                    {{-- Admin Settings --}}
-                    <li class="nav-header">Settings</li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-gear"></i>
-                            <p>
-                                Profile Settings
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('logout') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Logout</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    {{-- Admin Settings End --}}
-
-                </ul>
-                <!--end::Sidebar Menu-->
-            </nav>
-        </div>
-        <!--end::Sidebar Wrapper-->
-    </aside>
 @else
-    {{-- for user side bar --}}
-    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-        <!--begin::Sidebar Brand-->
-        <div class="sidebar-brand">
-            <!--begin::Brand Link-->
-            <a href="{{ route('root') }}" class="brand-link">
-                <!--begin::Brand Image-->
-                <img src="{{ url('/medspa.png') }}" alt="Medspa Logo" class="brand-image opacity-75 shadow">
-                <!--end::Brand Image-->
-                <!--begin::Brand Text-->
-                <span class="brand-text fw-light">Forever Medspa</span>
-                <!--end::Brand Text-->
-            </a>
-            <!--end::Brand Link-->
-        </div>
-        <!--end::Sidebar Brand-->
-        <!--begin::Sidebar Wrapper-->
-        <div class="sidebar-wrapper">
-            <nav class="mt-2">
-                <!--begin::Sidebar Menu-->
-                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
-                    data-accordion="false">
-                    <li class="nav-item menu-open">
-                        <a href="{{ url('/') }}" class="nav-link active">
-                            <i class="fa-solid fa-desktop"></i>
-                            <p>
-                                Dashboard
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="nav-icon fa-solid fa-box-open"></i>
-                            <p>
-                                Items for sale
-                                <span class="nav-badge badge text-bg-secondary opacity-75 me-3">3</span>
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('gift-category.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Gift Category List</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('medspa-gift.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Gifts Cards Management</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('coupon.index') }}" class="nav-link">
-                                    <i class="fa-solid fa-ticket"></i>
-                                    <p>Coupon Management</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="nav-icon fa-solid fa-copy"></i>
-                            <p>
-                                Orders
-
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('all-order-history.index') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>All Orders</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-header">Settings</li>
-                    <li class="nav-item">
-                        <a href="javascript:;" class="nav-link">
-                            <i class="fa-solid fa-gear"></i>
-                            <p>
-                                Profile Settings
-                                <i class="nav-arrow fa-solid fa-angle-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="../examples/login.html" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Login v1</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../examples/register.html" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-circle"></i>
-                                    <p>Register v1</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-
-                </ul>
-                <!--end::Sidebar Menu-->
-            </nav>
-        </div>
-        <!--end::Sidebar Wrapper-->
-    </aside>
+    No data
 @endif

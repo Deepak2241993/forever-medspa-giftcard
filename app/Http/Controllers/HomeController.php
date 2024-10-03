@@ -168,5 +168,10 @@ class HomeController extends Controller
         }
     }
 
+
+    public function ProductDashboard(){
+        return view('admin.product_dashboard');
+    }
+
   
 }

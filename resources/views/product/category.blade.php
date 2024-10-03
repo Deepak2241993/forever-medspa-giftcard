@@ -189,26 +189,31 @@ input[type=text] {
          </div>
       </div> --}}
       <div id="carouselExampleAutoplaying" class="carousel slide" style="margin-top: 80px" data-bs-ride="carousel">
-         <div class="carousel-inner">
-           <div class="carousel-item active">
-             <img src="{{url('/images/Slide 1.jpg')}}" class="d-block w-100" alt="...">
-           </div>
-           <div class="carousel-item">
-             <img src="{{url('/images/Slide 2.jpg')}}" class="d-block w-100" alt="...">
-           </div>
-           <div class="carousel-item">
-             <img src="{{url('/images/Slide 3.jpg')}}" class="d-block w-100" alt="...">
-           </div>
-         </div>
-         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-           <span class="visually-hidden">Previous</span>
-         </button>
-         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-           <span class="carousel-control-next-icon" aria-hidden="true"></span>
-           <span class="visually-hidden">Next</span>
-         </button>
-       </div>
+    <div class="carousel-inner">
+        @foreach($sliders as $key=>$value)
+        @if($key<=4)
+        <div class="carousel-item @if($key==0) {{'active'}} @endif">
+            <img src="{{$value->image}}" class="d-block w-100" alt="...">
+            <!-- Add the button inside the carousel item -->
+            <div class="carousel-caption d-none d-md-block">
+                <a href="{{$value->url}}" class="btn btn-primary">Click Me</a>
+            </div>
+        </div>
+        @endif
+        @endforeach
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
 
       
       <!-- Breadcrumb area start  -->

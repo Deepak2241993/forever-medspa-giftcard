@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
+use App\Models\Banner;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -252,7 +253,8 @@ public function update(Request $request,$id)
         $finalarray = array_merge($search_category,$search_product);
 
         $search = json_encode($finalarray);
-        return view('product.category',compact('data','search','popular_service'));
+        $sliders =Banner::where('status',1)->where('is_deleted',0)->get();
+        return view('product.category',compact('data','search','popular_service','sliders'));
      }
 
 

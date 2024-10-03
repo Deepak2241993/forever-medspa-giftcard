@@ -25,6 +25,7 @@ Route::view('email','email.giftcard');
 //For All Admin  Route
 Route::prefix('admin')->middleware('login')->group(function () {
 Route::get('/admin-dashboard', 'HomeController@root')->name('root');
+Route::get('/product-dashboard', 'HomeController@ProductDashboard')->name('product-dashboard');
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 Route::resource('/gift', GiftController::class);
@@ -49,6 +50,7 @@ Route::get('/giftcards-sale', 'GiftsendController@giftsale')->name('giftcards-sa
 Route::post('/giftcancel','GiftsendController@giftcancel')->name('giftcancel');
 Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
+Route::resource('/banner', BannerController::class);
 
 //  For Service Order 
 Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('service-redeem-view');

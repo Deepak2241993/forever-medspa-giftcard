@@ -17,7 +17,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/MedsapGiftCardNew/public/api/"
+            "url": "http://localhost/forever-medspa-giftcard/public/api/"
         }
     ],
     "paths": {
