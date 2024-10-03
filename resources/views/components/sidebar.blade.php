@@ -2,7 +2,7 @@
     {{-- for admin side bar --}}
 
       <!-- Main Sidebar Container -->
-       
+   
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('root') }}" class="brand-link">
@@ -11,7 +11,7 @@
     </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" style="overflow-x: auto; overflow-y: auto; max-height: 100vh; max-width: 100%;">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
@@ -161,16 +161,12 @@
           
             </ul>
           </li>
-      
-          
-       
-          
           <li class="nav-header">MISCELLANEOUS</li>
           <li class="nav-item">
             <a href="{{ route('coupon.index') }}" class="nav-link">
-              <i class="nav-icon fa-solid fa-ticket"></i>
+             <i class="nav-icon fa fa-barcode"></i>
               <p>
-              Coupon Management
+                Coupon Management
                 <!-- <span class="right badge badge-danger">New</span> -->
               </p>
             </a>
@@ -194,7 +190,7 @@
           </li>
           <li class="nav-item">
             <a href="{{ route('banner.index') }}" class="nav-link">
-              <i class="nav-icon far fa-envelope"></i>
+            <i class="nav-icon far fa-image"></i>
               <p>
               Slider Management
               </p>

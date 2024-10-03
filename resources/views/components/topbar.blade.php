@@ -138,11 +138,7 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
+
     </ul>
     <ul class="navbar-nav ms-auto">
            <!--end::Notifications Dropdown Menu-->
@@ -161,7 +157,7 @@
 
                        <p>
                            {{ Auth::user()->name }}
-                           {{-- <small>Member since Nov. 2023</small> --}}
+                          
                        </p>
                    </li>
                    <!--end::User Image-->
