@@ -1,0 +1,6 @@
+id,cat_name,cat_description,cat_image,cat_order_by,meta_title,meta_description,meta_keywords,cat_is_deleted,user_token,status,slug,deal_start_date,deal_end_date,created_at,updated_at
+1,August deal,August deal,https://thetemz.in/medspa-giftcard/public/uploads/FOREVER-MEDSPA/ForevermedspaLogo.png,NULL,NULL,NULL,NULL,1,FOREVER-MEDSPA,1,august-deal,05-08-2024,05-08-2024,05-08-2024 11:03,20-08-2024 14:22
+2,NULL,New Client Discount: The referred person will receive a 15% discount on regular prices or new client pricing. Please note that this discount does not apply to already discounted packages.,NULL,NULL,NULL,NULL,NULL,1,FOREVER-MEDSPA,1,NULL,NULL,NULL,07-08-2024 17:21,07-08-2024 17:38
+3,September Deals,test,https://thetemz.in/medspa-giftcard/public/uploads/FOREVER-MEDSPA/Double Chin.jpg,NULL,NULL,NULL,NULL,0,FOREVER-MEDSPA,1,september-deals,20-08-2024,30-09-2024,20-08-2024 14:24,20-08-2024 14:25
+4,octoberDeals,octDeals,http://localhost/forever-medspa-giftcard/public/uploads/FOREVER-MEDSPA/Slide 1.jpg,NULL,NULL,NULL,NULL,0,FOREVER-MEDSPA,1,octoberdeals,04-10-2024,31-10-2024,14-09-2024 10:31,04-10-2024 00:29
+5,octoberDeals,octDeals,http://localhost/forever-medspa-giftcard/public/uploads/FOREVER-MEDSPA/Slide 1.jpg,NULL,NULL,NULL,NULL,0,FOREVER-MEDSPA,1,octoberdeals,04-10-2024,31-10-2024,14-09-2024 10:31,04-10-2024 00:29
