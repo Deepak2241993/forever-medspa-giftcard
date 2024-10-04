@@ -1,88 +1,68 @@
 @extends('layouts.admin_layout')
 @section('body')
-<main class="app-main">
-    <!--begin::App Content Header-->
-    <div class="app-content-header">
-        <!--begin::Container-->
-        <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3 class="mb-0">Redeem Process</h3>
-                </div>
-                <div class="sucess"></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            <h3 class="mb-0">Redeem Process</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Redeem Process
                         </li>
-                    </ol>
-                </div>
+                </ol>
             </div>
-            <!--end::Row-->
-            <hr>
         </div>
-        <!--end::Container-->
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content-header">
+<form method="get" action="{{ route('giftcard-search') }}">
+    <div class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Gift Card Holder Name">
+            </div>
+            <div class="col-md-4">
+              
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Gift Card Holder Email">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147">
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <input type="hidden" class="form-control" name="user_token" value="{{ Auth::user()->user_token }}">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </div>
     </div>
-    <!--end::App Content Header-->
-    <!--begin::App Content-->
-    <div class="app-content">
+</form>
+
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a>
-            <div class="card-header">
-                @if(session()->has('error'))
-                    {{ session()->get('error') }}
-                @endif
-                @if(session()->has('success'))
-                    {{ session()->get('success') }}
-                @endif
-            </div> --}}
-            <form method="get" action="{{ route('giftcard-search') }}">
-                <div style="flex-direction: row; align-items: center;" class="form-control mb-4">
-                    <div Class="row mb-4">
-                        <div Class="col-md-4">
-                    <label for="name" style="margin-right: 10px;">Gift Card Holder Name:</label><br>
-                    <input  class="form-control"type="text" id="name" name="name" placeholder="Enter Gift Card Holder Name" style="margin-right: 20px;">
-                        </div>
-                        <div Class="col-md-4">
-                    <label for="email" style="margin-right: 10px;">Gift Card Holder Email:</label><br>
-                    <input  class="form-control"type="email" id="email" name="email" placeholder="Enter Gift Card Holder Email" style="margin-right: 20px;">
-                        </div>
-                        <div Class="col-md-3">
-                    <label for="giftcardnumber" style="margin-right: 10px;">Gift Card Number:</label><br>
-                    <input  class="form-control"type="text" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147" style="margin-right: 20px;">
-                        </div>
-                    <div Class="col-md-1">
-                    <input  class="form-control"type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                    
-                    <button  class="btn btn-success mt-4"type="submit" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-                </div>
-            </form>
+           
+            
             
             
             
             @if($paginatedItems->count())
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Gift Card Holder Name</th>
-                    <th>Gift Card Holder Email </th>
-                    <th>Gift Card Number</th>
-                    <th>Gift Card Amount</th>
-                    <th>Gift Card Status</th>
-                    {{-- <th>Created Time</th> --}}
-                    <th>Action</th>
-                                  </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Gift Card Holder Name</th>
+                        <th>Gift Card Holder Email </th>
+                        <th>Gift Card Number</th>
+                        <th>Gift Card Amount</th>
+                        <th>Gift Card Status</th>
+                        {{-- <th>Created Time</th> --}}
+                        <th>Action</th>
+                    </tr>
                 </thead>
-                 <tbody>
+                <tbody>
                     @foreach($paginatedItems as $key=>$value)
-                    
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $value['recipient_name'] ? $value['recipient_name']:$value['your_name'] }}</td>
@@ -90,7 +70,6 @@
                         <td>{{ $value['giftnumber'] }}</td>
                         <td>{{ '$'.$value['total_amount'] }}</td>
                         <td>{!! $value['status']!=0?'<span class="badge text-bg-success">Active</span>':'<span class="badge text-bg-danger">Inactive</span>' !!}</td>
-                        {{-- <td>{{ date('M-d-Y h:i:s', strtotime($value['updated_at'])) }}</td> --}}
                         <td>
                             @if($value['status']!=0 && $value['total_amount']!=0)
                             <a type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#redeem_{{$value['user_id']}}" onclick="modalopen({{$value['user_id']}},'{{$value['giftnumber']}}','{{$value['total_amount']}}')">
@@ -102,16 +81,13 @@
                         <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Statment_{{$value['user_id']}}" onclick="Statment({{$value['user_id']}},'{{$value['giftnumber']}}')">
                             View Statement</a>
                         
-                    </td>
-                        
+                        </td>
                         <!-- Button trigger modal -->
-
                     </tr>
                    
-                @endforeach
-                {{ $paginatedItems->links() }}
-                
+                    @endforeach
                 </tbody>
+                {{ $paginatedItems->links() }}
             </table>
             {{ $paginatedItems->links() }}
             @else
@@ -120,102 +96,92 @@
             @endif
             <!--end::Row-->               
                 <!-- /.Start col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!--end::Container-->
-    </div>
-    <!--end::App Content-->
-</main>
+</section>
 
 
   <!--  Redeem Modal -->
-  <div class="modal fade deepak" id="redeem_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade deepak" id="redeem_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Gift Redeem Form</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="get" action="{{route('giftcard-search') }}">
-                <div style="display: flex; flex-direction: column;">
-                    <label for="giftnumber_" style="margin-right: 10px;">Gift Number:</label>
-                    <input  class="giftnumber_ form-control"type="text" id="giftnumber_" name="giftnumber" value="" style="margin-right: 20px;" readonly>
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Gift Redeem Form</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="get" action="{{route('giftcard-search') }}">
+                    <div style="display: flex; flex-direction: column;">
+                        <label for="giftnumber_" style="margin-right: 10px;">Gift Number:</label>
+                        <input  class="giftnumber_ form-control"type="text" id="giftnumber_" name="giftnumber" value="" style="margin-right: 20px;" readonly>
 
-                    <label for="amount_" style="margin-right: 10px;">Amount:</label>
-                    <input  type="number" id="amount_" class="amount_ form-control" min="1" max="" name="amount" style="margin-right: 20px;">
-            
-                    <label for="comments_" style="margin-right: 10px;">Comments</label>
-                    <textarea class="form-control comments_" name="comments" id="comments_" style="margin-right: 20px;"></textarea>
-            
-                    <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
-                    <input type="hidden" class="user_id" id="user_id_" name="user_id" value="">
-            
-                    <button type="button" class="btn btn-primary mt-3 redeembutton" id="" event_id="" onclick="redeemgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Redeem</button>
-                </div>
-            </form>
-            
+                        <label for="amount_" style="margin-right: 10px;">Amount:</label>
+                        <input  type="number" id="amount_" class="amount_ form-control" min="1" max="" name="amount" style="margin-right: 20px;">
+                
+                        <label for="comments_" style="margin-right: 10px;">Comments</label>
+                        <textarea class="form-control comments_" name="comments" id="comments_" style="margin-right: 20px;"></textarea>
+                
+                        <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                        <input type="hidden" class="user_id" id="user_id_" name="user_id" value="">
+                
+                        <button type="button" class="btn btn-primary mt-3 redeembutton" id="" event_id="" onclick="redeemgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Redeem</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
   {{-- Do Cancel Modal --}}
 <div class="modal fade prasad" id="docancel_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cancel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="cancel">Gift Card Cancel Form</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="get" action="{{route('giftcard-search') }}">
-                <div style="display: flex; flex-direction: column;">
-                    <label for="cancel_giftnumber_" style="margin-right: 10px;">Gift Number:</label>
-                    <input  class="cancel_giftnumber_ form-control"type="text" id="cancel_giftnumber_" name="giftnumber" value="" style="margin-right: 20px;" readonly>
-            
-                    <label for="cancel_comments_" style="margin-right: 10px;">Comments</label>
-                    <textarea class="form-control cancel_comments_" name="comments"style="margin-right: 20px;"></textarea>
-            
-                    <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
-                    <input type="hidden" class="cancel_user_id" id="cancel_user_id_" name="cancel_user_id" value="">
-            
-                    <button type="button" class="btn btn-primary mt-3 cancel_button" id="" onclick="cancelgiftcard(event)">Cancel Giftcard</button>
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancel">Gift Card Cancel Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </form>
-            
+                <div class="modal-body">
+                    <form method="get" action="{{route('giftcard-search') }}">
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="cancel_giftnumber_" style="margin-right: 10px;">Gift Number:</label>
+                            <input  class="cancel_giftnumber_ form-control"type="text" id="cancel_giftnumber_" name="giftnumber" value="" style="margin-right: 20px;" readonly>
+                    
+                            <label for="cancel_comments_" style="margin-right: 10px;">Comments</label>
+                            <textarea class="form-control cancel_comments_" name="comments"style="margin-right: 20px;"></textarea>
+                    
+                            <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                            <input type="hidden" class="cancel_user_id" id="cancel_user_id_" name="cancel_user_id" value="">
+                    
+                            <button type="button" class="btn btn-primary mt-3 cancel_button" id="" onclick="cancelgiftcard(event)">Cancel Giftcard</button>
+                        </div>
+                    </form>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 {{-- Do cancel modal End --}}
   {{--  For Statment Mpdal --}}
-  <div class="modal fade Statment" id="Statment_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Gift Card History</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade Statment" id="Statment_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Gift Card History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="statment_view table table-striped"></table>
+                    <b><span class="text-danger">*</span>Any Transaction Number starting with the prefix "CANCEL", denotes the particular Giftcard has been cancelled and is inactive henceforth</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <table class="statment_view table table-striped">
-               
-            </table>
-            <b><span class="text-danger">*</span>Any Transaction Number starting with the prefix "CANCEL", denotes the particular Giftcard has been cancelled and is inactive henceforth</b>
-            
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
   @endsection
 
   @push('script')
