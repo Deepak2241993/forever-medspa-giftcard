@@ -32,7 +32,7 @@
                     {{ session()->get('success') }}
                 @endif
             </div>
-            <div class="row">
+                <div class="row">
                     <div class="col-md-6">
                         <form action="{{ route('categories.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf

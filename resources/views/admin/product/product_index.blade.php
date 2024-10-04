@@ -25,30 +25,50 @@
         <div class="container-fluid">
             <!--begin::Row-->
             <a href="{{ route('product.create') }}" class="btn btn-primary">Add More</a>
-            <form class="mt-2" method="get" action="{{ route('product.index') }}">
-                @csrf
-                <div class="row mb-4">
-                    <div class="col-md-4">
-                        <label for="service_name">Service Name:</label>
-                        <input type="text" class="form-control" id="service_name" name="service_name"
-                            placeholder="Service Name">
+            <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download>Demo Download</a>
+        
+            <div class="card-header text-success">
+                @if(session()->has('success'))
+                    {{ session()->get('success') }}
+                @endif
+            </div>
+            <div class="row">
+                    <div class="col-md-6">
+                        <form action="{{ route('categories.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <label for="file">Upload Bulk Data</label>
+                                    <input type="file" name="file" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-4 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">Import</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-
-                    <div class="col-md-1">
-                        <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                        <button type="submit" class="btn btn-success mt-4">Search</button>
+                    <div class="col-md-6">
+                        <form method="GET" action="{{ route('product.index') }}">
+                            @csrf
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <label for="service_name">Services Search:</label>
+                                    <input type="text" class="form-control" id="service_name" name="service_name" placeholder="Service Name">
+                                    <input type="hidden" class="form-control" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                                </div>
+                                <div class="form-group col-md-4 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-success w-100">Search</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </div>
-            </form>
-
-
+            </div>
+            
             <span class="text-success">
                 @if(session()->has('success'))
                     {{ session()->get('success') }}
                 @endif
             </span>
-
-
 
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>
