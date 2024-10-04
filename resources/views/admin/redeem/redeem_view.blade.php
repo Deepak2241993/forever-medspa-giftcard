@@ -42,11 +42,6 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-           
-            
-            
-            
-            
             @if($paginatedItems->count())
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>
