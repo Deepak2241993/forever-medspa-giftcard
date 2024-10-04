@@ -84,7 +84,7 @@
     <!-- Main Sidebar Container -->
        <x-sidebar/>
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="overflow-x: auto; overflow-y: auto; max-height: 100vh; max-width: 100%;">
  
          @yield('body')
     </div>

@@ -66,14 +66,14 @@
                                         <td>{{ $value->status ==1 ? 'Active' : 'Inactive' }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('banner.edit', $value->id) }}"
-                                                class="btn btn-primary">Edit</a>
+                                            <!-- <a href="{{ route('banner.edit', $value->id) }}"
+                                                class="btn btn-primary">Edit</a> -->
                                             <form
                                                 action="{{ route('banner.destroy', $value->id) }}"
                                                 method="POST">
                                                 @method('DELETE')
-                                                <blade
-                                                    csrf|%20%3C!--%20Include%20CSRF%20token%20for%20security%20--%3E />
+                                                
+                                                  @csrf
                                                 <button class="btn btn-danger" type="submit">Delete</button>
                                             </form>
                                         </td>
