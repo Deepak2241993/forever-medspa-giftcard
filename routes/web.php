@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductCategoryImportController;
+use App\Http\Controllers\ProductImportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +54,7 @@ Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
 Route::resource('/banner', BannerController::class);
 Route::post('/categories/import', [ProductCategoryImportController::class, 'import'])->name('categories.import');
+Route::post('/services/import', [ProductImportController::class, 'import'])->name('services.import');
 
 
 //  For Service Order 

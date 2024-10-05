@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <!--begin::Row-->
             <a href="{{ route('product.create') }}" class="btn btn-primary">Add More</a>
-            <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download>Demo Download</a>
+            <a href="{{url('/products.csv')}}" class="btn btn-info" download>Demo Download</a>
         
             <div class="card-header text-success">
                 @if(session()->has('success'))
@@ -34,7 +34,7 @@
             </div>
             <div class="row">
                     <div class="col-md-6">
-                        <form action="{{ route('categories.import') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('services.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="form-group col-md-8">

@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\ProductCategory;
+use App\Models\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Carbon\Carbon;
 
-class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
+class ProductImporter implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
     /**
      * @param array $row
@@ -18,32 +18,37 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     public function model(array $row)
     {
         // Skip if cat_name, status, or user_token are missing
-        if (empty($row['cat_name']) || empty($row['user_token']) || empty($row['status'])) {
+        if (empty($row['product_name']) || empty($row['user_token']) || empty($row['status'])) {
             return null; // Skip this row
         }
 
         // Parse date formats flexibly
-        $dealStartDate = $this->parseDate($row['deal_start_date']);
-        $dealEndDate = $this->parseDate($row['deal_end_date']);
         $createdAt = now()->format('Y-m-d H:i:s');
         $updatedAt = now()->format('Y-m-d H:i:s');
         // $updatedAt = $this->parseDateTime($row['updated_at'], 'Y-m-d H:i:s');
 
-        return ProductCategory::updateOrCreate(
+        return Product::updateOrCreate(
             ['id' => $row['id'] ?? null], // The unique key to check for
             [
-                'cat_name' => $row['cat_name'] ?? null,
-                'cat_description' => $row['cat_description'] ?? null,
-                'cat_image' => $row['cat_image'] ?? null,
+                'product_name' => $row['product_name'] ?? null,
+                'product_slug' => $row['product_slug'] ?? null,
+                'short_description' => $row['short_description'] ?? null,
+                'product_description' => $row['product_description'] ?? null,
+                'prerequisites' => $row['prerequisites'] ?? null,
+                'product_image' => $row['product_image'] ?? null,
                 // 'meta_title' => $row['meta_title'] ?? null,
                 // 'meta_description' => $row['meta_description'] ?? null,
                 // 'meta_keywords' => $row['meta_keywords'] ?? null,
-                'cat_is_deleted' => (int) ($row['cat_is_deleted'] ?? 0),
+                'product_is_deleted' => (int) ($row['cat_is_deleted'] ?? 0),
                 'user_token' => $row['user_token'] ?? null,
                 'status' => (int) ($row['status'] ?? 1),
-                'slug' => $row['slug'] ?? null,
-                'deal_start_date' => $dealStartDate ?? now(),
-                'deal_end_date' => $dealEndDate ?? now(),
+                'amount' => $row['amount'] ?? null,
+                'discounted_amount' => $row['discounted_amount'] ?? null,
+                'session_number' => $row['session_number'] ?? 1,
+                'cat_id' => $row['cat_id'] ?? 1,
+                'search_keywords' => $row['search_keywords'] ?? 1,
+                'popular_service' => $row['popular_service'] ?? 1,
+                'giftcard_redemption' => $row['giftcard_redemption'] ?? 1,
                 'created_at' => $createdAt ?? now(),
                 'updated_at' => $updatedAt ?? now(),
             
