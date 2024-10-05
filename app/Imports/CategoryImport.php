@@ -34,7 +34,7 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             [
                 'cat_name' => $row['cat_name'] ?? null,
                 'cat_description' => $row['cat_description'] ?? null,
-                'cat_image' => $row['cat_image'] ?? null,
+                'cat_image' => url('/storage/images')."/".$row['cat_image'] ?? null,
                 // 'meta_title' => $row['meta_title'] ?? null,
                 // 'meta_description' => $row['meta_description'] ?? null,
                 // 'meta_keywords' => $row['meta_keywords'] ?? null,
@@ -46,7 +46,6 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
                 'deal_end_date' => $dealEndDate ?? now(),
                 'created_at' => $createdAt ?? now(),
                 'updated_at' => $updatedAt ?? now(),
-            
         ]);
     }
 

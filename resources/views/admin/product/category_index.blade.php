@@ -23,9 +23,21 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
-            <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download>Demo Download</a>
-            
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
+                <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download>Demo Download</a>
+                <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
+                        <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;">
+                        <button type="submit" class="btn btn-success">Upload Images</button>
+                </form>
+            </div>
+            <!-- Progress Bar -->
+            <div id="progressWrapper" style="display: none; margin-top: 10px;">
+                <progress id="progressBar" value="0" max="100"></progress>
+                <span id="progressPercentage">0%</span>
+            </div>
+            <!-- Display Uploaded Images -->
+            <div id="uploadedImages"></div>
 
             <div class="card-header text-success">
                 @if(session()->has('success'))
@@ -64,7 +76,9 @@
                     </div>
                 </div>
 
-
+                @if($paginator->isEmpty())
+                    <p>No categories found.</p>
+                @else
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>
                     <tr>
@@ -109,6 +123,7 @@
                 </tbody><br>
                 {{ $paginator->links() }}
             </table>
+            @endif
 
             <!-- Display pagination links -->
             {{ $paginator->links() }}
@@ -175,4 +190,63 @@
         }
 
     </script>
+    <!-- For Multiple Image upload Code -->
+
+    <script>
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let formData = new FormData();
+        let files = document.getElementById('images').files;
+
+        // Append all images to FormData
+        for (let i = 0; i < files.length; i++) {
+            formData.append('images[]', files[i]);
+        }
+
+        // Append the CSRF token to FormData
+        formData.append('_token', '{{ csrf_token() }}'); // This is more reliable
+
+        let xhr = new XMLHttpRequest();
+
+        // Update progress
+        xhr.upload.addEventListener('progress', function(e) {
+            if (e.lengthComputable) {
+                let percentComplete = Math.round((e.loaded / e.total) * 100);
+                document.getElementById('progressBar').value = percentComplete;
+                document.getElementById('progressPercentage').innerText = percentComplete + '%';
+                document.getElementById('progressWrapper').style.display = 'block';
+            }
+        });
+
+        // On upload complete
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                document.getElementById('progressWrapper').style.display = 'none';
+                let response = JSON.parse(xhr.responseText);
+
+                // Show uploaded images
+                let uploadedImagesDiv = document.getElementById('uploadedImages');
+                uploadedImagesDiv.innerHTML = ''; // Clear previous images
+                response.files.forEach(file => {
+                    let img = document.createElement('img');
+                    img.src = '{{ url('/') }}'+ file; // Set image URL
+                    // img.src = file;
+                    img.style.width = '100px';
+                    img.style.margin = '5px';
+                    uploadedImagesDiv.appendChild(img);
+                });
+            }
+        };
+
+        // Error handling
+        xhr.onerror = function() {
+            console.log("Error during upload.");
+        };
+
+        // Open the request and send the FormData
+        xhr.open('POST', '{{ url('/admin/upload-multiple-images') }}', true); 
+        xhr.send(formData);  // Send the form data
+    });
+</script>
 @endpush
