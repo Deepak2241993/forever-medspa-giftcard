@@ -35,7 +35,7 @@ class ProductImporter implements ToModel, WithHeadingRow, SkipsEmptyRows
                 'short_description' => $row['short_description'] ?? null,
                 'product_description' => $row['product_description'] ?? null,
                 'prerequisites' => $row['prerequisites'] ?? null,
-                'product_image' => $row['product_image'] ?? null,
+                'product_image' => url('/storage/images')."/".$row['product_image'] ?? null,
                 // 'meta_title' => $row['meta_title'] ?? null,
                 // 'meta_description' => $row['meta_description'] ?? null,
                 // 'meta_keywords' => $row['meta_keywords'] ?? null,

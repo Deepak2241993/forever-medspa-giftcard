@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductCategoryImportController;
 use App\Http\Controllers\ProductImportController;
+use App\Http\Controllers\ImageUploadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,6 +56,8 @@ Route::resource('/product', ProductController::class);
 Route::resource('/banner', BannerController::class);
 Route::post('/categories/import', [ProductCategoryImportController::class, 'import'])->name('categories.import');
 Route::post('/services/import', [ProductImportController::class, 'import'])->name('services.import');
+Route::post('/upload-multiple-images', [ImageUploadController::class, 'uploadMultipleImages'])->name('upload.images');
+
 
 
 //  For Service Order 
