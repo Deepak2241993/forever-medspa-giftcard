@@ -279,7 +279,8 @@
                 uploadedImagesDiv.innerHTML = ''; // Clear previous images
                 response.files.forEach(file => {
                     let img = document.createElement('img');
-                    img.src = file;
+                    img.src = '{{ url('/') }}'+ file; // Set image URL
+                    // img.src = file;
                     img.style.width = '100px';
                     img.style.margin = '5px';
                     uploadedImagesDiv.appendChild(img);
