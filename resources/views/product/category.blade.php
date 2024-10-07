@@ -190,16 +190,17 @@ input[type=text] {
       </div> --}}
       <div id="carouselExampleAutoplaying" class="carousel slide" style="margin-top: 80px" data-bs-ride="carousel">
          <div class="carousel-inner">
+            @foreach($sliders as $key=>$value)
+            @if($key<=5)
            <div class="carousel-item active">
-             <img src="{{url('/images/Slide 1.jpg')}}" class="d-block w-100" alt="...">
+             <img src="{{url($value->image)}}" class="d-block w-100" alt="...">
            </div>
-           <div class="carousel-item">
-             <img src="{{url('/images/Slide 2.jpg')}}" class="d-block w-100" alt="...">
-           </div>
-           <div class="carousel-item">
-             <img src="{{url('/images/Slide 3.jpg')}}" class="d-block w-100" alt="...">
-           </div>
+           @endif
+           @endforeach
+ 
+
          </div>
+
          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
            <span class="visually-hidden">Previous</span>

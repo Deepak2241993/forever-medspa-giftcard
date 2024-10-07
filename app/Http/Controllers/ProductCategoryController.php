@@ -274,7 +274,7 @@ public function update(Request $request,$id)
         $finalarray = array_merge($search_category,$search_product);
 
         $search = json_encode($finalarray);
-        $sliders =Banner::where('status',1)->where('is_deleted',0)->get();
+        $sliders =Banner::where('status',1)->where('is_deleted',0)->orderBy('id','DESC')->get();
         return view('product.category',compact('data','search','popular_service','sliders'));
      }
 
