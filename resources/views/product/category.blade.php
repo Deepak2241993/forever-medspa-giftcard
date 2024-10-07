@@ -192,7 +192,7 @@ input[type=text] {
          <div class="carousel-inner">
             @foreach($sliders as $key=>$value)
             @if($key<=5)
-           <div class="carousel-item active">
+           <div class="carousel-item @if($key==0){{'active'}} @endif">
              <img src="{{url($value->image)}}" class="d-block w-100" alt="...">
            </div>
            @endif
