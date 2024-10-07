@@ -26,7 +26,7 @@
             <!--begin::Row-->
             <div style="display: flex; align-items: center; gap: 10px;">
                 <a href="{{ route('product.create') }}" class="btn btn-primary">Add More</a>
-                <a href="{{url('/products.csv')}}" class="btn btn-info" download>Demo Download</a>
+                <a href="{{url('/products.csv')}}" class="btn btn-info" download="products.csv">Demo Download</a>
 
                 <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
                     <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;">
