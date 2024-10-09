@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductCategoryImportController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\CategoryExportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,9 +55,11 @@ Route::post('/giftcancel','GiftsendController@giftcancel')->name('giftcancel');
 Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
 Route::resource('/banner', BannerController::class);
+
 Route::post('/categories/import', [ProductCategoryImportController::class, 'import'])->name('categories.import');
 Route::post('/services/import', [ProductImportController::class, 'import'])->name('services.import');
 Route::post('/upload-multiple-images', [ImageUploadController::class, 'uploadMultipleImages'])->name('upload.images');
+Route::get('/export-categories', [CategoryExportController::class, 'exportCategories']);
 
 
 
@@ -102,7 +105,6 @@ Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->nam
 
 Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card'])->name('home');
 Route::post('/send-gift-cards','GiftController@store')->name('send-gift-cards');
-
 Route::get('/strip_form',[App\Http\Controllers\StripeController::class,'formview']);
 Route::post('/payment',[App\Http\Controllers\StripeController::class,'makepayment']);
 Route::get('/success', function () {
@@ -117,8 +119,6 @@ Route::get('/failed', function () {
 //  New Code For API URL Call
 Route::post('/sendgift','GiftsendController@sendgift')->name('sendgift');
 Route::post('/selfgift','GiftsendController@selfgift')->name('selfgift');
-
-
 Route::post('/coupon-verify','GiftsendController@giftvalidate')->name('coupon-verify');
 Route::post('/giftcardpayment',[App\Http\Controllers\StripeController::class,'giftcardpayment'])->name('giftcardpayment');
 Route::post('/balance-check','GiftsendController@knowbalance')->name('balance-check');
@@ -126,7 +126,6 @@ Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('pay
 
 //  Product Page Route
 Route::get('product-page/{token?}/{slug}', 'ProductController@productpage')->name('product_list');
-
 Route::get('productdetails/{slug}','ProductController@productdetails')->name('productdetails');
 Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
 Route::get('services/{slug}','ProductController@productpage')->name('product');
@@ -134,7 +133,6 @@ Route::get('service/{slug}','ProductController@productdetails')->name('productde
 // Route::get('product-category-wise/{id}','ProductController@productCategory')->name('productCategory');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
-
 // Front Route for PopularOffer
 Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
 Route::post('cart','PopularOfferController@Cart')->name('cart');
@@ -143,12 +141,10 @@ Route::post('/cart/remove','PopularOfferController@CartRemove')->name('cartremov
 Route::post('checkout','PopularOfferController@Checkout')->name('checkout');
 Route::get('checkout-view','PopularOfferController@checkoutView')->name('checkout_view');
 Route::post('/giftcards-validate', 'GiftsendController@giftcardValidate')->name('giftcards-validate');
-
 //  for Product payment URL
 Route::post('checkout-process','StripeController@CheckoutProcess')->name('checkout_process');
 Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->name('strip_checkout_success');
 //  for Product payment URL
-
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
 Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
 Route::get('invoice','StripeController@invoice')->name('invoice');

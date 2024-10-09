@@ -30,7 +30,7 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download="product_categories.csv">Deals Template Download</a>
                     <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
-                        <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept=".csv">
+                        <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept="image/jpg, image/jpeg, image/png" />
                         <button type="submit" class="btn btn-success">Upload Images</button>
                     </form>
                 </div>
@@ -57,7 +57,7 @@
                             <div class="row">
                                 <div class="form-group col-md-8">
                                     <label for="file">Upload Bulk Data</label>
-                                    <input type="file" name="file" class="form-control" required>
+                                    <input type="file" accept=".csv" name="file" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-4 d-flex align-items-end">
                                     <button type="submit" class="btn btn-primary w-100">Import</button>
