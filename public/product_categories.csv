@@ -1,6 +1,5 @@
-id,cat_name,cat_description,cat_image,user_token,status,slug,deal_start_date,deal_end_date
-1,August deal,August deal,ForevermedspaLogo.png,FOREVER-MEDSPA,1,august-deal,05-08-2024,05-08-2024
-2,NULL,New Client Discount: The referred person will receive a 15% discount on regular prices or new client pricing. Please note that this discount does not apply to already discounted packages.,NULL,FOREVER-MEDSPA,1,NULL,NULL,NULL
-3,September Deals,test,Double Chin.jpg,FOREVER-MEDSPA,1,september-deals,20-08-2024,30-09-2024
-4,octoberDeals,octDeals,Slide 1.jpg,FOREVER-MEDSPA,1,octoberdeals,04-10-2024,31-10-2024
-5,octoberDeals,octDeals,Slide 1.jpg,FOREVER-MEDSPA,1,octoberdeals,04-10-2024,31-10-2024
+ID,Deal Name,Deal Description,Deal Image,Deal Slug,Deal Start Date,Deal End Date
+1,January Deals,"Lorem ipsum dolor sit amet consectetur adipisicing elit. In placeat dolorum nesciunt excepturi, quos aliquam deleniti earum qui exercitationem quas beatae dolor odit laudantium maxime quasi, eos nobis doloribus ut?",Slide 1.jpg,january_deals,10-26-2024,11-26-2024
+3,February Deals,"Lorem ipsum dolor sit amet consectetur adipisicing elit. In placeat dolorum nesciunt excepturi, quos aliquam deleniti earum qui exercitationem quas beatae dolor odit laudantium maxime quasi, eos nobis doloribus ut?",2.jpg,february_deals,10-26-2024,11-26-2024
+4,March Deals,"Lorem ipsum dolor sit amet consectetur adipisicing elit. In placeat dolorum nesciunt excepturi, quos aliquam deleniti earum qui exercitationem quas beatae dolor odit laudantium maxime quasi, eos nobis doloribus ut?",1.png,march_deals,10-26-2024,11-26-2024
+5,April Deals,"Lorem ipsum dolor sit amet consectetur adipisicing elit. In placeat dolorum nesciunt excepturi, quos aliquam deleniti earum qui exercitationem quas beatae dolor odit laudantium maxime quasi, eos nobis doloribus ut?",Slide_1.jpeg,april_deals,10-26-2024,11-26-2024

@@ -100,7 +100,7 @@
           <li class="nav-header">SERVICES</li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa-solid fa-receipt"></i>
+            <i class="nav-icon fa fa-user-md"></i>
               <p>
               Services
                 <i class="fas fa-angle-left right"></i>
@@ -152,7 +152,7 @@
           </li>
           <li class="nav-item">
             <a href="{{ route('product.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <i class="nav-icon fa fa-user-md"></i>
               <p>
               Create Services
               </p>

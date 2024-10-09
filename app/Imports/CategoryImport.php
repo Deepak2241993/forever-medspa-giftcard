@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Log;
 class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
     /**
@@ -17,36 +17,39 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
      */
     public function model(array $row)
     {
-        // Skip if cat_name, status, or user_token are missing
-        if (empty($row['cat_name']) || empty($row['user_token']) || empty($row['status'])) {
+        // Normalize the keys for case-insensitivity
+        $row = array_change_key_case($row, CASE_LOWER);
+
+        // Check for missing 'cat_name' and log if skipped
+        if (empty($row['deal_name'])) {
+            Log::channel('import')->warning('Row skipped: Missing Deal Name', ['row' => $row]);
             return null; // Skip this row
         }
 
-        // Parse date formats flexibly
-        $dealStartDate = $this->parseDate($row['deal_start_date']);
-        $dealEndDate = $this->parseDate($row['deal_end_date']);
+        // Parse date formats, log if there's an issue
+        $dealStartDate = $this->parseDate($row['deal_start_date'], $row);
+        $dealEndDate = $this->parseDate($row['deal_end_date'], $row);
+
         $createdAt = now()->format('Y-m-d H:i:s');
         $updatedAt = now()->format('Y-m-d H:i:s');
-        // $updatedAt = $this->parseDateTime($row['updated_at'], 'Y-m-d H:i:s');
 
+        // Create or update the record
         return ProductCategory::updateOrCreate(
-            ['id' => $row['id'] ?? null], // The unique key to check for
+            ['id' => $row['id'] ?? null],
             [
-                'cat_name' => $row['cat_name'] ?? null,
-                'cat_description' => $row['cat_description'] ?? null,
-                'cat_image' => url('/storage/images')."/".$row['cat_image'] ?? null,
-                // 'meta_title' => $row['meta_title'] ?? null,
-                // 'meta_description' => $row['meta_description'] ?? null,
-                // 'meta_keywords' => $row['meta_keywords'] ?? null,
+                'cat_name' => $row['deal_name'] ?? null,
+                'cat_description' => $row['deal_description'] ?? null,
+                'cat_image' => isset($row['deal_image']) ? url('/storage/images')."/".$row['deal_image'] : null,
                 'cat_is_deleted' => (int) ($row['cat_is_deleted'] ?? 0),
-                'user_token' => $row['user_token'] ?? null,
+                'user_token' => 'FOREVER-MEDSPA',
                 'status' => (int) ($row['status'] ?? 1),
-                'slug' => $row['slug'] ?? null,
+                'slug' => $row['deal_slug'] ?? null,
                 'deal_start_date' => $dealStartDate ?? now(),
                 'deal_end_date' => $dealEndDate ?? now(),
-                'created_at' => $createdAt ?? now(),
-                'updated_at' => $updatedAt ?? now(),
-        ]);
+                'created_at' => $createdAt,
+                'updated_at' => $updatedAt,
+            ]
+        );
     }
 
     private function parseDate($date)

@@ -24,21 +24,27 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+    <!-- Add More Button (Left Side) -->
+            <a href="{{ route('product.create') }}" class="btn btn-dark">Add More</a>
+
+            <!-- Form and Demo Download (Right Side) -->
             <div style="display: flex; align-items: center; gap: 10px;">
-                <a href="{{ route('product.create') }}" class="btn btn-primary">Add More</a>
-                <a href="{{url('/products.csv')}}" class="btn btn-info" download="products.csv">Demo Download</a>
+                <a href="{{url('/products.csv')}}" class="btn btn-info" download="products.csv">Download Data Template</a>
+                <a href="{{url('/products.csv')}}" class="btn btn-warning" download="products.csv">Download Deals</a>
 
                 <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
-                    <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;">
+                    <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept=".csv">
                     <button type="submit" class="btn btn-success">Upload Images</button>
                 </form>
             </div>
+        </div>
 
-            <!-- Progress Bar -->
-            <div id="progressWrapper" style="display: none; margin-top: 10px;">
-                <progress id="progressBar" value="0" max="100"></progress>
-                <span id="progressPercentage">0%</span>
-            </div>
+        <!-- Progress Bar -->
+        <div id="progressWrapper" style="display: none; margin-top: 10px;">
+            <progress id="progressBar" value="0" max="100"></progress>
+            <span id="progressPercentage">0%</span>
+        </div>
 
 
 
