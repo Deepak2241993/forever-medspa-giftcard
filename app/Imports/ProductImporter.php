@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class ProductImporter implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
@@ -17,8 +18,9 @@ class ProductImporter implements ToModel, WithHeadingRow, SkipsEmptyRows
      */
     public function model(array $row)
     {
+        $row = array_change_key_case($row, CASE_LOWER);
         // Skip if cat_name, status, or user_token are missing
-        if (empty($row['product_name']) || empty($row['user_token']) || empty($row['status'])) {
+        if (empty($row['service_name'])) {
             return null; // Skip this row
         }
 
@@ -30,25 +32,25 @@ class ProductImporter implements ToModel, WithHeadingRow, SkipsEmptyRows
         return Product::updateOrCreate(
             ['id' => $row['id'] ?? null], // The unique key to check for
             [
-                'product_name' => $row['product_name'] ?? null,
-                'product_slug' => $row['product_slug'] ?? null,
+                'product_name' => $row['service_name'] ?? null,
+                'product_slug' => Str::slug($row['service_name'], '-'),
                 'short_description' => $row['short_description'] ?? null,
-                'product_description' => $row['product_description'] ?? null,
+                'product_description' => $row['service_description'] ?? null,
                 'prerequisites' => $row['prerequisites'] ?? null,
-                'product_image' => url('/storage/images')."/".$row['product_image'] ?? null,
+                'product_image' => isset($row['service_image']) ? url('/storage/images')."/".$row['service_image'] : null,
                 // 'meta_title' => $row['meta_title'] ?? null,
                 // 'meta_description' => $row['meta_description'] ?? null,
                 // 'meta_keywords' => $row['meta_keywords'] ?? null,
-                'product_is_deleted' => (int) ($row['cat_is_deleted'] ?? 0),
-                'user_token' => $row['user_token'] ?? null,
-                'status' => (int) ($row['status'] ?? 1),
-                'amount' => $row['amount'] ?? null,
-                'discounted_amount' => $row['discounted_amount'] ?? null,
-                'session_number' => $row['session_number'] ?? 1,
-                'cat_id' => $row['cat_id'] ?? 1,
+                'product_is_deleted' => 0,
+                'user_token' => 'FOREVER-MEDSPA',
+                'status' => 1,
+                'amount' => $row['service_original_price'] ?? null,
+                'discounted_amount' => $row['service_price'] ?? null,
+                'session_number' => $row['number_of_session'] ?? 1,
+                'cat_id' => $row['enter_deals_id'] ?? 1,
                 'search_keywords' => $row['search_keywords'] ?? 1,
-                'popular_service' => $row['popular_service'] ?? 1,
-                'giftcard_redemption' => $row['giftcard_redemption'] ?? 1,
+                'popular_service' => Str::lower($row['popular_services']) == 'yes' ? 1 : 0,
+                'giftcard_redemption' => Str::lower($row['giftcard_redeem']) == 'yes' ? 1 : 0,
                 'created_at' => $createdAt ?? now(),
                 'updated_at' => $updatedAt ?? now(),
             

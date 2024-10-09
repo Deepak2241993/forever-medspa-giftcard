@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
@@ -43,7 +44,7 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
                 'cat_is_deleted' => (int) ($row['cat_is_deleted'] ?? 0),
                 'user_token' => 'FOREVER-MEDSPA',
                 'status' => (int) ($row['status'] ?? 1),
-                'slug' => $row['deal_slug'] ?? null,
+                'slug' => Str::slug($row['deal_name'], '-'),
                 'deal_start_date' => $dealStartDate ?? now(),
                 'deal_end_date' => $dealEndDate ?? now(),
                 'created_at' => $createdAt,
