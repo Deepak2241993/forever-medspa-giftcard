@@ -498,7 +498,7 @@ input[type=text] {
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">
-                                       <a href="{{ route('PopularService', ['id' => $value->id]) }}">{{$value->product_name}}</a>
+                                       <a href="{{ route('PopularService', ['id' => $value->id]) }}">{{ Str::limit($value->product_name, 10, '...') }}</a>
                                     </h4>
                                     {{-- <div class="rc__meta">
                                        <span>
