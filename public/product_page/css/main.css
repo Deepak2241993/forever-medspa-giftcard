@@ -1840,8 +1840,8 @@ i[class^=flaticon-] {
   left: 0;
   height: 100%;
   width: 100%;
-  mix-blend-mode: luminosity;
-  opacity: 70%;
+  /* mix-blend-mode: luminosity;
+  opacity: 70%; */
   z-index: -1;
 }
 

@@ -20,7 +20,7 @@
                       <div class="breadcrumb__menu">
                          <nav>
                             <ul>
-                               <li><span><a href="index.html">Home</a></span></li>
+                               <li><span><a href="{{url('/')}}">Home</a></span></li>
                                <li><span>Services</span></li>
                             </ul>
                          </nav>
