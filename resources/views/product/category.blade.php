@@ -565,30 +565,33 @@
 
             <!-- Newsletter area start -->
             <section class="newsletter-area p-relative">
-                <div class="newsletter-overlay theme-bg-3 "></div>
-                <div class="container">
+                <div class="newsletter-overlay theme-bg-3"></div>
+                <div class="container" 
+                    style="background-image: url('{{ url('/uploads/FOREVER-MEDSPA/giftcard.jpeg') }}'); 
+                           background-size: cover; 
+                           background-position: center; 
+                           background-repeat: no-repeat; 
+                           width: 100%; 
+                           max-width: 1110px; 
+                           height: auto; 
+                           aspect-ratio: 1110 / 260.41;">
+                    
                     <div class="newsletter-grid p-relative">
-                        <div class="intro-bg">
-                            <div class="intro-bg-thumb include-bg"
-                                data-background="{{ url('/product_page') }}/imgs/bg/intro-bg.png"></div>
-                        </div>
                         <div class="row gy-4 align-items-center">
                             <div class="col-xxl-6 col-xl-6 col-lg-6">
                                 <div class="newsletter-content">
-                                    <h3 class="newsletter-title">Buy Our Awesome Giftcards</h3>
+                                    <!-- Removed the <h3> tag -->
                                 </div>
                             </div>
                             <div class="col-xxl-6 col-xl-6 col-lg-6">
                                 <div class="newsletter-form">
-
-                                    <div class="newsletter-input p-relative">
-
-                                        <button class="fill-btn" type="submit"
+                                    <div class="newsletter-input p-relative text-center">
+                                        <button class="fill-btn" type="submit" 
+                                            style="padding: 12px 24px; font-size: 16px; max-width: 200px; width: 100%;"
                                             onclick="location.href='{{ url('/') }}';">
-
                                             <span class="fill-btn-inner">
                                                 Buy Now
-                                                <span class="fill-btn-hover"> Buy Now</span>
+                                                <span class="fill-btn-hover">Buy Now</span>
                                             </span>
                                         </button>
                                     </div>
@@ -598,6 +601,7 @@
                     </div>
                 </div>
             </section>
+            
             <!-- Newsletter area end -->
 
         </main>
