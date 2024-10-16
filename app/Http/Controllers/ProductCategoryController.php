@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 class ProductCategoryController extends Controller
@@ -52,8 +53,10 @@ class ProductCategoryController extends Controller
             ['path' => $request->url(), 'query' => $request->query()] // Maintain URL and query parameters
         );
 
+        // Image Show
+        $images = Storage::files('public/images');
         // Pass the paginator to the view
-        return view('admin.product.category_index', ['paginator' => $paginator]);
+        return view('admin.product.category_index', ['paginator' => $paginator],compact('images'));
 
     } else {
         // If no categories are found or an error occurs, create an empty paginator
@@ -76,8 +79,10 @@ class ProductCategoryController extends Controller
         // Handle error if response is not valid or no categories found
         $errorMsg = $response['error'] ?? 'No categories found.';
         
+        //  For Media Code
+        $images = Storage::files('public/images');
         // Pass empty paginator and error message to the view
-        return view('admin.product.category_index', ['paginator' => $paginator, 'error' => $errorMsg]);
+        return view('admin.product.category_index', ['paginator' => $paginator, 'error' => $errorMsg],compact('images'));
     }
 }
 

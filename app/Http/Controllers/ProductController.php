@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
 class ProductController extends Controller
 {
@@ -49,8 +50,9 @@ class ProductController extends Controller
             $currentPage, // Current page
             ['path' => $request->url(), 'query' => $request->query()] // Append query parameters
         );
-
-        return view('admin.product.product_index', compact('paginator'));
+        // Image Show
+        $images = Storage::files('public/images');
+        return view('admin.product.product_index', compact('paginator','images'));
     }
 
     /**

@@ -39,6 +39,15 @@
         </div>
 <!-- Display Uploaded Images -->
 <div id="uploadedImages"></div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="card-header text-success">
                 @if(session()->has('success'))
                     {{ session()->get('success') }}
@@ -198,7 +207,15 @@
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Understood</button>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <div class="row">
+                    @foreach ($images as $image)
+                        <div class="col-md-4 mb-4">
+                            <img src="{{url('/')}}{{ Storage::url($image) }}" class="img-fluid" alt="Image" style="max-height: 200px;">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
       </div>
     </div>
