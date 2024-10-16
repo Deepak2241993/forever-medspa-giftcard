@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ImageUploadController extends Controller
 {
     public function uploadMultipleImages(Request $request)
     {
-        $request->validate([
-            'images.*' => 'required|mimes:jpg,jpeg,png|max:1024', // Validate each image
+        $validator = Validator::make($request->all(), [
+            'images.*' => 'required|mimes:jpg,jpeg,png|max:1024',
         ]);
-    
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed!',
+                'errors' => $validator->errors()
+            ], 422);
+        }
         $uploadedFiles = [];
     
         if ($request->hasFile('images')) {

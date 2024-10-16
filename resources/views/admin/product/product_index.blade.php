@@ -23,6 +23,7 @@
     <div class="app-content">
         <!--begin::Container-->
         <div class="container-fluid">
+            <div id="validationErrors"></div>
             <!--begin::Row-->
             <div style="display: flex; justify-content: space-between; align-items: center;">
     <!-- Add More Button (Left Side) -->
@@ -207,6 +208,7 @@
             </form>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button>
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                 <div class="row">
                     @foreach ($images as $image)
@@ -327,6 +329,27 @@
                     img.style.margin = '5px';
                     uploadedImagesDiv.appendChild(img);
                 });
+            }
+            else if (xhr.status === 422) {  // Handle validation errors
+            let response = JSON.parse(xhr.responseText);
+            let errorDiv = document.getElementById('validationErrors');
+            errorDiv.innerHTML = ''; // Clear previous errors
+
+            // Display validation errors
+            if (response.errors) {
+                Object.keys(response.errors).forEach(key => {
+                    let errorItem = document.createElement('div');
+                    errorItem.className = 'alert alert-danger'; // Bootstrap alert for styling
+                    errorItem.innerText = response.errors[key].join(', ');
+                    errorDiv.appendChild(errorItem);
+                });
+            } else {
+                // If there are no specific field errors, show the general message
+                let generalErrorItem = document.createElement('div');
+                generalErrorItem.className = 'alert alert-danger';
+                generalErrorItem.innerText = response.message; // Display the general validation message
+                errorDiv.appendChild(generalErrorItem);
+            }
             }
         };
 

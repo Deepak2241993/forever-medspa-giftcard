@@ -23,6 +23,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
+            <div id="validationErrors"></div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
@@ -30,9 +31,7 @@
                 
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download="product_categories.csv">Deals Template Download</a>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">
-                        Media
-                      </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">Media</button>
                     
                 </div>
             </div>
@@ -166,10 +165,11 @@
 </div>
 {{-- Modal for Media Upload --}}
  <!-- Progress Bar -->
-   <div id="progressWrapper" style="display: none; margin-top: 10px;">
-    <progress id="progressBar" value="0" max="100"></progress>
-    <span id="progressPercentage">0%</span>
-</div>
+ 
+    <div id="progressWrapper" style="display: none; margin-top: 10px;">
+        <progress id="progressBar" value="0" max="100"></progress>
+        <span id="progressPercentage">0%</span>
+    </div>
 <div class="modal fade" id="media_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="media_modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -186,6 +186,7 @@
             </form>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button>
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                 <div class="row">
                     @foreach ($images as $image)
@@ -238,59 +239,85 @@
 
     <script>
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        let formData = new FormData();
-        let files = document.getElementById('images').files;
+    let formData = new FormData();
+    let files = document.getElementById('images').files;
 
-        // Append all images to FormData
-        for (let i = 0; i < files.length; i++) {
-            formData.append('images[]', files[i]);
+    // Append all images to FormData
+    for (let i = 0; i < files.length; i++) {
+        formData.append('images[]', files[i]);
+    }
+
+    // Append the CSRF token to FormData
+    formData.append('_token', '{{ csrf_token() }}');
+
+    let xhr = new XMLHttpRequest();
+
+    // Update progress
+    xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+            let percentComplete = Math.round((e.loaded / e.total) * 100);
+            document.getElementById('progressBar').value = percentComplete;
+            document.getElementById('progressPercentage').innerText = percentComplete + '%';
+            document.getElementById('progressWrapper').style.display = 'block';
         }
-
-        // Append the CSRF token to FormData
-        formData.append('_token', '{{ csrf_token() }}'); // This is more reliable
-
-        let xhr = new XMLHttpRequest();
-
-        // Update progress
-        xhr.upload.addEventListener('progress', function(e) {
-            if (e.lengthComputable) {
-                let percentComplete = Math.round((e.loaded / e.total) * 100);
-                document.getElementById('progressBar').value = percentComplete;
-                document.getElementById('progressPercentage').innerText = percentComplete + '%';
-                document.getElementById('progressWrapper').style.display = 'block';
-            }
-        });
-
-        // On upload complete
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                document.getElementById('progressWrapper').style.display = 'none';
-                let response = JSON.parse(xhr.responseText);
-
-                // Show uploaded images
-                let uploadedImagesDiv = document.getElementById('uploadedImages');
-                uploadedImagesDiv.innerHTML = ''; // Clear previous images
-                response.files.forEach(file => {
-                    let img = document.createElement('img');
-                    img.src = '{{ url('/') }}'+ file; // Set image URL
-                    // img.src = file;
-                    img.style.width = '100px';
-                    img.style.margin = '5px';
-                    uploadedImagesDiv.appendChild(img);
-                });
-            }
-        };
-
-        // Error handling
-        xhr.onerror = function() {
-            console.log("Error during upload.");
-        };
-
-        // Open the request and send the FormData
-        xhr.open('POST', '{{ url('/admin/upload-multiple-images') }}', true); 
-        xhr.send(formData);  // Send the form data
     });
+
+    // On upload complete
+    xhr.onload = function() {
+        document.getElementById('progressWrapper').style.display = 'none';
+
+        if (xhr.status === 200) {
+            let response = JSON.parse(xhr.responseText);
+
+            // Clear any previous errors
+            document.getElementById('validationErrors').innerHTML = '';
+
+            // Show uploaded images
+            let uploadedImagesDiv = document.getElementById('uploadedImages');
+            uploadedImagesDiv.innerHTML = ''; // Clear previous images
+            response.files.forEach(file => {
+                let img = document.createElement('img');
+                img.src = '{{ url('/') }}' + file;
+                img.style.width = '100px';
+                img.style.margin = '5px';
+                uploadedImagesDiv.appendChild(img);
+            });
+        }
+        else if (xhr.status === 422) {  // Handle validation errors
+            let response = JSON.parse(xhr.responseText);
+            let errorDiv = document.getElementById('validationErrors');
+            errorDiv.innerHTML = ''; // Clear previous errors
+
+            // Display validation errors
+            if (response.errors) {
+                Object.keys(response.errors).forEach(key => {
+                    let errorItem = document.createElement('div');
+                    errorItem.className = 'alert alert-danger'; // Bootstrap alert for styling
+                    errorItem.innerText = response.errors[key].join(', ');
+                    errorDiv.appendChild(errorItem);
+                });
+            } else {
+                // If there are no specific field errors, show the general message
+                let generalErrorItem = document.createElement('div');
+                generalErrorItem.className = 'alert alert-danger';
+                generalErrorItem.innerText = response.message; // Display the general validation message
+                errorDiv.appendChild(generalErrorItem);
+            }
+        }
+    };
+
+    // Error handling
+    xhr.onerror = function() {
+        console.log("Error during upload.");
+    };
+
+    // Open the request and send the FormData
+    xhr.open('POST', '{{ url('/admin/upload-multiple-images') }}', true); 
+    xhr.send(formData);
+});
+
+
 </script>
 @endpush
