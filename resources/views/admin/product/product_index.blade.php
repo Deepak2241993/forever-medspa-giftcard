@@ -30,24 +30,13 @@
 
             <!-- Form and Demo Download (Right Side) -->
             <div style="display: flex; align-items: center; gap: 10px;">
-                <a href="{{url('/products.csv')}}" class="btn btn-info" download="products.csv">Download Data Template</a>
-                <a href="{{url('/admin/export-categories')}}" class="btn btn-warning" download="deals.csv">Download Deals</a>
-
-                <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
-                    <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept="image/jpg, image/jpeg, image/png" />
-                    <button type="submit" class="btn btn-success">Upload Images</button>
-                </form>
+                <a href="{{url('/products.csv')}}" class="btn btn-info" download="products.csv">Download Service Template</a>
+                <a href="{{url('/admin/export-categories')}}" class="btn btn-warning" download="deals.csv">Download Deals Data</a>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">
+                    Media
+                  </button>
             </div>
         </div>
-
-        <!-- Progress Bar -->
-        <div id="progressWrapper" style="display: none; margin-top: 10px;">
-            <progress id="progressBar" value="0" max="100"></progress>
-            <span id="progressPercentage">0%</span>
-        </div>
-
-
-
 <!-- Display Uploaded Images -->
 <div id="uploadedImages"></div>
             <div class="card-header text-success">
@@ -61,7 +50,7 @@
                             @csrf
                             <div class="row">
                                 <div class="form-group col-md-8">
-                                    <label for="file">Upload Bulk Data</label>
+                                    <label for="file">Upload Bulk Service Data</label>
                                     <input type="file" name="file" class="form-control" accept=".csv" required>
                                 </div>
                                 <div class="form-group col-md-4 d-flex align-items-end">
@@ -185,6 +174,36 @@
         </div>
     </div>
 </div>
+
+{{-- Modal for Media Upload --}}
+ <!-- Progress Bar -->
+ <div id="progressWrapper" style="display: none; margin-top: 10px;">
+    <progress id="progressBar" value="0" max="100"></progress>
+    <span id="progressPercentage">0%</span>
+</div>
+  <!-- Modal -->
+  <div class="modal fade" id="media_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="media_modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="media_modalLabel">Media Upload</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
+                <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept="image/jpg, image/jpeg, image/png" />
+                <button type="submit" class="btn btn-success">Upload Images</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{-- Modal Media Code End --}}
 @endsection
 
 @push('script')

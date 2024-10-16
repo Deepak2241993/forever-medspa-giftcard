@@ -177,31 +177,6 @@
         <!-- Body main wrapper start -->
         <main>
 
-            <!-- Breadcrumb area start  -->
-            {{-- <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
-         <div class="breadcrumb__thumb" data-background="{{url('/uploads/FOREVER-MEDSPA')}}/med-spa-banner.jpg"></div>
-         <div class="container">
-            <div class="row justify-content-center">
-               <div class="col-xxl-12">
-                  <div class="breadcrumb__wrapper text-center">
-                     <h4 class="breadcrumb__title">Welcome to the world of Forever Medspa.</h4>
-                     <center><div class="nav_class">
-                        <h6 style="color: white;opacity: 100%;">Avail these amazing Services Now!</h6>
-                     </div>
-                  </center>
-                     <div class="breadcrumb__menu">
-                        <nav>
-                           <ul>
-                              <li><span><a href="{{url('/')}}">Home</a></span></li>
-                              <li><span>Categories</span></li>
-                           </ul>
-                        </nav>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div> --}}
             <div id="carouselExampleAutoplaying" class="carousel slide" style="margin-top: 80px" data-bs-ride="carousel">
                   <div class="carousel-inner">
                     @foreach ($sliders as $key => $value)
@@ -403,115 +378,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Category</h3>
-                        <div class="sidebar__widget-content">
-                           <ul>
-                              @foreach ($category as $value)
-                              <li><a href="{{ route('productCategory', ['id' => $value->id]) }}">{{substr(ucFirst($value->cat_name),0,20)}}</a></li>
-                              @endforeach
                               
-                           </ul>
-                        </div>
-                     </div> --}}
-                                {{-- <div class="sidebar__widget mb-45">
-                        <div class="sidebar__widget-content">
-                           <div class="sidebar__author">
-                              <div class="sidebar__author-thumb">
-                                 <img src="{{url('/product_page')}}/imgs/blog/blog-10.jpg" alt="">
-                              </div>
-                              <div class="sidebar__author-content">
-                                 <h3 class="sidebar__author-title">Colene Landin</h3>
-                                 <p>Adipiscing elit, sed do eiu tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim </p>
-                                 <div
-                                    class="sidebar__author-social d-flex align-items-center justify-content-center gap-2 flex-wrap">
-                                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div> --}}
-                                {{-- Hot Deals --}}
-                                {{-- <div class="sidebar__widget mb-45">
-                        <h3 class="sidebar__widget-title">Our Popular Offers</h3>
-                        <div class="sidebar__widget-content">
-                           <div class="sidebar__post">
-                              <div class="rc__post d-flex align-items-center">
-                                 <div class="rc__post-thumb">
-                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-11.jpg" alt=""></a>
-                                 </div>
-                                 <div class="rc__post-content">
-                                    <h4 class="rc__post-title">
-                                       <a href="{{route('popularDeals')}}">Business meeting 2021 in San Francisco</a>
-                                    </h4>
-                                    <div class="rc__meta">
-                                       <span>
-                                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                             <path
-                                                d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                             <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>July 21, 2022
-                                       </span>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="rc__post d-flex align-items-center">
-                                 <div class="rc__post-thumb">
-                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-12.jpg" alt=""></a>
-                                 </div>
-                                 <div class="rc__post-content">
-                                    <h4 class="rc__post-title">
-                                       <a href="{{route('popularDeals')}}">Developing privacy user-centric apps</a>
-                                    </h4>
-                                    <div class="rc__meta">
-                                       <span>
-                                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                             <path
-                                                d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                             <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>July 21, 2022
-                                       </span>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="rc__post d-flex align-items-center">
-                                 <div class="rc__post-thumb">
-                                    <a href="{{route('popularDeals')}}"><img src="{{url('/product_page')}}/imgs/blog/blog-13.jpg" alt=""></a>
-                                 </div>
-                                 <div class="rc__post-content">
-                                    <h4 class="rc__post-title">
-                                       <a href="{{route('popularDeals')}}">Starting and Growing Web Design in 2022</a>
-                                    </h4>
-                                    <div class="rc__meta">
-                                       <span>
-                                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                             <path
-                                                d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                             <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>July 21, 2022
-                                       </span>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div> --}}
                                 @if (count($popular_service) > 0)
                                     <div class="sidebar__widget mb-45">
                                         <h3 class="sidebar__widget-title">Popular Services</h3>
@@ -532,19 +399,7 @@
                                                                     <a
                                                                         href="{{ route('PopularService', ['id' => $value->id]) }}">{{ Str::limit($value->product_name, 10, '...') }}</a>
                                                                 </h4>
-                                                                {{-- <div class="rc__meta">
-                                       <span>
-                                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                             <path
-                                                d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                             <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>July 21, 2022
-                                       </span>
-                                    </div> --}}
+                                                         
                                                             </div>
                                                         </div>
                                                     @endif
@@ -601,7 +456,6 @@
                     </div>
                 </div>
             </section>
-            
             <!-- Newsletter area end -->
 
         </main>

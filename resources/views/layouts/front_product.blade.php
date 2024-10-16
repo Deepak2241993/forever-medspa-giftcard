@@ -45,14 +45,15 @@
     <div id="preloader">
        <div class="bd-loader-inner">
           <div class="bd-loader">
+             {{-- <span class="bd-loader-item"></span>
              <span class="bd-loader-item"></span>
              <span class="bd-loader-item"></span>
              <span class="bd-loader-item"></span>
              <span class="bd-loader-item"></span>
              <span class="bd-loader-item"></span>
              <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
+             <span class="bd-loader-item"></span> --}}
+             <img src="{{url('/uploads/FOREVER-MEDSPA/medspa_logo.gif')}}">
           </div>
        </div>
     </div>
@@ -73,7 +74,15 @@
                     <ul class="navbar-nav">
                          <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
-						<li><a class="nav-link active" href="{{route('category',['token'=>'FOREVER-MEDSPA'])}}">Services</a></li>
+						<li>
+                            <a class="nav-link {{ Request::is('category/FOREVER-MEDSPA') ? 'active' : '' }}" href="{{ route('category', ['token' => 'FOREVER-MEDSPA']) }}">
+                                Services
+                            </a>
+                        </li>
+                        
+                        <a class="nav-link {{ Request::is('patient-referral') ? 'active' : '' }}" href="{{ route('patient-referral') }}">
+                            Referral
+                        </a>
                         {{-- Cart Code --}}
                         @php
                         $cart = session()->get('cart', []);

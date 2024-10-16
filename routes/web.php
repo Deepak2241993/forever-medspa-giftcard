@@ -61,6 +61,10 @@ Route::post('/services/import', [ProductImportController::class, 'import'])->nam
 Route::post('/upload-multiple-images', [ImageUploadController::class, 'uploadMultipleImages'])->name('upload.images');
 Route::get('/export-categories', [CategoryExportController::class, 'exportCategories']);
 
+Route::resource('/referral', ReferralController::class);
+
+
+
 
 
 //  For Service Order 
@@ -148,7 +152,7 @@ Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->n
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
 Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
 Route::get('invoice','StripeController@invoice')->name('invoice');
-
+Route::get('/patient-referral','ReferralController@referral')->name('patient-referral');
 
 
 Route::resource('/product', ProductController::class);

@@ -42,17 +42,17 @@
         @endpush
         <!-- Breadcrumb area start  -->
         <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
-            <div class="breadcrumb__thumb" data-background="{{ url('/product_page') }}/imgs/bg/breadcrumb-bg.jpg"></div>
+            <div class="breadcrumb__thumb" data-background="{{url('/uploads/FOREVER-MEDSPA')}}/med-spa-banner.jpg"></div>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xxl-12">
                         <div class="breadcrumb__wrapper text-center">
-                            <h2 class="breadcrumb__title">Cart</h2>
+                            <h2 class="breadcrumb__title">Deals<br>Cart</h2>
                             <div class="breadcrumb__menu">
                                 <nav>
                                     <ul>
                                         <li><span><a href="{{ url('/') }}">Home</a></span></li>
-                                        <li><span>Cart</span></li>
+                                        <li><span>Deals Cart</span></li>
                                     </ul>
                                 </nav>
                             </div>

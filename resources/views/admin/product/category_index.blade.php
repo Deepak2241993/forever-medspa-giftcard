@@ -27,20 +27,14 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
                 </div>
+                
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download="product_categories.csv">Deals Template Download</a>
-                    <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
-                        <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept="image/jpg, image/jpeg, image/png" />
-                        <button type="submit" class="btn btn-success">Upload Images</button>
-                    </form>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">
+                        Media
+                      </button>
+                    
                 </div>
-            </div>
-            
-            
-            <!-- Progress Bar -->
-            <div id="progressWrapper" style="display: none; margin-top: 10px;">
-                <progress id="progressBar" value="0" max="100"></progress>
-                <span id="progressPercentage">0%</span>
             </div>
             <!-- Display Uploaded Images -->
             <div id="uploadedImages"></div>
@@ -162,6 +156,34 @@
         </div>
     </div>
 </div>
+{{-- Modal for Media Upload --}}
+ <!-- Progress Bar -->
+   <div id="progressWrapper" style="display: none; margin-top: 10px;">
+    <progress id="progressBar" value="0" max="100"></progress>
+    <span id="progressPercentage">0%</span>
+</div>
+<div class="modal fade" id="media_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="media_modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="media_modalLabel">Media Upload</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
+                <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept="image/jpg, image/jpeg, image/png" />
+                <button type="submit" class="btn btn-success">Upload Images</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{-- Modal Media Code End --}}
 @endsection
 
 @push('script')
