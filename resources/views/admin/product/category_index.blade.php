@@ -30,7 +30,11 @@
                 </div>
                 
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <a href="{{url('/product_categories.csv')}}" class="btn btn-info" download="product_categories.csv">Deals Template Download</a>
+                    @if($paginator->isEmpty())
+                    <a href="{{url('/deals.csv')}}" class="btn btn-info" download="deals.csv">Deals Template Download</a>
+                    @else
+                    <a href="{{url('/admin/export-categories-with-full-data')}}" class="btn btn-info" download="deals.csv">Deals Template Download</a>
+                    @endif
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">Media</button>
                     
                 </div>

@@ -31,7 +31,11 @@
 
             <!-- Form and Demo Download (Right Side) -->
             <div style="display: flex; align-items: center; gap: 10px;">
-                <a href="{{url('/products.csv')}}" class="btn btn-info" download="products.csv">Download Service Template</a>
+                @if($paginator->isEmpty())
+                <a href="{{url('/services.csv')}}" class="btn btn-info" download="services.csv">Download Service Template</a>
+                @else
+                <a href="{{url('/admin/export-services')}}" class="btn btn-info" download="services.csv">Download Service Template</a>
+                @endif
                 <a href="{{url('/admin/export-categories')}}" class="btn btn-warning" download="deals.csv">Download Deals Data</a>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">
                     Media
@@ -76,12 +80,6 @@
                         </form>
                     </div>
             </div>
-            
-            <span class="text-success">
-                @if(session()->has('success'))
-                    {{ session()->get('success') }}
-                @endif
-            </span>
 
             <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                 <thead>

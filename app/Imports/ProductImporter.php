@@ -49,8 +49,8 @@ class ProductImporter implements ToModel, WithHeadingRow, SkipsEmptyRows
                 'session_number' => $row['number_of_session'] ?? 1,
                 'cat_id' => $row['enter_deals_id'] ?? 1,
                 'search_keywords' => $row['search_keywords'] ?? 1,
-                'popular_service' => Str::lower($row['popular_services']) == 'yes' ? 1 : 0,
-                'giftcard_redemption' => Str::lower($row['giftcard_redeem']) == 'yes' ? 1 : 0,
+                'popular_service' => Str::lower($row['popular_services_yes_no']) == 'yes' ? 1 : 0,
+                'giftcard_redemption' => Str::lower($row['giftcard_redeem_yes_no']) == 'yes' ? 1 : 0,
                 'created_at' => $createdAt ?? now(),
                 'updated_at' => $updatedAt ?? now(),
             

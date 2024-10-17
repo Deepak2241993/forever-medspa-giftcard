@@ -20,7 +20,6 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     {
         // Normalize the keys for case-insensitivity
         $row = array_change_key_case($row, CASE_LOWER);
-
         // Check for missing 'cat_name' and log if skipped
         if (empty($row['deal_name'])) {
             Log::channel('import')->warning('Row skipped: Missing Deal Name', ['row' => $row]);
@@ -28,8 +27,8 @@ class CategoryImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         }
 
         // Parse date formats, log if there's an issue
-        $dealStartDate = $this->parseDate($row['deal_start_date'], $row);
-        $dealEndDate = $this->parseDate($row['deal_end_date'], $row);
+        $dealStartDate = $this->parseDate($row['deal_start_date_mm_dd_yyyy'], $row);
+        $dealEndDate = $this->parseDate($row['deal_end_date_mm_dd_yyyy'], $row);
 
         $createdAt = now()->format('Y-m-d H:i:s');
         $updatedAt = now()->format('Y-m-d H:i:s');
