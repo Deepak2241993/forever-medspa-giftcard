@@ -23,7 +23,7 @@
     <div class="app-content">
         <!--begin::Container-->
         <div class="container-fluid">
-            <div id="validationErrors"></div>
+           
             <!--begin::Row-->
             <div style="display: flex; justify-content: space-between; align-items: center;">
     <!-- Add More Button (Left Side) -->
@@ -39,16 +39,7 @@
             </div>
         </div>
 <!-- Display Uploaded Images -->
-<div id="uploadedImages"></div>
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+
             <div class="card-header text-success">
                 @if(session()->has('success'))
                     {{ session()->get('success') }}
@@ -186,11 +177,7 @@
 </div>
 
 {{-- Modal for Media Upload --}}
- <!-- Progress Bar -->
- <div id="progressWrapper" style="display: none; margin-top: 10px;">
-    <progress id="progressBar" value="0" max="100"></progress>
-    <span id="progressPercentage">0%</span>
-</div>
+
   <!-- Modal -->
   <div class="modal fade" id="media_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="media_modalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -202,13 +189,31 @@
           </button>
         </div>
         <div class="modal-body">
+            <div id="validationErrors"></div>
+            
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form id="uploadForm" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 10px;">
-                <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" accept="image/jpg, image/jpeg, image/png" />
+                <input type="file" class="form-control" name="images[]" id="images" multiple style="width: auto;" required accept="image/jpg, image/jpeg, image/png" />
                 <button type="submit" class="btn btn-success">Upload Images</button>
             </form>
+             <!-- Display Uploaded Images -->
+                <div id="progressWrapper" style="display: none; margin-top: 10px;">
+                    <progress id="progressBar" value="0" max="100"></progress>
+                    <span id="progressPercentage">0%</span>
+                </div>
+                <div id="uploadedImages"></div>
+            <!-- Display Uploaded Images -->
         </div>
         <div class="modal-footer">
-            <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button>
+            {{-- <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button> --}}
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                 <div class="row">
                     @foreach ($images as $image)
