@@ -44,11 +44,52 @@
         </div>
 <!-- Display Uploaded Images -->
 
-            <div class="card-header text-success">
-                @if(session()->has('success'))
-                    {{ session()->get('success') }}
-                @endif
-            </div>
+@if (session('success'))
+<div class="alert alert-success mt-4">
+    {{ session('success') }}
+</div>
+@endif
+
+@if (session('error'))
+<div class="alert alert-danger mt-4">
+    {{ session('error') }}
+    @if (session('details'))
+        <pre>{{ session('details') }}</pre>
+    @endif
+</div>
+@endif
+@if (session('import_errors') && count(session('import_errors')) > 0)
+<div class="alert alert-danger mt-4">
+    <h4>There were some errors while importing the data:</h4>
+
+    <ul>
+        @foreach (session('import_errors') as $errorDetail)
+            <li>
+                <strong>Row:</strong>
+                <pre>{{ print_r($errorDetail['row'], true) }}</pre>
+                <strong>Errors:</strong>
+                <ul>
+                    @foreach ($errorDetail['errors'] as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </li>
+            <li> <a href="{{ route('clear.errors') }}" class="btn btn-danger">Clear Errors</a></li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
             <div class="row">
                     <div class="col-md-6">
                         <form action="{{ route('services.import') }}" method="POST" enctype="multipart/form-data">

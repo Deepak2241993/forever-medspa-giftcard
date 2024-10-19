@@ -99,7 +99,7 @@ class CategoryExportController extends Controller
 
         // Prepare CSV headers
         $csvHeader = [
-            'ID', 'Service Name','Short Description','Service Description','Prerequisites','Service Image','Service Original Price','Service Price','Number of session','Enter Deals ID','Search Keywords','Popular Services','Giftcard Redeem'
+            'ID', 'Service Name','Short Description','Service Description','Prerequisites','Service Image','Service Original Price','Service Price','Number of session','Enter Deals ID','Search Keywords','Popular Services (Yes-No)','Giftcard Redeem (Yes-No)'
         ];
 
         // Open a file pointer for output
