@@ -56,7 +56,7 @@ class CategoryExportController extends Controller
 
         // Prepare CSV headers
         $csvHeader = [
-            'ID', 'Deals Name','Deal Description','Deal Image','Deal Start Date','Deal End Date'
+            'ID', 'Deals Name','Deal Description','Deal Image','Deal Start Date (mm-dd-yyyy)','Deal End Date (mm-dd-yyyy)'
         ];
 
         // Open a file pointer for output
