@@ -57,6 +57,7 @@ Route::resource('/product', ProductController::class);
 Route::resource('/banner', BannerController::class);
 
 Route::post('/categories/import', [ProductCategoryImportController::class, 'import'])->name('categories.import');
+Route::get('/clear-errors', [ProductCategoryImportController::class, 'clearErrors'])->name('clear.errors');
 Route::post('/services/import', [ProductImportController::class, 'import'])->name('services.import');
 Route::post('/upload-multiple-images', [ImageUploadController::class, 'uploadMultipleImages'])->name('upload.images');
 Route::get('/export-categories', [CategoryExportController::class, 'exportCategories']);

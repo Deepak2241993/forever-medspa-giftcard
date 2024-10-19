@@ -56,7 +56,7 @@ class CategoryExportController extends Controller
 
         // Prepare CSV headers
         $csvHeader = [
-            'ID', 'Deals Name','Deal Description','Deal Image','Deal Start Date (mm-dd-yyyy)','Deal End Date (mm-dd-yyyy)'
+            'ID', 'Deal Name','Deal Description','Deal Image','Deal Start Date (mm-dd-yyyy)','Deal End Date (mm-dd-yyyy)'
         ];
 
         // Open a file pointer for output
@@ -74,8 +74,8 @@ class CategoryExportController extends Controller
                 $category->cat_name,
                 $category->cat_description,
                 $category->cat_image,
-                $category->deal_start_date,
-                $category->deal_end_date,
+                date('m-d-Y',strtotime($category->deal_start_date)),
+                date('m-d-Y',strtotime($category->deal_end_date)),
                 // $status,
             ]);
         }
