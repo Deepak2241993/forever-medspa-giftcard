@@ -11,34 +11,40 @@ class ImageUploadController extends Controller
 {
     public function uploadMultipleImages(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'images.*' => 'required|mimes:jpg,jpeg,png|max:1024',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed!',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $images = $request->file('images');
+        $errorMessages = [];
         $uploadedFiles = [];
     
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                // Generate a unique filename
-                $fileName = $file->getClientOriginalName();
-                // Store the image in the 'images' directory in the 'public' disk
-                $filePath = $file->storeAs('images', $fileName, 'public');
-    
-                // Store the file paths to return as a response
-                $uploadedFiles[] = Storage::url($filePath);
-            }
-    
-            return response()->json([
-                'message' => 'Images uploaded successfully!',
-                'files' => $uploadedFiles
-            ]);
+        // Check if there are any files
+        if (!$images) {
+            return response()->json(['message' => 'No images uploaded'], 400);
         }
     
-        return response()->json(['message' => 'No images uploaded'], 400);
+        // Process each image separately
+        foreach ($images as $image) {
+            $validator = Validator::make(
+                ['image' => $image],
+                ['image' => 'required|mimes:jpg,jpeg,png|max:1024'] // max size in kilobytes
+            );
+    
+            if ($validator->fails()) {
+                // Add error with original image name if size is greater than 1024KB
+                $errorMessages[] = 'Error with file "' . $image->getClientOriginalName() . '": ' . implode(', ', $validator->errors()->all());
+            } else {
+                // If validation passes, store the file
+                $fileName = $image->getClientOriginalName();
+                $filePath = $image->storeAs('images', $fileName, 'public');
+                $uploadedFiles[] = Storage::url($filePath);
+            }
+        }
+    
+        // Response with both errors and successful uploads
+        return response()->json([
+            'message' => !empty($errorMessages) ? 'Some images failed to upload due to size limit.' : 'Images uploaded successfully!',
+            'errors' => $errorMessages,
+            'files' => $uploadedFiles
+        ]);
     }
+    
+
 }

@@ -184,7 +184,7 @@
                             <div class="carousel-item @if ($key == 0) {{ 'active' }} @endif">
                                 <img src="{{ url($value->image) }}" class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                 <a href="{{$value->url}}" target="_blank" class="btn btn-primary">Explore More</a>
+                                 <a href="{{$value->url}}" target="_blank" class="btn btn-primary" style="width:120px;height:35px;font-size:15px">Explore More</a>
                              </div>
                             </div>
                         @endif

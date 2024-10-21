@@ -296,7 +296,6 @@
         <script>
             document.getElementById('uploadForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-
                 let formData = new FormData();
                 let files = document.getElementById('images').files;
 
