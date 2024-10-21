@@ -298,17 +298,17 @@
                 e.preventDefault();
                 let formData = new FormData();
                 let files = document.getElementById('images').files;
-
+        
                 // Append all images to FormData
                 for (let i = 0; i < files.length; i++) {
                     formData.append('images[]', files[i]);
                 }
-
+        
                 // Append the CSRF token to FormData
                 formData.append('_token', '{{ csrf_token() }}');
-
+        
                 let xhr = new XMLHttpRequest();
-
+        
                 // Update progress
                 xhr.upload.addEventListener('progress', function(e) {
                     if (e.lengthComputable) {
@@ -318,17 +318,17 @@
                         document.getElementById('progressWrapper').style.display = 'block';
                     }
                 });
-
+        
                 // On upload complete
                 xhr.onload = function() {
                     document.getElementById('progressWrapper').style.display = 'none';
-
+        
                     if (xhr.status === 200) {
                         let response = JSON.parse(xhr.responseText);
-
+        
                         // Clear any previous errors
                         document.getElementById('validationErrors').innerHTML = '';
-
+        
                         // Show uploaded images
                         let uploadedImagesDiv = document.getElementById('uploadedImages');
                         uploadedImagesDiv.innerHTML = ''; // Clear previous images
@@ -343,13 +343,13 @@
                         let response = JSON.parse(xhr.responseText);
                         let errorDiv = document.getElementById('validationErrors');
                         errorDiv.innerHTML = ''; // Clear previous errors
-
-                        // Display validation errors
-                        if (response.errors) {
-                            Object.keys(response.errors).forEach(key => {
+        
+                        // Display validation errors for specific files
+                        if (response.errors && response.errors.length > 0) {
+                            response.errors.forEach(error => {
                                 let errorItem = document.createElement('div');
                                 errorItem.className = 'alert alert-danger'; // Bootstrap alert for styling
-                                errorItem.innerText = response.errors[key].join(', ');
+                                errorItem.innerText = error; // Display the error message for each failed image
                                 errorDiv.appendChild(errorItem);
                             });
                         } else {
@@ -361,15 +361,16 @@
                         }
                     }
                 };
-
+        
                 // Error handling
                 xhr.onerror = function() {
                     console.log("Error during upload.");
                 };
-
+        
                 // Open the request and send the FormData
                 xhr.open('POST', '{{ url('/admin/upload-multiple-images') }}', true);
                 xhr.send(formData);
             });
         </script>
+        
     @endpush
