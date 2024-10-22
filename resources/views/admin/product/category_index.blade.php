@@ -294,83 +294,79 @@
         <!-- For Multiple Image upload Code -->
 
         <script>
-            document.getElementById('uploadForm').addEventListener('submit', function(e) {
-                e.preventDefault();
+            document.getElementById('uploadForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-                let formData = new FormData();
-                let files = document.getElementById('images').files;
+    let formData = new FormData();
+    let files = document.getElementById('images').files;
 
-                // Append all images to FormData
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('images[]', files[i]);
-                }
+    // Append all images to FormData
+    for (let i = 0; i < files.length; i++) {
+        formData.append('images[]', files[i]);
+    }
 
-                // Append the CSRF token to FormData
-                formData.append('_token', '{{ csrf_token() }}');
+    // Append the CSRF token to FormData
+    formData.append('_token', '{{ csrf_token() }}');
 
-                let xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
-                // Update progress
-                xhr.upload.addEventListener('progress', function(e) {
-                    if (e.lengthComputable) {
-                        let percentComplete = Math.round((e.loaded / e.total) * 100);
-                        document.getElementById('progressBar').value = percentComplete;
-                        document.getElementById('progressPercentage').innerText = percentComplete + '%';
-                        document.getElementById('progressWrapper').style.display = 'block';
-                    }
+    // Update progress
+    xhr.upload.addEventListener('progress', function (e) {
+        if (e.lengthComputable) {
+            let percentComplete = Math.round((e.loaded / e.total) * 100);
+            document.getElementById('progressBar').value = percentComplete;
+            document.getElementById('progressPercentage').innerText = percentComplete + '%';
+            document.getElementById('progressWrapper').style.display = 'block';
+        }
+    });
+
+    // On upload complete
+    xhr.onload = function () {
+        document.getElementById('progressWrapper').style.display = 'none';
+
+        if (xhr.status === 200) {
+            let response = JSON.parse(xhr.responseText);
+
+            // Clear previous errors and images
+            document.getElementById('validationErrors').innerHTML = '';
+            document.getElementById('uploadedImages').innerHTML = '';
+
+            // Show successfully uploaded images
+            if (response.files.length > 0) {
+                let uploadedImagesDiv = document.getElementById('uploadedImages');
+                response.files.forEach(file => {
+                    let img = document.createElement('img');
+                    img.src = '{{ url('/') }}' + file;
+                    img.style.width = '100px';
+                    img.style.margin = '5px';
+                    uploadedImagesDiv.appendChild(img);
                 });
+            }
 
-                // On upload complete
-                xhr.onload = function() {
-                    document.getElementById('progressWrapper').style.display = 'none';
+            // Show validation errors
+            if (response.errors.length > 0) {
+                let errorDiv = document.getElementById('validationErrors');
+                response.errors.forEach(error => {
+                    let errorItem = document.createElement('div');
+                    errorItem.className = 'alert alert-danger';
+                    errorItem.innerText = error;
+                    errorDiv.appendChild(errorItem);
+                });
+            }
+        } else {
+            console.log("Error during upload.");
+        }
+    };
 
-                    if (xhr.status === 200) {
-                        let response = JSON.parse(xhr.responseText);
+    // Error handling
+    xhr.onerror = function () {
+        console.log("Error during upload.");
+    };
 
-                        // Clear any previous errors
-                        document.getElementById('validationErrors').innerHTML = '';
+    // Open the request and send the FormData
+    xhr.open('POST', '{{ url('/admin/upload-multiple-images') }}', true);
+    xhr.send(formData);
+});
 
-                        // Show uploaded images
-                        let uploadedImagesDiv = document.getElementById('uploadedImages');
-                        uploadedImagesDiv.innerHTML = ''; // Clear previous images
-                        response.files.forEach(file => {
-                            let img = document.createElement('img');
-                            img.src = '{{ url('/') }}' + file;
-                            img.style.width = '100px';
-                            img.style.margin = '5px';
-                            uploadedImagesDiv.appendChild(img);
-                        });
-                    } else if (xhr.status === 422) { // Handle validation errors
-                        let response = JSON.parse(xhr.responseText);
-                        let errorDiv = document.getElementById('validationErrors');
-                        errorDiv.innerHTML = ''; // Clear previous errors
-
-                        // Display validation errors
-                        if (response.errors) {
-                            Object.keys(response.errors).forEach(key => {
-                                let errorItem = document.createElement('div');
-                                errorItem.className = 'alert alert-danger'; // Bootstrap alert for styling
-                                errorItem.innerText = response.errors[key].join(', ');
-                                errorDiv.appendChild(errorItem);
-                            });
-                        } else {
-                            // If there are no specific field errors, show the general message
-                            let generalErrorItem = document.createElement('div');
-                            generalErrorItem.className = 'alert alert-danger';
-                            generalErrorItem.innerText = response.message; // Display the general validation message
-                            errorDiv.appendChild(generalErrorItem);
-                        }
-                    }
-                };
-
-                // Error handling
-                xhr.onerror = function() {
-                    console.log("Error during upload.");
-                };
-
-                // Open the request and send the FormData
-                xhr.open('POST', '{{ url('/admin/upload-multiple-images') }}', true);
-                xhr.send(formData);
-            });
         </script>
     @endpush
