@@ -13,7 +13,7 @@
     <meta name="description" content="{{url('/medspa.png')}}">
     <meta name="keywords" content="{{url('/medspa.png')}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{url('/medspa.png')}}">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{url('/')}}/plugins/fontawesome-free/css/all.min.css">
@@ -66,14 +66,16 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{url('/')}}/plugins/fontawesome-free/css/all.min.css">
   <!-- IonIcons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  {{-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
   <!-- Theme style -->
   <link rel="stylesheet" href="{{url('/')}}/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="{{url('/')}}/dist/toastr/toastr.css">
+  <link rel="stylesheet" href="{{url('/')}}/dist/sweetalert2/sweetalert2.min.css">
+  <link rel="stylesheet" href="{{url('/')}}/dist/summernote/summernote-bs4.min.css">
+
   <!-- for Font giftcardsale page -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
   <!-- For Eiditor -->
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">

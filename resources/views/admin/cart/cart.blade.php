@@ -85,38 +85,26 @@
     display: none; /* Hide normal text on hover */
 }
 @endpush
-        <main class="app-main">
-            <!--begin::App Content Header-->
-            <div class="app-content-header">
-                <!--begin::Container-->
-                <div class="container-fluid">
-                    <!--begin::Row-->
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <h3 class="mb-0">Cart</h3>
-                           
-                        </div>
-                        <div class="col-md-2">
-                            <div class="coupon2">
-                                <button
-                                    onclick="window.location.href='{{ route('product.index')}}'"
-                                    class="btn btn-success" type="button">+Add More Service
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-sm-10">
-                            <ol class="breadcrumb float-sm-end">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    Cart View
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                    <!--end::Row-->
-                </div>
-                <!--end::Container-->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            <h3 class="mb-0"> Cart View</h3>
             </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Cart View
+                        </li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content-header">
+            <!--begin::App Content Header-->
+            
         <!-- Breadcrumb area start  -->
         @if (isset($cart) && !empty($cart))
             <!-- Cart area start  -->
@@ -264,7 +252,7 @@
             <h3>Your Cart is Empty</h3>
         @endif
 
-    </main>
+    </section>
     <!-- Body main wrapper end -->
 
     @endsection
