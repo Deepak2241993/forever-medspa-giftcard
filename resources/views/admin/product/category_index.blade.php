@@ -246,10 +246,10 @@
                         <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="row">
                                 @foreach ($images as $image)
-                                    <div class="col-md-4 mb-4">
-                                        <img src="{{ url('/') }}{{ Storage::url($image) }}" class="img-fluid"
-                                            alt="Image" style="max-height: 200px;">
-                                    </div>
+                                <div class="col-md-4 mb-4 image-container" data-image="{{$image }}">
+                                    <img src="{{ url('/') }}{{ Storage::url($image) }}" class="img-fluid" alt="Image" style="max-height: 200px;">
+                                    <button type="button" class="btn-close delete-image" aria-label="Close" style="position: absolute; top: 10px; right: 10px;">&times;</button>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -293,7 +293,7 @@
         </script>
         <!-- For Multiple Image upload Code -->
 
-        <script>
+<script>
             document.getElementById('uploadForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -368,5 +368,38 @@
     xhr.send(formData);
 });
 
-        </script>
+    </script>
+{{--  For Image Delete  --}}
+<script>
+    $(document).ready(function() {
+        // When the delete button is clicked
+        $('.delete-image').on('click', function() {
+            // Get the parent div that contains the image and image path
+            var imageContainer = $(this).closest('.image-container');
+            var image = imageContainer.data('image');
+
+            // Send an AJAX request to delete the image
+            $.ajax({
+                url: '{{ url("/admin/delete-image")}}', // Your route to handle image deletion
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // Include CSRF token
+                    image: image
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Remove the image container on successful delete
+                        imageContainer.remove();
+                    } else {
+                        alert('Error deleting image');
+                    }
+                },
+                error: function() {
+               
+                    alert('Error deleting image');
+                }
+            });
+        });
+    });
+</script>
     @endpush

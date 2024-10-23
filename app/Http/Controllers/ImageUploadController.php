@@ -46,6 +46,23 @@ class ImageUploadController extends Controller
     ]);
 }
 
-    
+//  for image delete 
+
+        public function deleteImage(Request $request)
+        {
+            $imagePath = $request->input('image');
+            
+            // Check if the image exists in storage
+            if (Storage::exists($imagePath)) {
+                // Delete the image from storage
+                Storage::delete($imagePath);
+
+                return response()->json(['success' => true]);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Image not found']);
+        }
+
+//  for image delete 
 
 }

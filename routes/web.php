@@ -60,6 +60,7 @@ Route::post('/categories/import', [ProductCategoryImportController::class, 'impo
 Route::get('/clear-errors', [ProductCategoryImportController::class, 'clearErrors'])->name('clear.errors');
 Route::post('/services/import', [ProductImportController::class, 'import'])->name('services.import');
 Route::post('/upload-multiple-images', [ImageUploadController::class, 'uploadMultipleImages'])->name('upload.images');
+Route::post('/delete-image', [ImageUploadController::class, 'deleteImage']);
 Route::get('/export-categories', [CategoryExportController::class, 'exportCategories']);
 Route::get('/export-categories-with-full-data', [CategoryExportController::class, 'exportCategoriesWithAllFields']);
 Route::get('/export-services', [CategoryExportController::class, 'exportServices']);
