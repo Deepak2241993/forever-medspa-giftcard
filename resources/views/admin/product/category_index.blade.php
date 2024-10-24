@@ -247,7 +247,7 @@
                         {{-- <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button> --}}
                         <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="row">
-                                @foreach ($images as $key => $image)
+                            @foreach ($images as $key => $image)
                                 <div class="col-md-2 mb-4 image-container" data-image="{{ $image }}" style="position: relative;">
                                     <div class="border border-primary" style="height:100px;width:120px;margin-top: 30px; position:relative;">
                                         <img src="{{ url('/') }}{{ Storage::url($image) }}" class="img-fluid" alt="Image" style="height:100px;width:120px;">
@@ -426,9 +426,7 @@ function Copy(getkey) {
     }).catch(function(error) {
         console.error("Could not copy text: ", error);
     });
-}
-
-
-    </script>
+}    
+</script>
     @endpush
     
