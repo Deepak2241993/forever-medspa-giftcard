@@ -74,7 +74,8 @@ public function model(array $row)
             [
                 'cat_name' => $row['deal_name'] ?? null,
                 'cat_description' => $row['deal_description'] ?? null,
-                'cat_image' => isset($row['deal_image']) ? url('/storage/images')."/".$row['deal_image'] : null,
+                // 'cat_image' => isset($row['deal_image']) ? url('/storage/images')."/".$row['deal_image'] : null,
+                'cat_image' => $row['deal_image'],
                 'cat_is_deleted' => (int) ($row['cat_is_deleted'] ?? 0),
                 'user_token' => 'FOREVER-MEDSPA',
                 'status' => (int) ($row['status'] ?? 1),
