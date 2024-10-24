@@ -208,7 +208,7 @@
 
         <div class="modal fade" id="media_modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="media_modalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="media_modalLabel">Media Upload</h5>
@@ -247,12 +247,18 @@
                         {{-- <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button> --}}
                         <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="row">
-                                @foreach ($images as $image)
-                                <div class="col-md-4 mb-4 image-container" data-image="{{$image }}">
-                                    <img src="{{ url('/') }}{{ Storage::url($image) }}" class="img-fluid" alt="Image" style="max-height: 200px;">
-                                    <button type="button" class="btn-close delete-image" aria-label="Close" style="position: absolute; top: 10px; right: 10px;">&times;</button>
+                                @foreach ($images as $key => $image)
+                                <div class="col-md-2 mb-4 image-container" data-image="{{ $image }}" style="position: relative;">
+                                    <div class="border border-primary" style="height:100px;width:120px;margin-top: 30px; position:relative;">
+                                        <img src="{{ url('/') }}{{ Storage::url($image) }}" class="img-fluid" alt="Image" style="height:100px;width:120px;">
+                                        <button type="button" class="rounded-circle btn-close delete-image text-danger" aria-label="Close" style="position: absolute; top: -23px; right: -24px; background: transparent; border: 1px; font-size: 20px;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+                                        
+                                        <!-- Copy URL Button -->
+                                        <input type="button" class="form-control btn btn-success mt-1 mb-2" id="copy_url_{{ $key }}" url_link="{{ url('/') }}{{ Storage::url($image) }}" value="Copy URL" onclick="Copy({{ $key }});" />
+                                    </div>
                                 </div>
-                                @endforeach
+                            @endforeach
+                            
                             </div>
                         </div>
                     </div>
@@ -404,4 +410,25 @@
         });
     });
 </script>
+
+<script>
+function Copy(getkey) {
+    // Get the button element using its unique id
+    var copyButton = document.getElementById("copy_url_" + getkey);
+    
+    // Get the URL from the 'url_link' attribute
+    var url = copyButton.getAttribute("url_link");
+    
+    // Use the modern clipboard API to copy the URL
+    navigator.clipboard.writeText(url).then(function() {
+        $('#copy_url_'+getkey).val('Copied')
+        // alert("URL copied to clipboard: " + url);
+    }).catch(function(error) {
+        console.error("Could not copy text: ", error);
+    });
+}
+
+
+    </script>
     @endpush
+    
