@@ -65,7 +65,6 @@ Route::get('/export-categories', [CategoryExportController::class, 'exportCatego
 Route::get('/export-categories-with-full-data', [CategoryExportController::class, 'exportCategoriesWithAllFields']);
 Route::get('/export-services', [CategoryExportController::class, 'exportServices']);
 
-Route::resource('/referral', ReferralController::class);
 
 
 
@@ -156,7 +155,6 @@ Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->n
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
 Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
 Route::get('invoice','StripeController@invoice')->name('invoice');
-Route::get('/patient-referral','ReferralController@referral')->name('patient-referral');
 
 
 Route::resource('/product', ProductController::class);

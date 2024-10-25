@@ -57,16 +57,7 @@
                     <div class="mb-3 col-lg-12 self">
                         <label class="form-label">Select Service Category <span class="text-danger">*</span></label>
                         @if($category)
-                            {{-- @foreach ($category as $value)
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="cat_id[]" value="{{ $value['id'] }}"
-                            {{ isset($data['cat_id']) && (is_array($data['cat_id']) ? in_array($value['id'], $data['cat_id']) : $data['cat_id'] == $value['id']) ? 'checked' : '' }}
-                            >
-                            <label class="form-check-label" for="cat_{{ $value['id'] }}">
-                                {{ $value['cat_name'] }}
-                            </label>
-                    </div>
-                    @endforeach--}}
+                         
                     @foreach($category as $value)
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="cat_id[]"
@@ -112,7 +103,7 @@
                     }
                 @endphp
                 @if(isset($image))
-                    <div class="box" style="border:solid 1px;" id="image_class">
+                    <div class=" col-md-12 box" style="border:solid 1px;" id="image_class">
                         <button type="button" style="
                         background-color: red;
                         color: #ffffff;
@@ -130,7 +121,7 @@
                                     <div class="mb-3 col-lg-4 self">
                                         <label for="product_image" class="form-label">Service Image</label><br>
                                         <img src="{{ $imagevalue }}" class="mb-4"
-                                            style="width:80%; height:100px; margin-right: -20px;">
+                                            style="width:100%; height:50%; margin-right: -20px;">
 
                                     </div>
                                 @endisset
@@ -140,7 +131,7 @@
                     </div>
                 @endif
 
-                <div class="mb-3 col-lg-6 self" id="image_field"
+                <div class="mb-3 col-lg-12 self" id="image_field"
                     style="display:{{ isset($data['id']) ? 'none' : 'block' }}">
                     <label for="product_image" class="form-label">Service Image<span
                             class="text-danger">*</span></label><br>
@@ -233,13 +224,6 @@
         }
 
     </script>
-    {{--     
-<script>
-    CKEDITOR.replace( 'product_description', {
-     height: 300,
-     filebrowserUploadUrl: "{{ url('/ckeditor') }}/script.php"
-    });
-    </script> --}}
     <script>
         $(document).ready(function () {
             $('.summernote').summernote({

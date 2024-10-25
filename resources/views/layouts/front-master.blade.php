@@ -76,10 +76,6 @@
                                 Services
                             </a>
                         </li>
-                        
-                        <a class="nav-link {{ Request::is('patient-referral') ? 'active' : '' }}" href="{{ route('patient-referral') }}">
-                            Referral
-                        </a>
                         {{-- Cart Code --}}
                         @php
                         $cart = session()->get('cart', []);
