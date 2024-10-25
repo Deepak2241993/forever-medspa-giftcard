@@ -90,7 +90,7 @@
                                                 $cart_data = App\Models\Product::find($item['product_id']);
                                                 $amount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
                                                 $image = explode('|', $cart_data->product_image);
-                                                if ($cart_data->giftcard_redemption == 1) {
+                                                if ($cart_data->giftcard_redemption == 0) {
                                                     $redeem += 1; // Corrected increment logic
                                                 }
                                             @endphp
@@ -146,8 +146,8 @@
                                         </div>
                                         <div class="coupon d-flex align-items-center">
                                             <div class="row">
-
-                                                @if ($redeem != 0)
+                                                {{-- {{dd($redeem);}} --}}
+                                                @if ($redeem <= 0)
                                                     <div class="col-9 mt-4">
                                                         <h5>Apply Giftcard</h5>
                                                         <div class="row">
@@ -503,4 +503,30 @@
             //  $('#totalValue').text('Total Value: $' + sum.toFixed(2));
         }
     </script>
+    <script>
+// Disable right-click context menu
+document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+});
+
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, and Ctrl+U (view source)
+document.addEventListener('keydown', function(event) {
+    // F12 key
+    if (event.keyCode === 123) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+I (Inspect)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+J (Console)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 74) {
+        event.preventDefault();
+    }
+    // Ctrl+U (View Source)
+    if (event.ctrlKey && event.keyCode === 85) {
+        event.preventDefault();
+    }
+});
+</script>
 @endpush
