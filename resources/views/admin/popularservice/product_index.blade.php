@@ -57,7 +57,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $value['product_name'] ? $value['product_name'] : 'NULL' }}</td>
-                                    <td><img src="{{ $value['product_image'] }}" style="height:100px; width:100px;"></td>
+                                    <td><img src="{{ $value['product_image'] }}" style="height:100px; width:100px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></td>
                                     <td>{!! mb_strimwidth(isset($value['product_description']) ? $value['product_description'] : 'NULL', 0, 200, '...') !!}</td>
 
 

@@ -449,7 +449,7 @@ cellpadding="0" cellspacing="0">
                                                                                             alt="Facebook"
                                                                                             title="Facebook"
                                                                                             width="32"
-                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -475,7 +475,7 @@ cellpadding="0" cellspacing="0">
                                                                                             alt="Twitter"
                                                                                             title="Twitter"
                                                                                             width="32"
-                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -501,7 +501,7 @@ cellpadding="0" cellspacing="0">
                                                                                             alt="Instagram"
                                                                                             title="Instagram"
                                                                                             width="32"
-                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                            style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>

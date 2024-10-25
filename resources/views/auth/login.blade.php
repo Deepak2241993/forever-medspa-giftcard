@@ -12,7 +12,7 @@
                             <div class="d-flex flex-column h-100">
                                 <div class="mb-4 mb-md-5 text-center">
                                     <a href="{{ url('/') }}" class="d-block auth-logo">
-                                        <img src="{{ URL::asset('assets/images/logo.png') }}" alt="" height="80">
+                                        <img src="{{ URL::asset('assets/images/logo.png') }}" alt="" height="80"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                     </a>
                                 </div>
                                 <div class="auth-content my-auto">

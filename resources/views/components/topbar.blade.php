@@ -59,7 +59,7 @@
             <!-- Message Start -->
             <div class="media">
               <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
+              <div class="media-body" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                 <h3 class="dropdown-item-title">
                   Brad Diesel
                   <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
@@ -74,7 +74,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   John Pierce
@@ -90,7 +90,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Nora Silvester

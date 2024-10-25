@@ -60,7 +60,7 @@
                                         <td>{{ $value->title ? $value->title : '' }}
                                         </td>
                                         <td><img src="{{ $value->image ? $value->image : '' }}"
-                                                height="100" width="200"></td>
+                                                height="100" width="200" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></td>
                                         <td>{{ $value->url ? $value->url : '' }}
                                         </td>
                                         <td>{{ $value->status ==1 ? 'Active' : 'Inactive' }}

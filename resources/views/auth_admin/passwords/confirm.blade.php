@@ -12,13 +12,13 @@ Confirm Password
                         <div class="d-flex flex-column h-100">
                             <div class="mb-4 mb-md-5 text-center">
                                 <a href="{{ URL::asset('index') }}" class="d-block auth-logo">
-                                    <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="28"> <span class="logo-txt">Dason</span>
+                                    <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="28"> <span class="logo-txt">Forever Medspa</span>
                                 </a>
                             </div>
                             <div class="auth-content my-auto">
                                 <div class="text-center">
                                     <h5 class="mb-0">Confirm Password</h5>
-                                    <p class="text-muted mt-2">Re-Password with Dason.</p>
+                                    <p class="text-muted mt-2">Re-Password with Forever Medspa.</p>
                                 </div>
                                 <div class="alert alert-success text-center my-4" role="alert">
                                     Please confirm your password before continuing!
@@ -62,7 +62,7 @@ Confirm Password
                                 </div>
                             </div>
                             <div class="mt-4 mt-md-5 text-center">
-                                <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Dason   . Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                                <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Forever Medspa   . Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
                             </div>
                         </div>
                     </div>
@@ -92,13 +92,13 @@ Confirm Password
                                 <div id="reviewcarouselIndicators" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-indicators auth-carousel carousel-indicators-rounded justify-content-center mb-0">
                                         <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1">
-                                            <img src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" class="avatar-md img-fluid rounded-circle d-block" alt="...">
+                                            <img src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" class="avatar-md img-fluid rounded-circle d-block" alt="..." onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                         </button>
                                         <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2">
-                                            <img src="{{ URL::asset('assets/images/users/avatar-2.jpg') }}" class="avatar-md img-fluid rounded-circle d-block" alt="...">
+                                            <img src="{{ URL::asset('assets/images/users/avatar-2.jpg') }}" class="avatar-md img-fluid rounded-circle d-block" alt="..." onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                         </button>
                                         <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3">
-                                            <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}" class="avatar-md img-fluid rounded-circle d-block" alt="...">
+                                            <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}" class="avatar-md img-fluid rounded-circle d-block" alt="..." onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                         </button>
                                     </div>
                                     <!-- end carouselIndicators -->

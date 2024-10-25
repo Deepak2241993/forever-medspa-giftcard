@@ -86,7 +86,7 @@
                             @isset($data['product_image'])
                                 <div id="image_class">
                                     <img src="{{ $data['product_image'] }}" class="mb-4"
-                                        style="width:80%; height:100px;"><span>
+                                        style="width:80%; height:100px;"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"><span>
                                         <buttom class="btn btn-danger" onclick="hideImage()">X</buttom>
                                     </span>
                                 </div>

@@ -205,7 +205,7 @@
                                                                                                 width="150"
                                                                                                 height="60"
                                                                                                 alt=""
-                                                                                                style="line-height:100%;border:0 none;outline:none;text-decoration:none;vertical-align:baseline;font-size:0;">
+                                                                                                style="line-height:100%;border:0 none;outline:none;text-decoration:none;vertical-align:baseline;font-size:0;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                                                         </td>
                                                                                         <td valign="middle"></td>
                                                                                     </tr>

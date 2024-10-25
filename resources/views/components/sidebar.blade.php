@@ -7,7 +7,7 @@
         <!-- Brand Logo -->
         <a href="{{ route('root') }}" class="brand-link">
             <img src="{{ url('/medspa.png') }}" alt="Forever Medspa" class="brand-image img-circle elevation-3"
-                style="opacity: .8">
+                style="opacity: .8" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
             <span class="brand-text font-weight-light">Forever Medspa</span>
         </a>
 
@@ -17,7 +17,7 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     <img src="@if (Auth::user()->avatar != '') {{ URL::asset(Auth::user()->avatar) }}@else{{ URL::asset('medspa.png') }} @endif"
-                        class="img-circle elevation-2" alt="User Image">
+                        class="img-circle elevation-2" alt="User Image" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block"> {{ Auth::user()->name }}</a>

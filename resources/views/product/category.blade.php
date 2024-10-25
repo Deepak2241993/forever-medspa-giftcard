@@ -182,7 +182,7 @@
                     @foreach ($sliders as $key => $value)
                         @if ($key <= 5)
                             <div class="carousel-item @if ($key == 0) {{ 'active' }} @endif">
-                                <img src="{{ url($value->image) }}" class="d-block w-100" alt="...">
+                                <img src="{{ url($value->image) }}" class="d-block w-100" alt="..." onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                 <div class="carousel-caption d-none d-md-block">
                                  <a href="{{$value->url}}" target="_blank" class="btn btn-primary" style="width:120px;height:35px;font-size:15px">Explore More</a>
                              </div>
@@ -260,7 +260,7 @@
                                             <article class="postbox__item mb-50 transition-3">
                                                 <div class="postbox__thumb w-img mb-30">
                                                     <a href="{{ route('product', ['slug' => $value['slug']]) }}">
-                                                        <img src="{{ $value['cat_image'] }}" alt="{{ $value['cat_name'] }}">
+                                                        <img src="{{ $value['cat_image'] }}" alt="{{ $value['cat_name'] }}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                     </a>
                                                 </div>
                                                 <div class="postbox__content">
@@ -392,7 +392,7 @@
                                                                 <a
                                                                     href="{{ route('PopularService', ['id' => $value->id]) }}"><img
                                                                         src="{{ $value->product_image }}"
-                                                                        alt="{{ $value->product_name }}"></a>
+                                                                        alt="{{ $value->product_name }}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
                                                             </div>
                                                             <div class="rc__post-content">
                                                                 <h4 class="rc__post-title">

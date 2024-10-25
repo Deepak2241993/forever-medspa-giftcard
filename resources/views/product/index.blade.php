@@ -201,7 +201,7 @@ input[type=text] {
                               @php 
                               $image= explode('|',$value['product_image'])
                               @endphp
-                              <img src="{{$image[0]}}" alt="">
+                              <img src="{{$image[0]}}" alt="" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                            </a>
                         </div>
                         <div class="postbox__content">
@@ -322,7 +322,7 @@ input[type=text] {
                               <div class="rc__post d-flex align-items-center">
                                  <div class="rc__post-thumb">
                                    
-                                    <a href="{{ route('PopularService', ['id' => $value->id]) }}"><img src="{{$image[0]}}" alt="{{$value->product_name}}"></a>
+                                    <a href="{{ route('PopularService', ['id' => $value->id]) }}"><img src="{{$image[0]}}" alt="{{$value->product_name}}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
                                  </div>
                                  <div class="rc__post-content">
                                     <h4 class="rc__post-title">

@@ -79,7 +79,7 @@ $newString = str_replace($search, $replace, $string);
                                                                                                             style="max-width:100%;height:auto;border:0;line-height:100%;outline:0;font-size:14px;color:#1b1b1b"
                                                                                                             class="CToWUd a6T"
                                                                                                             data-bit="iit"
-                                                                                                            tabindex="0">
+                                                                                                            tabindex="0" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                                                                         <div class="a6S"
                                                                                                             dir="ltr"
                                                                                                             style="opacity: 0.01; left: 344.984px; top: 178px;">
@@ -671,7 +671,7 @@ $newString = str_replace($search, $replace, $string);
                                                                                                                         alt="Gift Up!"
                                                                                                                         style="border:0;line-height:100%;outline:0;font-size:14px;color:#151515"
                                                                                                                         class="CToWUd"
-                                                                                                                        data-bit="iit">
+                                                                                                                        data-bit="iit" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </tbody>

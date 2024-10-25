@@ -47,7 +47,7 @@
                               <button class="nav-link {{$key==0?'active':''}}" id="img-{{$key}}-tab" data-bs-toggle="tab"
                                  data-bs-target="#img-{{$key}}" type="button" role="tab" aria-controls="img-{{$key}}"
                                  aria-selected="true">
-                                 <img src="{{$image_name}}" alt="product-sm-thumb">
+                                 <img src="{{$image_name}}" alt="product-sm-thumb" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                               </button>
                               @endif
                               @endforeach
@@ -62,7 +62,7 @@
                            <div class="tab-pane fade {{$key==0?'show active':''}}" id="img-{{$key}}" role="tabpanel"
                               aria-labelledby="img-{{$key}}-tab">
                               <div class="product__details-thumb-big w-img">
-                                 <img src="{{$image_name}}" alt="">
+                                 <img src="{{$image_name}}" alt="" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                               </div>
                            </div>
                            @endif

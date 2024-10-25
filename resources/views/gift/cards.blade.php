@@ -58,7 +58,7 @@ $newString = str_replace($search, $replace, $string);
 																							<tr>
 																								<td valign="top" style="padding:0" align="left">
 																									<a style="text-decoration:none">
-																										<img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" width="150" height="" alt="Forever Medspa" style="max-width:100%;height:auto;border:0;line-height:100%;outline:0;font-size:14px;color:#1b1b1b" class="CToWUd a6T" data-bit="iit" tabindex="0">
+																										<img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" width="150" height="" alt="Forever Medspa" style="max-width:100%;height:auto;border:0;line-height:100%;outline:0;font-size:14px;color:#1b1b1b" class="CToWUd a6T" data-bit="iit" tabindex="0" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
 																										<div class="a6S" dir="ltr" style="opacity: 0.01; left: 344.984px; top: 178px;">
 																											<span data-is-tooltip-wrapper="true" class="a5q" jsaction="JIbuQc:.CLIENT">
 																												<button class="VYBDae-JX-I VYBDae-JX-I-ql-ay5-ays CgzRE" jscontroller="PIVayb" jsaction="click:h5M12e;clickmod:h5M12e; pointerdown:FEiYhc; pointerup:mF5Elf; pointerenter:EX0mI; pointerleave:vpvbp; pointercancel:xyn4sd; contextmenu:xexox;focus:h06R8; blur:zjh6rb;mlnRJb:fLiPzd;" data-idom-class="CgzRE" jsname="hRZeKc" aria-label="Download attachment " data-tooltip-enabled="true" data-tooltip-id="tt-c31" data-tooltip-classes="AZPksf" id="" jslog="91252; u014N:cOuCgd,Kr2w4b,xr6bB; 4:WyIjbXNnLWY6MTc5MTEyMTUwMTgwODg2ODQ5MSJd; 43:WyJpbWFnZS9qcGVnIl0.">
@@ -98,7 +98,7 @@ $newString = str_replace($search, $replace, $string);
 																	<tbody>  
                                                       <tr>
 																			<td class="m_4043362051198468644pc-sm-fs-18 m_4043362051198468644pc-xs-fs-16" style="font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:18px;line-height:30px;letter-spacing:-0.2px;color:#9b9b9b;padding:0 20px" valign="top" id="m_4043362051198468644intro-text">
-																				We really appreciate you buying this gift card and hope that the recipient loves our Giftcard!<br><br><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" width="100" height="50" class="CToWUd" data-bit="iit"><br>From {{$mail_data->receipt_email}}<br>
+																				We really appreciate you buying this gift card and hope that the recipient loves our Giftcard!<br><br><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" width="100" height="50" class="CToWUd" data-bit="iit" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"><br>From {{$mail_data->receipt_email}}<br>
 																			</td>
 																		</tr>
 
@@ -346,7 +346,7 @@ $newString = str_replace($search, $replace, $string);
 																										<tbody>
 																											<tr>
 																												<td valign="middle" style="padding:0 10px">
-																													<img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" width="80" height="40" alt="Gift Up!" style="border:0;line-height:100%;outline:0;font-size:14px;color:#151515" class="CToWUd" data-bit="iit">
+																													<img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" width="80" height="40" alt="Gift Up!" style="border:0;line-height:100%;outline:0;font-size:14px;color:#151515" class="CToWUd" data-bit="iit" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
 																												</td>
 																											</tr>
 																										</tbody>

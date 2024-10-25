@@ -121,7 +121,7 @@
                                     <div class="mb-3 col-lg-4 self">
                                         <label for="product_image" class="form-label">Service Image</label><br>
                                         <img src="{{ $imagevalue }}" class="mb-4"
-                                            style="width:100%; height:50%; margin-right: -20px;">
+                                            style="width:100%; height:200px; margin-right: -20px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
 
                                     </div>
                                 @endisset

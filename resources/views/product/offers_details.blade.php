@@ -54,7 +54,7 @@
             <div class="row">
                <div class="col-12">
                   <div class="service-details-thumb mt-80 mb-80">
-                     <img src="{{url('/product_page')}}/imgs/service/service-big-01.jpg" alt="">
+                     <img src="{{url('/product_page')}}/imgs/service/service-big-01.jpg" alt="" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                   </div>
                </div>
             </div>

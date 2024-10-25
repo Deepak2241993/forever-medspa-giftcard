@@ -5,7 +5,7 @@
         <a href="{{ route('root') }}" class="brand-link">
             <!--begin::Brand Image-->
             <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="Medspa Logo"
-                class="brand-image opacity-75 shadow">
+                class="brand-image opacity-75 shadow" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
             <span class="brand-text fw-light">Forever Medspa</span>

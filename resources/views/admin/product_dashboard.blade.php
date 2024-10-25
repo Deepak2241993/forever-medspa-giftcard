@@ -87,7 +87,7 @@
                 <tbody>
                 <tr>
                   <td>
-                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                     Some Product
                   </td>
                   <td>$13 USD</td>
@@ -106,7 +106,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                     Another Product
                   </td>
                   <td>$29 USD</td>
@@ -125,7 +125,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                     Amazing Product
                   </td>
                   <td>$1,230 USD</td>
@@ -144,7 +144,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                    <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                     Perfect Item
                     <span class="badge bg-danger">NEW</span>
                   </td>

@@ -141,7 +141,7 @@
                             
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
-                                                <td class="product-thumbnail"><a href="product-details.html"><img src="{{ $image[0] }}" alt="img" style="height:100px;width:100px;"></a></td>
+                                                <td class="product-thumbnail"><a href="product-details.html"><img src="{{ $image[0] }}" alt="img" style="height:100px;width:100px;"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a></td>
                                                 <td class="product-name"><a href="product-details.html">{{ $cart_data->product_name }}</a></td>
                                                 {{-- <td class="product-price"><span class="amount">$24.00</span></td> --}}
                                                 <td class="product-quantity text-center">
