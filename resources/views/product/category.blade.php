@@ -274,10 +274,10 @@
 
                                                     <div class="hl05eU">
                                                         <div class="UkUFwK">
-                                                            <span><i><b>Up to {{ $max_amount }}% off</b></i></span>
+                                                            {{-- <span><i><b>Up to {{ $max_amount }}% off</b></i></span> --}}
                                                             {{-- For Countdown Code --}}
                                                             @if ($daysLeft < 0)
-                                                                </br><span><i>
+                                                                <span><i>
                                                                         <b> {{ str_replace('-', '', $daysLeft) }} days
                                                                             left</b>
                                                                         {{-- <b> {{ $daysLeft }} days left</b> --}}

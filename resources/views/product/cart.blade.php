@@ -88,7 +88,7 @@
                                         @foreach ($cart as $key => $item)
                                             @php
                                                 $cart_data = App\Models\Product::find($item['product_id']);
-                                                $amount += $cart_data->discounted_amount;
+                                                $amount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
                                                 $image = explode('|', $cart_data->product_image);
                                                 if ($cart_data->giftcard_redemption == 1) {
                                                     $redeem += 1; // Corrected increment logic
@@ -98,7 +98,7 @@
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
                                                 <td class="product-thumbnail"><a href="product-details.html"><img
-                                                            src="{{ $image[0] }}" alt="img"></a></td>
+                                                            src="{{ $image[0] }}" alt="img" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a></td>
                                                 <td class="product-name"><a
                                                         href="product-details.html">{{ $cart_data->product_name }}</a></td>
                                                 {{-- <td class="product-price"><span class="amount">$24.00</span></td> --}}
@@ -113,7 +113,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="product-subtotal"><span
-                                                        class="amount">{{ $cart_data->discounted_amount }}</span></td>
+                                                        class="amount">{{ $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount }}</span></td>
                                                 <td class="product-remove">
                                                     <a href="javascript:void(0)"
                                                         onclick="removeFromCart({{ $item['product_id'] }})">

@@ -225,7 +225,6 @@ class StripeController extends Controller
        
         // Generate New Order For this 
         $orderId = 'MSWC-SER-'.date('Y')."-".time();
-        $cartItems = session('cart', []);
         $gift_number = null;
         $gift_amount = null;
         $totalAmount = 0;
@@ -254,11 +253,11 @@ class StripeController extends Controller
         //  If Gift card Not applyed for redeem
         else {
            
-                $cards = session('cart', []);
+            $cards = session('cart', []);
            
             foreach ($cards as $item) {
                 $cart_data = Product::find($item['product_id']);
-                $totalAmount += $cart_data->discounted_amount;
+                $totalAmount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
             }
 
             $taxamount = ($totalAmount * 10) / 100;

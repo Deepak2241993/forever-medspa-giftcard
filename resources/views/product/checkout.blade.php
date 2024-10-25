@@ -17,7 +17,7 @@
 
         <!-- Breadcrumb area start  -->
         <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
-            <div class="breadcrumb__thumb" data-background="{{ url('/product_page') }}/imgs/bg/breadcrumb-bg.jpg"></div>
+            <div class="breadcrumb__thumb" data-background="{{url('/uploads/FOREVER-MEDSPA')}}/med-spa-banner.jpg"></div>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xxl-12">
@@ -135,7 +135,7 @@
                                             @foreach ($cart as $item)
                                                 @php
                                                     $cart_data = App\Models\Product::find($item['product_id']);
-                                                    $amount += $cart_data->discounted_amount;
+                                                    $amount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
                                                 @endphp
                                                 <tr class="cart_item">
                                                     <td class="product-name">
@@ -144,7 +144,8 @@
                                                             Sessions</strong>
                                                     </td>
                                                     <td class="product-total">
-                                                        <span class="amount">${{ $cart_data->discounted_amount, 2 }}</span>
+                                                        <span class="amount">${{ number_format($cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount, 2) }}
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             @endforeach

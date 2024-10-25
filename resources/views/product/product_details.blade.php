@@ -77,8 +77,13 @@
                      
                      <h3 class="product__details-title">{{$data->product_name}}</h3>
                      <div class="product__details-price">
+                        @if($data->discounted_amount!=null)
                         <span class="old-price">${{$data->amount}}</span>
                         <span class="new-price">${{$data->discounted_amount}}</span>
+                        @else
+                        <span class="new-price">${{$data->amount}}</span>
+                        @endif
+
                      </div>
                      <p>{!! $data->short_description !!}</p>
 

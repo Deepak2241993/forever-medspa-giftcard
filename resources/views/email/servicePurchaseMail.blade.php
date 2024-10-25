@@ -287,7 +287,7 @@ cellpadding="0" cellspacing="0">
                                                 <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $ServiceData->product_name }}</td>
                                                 <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td>
                                                 <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $value->number_of_session }}</td>
-                                                <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $ServiceData->discounted_amount }}</td>
+                                                <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $ServiceData->discounted_amount ? $ServiceData->discounted_amount : $ServiceData->amount }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
