@@ -790,6 +790,11 @@ public function gift_purchase (Request $request,Giftsend $giftsend,GiftCoupon $c
             'status' => 1,
             'actual_paid_amount' =>($result->amount*$result->qty-$result->discount)/$result->qty,
         ];
+        if ($result->discount != 0) {
+            $cardgenerate['actual_paid_amount'] = ($result->amount * $result->qty - $result->discount) / $result->qty;
+        } else {
+            $cardgenerate['actual_paid_amount'] = $result->amount / $result->qty;
+        }
        $cardresult = $cardnumber->create($cardgenerate);
        if($cardresult)
        {

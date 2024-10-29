@@ -162,20 +162,29 @@ class StripeController extends Controller
             $qty=$giftsend->qty;
             for($i=1;$i<=$qty;$i++)
             {
-
-                $randomCode = mt_rand(1000, 9999);
-                $date = date('Y');
-                $gift_card_code = 'FEMS-' . $date . '-' . $randomCode;
                 $cardgenerate = [
                     'user_id' => $giftsend->id,
                     'transaction_id' => $data->source->id,
                     'user_token' => $giftsend->user_token,
                     'amount' => $giftsend->amount / $giftsend->qty,
-                    'giftnumber' => $gift_card_code,
+                    // 'giftnumber' => $gift_card_code, // Uncomment this line if needed
                     'status' => 1,
                     'comments' => $giftsend->message,
                 ];
-                $cardnumber->create($cardgenerate);
+                
+                // Conditional logic to calculate actual_paid_amount
+                if ($giftsend->discount != 0) {
+                    $cardgenerate['actual_paid_amount'] = ($giftsend->amount * $giftsend->qty - $giftsend->discount) / $giftsend->qty;
+                } else {
+                    $cardgenerate['actual_paid_amount'] = $giftsend->amount / $giftsend->qty;
+                }
+                
+                $cardresult = $cardnumber->create($cardgenerate);
+                if($cardresult)
+                {
+                    $gift_card_code = 'FEMS-' . time() . $cardresult->id;
+                    $cardresult->update(['giftnumber' => $gift_card_code]);
+                }
             }
 
             }
