@@ -274,38 +274,38 @@ else{
         }
     }
     public function GiftCardSearch(Request $request)
-{
-    $data_arr = $request->except('_token');
-    $data = json_encode($data_arr);
-    $result = $this->postAPI('gift-card-search', $data);
+    {
+        $data_arr = $request->except('_token');
+        $data = json_encode($data_arr);
+        $result = $this->postAPI('gift-card-search', $data);
 
-    if (isset($result['status']) && $result['status'] == 200) {
-        $getdata = $result['result'];
+        if (isset($result['status']) && $result['status'] == 200) {
+            $getdata = $result['result'];
 
-        // Convert the data array into a Collection
-        $collection = collect($getdata);
+            // Convert the data array into a Collection
+            $collection = collect($getdata);
 
-        // Get the current page from the request, default to 1
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            // Get the current page from the request, default to 1
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
-        // Define how many items you want per page
-        $perPage = 10; // Example: 10 items per page
+            // Define how many items you want per page
+            $perPage = 10; // Example: 10 items per page
 
-        // Slice the collection to get the items to display in the current page
-        $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+            // Slice the collection to get the items to display in the current page
+            $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
 
-        // Create our paginator
-        $paginatedItems = new LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
+            // Create our paginator
+            $paginatedItems = new LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
 
-        // Set the pagination path
-        $paginatedItems->setPath($request->url());
+            // Set the pagination path
+            $paginatedItems->setPath($request->url());
 
-        return view('admin.redeem.redeem_view', compact('paginatedItems'));
-    } else {
-        $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
-        return view('admin.redeem.redeem_view')->with('error', $error);
+            return view('admin.redeem.redeem_view', compact('paginatedItems'));
+        } else {
+            $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
+            return view('admin.redeem.redeem_view')->with('error', $error);
+        }
     }
-}
 
     function giftcardredeem(Request $request){
         $data_arr = $request->except('_token');
@@ -329,7 +329,6 @@ else{
         $data = json_encode($data_arr);
         $result = $this->postAPI('gift-card-statment', $data);
         return $result;
-
     }
 
     public function giftsale(){
@@ -459,8 +458,8 @@ return $result;
 
 
 public function giftcancel(Request $request,){
+
     $data_arr = $request->except('_token');
-    
     $data = json_encode($data_arr);
     $result =$this->postAPI('giftcard-cancel',$data);
     if(isset($result['status']) && $result['status']==200) {

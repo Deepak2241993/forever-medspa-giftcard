@@ -651,15 +651,24 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
  */
 
  public function GiftCardredeem(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers){
-    $data=[
-        'giftnumber'=>$request->gift_card_number,
-        'user_token'=>$request->user_token,
-        'amount'=>'-'.$request->amount,
-        'comments'=>$request->comments,
-        'user_id'=>$request->user_id,
-        'transaction_id' => 'REDEEM' . date('YmdHis'),
-        ];
-      $result = $numbers->create($data);
+    $data = [
+        'giftnumber' => $request->gift_card_number,
+        'user_token' => $request->user_token,
+        'amount' => '-' . $request->amount,
+        'comments' => $request->comments,
+        'user_id' => $request->user_id,
+        'transaction_id' => 'REDEEM' . time(), // Temporary ID without generated ID
+        'actual_paid_amount' => '-' . $request->amount,
+    ];
+    
+    // Step 2: Insert the record and retrieve the result
+    $result = $numbers->create($data);
+    
+    // Step 3: Concatenate the generated ID with the transaction ID
+    if ($result) {
+        $updatedTransactionId = 'REDEEM' . time() . $result->id;
+        $result->update(['transaction_id' => $updatedTransactionId]);
+    }
     //    Adding Gift Sender And Receive Details Add
         $id=$request->user_id;
         $receiverAndSenderDetails = Giftsend::where('id', $id)->get();
@@ -698,22 +707,25 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
  *      )
  * )
  */
- public function statment(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers){
-    $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.comments','giftcards_numbers.updated_at')->Where('giftnumber',$request->gift_card_number)->where('user_token',$request->user_token)->get();
+public function statment(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers){
+    $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.comments','giftcards_numbers.actual_paid_amount','giftcards_numbers.updated_at')->Where('giftnumber',$request->gift_card_number)->where('user_token',$request->user_token)->get();
     // Initialize sum variable
     $totalAmount = 0;
+    $actual_paid_amount = 0;
 
     // Iterate over each record in the collection and sum up the 'amount' values
     foreach ($data as $record) {
         $totalAmount += $record->amount;
+        $actual_paid_amount += $record->actual_paid_amount;
     }
 
     if ($data) {
-        return response()->json(['result' => $data,'TotalAmount'=>$totalAmount, 'status' => 200, 'success' => 'Gift History Found Successfully'], 200);
+        return response()->json(['result' => $data,'TotalAmount'=>$totalAmount,'actual_paid_amount'=>$actual_paid_amount, 'status' => 200, 'success' => 'Gift History Found Successfully'], 200);
     } else {
         return response()->json(['error' => 'Sory No History Found!', 'status' => 404]);
     }
  }
+
 
  
 
@@ -751,7 +763,7 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
  *      )
  * )
  */
-public function gift_purchase (Request $request,Giftsend $giftsend,User $user,GiftCoupon $coupon,GiftcardsNumbers $cardnumber)
+public function gift_purchase (Request $request,Giftsend $giftsend,GiftCoupon $coupon,GiftcardsNumbers $cardnumber)
 {
     $data=$request->all();
     if(!empty($result->recipient_name))
@@ -760,16 +772,15 @@ public function gift_purchase (Request $request,Giftsend $giftsend,User $user,Gi
     }
 
     $data['payment_time'] = NOW();
+   
     $result=$giftsend->create($data);
 
     if ($result && $result->payment_status=='succeeded') {
     $qty=$result->qty;
+    // return $result;
     for($i=1;$i<=$qty;$i++)
     {
-
-        $randomCode = mt_rand(1000, 9999);
-        $date = date('Y');
-        $gift_card_code = 'FEMS-' . $date . '-' . $randomCode;
+        $gift_card_code = 'FEMS-'.time();
         $cardgenerate = [
             'user_id' => $result->id,
             'transaction_id' => $result->transaction_id,
@@ -777,8 +788,14 @@ public function gift_purchase (Request $request,Giftsend $giftsend,User $user,Gi
             'amount' => $result->amount,
             'giftnumber' => $gift_card_code,
             'status' => 1,
+            'actual_paid_amount' =>($result->amount*$result->qty-$result->discount)/$result->qty,
         ];
-        $cardresult=$cardnumber->create($cardgenerate);
+       $cardresult = $cardnumber->create($cardgenerate);
+       if($cardresult)
+       {
+        $gift_card_code = 'FEMS-'.time();
+        $cardresult->update(['giftnumber'=>$gift_card_code. $cardresult->id]);
+       }
     }
     // Fetch the gift card number(s) based on the transaction ID from $result
     $giftcardNumber = GiftcardsNumbers::where('transaction_id', $result->transaction_id)->get();
@@ -884,6 +901,7 @@ public function payment_confirmation(Request $request, Giftsend $giftsend,Giftca
                     'amount' => $get_updated_result->amount,
                     'giftnumber' => $gift_card_code,
                     'status' => 1,
+                    'actual_paid_amount' => ($result->transaction_amount/$result->qty),
                 ];
                 $cardnumber->create($cardgenerate);
             }

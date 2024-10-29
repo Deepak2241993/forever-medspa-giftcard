@@ -152,7 +152,7 @@
                             <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
                             <input type="hidden" class="cancel_user_id" id="cancel_user_id_" name="cancel_user_id" value="">
                     
-                            <button type="button" class="btn btn-primary mt-3 cancel_button" id="" onclick="cancelgiftcard(event)">Cancel Giftcard</button>
+                            <button type="button" class="btn btn-primary mt-3 cancel_button" id="" event_id=""  onclick="cancelgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Cancel Giftcard</button>
                         </div>
                     </form>
                 </div>
@@ -216,7 +216,8 @@
                 <th>Card Number</th>
                 <th>Date</th>
                 <th>Message</th>
-                <th>Amount</th>
+                <th>Value Amount</th>
+                <th>Actule Paid Amount</th>
             </tr>
         `;
         // Append the table header to statment_view
@@ -239,6 +240,7 @@
             <td>${formattedDate}</td>
             <td>${element.comments ? element.comments : 'Self'}</td>
             <td>$${element.amount}</td>
+            <td>$${element.actual_paid_amount}</td>
         </tr>
     `;
 
@@ -247,10 +249,23 @@
 });
 
         var totalamount = `
-        <tr><td></td><td></td><td></td><td></td><td colspan="2"><hr></td></tr>
-                <tr><td></td><td></td><td></td><td></td>
-                    <th>Available Amount</th>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b><u>Available Amount</u></b></td>
+            <td><b><u>Refund</u></b></td>
+        </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td><b>$${response.TotalAmount}</b></td>
+                    <td><b>$${response.actual_paid_amount}</b></td>
                 </tr>
             `;
             $('.statment_view').append(totalamount);
@@ -348,8 +363,8 @@ function docancel(id,giftcardnumber) {
     //  for Comments Add
     $('.cancel_comments_').attr('id', 'cancel_comments_' + id);
 
-    $('.cancel_button').attr('id', 'cancel_button' + id);
-    $('#cancel_button' + id).attr('id',id);
+    $('.cancel_button').attr('id', 'cancel_button_' + id);
+    $('#cancel_button_' + id).attr('event_id',id);
     
     // $('.cance_comments_'+id).attr('id', 'cance_comments_' + id);
     // for Giftcard value set
@@ -359,10 +374,15 @@ function docancel(id,giftcardnumber) {
 // Call Cancle API 
 
 function cancelgiftcard(event) {
-    var id = event.target.id;
+    var id = event.target.getAttribute('event_id');
     var amountInput = $('#amount_' + id);
     var enteredAmount = amountInput.val();
     var isValid = true;
+    //  For adding spinner
+    var button = $('#cancel_button_' + id);
+    button.attr('disabled', true);
+    button.find('.spinner-border').show();
+    // spinner code end
 
     // Proceed with AJAX request only if input is valid
     if (isValid) {

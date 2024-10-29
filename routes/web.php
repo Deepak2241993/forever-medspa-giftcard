@@ -78,7 +78,7 @@ Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')-
 Route::post('/do-cancel', 'ServiceOrderController@DoCancel')->name('do-cancel');
 Route::get('/cancel-service', 'ServiceOrderController@ServiceCancel')->name('cancel-service');
 
-// Popular Officers
+// Popular Offers
 Route::resource('/popular-offers', PopularOfferController::class);
 Route::post('/giftcard-purchase','GiftsendController@GiftPurchase')->name('giftcard-purchase');
 Route::get('/giftcard-purchases-success','GiftsendController@GiftPurchaseSuccess')->name('giftcard-purchases-success');

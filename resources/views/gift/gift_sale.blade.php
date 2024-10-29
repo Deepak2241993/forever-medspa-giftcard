@@ -432,6 +432,7 @@
                                         <input type="button" id="check_amount_other_button" name="next"
                                             class="next action-button" value="Next Step" />
                                     </section>
+
                                     <section id="o_two">
                                         <div class="form-card">
                                             <h2 class="qtyshow" class="text-warning"></h2>
@@ -577,7 +578,7 @@
                                         <span class="error_message"></span>
                                     </section>
                                 </form>
-
+                                {{-- For Self Purchase Form --}}
                                 <form id="msform" class="self_div" Method="post"
                                     action="{{ route('giftcard-purchase') }}">
                                     @csrf
@@ -755,6 +756,7 @@
                                     </section>
 
                                 </form>
+                                {{-- For Self Purchase Form --}}
                             </div>
                         </div>
                     </div>
