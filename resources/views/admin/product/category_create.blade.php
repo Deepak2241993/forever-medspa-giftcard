@@ -68,7 +68,7 @@
                     <div class="mb-12 col-lg-12 self">
                         <label for="cat_description" class="form-label">Deal Description</label>
                         <textarea name="cat_description" id="cat_description" rows="4"
-                            class="form-control">{{ isset($data) ? $data['cat_description'] : '' }}</textarea>
+                            class="form-control summernote">{{ isset($data) ? $data['cat_description'] : '' }}</textarea>
                     </div>
                     @if(isset($data))
                         <div class="mb-3 col-lg-6 mt-4 self">
@@ -167,4 +167,21 @@
         document.getElementById('deal_end_date').setAttribute('min', today);
 
     </script>
+    <script>
+    $(document).ready(function () {
+        $('.summernote').summernote({
+            popover: {
+                image: [
+
+                    // This is a Custom Button in a new Toolbar Area
+                    ['custom', ['examplePlugin']],
+                    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    ['remove', ['removeMedia']]
+                ]
+            }
+        });
+    });
+
+</script>
 @endpush
