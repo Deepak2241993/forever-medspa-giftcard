@@ -20,6 +20,7 @@ use Auth;
 use Mail;
 use Session;
 use Validator;
+use Illuminate\Support\Facades\Log;
 use DB;
 
 class APIController extends Controller
@@ -763,65 +764,80 @@ public function statment(Request $request, Giftsend $giftsend, GiftcardsNumbers 
  *      )
  * )
  */
-public function gift_purchase (Request $request,Giftsend $giftsend,GiftCoupon $coupon,GiftcardsNumbers $cardnumber)
+public function gift_purchase(Request $request, Giftsend $giftsend, GiftCoupon $coupon, GiftcardsNumbers $cardnumber)
 {
-    $data=$request->all();
-    if(!empty($result->recipient_name))
-    {
-    $data['receipt_email']=$request->receipt_email;
+    $data = $request->all();
+    
+    if (!empty($request->recipient_name)) {
+        $data['receipt_email'] = $request->receipt_email;
     }
 
-    $data['payment_time'] = NOW();
-   
-    $result=$giftsend->create($data);
+    $data['payment_time'] = now();
+    
+    $result = $giftsend->create($data);
 
-    if ($result && $result->payment_status=='succeeded') {
-    $qty=$result->qty;
-    // return $result;
-    for($i=1;$i<=$qty;$i++)
-    {
-        $gift_card_code = 'FEMS-'.time();
-        $cardgenerate = [
-            'user_id' => $result->id,
-            'transaction_id' => $result->transaction_id,
-            'user_token' => $result->user_token,
-            'amount' => $result->amount,
-            'giftnumber' => $gift_card_code,
-            'status' => 1,
-            'actual_paid_amount' =>($result->amount*$result->qty-$result->discount)/$result->qty,
-        ];
-        if ($result->discount != 0) {
-            $cardgenerate['actual_paid_amount'] = ($result->amount * $result->qty - $result->discount) / $result->qty;
-        } else {
-            $cardgenerate['actual_paid_amount'] = $result->amount / $result->qty;
+    // Update Transaction ID
+    if ($result) {
+        $result->update(['transaction_id' => $data['transaction_id'] . $result->id]);
+    }
+
+    // Check payment status and proceed
+    if ($result && $result->payment_status == 'succeeded') {
+        $qty = $result->qty;
+
+        for ($i = 1; $i <= $qty; $i++) {
+            $gift_card_code = 'FEMS-' . time();
+            $cardgenerate = [
+                'user_id' => $result->id,
+                'transaction_id' => $result->transaction_id,
+                'user_token' => $result->user_token,
+                'amount' => $result->amount,
+                'giftnumber' => $gift_card_code,
+                'status' => 1,
+            ];
+
+            if ($result->discount != 0) {
+                $cardgenerate['actual_paid_amount'] = ($result->amount * $result->qty - $result->discount) / $result->qty;
+            } else {
+                $cardgenerate['actual_paid_amount'] = $result->amount;
+            }
+
+            $cardresult = $cardnumber->create($cardgenerate);
+            if ($cardresult) {
+                $gift_card_code = 'FEMS-' . time();
+                $cardresult->update(['giftnumber' => $gift_card_code . $cardresult->id]);
+            }
         }
-       $cardresult = $cardnumber->create($cardgenerate);
-       if($cardresult)
-       {
-        $gift_card_code = 'FEMS-'.time();
-        $cardresult->update(['giftnumber'=>$gift_card_code. $cardresult->id]);
-       }
+
+        // Fetch the gift card number(s) based on the transaction ID from $result
+        $giftcardNumber = GiftcardsNumbers::where('transaction_id', $result->transaction_id)->get();
+        $result['card_number'] = $giftcardNumber;
+        $gift_send_to = $result->gift_send_to;
+        $result['amount'] = $result->amount * $result->qty;
+
+        try {
+            if (!empty($result->recipient_name)) {
+                Mail::to($result->receipt_email)->send(new GiftReceipt($result));
+                Log::info('GiftReceipt email sent successfully to: ' . $result->receipt_email);
+            }
+            Mail::to($gift_send_to)->send(new GeftcardMail($result));
+            Log::info('GeftcardMail email sent successfully to: ' . $gift_send_to);
+        } catch (\Exception $e) {
+            Log::error('Mail sending failed: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'result' => $result,
+            'status' => 200,
+            'success' => 'Gift Purchases Successfully And Card Number Sent on Email'
+        ], 200);
+    } else {
+        return response()->json([
+            'result' => $result,
+            'error' => 'Something Went Wrong',
+            'status' => 404
+        ]);
     }
-    // Fetch the gift card number(s) based on the transaction ID from $result
-    $giftcardNumber = GiftcardsNumbers::where('transaction_id', $result->transaction_id)->get();
-    // Assign the fetched gift card number(s) to the result array
-
-    $result['card_number'] = $giftcardNumber;
-    $gift_send_to = $result->gift_send_to;
-    $result['amount']=$result->amount*$result->qty;
-
-    if(!empty($result->recipient_name))
-    {
-
-        Mail::to($result->receipt_email)->send(new GiftReceipt($result));
-    }
-    Mail::to($gift_send_to)->send(new GeftcardMail($result));
-
-     return response()->json(['result' => $result,'status' => 200, 'success' => 'Gift Purchases Successfully And Card Number Sent on Email'], 200);
-     } else {
-         return response()->json(['result' => $result,'error' => 'Something Went Wrong', 'status' => 404]);
-     }
-
 }
 
 /**

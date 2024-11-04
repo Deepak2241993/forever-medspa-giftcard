@@ -16,6 +16,7 @@ use App\Mail\GiftCardStatement;
 use App\Mail\GiftcardCancelMail;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 class GiftsendController extends Controller
 {
     /**
@@ -352,7 +353,8 @@ else{
 
 // }
 
-public function GiftPurchase(Request $request) {
+public function GiftPurchase(Request $request)
+{
     // Define validation rules
     $request->validate([
         'your_name' => 'required|string|max:255',
@@ -362,20 +364,34 @@ public function GiftPurchase(Request $request) {
         'gift_send_to.required' => 'The email field is required.',
         'gift_send_to.email' => 'The email must be a valid email address.',
     ]);
-    
 
     // If validation passes, proceed with the rest of the logic
     $data_arr = $request->except('_token');
     $transaction_id = 'FEMS-' . time();
     $data_arr['transaction_id'] = $transaction_id;
     $data_arr['payment_mode'] = 'From Forever Medspa Center';
-    $data = json_encode($data_arr);
-    // Call the API
-    $resultData = $this->postAPI('gift-purchase-from-store', $data);
-    $result = (object) $resultData['result'];
 
-    return redirect()->route('giftcard-purchases-success')->with('transaction_details', $result);
+    // Encode data as JSON for the API call
+    $data = json_encode($data_arr);
+
+    // Call the API and handle response
+    try {
+        $resultData = $this->postAPI('gift-purchase-from-store', $data);
+
+        if (isset($resultData['result'])) {
+            $result = (object) $resultData['result'];
+            return redirect()->route('giftcard-purchases-success')->with('transaction_details', $result);
+        } else {
+            // Handle case where 'result' is not set in the API response
+            return redirect()->back()->withErrors('Unexpected API response. Please try again.');
+        }
+    } catch (\Exception $e) {
+        // Log the exception and handle the error gracefully
+        \Log::error('API call failed: ' . $e->getMessage());
+        return redirect()->back()->withErrors('There was an error processing your request. Please try again later.');
+    }
 }
+
 
 
 public function GiftPurchaseSuccess()
