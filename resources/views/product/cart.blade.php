@@ -370,13 +370,13 @@
                             giftCardNumbers.push(giftNumber);
 
                             console.log(response.success);
-                            console.log(response.result.total_amount);
+                            console.log(response.actual_paid_amount);
                             $('#success_' + key).html(
                                 'Your total available amount is $' +
-                                response.result.total_amount);
-                            $('#giftcard_amount_' + key).val(response.result.total_amount);
+                                response.actual_paid_amount);
+                            $('#giftcard_amount_' + key).val(response.actual_paid_amount);
                             $('#giftcard_amount_' + key).removeAttr('readonly');
-                            $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
+                            $('#giftcard_amount_' + key).attr('max', response.actual_paid_amount);
                             sumValues();
                             $('#error_' + key).html('');
                         } else {
@@ -503,7 +503,7 @@
             //  $('#totalValue').text('Total Value: $' + sum.toFixed(2));
         }
     </script>
-    <script>
+    {{-- <script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
@@ -528,5 +528,5 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
     }
 });
-</script>
+</script> --}}
 @endpush

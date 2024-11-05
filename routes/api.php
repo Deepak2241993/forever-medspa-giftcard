@@ -26,6 +26,7 @@ Route::post('/gift-for-self','APIController@gift_send_store_self')->name('gift-f
 Route::post('/gift-list','APIController@list')->name('gift-list');
 Route::post('/gift-card-search','APIController@GiftCardSearch')->name('gift-card-search');
 Route::post('/gift-card-validate','APIController@GiftCardvalidate')->name('gift-card-validate');
+Route::post('/gift-card-amount-calculation','APIController@GiftCardAmountCalculate')->name('gift-card-amount-calculation');
 Route::post('/gift-card-redeem','APIController@GiftCardredeem')->name('gift-card-redeem');
 Route::post('/gift-card-statment','APIController@statment')->name('gift-card-statment');
 Route::post('/gift-purchase-from-store','APIController@gift_purchase')->name('gift-purchase-from-store');

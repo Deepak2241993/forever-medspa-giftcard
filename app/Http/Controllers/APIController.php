@@ -620,6 +620,60 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     }
 }
 
+// For Cart Page Validate Gift Cards And Calculate Amount
+/**
+ * @OA\Post(
+ *      tags={"Gift-Cards"},
+ *     path="/gift-card-amount-calculation",
+ *     summary="For Gift Card Search ",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 @OA\Property(property="giftcardnumber", type="string", example="FEMS-2024-8147"),
+ *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response="200", description="Result Found"),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated",
+ *      ),
+ * @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      )
+ * )
+ */
+
+ public function GiftCardAmountCalculate(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers)
+{
+    $token = $request->user_token;
+    $giftcardnumber = $request->giftcardnumber;
+
+    $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.comments','giftcards_numbers.actual_paid_amount','giftcards_numbers.updated_at')->Where('giftnumber',$giftcardnumber)->where('user_token',$token)->get();
+
+    // Initialize sum variable
+    $totalAmount = 0;
+    $actual_paid_amount = 0;
+    // Iterate over each record in the collection and sum up the 'amount' values
+    foreach ($data as $record) {
+        $totalAmount += $record->amount;
+        $actual_paid_amount += $record->actual_paid_amount;
+    }
+    if($actual_paid_amount < 0)
+    {
+        $actual_paid_amount = 0;
+    }
+    if ($data) {
+        return response()->json(['TotalAmount'=>$totalAmount,'actual_paid_amount'=>$actual_paid_amount, 'status' => 200, 'success' => 'Gift Found Successfully'], 200);
+    } else {
+        return response()->json(['error' => 'No Giftcard Found!', 'status' => 404]);
+    }
+}
+
 //  for Giftcards Redeem
 /**
  * @OA\Post(
