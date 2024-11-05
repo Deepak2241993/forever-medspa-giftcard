@@ -495,8 +495,6 @@ public function giftcancel(Request $request,){
         $tomail = is_array($tomail) ? $tomail[0] : $tomail;
         
         Mail::to($tomail)->send(new GiftcardCancelMail($statement));
-        
-
      } 
     return $result;
  

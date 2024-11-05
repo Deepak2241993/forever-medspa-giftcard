@@ -509,7 +509,7 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
  * )
  */
 
- public function GiftCardSearch(Request $request, Giftsend $giftsend, GiftcardsNumbers $numbers)
+ public function GiftCardSearch(Request $request)
 {
     $token = $request->user_token;
     $name = $request->name;

@@ -106,7 +106,7 @@
                                                                                     <tr>
                                                                                         <td colspan="4"></td>
                                                                                         <th>Refundable Amount</th>
-                                                                                        <td>{{ $gifcardCancelData['TotalAmount'] }}
+                                                                                        <td>{{ $gifcardCancelData['actual_paid_amount'] }}
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
