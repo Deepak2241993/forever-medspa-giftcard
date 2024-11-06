@@ -159,7 +159,7 @@
                                                             <div class="col-md-3">
                                                                 <input id="giftcard_amount_0" placeholder="$0.00"
                                                                     class="input-text" name="coupon_code" type="number"
-                                                                    min="0" onkeyup="validateGiftAmount(this)"
+                                                                    min="0" onkeyup="validateGiftAmount(this)" onchange="validateGiftAmount(this)"
                                                                     readonly style="padding-left: 22px;">
 
                                                             </div>
@@ -293,7 +293,7 @@
                 </div>
                 <div class="col-md-3">
                     <input id="giftcard_amount_${key}" placeholder="$0.00"
-                        class="input-text" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" readonly style="padding-left: 22px;">
+                        class="input-text" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" onchange="validateGiftAmount(this)" readonly style="padding-left: 22px;">
                 </div>
                 <div class="col-md-3 mt-4" style="display:flex;">
                     <button onclick="validategiftnumber(${key})"
@@ -460,48 +460,53 @@
 
         let alertShownCount = 0;
 
-        function validateGiftAmount(inputElement) {
-            var maxValue = parseFloat($(inputElement).attr('max'));
-            var currentValue = parseFloat($(inputElement).val());
-            sumValues();
-            if (currentValue > maxValue) {
-                if (alertShownCount === 0) {
-                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
-                        '. Please enter a valid amount.');
-                    alertShownCount++;
-                    $(inputElement).val(maxValue);
-                } else {
-                    $(inputElement).val(maxValue);
-                    // $(inputElement).prop('disabled', true);
-                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
-                        '. The value has been set to the maximum and the input field is now disabled.');
-                }
-            }
+function validateGiftAmount(inputElement) {
+    // Retrieve the maximum allowed value
+    var maxValue = parseFloat($(inputElement).attr('max'));
+    // Retrieve the current value from the input
+    var currentValue = parseFloat($(inputElement).val());
+
+    // If currentValue exceeds maxValue, reset and handle alerts
+    if (currentValue > maxValue) {
+        if (alertShownCount === 0) {
+            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. Please enter a valid amount.');
+            alertShownCount++;
+        } else {
+            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. The value has been set to the maximum.');
         }
+        // Set the input value to the maximum allowed
+        $(inputElement).val(maxValue);
+    }
 
-        //  For Sum Calculation
-        function sumValues() {
-            let sum = 0;
+    // Call the sum calculation function to update totals
+    sumValues();
+}
 
-            $('input[id^="giftcard_amount_"]').each(function() {
-                let value = parseFloat($(this).val());
-                if (!isNaN(value)) {
-                    sum += value;
-                }
-            });
+// Sum Calculation Function
+function sumValues() {
+    let sum = 0;
 
-            var total_value_from_cart = {{ $amount }};
-            var new_final_amount = (total_value_from_cart - sum);
-
-            // Tax calculation 10%
-            var taxamount = (new_final_amount * 10) / 100;
-
-            $('#totalValue').text('$' + (new_final_amount + taxamount));
-            $('#giftcard_applied').text('-$' + sum);
-            $('#giftcard_applied').text('-$' + sum);
-            $('#tax_amount').text('+$' + taxamount);
-            //  $('#totalValue').text('Total Value: $' + sum.toFixed(2));
+    // Iterate through all gift card amount inputs and calculate the sum
+    $('input[id^="giftcard_amount_"]').each(function() {
+        let value = parseFloat($(this).val());
+        if (!isNaN(value)) {
+            sum += value;
         }
+    });
+
+    // Retrieve the total value from the cart
+    var total_value_from_cart = {{ $amount }};
+    var new_final_amount = total_value_from_cart - sum;
+
+    // Calculate the tax amount (10% of the new final amount)
+    var taxamount = (new_final_amount * 10) / 100;
+
+    // Update the display values on the page
+    $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
+    $('#giftcard_applied').text('-$' + sum.toFixed(2));
+    $('#tax_amount').text('+$' + taxamount.toFixed(2));
+}
+
     </script>
     {{-- <script>
 // Disable right-click context menu

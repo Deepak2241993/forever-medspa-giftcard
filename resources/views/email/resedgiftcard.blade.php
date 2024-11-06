@@ -126,7 +126,7 @@
                                                                                         {{ $mail_data->your_name }},<br>
                                                                                         You have received a gift card
                                                                                         purchase {{ $mail_data->qty }} x
-                                                                                        ${{ round($mail_data->transaction_amount / $mail_data->qty) }}
+                                                                                        ${{ round(($mail_data->amount)) }}
                                                                                         to use at <a
                                                                                             href="https://myforevermedspa.com/"
                                                                                             target="_blank"

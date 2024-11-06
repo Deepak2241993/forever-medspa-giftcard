@@ -1,3 +1,53 @@
+<style>
+    table {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    color: #6c7a89; /* Softer text color for readability */
+    font-size: 14px;
+    margin: 20px 0;
+    background-color: #f9f9f9; /* Light background for contrast */
+}
+
+td {
+    padding: 16px; /* Consistent padding */
+    text-align: center;
+    color: #34495e; /* Darker text color for emphasis */
+}
+
+a {
+    color: #3498db; /* Brighter link color */
+    text-decoration: none;
+    font-weight: 600; /* Make links bold */
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #2980b9; /* Darker blue on hover */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd; /* Subtle horizontal rule */
+    margin: 20px 0;
+}
+
+p {
+    margin: 10px 0;
+    line-height: 1.6; /* Increase line spacing for readability */
+    text-align: left; /* Align text to the left for better reading flow */
+}
+
+strong {
+    font-weight: bold; /* Emphasize important text */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ecf0f1; /* Alternate row background */
+}
+
+    </style>
 <div id=":18p" class="a3s aiL msg-1377519352946152473">
     <u></u>
     <div bgcolor="#f5f7fb">
@@ -98,7 +148,7 @@
                                                                                             </td>
                                                                                             <td>{{ $item['comments'] }}
                                                                                             </td>
-                                                                                            <td>{{ $item['amount'] }}
+                                                                                            <td>{{ $item['actual_paid_amount'] }}
                                                                                             </td>
                                                                                         </tr>
                                                                                     @endforeach
@@ -202,12 +252,14 @@
                                                                             <p></p>
                                                                             <hr>
                                                                             <p style="text-align:left">
-                                                                                <strong></strong></p>
+                                                                                <strong></strong>
+                                                                            </p>
                                                                             <p style="text-align:left">
                                                                                 <strong>Disclaimer<br></strong>The
                                                                                 information contained in this e-mailer
                                                                                 has not been prepared taking into
-                                                                                account specific </p>
+                                                                                account specific
+                                                                            </p>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

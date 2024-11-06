@@ -653,7 +653,7 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     $token = $request->user_token;
     $giftcardnumber = $request->giftcardnumber;
 
-    $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.comments','giftcards_numbers.actual_paid_amount','giftcards_numbers.updated_at')->Where('giftnumber',$giftcardnumber)->where('user_token',$token)->get();
+    $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.status','giftcards_numbers.actual_paid_amount','giftcards_numbers.updated_at')->Where('giftnumber',$giftcardnumber)->where('user_token',$token)->get();
 
     // Initialize sum variable
     $totalAmount = 0;
@@ -667,7 +667,8 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     {
         $actual_paid_amount = 0;
     }
-    if ($data) {
+    // print_r($data[0]['status']); die();
+    if ($data[0]['status']==1) {
         return response()->json(['TotalAmount'=>$totalAmount,'actual_paid_amount'=>$actual_paid_amount, 'status' => 200, 'success' => 'Gift Found Successfully'], 200);
     } else {
         return response()->json(['error' => 'No Giftcard Found!', 'status' => 404]);
