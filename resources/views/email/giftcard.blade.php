@@ -415,7 +415,7 @@
                                                                         <br>
                                                                         {{ ucFirst($mail_data->your_name) }} you are
                                                                         purchased {{ $mail_data->qty }} x
-                                                                        ${{ round($mail_data->transaction_amount / $mail_data->qty) }}
+                                                                        ${{ round($mail_data->amount) }}
                                                                         gift card to use at <br><a
                                                                             href="https://myforevermedspa.com/"
                                                                             target="_blank"
