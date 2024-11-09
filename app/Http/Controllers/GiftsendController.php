@@ -123,6 +123,8 @@ class GiftsendController extends Controller
 
     public function sendgift(Request $request){
         $data_arr = $request->except('_token');
+        $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
+        // print_r($data_arr); die();
         $data = json_encode($data_arr);
         //  First API
         $resultData =$this->postAPI('gift-for-other',$data);
@@ -133,9 +135,9 @@ class GiftsendController extends Controller
         {
             $discount_dispaly="<tr style='background-color:#FCA52A;'><th>Discount: </th><th>".'$'. ($result->discount)."</th></tr>";
         }
-else{
-    $discount_dispaly='';
-}
+        else{
+            $discount_dispaly='';
+        }
         if(isset($resultData['error'])) {
             echo json_encode(["error" => '<h5 style="color: red;">' . $resultData['error'] . '</h5>']);
         } 
@@ -150,13 +152,13 @@ else{
                         "result" => '<table class="table table-striped">
                                        <tbody>
                                          <tr><th id="giftqty"></th>
-                                         <th>$'.$result->amount.'</th></tr>
+                                         <th>$'.$result->amount * $result->qty.'</th></tr>
                                          <tr><th>Your name:</th><th>'.$result->your_name.'</th></tr>
                                          <tr><th>Recipient name:</th><th>'.$result->recipient_name.'</th></tr>
                                          <tr><th>Message:</th><th>'.$result->message.'</th></tr>
                                          <tr><th>Ship To:</th><th>'.$result->gift_send_to.'</th></tr>
                                          <tr><th>Receipt To:</th><th>'.$result->receipt_email.'</th></tr>'.$discount_dispaly.'
-                                         <tr><th>Total:</th><th>'.'$'.$result->amount - ($result->discount ? $result->discount : 0).'</th></tr>
+                                         <tr><th>Total:</th><th>'.'$'.($result->amount * $result->qty) - ($result->discount ? $result->discount : 0).'</th></tr>
                                        </tbody>
                                      </table>',
                         "paymentscript" => '<script
@@ -165,7 +167,7 @@ else{
                                              data-key="'.env('STRIPE_KEY').'"
                                              data-name="Forever Medspa"
                                              data-description="Forever Medspa Giftcards"
-                                             data-amount="'.(($result->amount - ($result->discount ? $result->discount : 0)) * 100).'" // Convert to cents
+                                             data-amount="'.((($result->amount * $result->qty) - ($result->discount ? $result->discount : 0)) * 100).'" // Convert to cents
                                              data-email="info@forevermedspanj.com"
                                              data-image="'.url('/medspa.png').'"
                                              data-currency="usd"

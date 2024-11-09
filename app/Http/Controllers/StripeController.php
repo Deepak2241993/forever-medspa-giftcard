@@ -136,10 +136,10 @@ class StripeController extends Controller
 
            // Create a charge
           $data= Charge::create([
-                'amount' => ($giftsend['amount'] - $giftsend['discount']) * 100, // Amount in cents
-               'currency' => 'usd',
-               'source' => $request->stripeToken,
-               'description' => 'Forever Medspa Giftcards UserId='.$giftsend['id'].' Amount $ ='.$giftsend['amount'],
+            'amount' => (($giftsend['amount'] * $giftsend['qty']) - $giftsend['discount']) * 100, // Amount in cents
+            'currency' => 'usd',
+            'source' => $request->stripeToken,
+            'description' => 'Forever Medspa Giftcards UserId='.$giftsend['id'].' Amount $ ='.$giftsend['amount']*$giftsend['qty'],
            ]);
 
            
@@ -166,7 +166,7 @@ class StripeController extends Controller
                     'user_id' => $giftsend->id,
                     'transaction_id' => $data->source->id,
                     'user_token' => $giftsend->user_token,
-                    'amount' => $giftsend->amount / $giftsend->qty,
+                    'amount' => $giftsend->amount,
                     // 'giftnumber' => $gift_card_code, // Uncomment this line if needed
                     'status' => 1,
                     'comments' => $giftsend->message,

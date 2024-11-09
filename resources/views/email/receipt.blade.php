@@ -482,7 +482,7 @@ $newString = str_replace($search, $replace, $string);
                                                                                                                                             <tr>
                                                                                                                                                 <td style="font-family:'Fira Sans',Roboto,Arial,sans-serif;letter-spacing:-0.3px;line-height:28px;font-weight:500;font-size:18px;color:#151515"
                                                                                                                                                     valign="top">
-                                                                                                                                                    ${{ $mail_data->amount / $mail_data->qty }}
+                                                                                                                                                    ${{ $mail_data->amount }}
                                                                                                                                                     gift
                                                                                                                                                     card
                                                                                                                                                 </td>

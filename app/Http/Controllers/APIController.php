@@ -52,7 +52,7 @@ class APIController extends Controller
  *      )
  * )
  */
-public function giftvalidate(Request $request, GiftCoupon $giftCoupon,MedsapGift $gift){
+public function giftvalidate(Request $request, GiftCoupon $giftCoupon){
     $result = $giftCoupon->where('coupon_code', $request->coupon_code)->where('status', 1)->where('user_token',$request->user_token)->get();
 
 
@@ -115,7 +115,7 @@ public function giftvalidate(Request $request, GiftCoupon $giftCoupon,MedsapGift
  *      )
  * )
  */
-public function gift_send_store_other (Request $request,Giftsend $giftsend,User $user,GiftCoupon $coupon)
+public function gift_send_store_other (Request $request,Giftsend $giftsend)
 {
     $data=$request->all();
    $result= $giftsend->create($data);
