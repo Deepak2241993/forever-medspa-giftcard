@@ -93,6 +93,11 @@
                     <textarea name="prerequisites" id="prerequisites"
                         class="form-control summernote">{{ isset($data) ? $data['prerequisites'] : '' }}</textarea>
                 </div>
+                <div class="mb-12 col-lg-12 self mt-3">
+                    <label for="conditions" class="form-label">Terms & Conditions</label>
+                    <textarea name="terms_and_conditions" id="conditions"
+                        class="form-control summernote">{{ isset($data) ? $data['terms_and_conditions'] : '' }}</textarea>
+                </div>
 
 
 

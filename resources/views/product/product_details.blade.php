@@ -131,16 +131,17 @@
                               <button class="nav-link" id="nav-additional-tab" data-bs-toggle="tab"
                                  data-bs-target="#nav-additional" type="button" role="tab"
                                  aria-controls="nav-additional" aria-selected="false">Prerequisites Information </button>
-                              {{-- <button class="nav-link" id="nav-review-tab" data-bs-toggle="tab"
+                              <button class="nav-link" id="nav-review-tab" data-bs-toggle="tab"
                                  data-bs-target="#nav-review" type="button" role="tab" aria-controls="nav-review"
-                                 aria-selected="false">Reviews</button>
-                           </div> --}}
+                                 aria-selected="false">Terms & Conditions</button>
+                           </div>
                         </nav>
                      </div>
                   </div>
                   <div class="col-xxl-9 col-xl-8 col-lg-8">
                      <div class="product__details-more-tab-content">
                         <div class="tab-content" id="productmorecontent">
+
                            <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
                               aria-labelledby="nav-description-tab">
                               <div class="product__details-des">
@@ -150,7 +151,13 @@
                            <div class="tab-pane fade" id="nav-additional" role="tabpanel"
                               aria-labelledby="nav-additional-tab">
                               <div class="product__details-info">
-                                 {!! $data->product_description !!}
+                                 {!! $data->prerequisites !!}
+                              </div>
+                           </div>
+                           <div class="tab-pane fade" id="nav-review" role="tabpanel"
+                           aria-labelledby="nav-review-tab">
+                              <div class="product__details-info">
+                                 {!! $data->terms_and_conditions !!}
                               </div>
                            </div>
                            

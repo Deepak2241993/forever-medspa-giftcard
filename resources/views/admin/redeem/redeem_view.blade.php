@@ -217,7 +217,7 @@
                 <th>Date</th>
                 <th>Message</th>
                 <th>Value Amount</th>
-                <th>Actule Paid Amount</th>
+                <th>Actual Paid Amount</th>
             </tr>
         `;
         // Append the table header to statment_view

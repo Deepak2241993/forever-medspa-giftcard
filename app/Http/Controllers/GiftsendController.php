@@ -9,13 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use Session;
-use Validator;
-use App\Mail\GeftcardMail;
 use App\Mail\ResendGiftcard;
 use App\Mail\GiftCardStatement;
 use App\Mail\GiftcardCancelMail;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 class GiftsendController extends Controller
 {
