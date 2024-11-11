@@ -335,22 +335,7 @@ else{
         return view('gift.gift_sale');
     } 
 
-     // For Self Giftcards
-//      public function GiftPurchase(Request $request){
-        
-//         $data_arr = $request->except('_token');
-//         $transaction_id='FEMS-'.time();
-//         $data_arr['transaction_id']=$transaction_id;
-//         $data_arr['payment_mode']='Form Forever Medspa Center';
-//         $data = json_encode($data_arr);
-//         //  First API
-//         $resultData =$this->postAPI('gift-purchase-from-store',$data);
-//         $result = (object) $resultData['result'];
-//         return redirect()->route('giftcard-purchases-success')->with('transaction_details', $result);
-//         // return view('gift.gift_purchase_payment_history')->with('result', $result);
-    
-
-// }
+     // For Other Giftcards
 
 public function GiftPurchase(Request $request)
 {
@@ -372,6 +357,7 @@ public function GiftPurchase(Request $request)
 
     // Encode data as JSON for the API call
     $data = json_encode($data_arr);
+    // dd($data);
 
     // Call the API and handle response
     try {
@@ -397,6 +383,7 @@ public function GiftPurchaseSuccess()
 {
     // Retrieve the 'result' data from the session
     $transactionDetails = session('transaction_details');
+    // dd($transactionDetails);
     if($transactionDetails)
     {
         // Pass the 'result' data to the view if needed

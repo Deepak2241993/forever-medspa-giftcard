@@ -384,7 +384,7 @@
                                                                         @if (!empty($mail_data->recipient_name))
                                                                             {{ ucFirst($mail_data->your_name) }} sent
                                                                             you {{ $mail_data->qty }} x
-                                                                            ${{ round($mail_data->amount / $mail_data->qty )}}
+                                                                            ${{ round($mail_data->amount) }}
     
                                                                             gift card to use at <br><a
                                                                                 href="https://myforevermedspa.com/"
@@ -394,7 +394,7 @@
                                                                         @else
                                                                             You have received a gift card purchase
                                                                             {{ $mail_data->qty }} x
-                                                                            ${{ round($mail_data->amount / $mail_data->qty )}}
+                                                                            ${{ round($mail_data->amount) }}
                                                                             gift card to use at<br><a
                                                                                 href="https://myforevermedspa.com/"
                                                                                 target="_blank"

@@ -868,7 +868,7 @@ public function gift_purchase(Request $request, Giftsend $giftsend, GiftCoupon $
         $giftcardNumber = GiftcardsNumbers::where('transaction_id', $result->transaction_id)->get();
         $result['card_number'] = $giftcardNumber;
         $gift_send_to = $result->gift_send_to;
-        $result['amount'] = $result->amount * $result->qty;
+        $result['amount'] = $result->amount;
 
         try {
             if (!empty($result->recipient_name)) {

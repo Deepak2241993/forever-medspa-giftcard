@@ -53,9 +53,9 @@
                         </td></tr>
                       <tr><th>Giftcard Sent To </th><td> {{$result->gift_send_to}}</td></tr>
                       <tr><th>Payment Method </th><td>{{$result->payment_mode}}</td></tr>
-                      <tr><th>Giftcard Amount</th><td>${{$result->amount/$result->qty}}</td></tr>
+                      <tr><th>Giftcard Amount</th><td>${{$result->amount}}</td></tr>
                       <tr><th>Giftcard Quantity</th><td>{{$result->qty}}</td></tr>
-                      <tr><th>Total Amount</th><td>${{$result->amount}}</td></tr>
+                      <tr><th>Total Amount</th><td>${{$result->amount * $result->qty}}</td></tr>
                       <tr style="background-color: #00800047;"><th>Discount</th><td>{{$result->discount}}</td></tr>
                       <tr style="background-color: orange;"><th>Payable Amount</th><td>${{$result->transaction_amount}}</td></tr>
                       <tr><th>Transaction ID</th><td>{{$result->transaction_id}}</td></tr>
