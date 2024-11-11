@@ -107,7 +107,7 @@
                                                                                         id="m_1217764301369836700intro-text">
                                                                                         {{ $mail_data->your_name }} just
                                                                                         sent you {{ $mail_data->qty }} x
-                                                                                        ${{ round($mail_data->amount / $mail_data->qty) }}
+                                                                                        ${{ round($mail_data->amount) }}
                                                                                         to use at <a
                                                                                             href="https://myforevermedspa.com/"
                                                                                             target="_blank"
@@ -158,7 +158,7 @@
                                                                                                     <td valign="top"
                                                                                                         style="font-family:'Fira Sans',Roboto,Arial,sans-serif;font-size:36px;font-weight:800;line-height:46px;letter-spacing:-0.6px;color:#151515;padding:0px;vertical-align:top"
                                                                                                         align="left">
-                                                                                                        <p>${{ round($mail_data->amount / $mail_data->qty) }}
+                                                                                                        <p>${{ round($mail_data->amount) }}
                                                                                                             Giftcards
                                                                                                         </p>
 
