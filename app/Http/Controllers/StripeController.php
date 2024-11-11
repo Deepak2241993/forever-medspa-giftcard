@@ -176,7 +176,7 @@ class StripeController extends Controller
                 if ($giftsend->discount != 0) {
                     $cardgenerate['actual_paid_amount'] = ($giftsend->amount * $giftsend->qty - $giftsend->discount) / $giftsend->qty;
                 } else {
-                    $cardgenerate['actual_paid_amount'] = $giftsend->amount / $giftsend->qty;
+                    $cardgenerate['actual_paid_amount'] = $giftsend->amount;
                 }
                 
                 $cardresult = $cardnumber->create($cardgenerate);
