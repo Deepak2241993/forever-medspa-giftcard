@@ -26,8 +26,9 @@ class PDFController extends Controller
       $pdf = PDF::loadView('terms_and_condition.terms', $data)->setPaper('a4', 'portrait');
 
       // Download the PDF with a given name
-    //   return $pdf->download('my-pdf-file.pdf');
+      $file_name = $result->product_slug .'_terms_&_conditions.pdf';
+      return $pdf->download($file_name);
       // Or to display the PDF in the browser
-       return $pdf->stream('terms_and_conditions.pdf');
+    //    return $pdf->stream('terms_and_conditions.pdf');
     }
 }
