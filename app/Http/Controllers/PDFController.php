@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Controllers;
+use PDF;
+use App\Models\Product;
+
+use Illuminate\Http\Request;
+
+class PDFController extends Controller
+{
+    public function generatePDF($id)
+    {
+        $result = Product::find($id);
+        $data = [
+            'company' => 'Forever Mdespa & Wellness Center',
+            'date' => date('m/d/Y'),
+            'email'=> 'info@forevermedspanj.com',
+            'phone'=> '(201) 3404809',
+            'address_1'=> '468 Paterson Ave,',
+            'address_2'=> 'East Rutherford, New Jersey, 07073',
+            'terms'=> $result->terms_and_conditions
+        ];
+        
+        // Load a view and pass the data
+        // $pdf = PDF::loadView('myPDF', $data)->setPaper('a4', 'landscape');
+      $pdf = PDF::loadView('terms_and_condition.terms', $data)->setPaper('a4', 'portrait');
+
+      // Download the PDF with a given name
+    //   return $pdf->download('my-pdf-file.pdf');
+      // Or to display the PDF in the browser
+       return $pdf->stream('terms_and_conditions.pdf');
+    }
+}

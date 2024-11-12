@@ -132,7 +132,7 @@
                                 <th>Categories Name</th>
                                 <th>Categories Image</th>
                                 <th>Categories Description</th>
-                                <th>Categories At</th>
+                                <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

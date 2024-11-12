@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductCategoryImportController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\CategoryExportController;
+use App\Http\Controllers\PDFController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -151,14 +152,14 @@ Route::post('/giftcards-validate', 'GiftsendController@giftcardValidate')->name(
 //  for Product payment URL
 Route::post('checkout-process','StripeController@CheckoutProcess')->name('checkout_process');
 Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->name('strip_checkout_success');
-//  for Product payment URL
+//  for Product payment URL END
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
 Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
 Route::get('invoice','StripeController@invoice')->name('invoice');
 
 
 Route::resource('/product', ProductController::class);
-
+Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF']);
 
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear ');

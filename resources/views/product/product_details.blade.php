@@ -78,7 +78,7 @@
                      <h3 class="product__details-title">{{$data->product_name}}</h3>
                      <div class="product__details-price">
                         @if($data->discounted_amount!=null)
-                        <span class="old-price">${{$data->amount}}</span>
+                        {{-- <span class="old-price">${{$data->amount}}</span> --}}
                         <span class="new-price">${{$data->discounted_amount}}</span>
                         @else
                         <span class="new-price">${{$data->amount}}</span>
@@ -157,6 +157,14 @@
                            <div class="tab-pane fade" id="nav-review" role="tabpanel"
                            aria-labelledby="nav-review-tab">
                               <div class="product__details-info">
+                                 <div style="text-align:end">
+                                 <a href="{{url('/generate-pdf',$data->id)}}" class="fill-btn cart-btn">
+                                    <span class="fill-btn-inner">
+                                       <span class="fill-btn-normal">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
+                                       <span class="fill-btn-hover">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
+                                    </span>
+                                 </a>
+                              </div>
                                  {!! $data->terms_and_conditions !!}
                               </div>
                            </div>
