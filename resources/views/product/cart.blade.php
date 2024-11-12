@@ -231,7 +231,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="disclamer" style="margin-top:50px">
+                    <hr>
+                    <p>
+                    <b class="mt-2">Disclaimer: Giftcards are only applicable if all the services added in the cart has the Giftcard redeem offer activated.
+                    For any queries please contact <a href="mailto:admin@forevermedspanj.com">admin@forevermedspanj.com </a></b> 
+                    </p>
+                    <hr/>
+                    </div>
                 </div>
+                
             </div>
             <!-- Cart area end  -->
         @else
@@ -508,7 +517,7 @@ function sumValues() {
 }
 
     </script>
-    {{-- <script>
+<script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
@@ -533,5 +542,5 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
     }
 });
-</script> --}}
+</script> 
 @endpush
