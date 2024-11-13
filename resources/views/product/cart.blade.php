@@ -381,8 +381,7 @@
                             console.log(response.success);
                             console.log(response.actual_paid_amount);
                             $('#success_' + key).html(
-                                'Your total available amount is $' +
-                                response.actual_paid_amount);
+                                response.message);
                             $('#giftcard_amount_' + key).val(response.actual_paid_amount);
                             $('#giftcard_amount_' + key).removeAttr('readonly');
                             $('#giftcard_amount_' + key).attr('max', response.actual_paid_amount);
@@ -517,7 +516,7 @@ function sumValues() {
 }
 
     </script>
-<script>
+{{-- <script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
@@ -542,5 +541,5 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
     }
 });
-</script> 
+</script>  --}}
 @endpush

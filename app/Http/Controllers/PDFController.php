@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use PDF;
-use App\Models\Product;
+use App\Models\Term;
 
 use Illuminate\Http\Request;
 
@@ -10,7 +10,7 @@ class PDFController extends Controller
 {
     public function generatePDF($id)
     {
-        $result = Product::find($id);
+        $result = Term::find($id);
         $data = [
             'company' => 'Forever Mdespa & Wellness Center',
             'date' => date('m/d/Y'),
@@ -18,7 +18,7 @@ class PDFController extends Controller
             'phone'=> '(201) 3404809',
             'address_1'=> '468 Paterson Ave,',
             'address_2'=> 'East Rutherford, New Jersey, 07073',
-            'terms'=> $result->terms_and_conditions
+            'terms'=> $result->description
         ];
         
         // Load a view and pass the data
@@ -26,7 +26,7 @@ class PDFController extends Controller
       $pdf = PDF::loadView('terms_and_condition.terms', $data)->setPaper('a4', 'portrait');
 
       // Download the PDF with a given name
-      $file_name = $result->product_slug .'_terms_&_conditions.pdf';
+      $file_name = 'terms_&_conditions.pdf';
       return $pdf->download($file_name);
       // Or to display the PDF in the browser
     //    return $pdf->stream('terms_and_conditions.pdf');

@@ -160,6 +160,14 @@
                                   </p>
                               </a>
                           </li>
+                          <li class="nav-item">
+                            <a href="{{ route('terms.index') }}" class="nav-link">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <p>
+                                    Terms & Condition
+                                </p>
+                            </a>
+                        </li>
 
                       </ul>
                   </li>

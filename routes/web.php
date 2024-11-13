@@ -34,15 +34,15 @@ Route::get('/product-dashboard', 'HomeController@ProductDashboard')->name('produ
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 Route::resource('/gift', GiftController::class);
+Route::post('/giftcards-history', 'GiftController@history')->name('giftcards-history');
+Route::get('/giftcards-view', 'GiftController@redeem_view')->name('giftcards-view');
+Route::get('/giftcards-redeem-view', 'GiftController@history_view')->name('giftcards-redeem-view');
+Route::post('/giftcards-redeem', 'GiftController@redeem_store')->name('giftcards-redeem');
 Route::resource('/service-order-history', TransactionHistoryController::class);
 Route::resource('/coupon', GiftCouponController::class);
 Route::resource('/gift-category', GiftCategoryController::class);
 Route::resource('/medspa-gift', MedsapGiftController::class);
 Route::resource('/email-template', EmailTemplateController::class);
-Route::post('/giftcards-history', 'GiftController@history')->name('giftcards-history');
-Route::get('/giftcards-view', 'GiftController@redeem_view')->name('giftcards-view');
-Route::get('/giftcards-redeem-view', 'GiftController@history_view')->name('giftcards-redeem-view');
-Route::post('/giftcards-redeem', 'GiftController@redeem_store')->name('giftcards-redeem');
 Route::post('/ckeditor-image-post', 'CkeditorController@uploadImage')->name('ckeditor-image-upload');
 
 Route::get('/cardgenerated-list','GiftsendController@cardgeneratedList')->name('cardgenerated-list');
@@ -65,9 +65,6 @@ Route::post('/delete-image', [ImageUploadController::class, 'deleteImage']);
 Route::get('/export-categories', [CategoryExportController::class, 'exportCategories']);
 Route::get('/export-categories-with-full-data', [CategoryExportController::class, 'exportCategoriesWithAllFields']);
 Route::get('/export-services', [CategoryExportController::class, 'exportServices']);
-
-
-
 
 
 
@@ -97,6 +94,9 @@ Route::get('service-cart','PopularOfferController@AdminCartview')->name('service
 Route::get('payment-process','PopularOfferController@AdminPaymentProcess')->name('payment-process');
 Route::post('servic-checkout-process','PopularOfferController@CheckoutProcess')->name('servic-checkout-process');
 Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
+
+//  For Terms for service 
+Route::resource('/terms', TermController::class);
 
 
 });
@@ -156,6 +156,7 @@ Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->n
 Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
 Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
 Route::get('invoice','StripeController@invoice')->name('invoice');
+
 
 
 Route::resource('/product', ProductController::class);

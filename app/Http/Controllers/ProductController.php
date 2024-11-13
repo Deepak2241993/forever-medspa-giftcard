@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Search_keyword;
 use App\Models\ProductCategory;
+use App\Models\Search_keyword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -474,7 +474,30 @@ class ProductController extends Controller
 
         public function productdetails(Request $request,$slug){
 
-            $data=Product::where('product_is_deleted','=',0)->where('status','=',1)->where('product_slug',$slug)->first();
+            // $data=Product::where('product_is_deleted','=',0)->where('status','=',1)->where('product_slug',$slug)->first();
+
+            // Fetch the product data
+            $data = Product::where('product_is_deleted', 0)
+            ->where('status', 1)
+            ->where('product_slug', $slug)
+            ->first();
+
+            // Fetch the term description if a product was found
+            if ($data) {
+            // Search for a term where `service_id` includes the product's ID
+            $term = DB::table('terms')
+            ->where('status', 1)
+            ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$data->id])
+            ->first();
+
+            // Display the description
+            $description = $term->description ?? 'No description available';
+            $terms_id = $term->id ?? 'No id';
+            }
+            $data['terms_and_conditions'] = $description;
+            $data['terms_id'] = $terms_id;
+
+
             $category=ProductCategory::where('cat_is_deleted','=',0)->where('user_token','FOREVER-MEDSPA')->get();
             $popular_service=Product::where('popular_service',1)->where('product_is_deleted','=',0)->where('status','=',1)->where('user_token','FOREVER-MEDSPA')->orderBy('id','DESC')->get();
             //  For Auto Search Complete
@@ -489,7 +512,7 @@ class ProductController extends Controller
             $search = json_encode($finalarray);
     
     
-            return view('product.product_details',compact('data','category','search','popular_service'));
+            return view('product.product_details',compact('data','category','search','popular_service','description'));
             }
 
 

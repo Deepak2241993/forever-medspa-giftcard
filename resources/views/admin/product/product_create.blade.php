@@ -93,14 +93,7 @@
                     <textarea name="prerequisites" id="prerequisites"
                         class="form-control summernote">{{ isset($data) ? $data['prerequisites'] : '' }}</textarea>
                 </div>
-                <div class="mb-12 col-lg-12 self mt-3">
-                    <label for="conditions" class="form-label">Terms & Conditions</label>
-                    <textarea name="terms_and_conditions" id="conditions"
-                        class="form-control summernote">{{ isset($data) ? $data['terms_and_conditions'] : '' }}</textarea>
-                </div>
-
-
-
+              
 
                 @php
                     if (isset($data)) {
@@ -145,11 +138,11 @@
                 </div>
 
                 <div class="mb-3 col-lg-6 self mt-2">
-                    <label for="amount" class="form-label">Service Original Price
+                    <label for="amount" class="form-label">Service Original Price<span class="text-danger">*</span>
                     </label>
                     <input class="form-control" type="number" min="0" name="amount"
                         value="{{ isset($data) ? $data['amount'] : '' }}"
-                        placeholder="Service Original Price" >
+                        placeholder="Service Original Price" required>
                     <input class="form-control" type="hidden" min="0" name="id"
                         value="{{ isset($data) ? $data['id'] : '' }}">
                 </div>
@@ -166,12 +159,23 @@
                         value="{{ isset($data) ? $data['session_number'] : '1' }}"
                         placeholder="Number Of Session" required>
                 </div>
+                <div class="mb-3 col-lg-6">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-control" name="status" id='status'>
+                        <option
+                            value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }}>
+                            Active</option>
+                        <option
+                            value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>
+                            Inactive</option>
+                    </select>
+                </div>
 
                 <div class="mb-12 col-lg-12 self">
                     <label for="search_keywords" class="form-label">Search Keywords</label>
                     <textarea name="search_keywords" id="search_keywords" rows="4"
                         class="form-control">{{ isset($data) ? $data['search_keywords'] : '' }}</textarea>
-                    <input class="form-control" id="image" type="hidden" name="status" value="1">
+
                 </div>
                 {{-- <div class="mb-12 col-lg-12 self">
                             <label for="meta_title" class="form-label">Meta Title</label>

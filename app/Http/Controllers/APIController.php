@@ -653,11 +653,26 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     $token = $request->user_token;
     $giftcardnumber = $request->giftcardnumber;
 
-    $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.status','giftcards_numbers.actual_paid_amount','giftcards_numbers.updated_at')->Where('giftnumber',$giftcardnumber)->where('user_token',$token)->get();
+    $data = $numbers->select(
+        'giftcards_numbers.transaction_id',
+        'giftcards_numbers.user_token',
+        'giftcards_numbers.giftnumber',
+        'giftcards_numbers.amount',
+        'giftcards_numbers.status',
+        'giftcards_numbers.actual_paid_amount',
+        'giftcards_numbers.updated_at',
+        'giftsends.discount' // Select all columns from the giftsends table, or specify specific columns if needed
+    )
+    ->join('giftsends', 'giftcards_numbers.transaction_id', '=', 'giftsends.transaction_id')
+    ->where('giftcards_numbers.giftnumber', $giftcardnumber)
+    ->where('giftcards_numbers.user_token', $token)
+    ->get();
+
 
     // Initialize sum variable
     $totalAmount = 0;
     $actual_paid_amount = 0;
+    $check_giftcard_discount = $data[0]['discount'];
     // Iterate over each record in the collection and sum up the 'amount' values
     foreach ($data as $record) {
         $totalAmount += $record->amount;
@@ -669,7 +684,15 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     }
     // print_r($data[0]['status']); die();
     if ($data[0]['status']==1) {
-        return response()->json(['TotalAmount'=>$totalAmount,'actual_paid_amount'=>$actual_paid_amount, 'status' => 200, 'success' => 'Gift Found Successfully'], 200);
+        if($check_giftcard_discount > 0)
+        {
+            $message = "This gift card purchase with a special discount available amount is $".$actual_paid_amount;
+        }
+        else{
+            $message = "This giftcard available amount is $".$actual_paid_amount;
+        }
+       
+        return response()->json(['TotalAmount'=>$totalAmount,'actual_paid_amount'=>$actual_paid_amount, 'status' => 200, 'success' => 'Gift Found Successfully', 'message' =>$message], 200);
     } else {
         return response()->json(['error' => 'No Giftcard Found!', 'status' => 404]);
     }

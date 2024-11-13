@@ -158,14 +158,18 @@
                            aria-labelledby="nav-review-tab">
                               <div class="product__details-info">
                                  <div style="text-align:end">
-                                 <a href="{{url('/generate-pdf',$data->id)}}" class="fill-btn cart-btn">
+                                 <a href="{{url('/generate-pdf',$data->terms_id)}}" class="fill-btn cart-btn">
                                     <span class="fill-btn-inner">
                                        <span class="fill-btn-normal">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
                                        <span class="fill-btn-hover">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
                                     </span>
                                  </a>
-                              </div>
+                                 </div>
+                                 <hr>
+                                 <div class="mt-4">
+                                 
                                  {!! $data->terms_and_conditions !!}
+                                 </div>
                               </div>
                            </div>
                            

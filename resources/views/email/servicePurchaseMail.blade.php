@@ -342,6 +342,59 @@ cellpadding="0" cellspacing="0">
                                     </tr>
                                 </tbody>
                             </table>
+
+                            {{-- For Terms & Condition --}}
+                        <div style="width: 100%; overflow-x: auto; margin: 20px 0;">
+                            <h2>Terms & Conditions</h2>
+                            <table style="width: 100%; border-collapse: collapse; font-family: arial, helvetica, sans-serif;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%; padding: 10px; font-weight: 200; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Service Name</th>
+                                        <th style="width: 35%; padding: 10px; font-weight: 200; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;" colspan="2">Terms & Conditions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
+                                    $descriptions = [];
+                                @endphp
+                                
+                                @foreach ($orderdata as $key => $value)
+                                    @php
+                                        $ServiceData = \App\Models\Product::find($value->service_id);
+                                
+                                        // Fetch the related terms description
+                                        $term = \DB::table('terms')
+                                            ->where('status', 1)
+                                            ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$value->service_id])
+                                            ->first();
+                                
+                                        $description = $term->description ?? 'No description available';
+                                
+                                        // Group by description
+                                        if (isset($descriptions[$description])) {
+                                            $descriptions[$description][] = $ServiceData->product_name;
+                                        } else {
+                                            $descriptions[$description] = [$ServiceData->product_name];
+                                        }
+                                    @endphp
+                                @endforeach
+                                
+                                @foreach ($descriptions as $description => $serviceNames)
+                                    <tr>
+                                        <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">
+                                            {{ implode(' | ', $serviceNames) }}
+                                        </td>
+                                        <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;" colspan="2">
+                                            {!! $description !!}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                        {{-- End Terms And Conditions --}}
                         </div>
                         
                         
@@ -368,7 +421,8 @@ cellpadding="0" cellspacing="0">
                                 </tr>
                             </tbody>
                         </table>
-
+                        
+                        
                     </div>
                 </div>
             </div>
