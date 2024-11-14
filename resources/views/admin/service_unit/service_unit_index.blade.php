@@ -74,8 +74,6 @@
                                 <td>{{ $value->discounted_amount }}</td>
                                 <td>{{ $value->status == 1 ?  "Active":"Inactive" }}</td>
                                 
-
-                                <td>{{ date('m-d-Y h:i:s', strtotime($value['created_at'])) }}</td>
                                 <td>
                                     <a href="{{ route('unit.edit', $value['id']) }}" class="btn btn-primary">Edit</a>
                                     <a href="{{ route('unitdelete', $value['id']) }}" class="btn btn-danger">Delete</a>
