@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ServiceUnit;
 use App\Models\ProductCategory;
 use App\Models\Search_keyword;
 use Illuminate\Http\Request;
@@ -68,9 +69,9 @@ class ProductController extends Controller
 
         $categoryresult = $this->postAPI('category-list',$categorydata);
         $category=$categoryresult['result'];
-      
+        $units = ServiceUnit::where('status',1)->where('is_deleted',0)->get();
         
-        return view('admin.product.product_create',compact('category'));
+        return view('admin.product.product_create',compact('category','units'));
     }
 
     /**
@@ -183,8 +184,8 @@ class ProductController extends Controller
 
         $categoryresult = $this->postAPI('category-list',$categorydata);
         $category=$categoryresult['result'];
-        // dd($category);
-        return view('admin.product.product_create',compact('data','category')); 
+        $units = ServiceUnit::where('status',1)->where('product_is_deleted',0)->get();
+        return view('admin.product.product_create',compact('data','category','units')); 
     }
 
     /**

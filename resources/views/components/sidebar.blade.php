@@ -136,41 +136,60 @@
                       <a href="#" class="nav-link">
                           <i class="nav-icon fa-solid fa-receipt"></i>
                           <p>
-                              Deals Management
+                              Deals & Services
                               <i class="fas fa-angle-left right"></i>
-                              <span class="badge badge-info right">2</span>
+                              <span class="badge badge-info right">3</span>
                           </p>
                       </a>
                       <ul class="nav nav-treeview">
 
-                          <li class="nav-item">
-                              <a href="{{ route('category.index') }}" class="nav-link">
-                                  <i class="nav-icon fas fa-calendar-alt"></i>
-                                  <p>
-                                      Create Deals
-
-                                  </p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="{{ route('product.index') }}" class="nav-link">
-                                  <i class="nav-icon fa fa-user-md"></i>
-                                  <p>
-                                      Create Services
-                                  </p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="{{ route('terms.index') }}" class="nav-link">
-                                <i class="fa fa-list" aria-hidden="true"></i>
+                        <li class="nav-item">
+                            <a href="{{ route('category.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
-                                    Terms & Condition
+                                    Deals Management
+
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="{{ route('product.index') }}" class="nav-link">
+                                <i class="nav-icon fa fa-user-md"></i>
+                                <p>
+                                    Services Management
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('unit.index') }}" class="nav-link">
+                                <i class="nav-icon fa fa-user-md"></i>
+                                <p>
+                                    Unit Management
+                                </p>
+                            </a>
+                        </li>
                       </ul>
-                  </li>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa-solid fa-receipt"></i>
+                            <p>
+                                Terms & Conditions
+                                <i class="fas fa-angle-left right"></i>
+                                <span class="badge badge-info right">1</span>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('terms.index') }}" class="nav-link">
+                                    <i class="nav-icon fa fa-list" aria-hidden="true"></i>
+                                    <p>Terms & Condition</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                     <li class="nav-header">MISCELLANEOUS</li>
                     <li class="nav-item">
                         <a href="{{ route('coupon.index') }}" class="nav-link">

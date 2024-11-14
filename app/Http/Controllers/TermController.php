@@ -16,7 +16,7 @@ class TermController extends Controller
      */
     public function index()
     {
-        $result = Term::paginate(10);
+        $result = Term::where('is_deleted',0)->orderBy('id','DESC')->paginate(10);
         // dd($result);
         return view('admin.terms.terms_index',compact('result'));
     }
@@ -43,7 +43,7 @@ class TermController extends Controller
         $data =$request->all();
         $data['service_id'] = implode('|', $request->service_id);
         $terms->create($data);
-        return redirect('/admin/terms')->with('message', 'Terms & Condition Added Successfully');;
+        return redirect('/admin/terms')->with('message', 'Terms & Condition Added Successfully');
 
     }
 
@@ -83,7 +83,7 @@ class TermController extends Controller
         $data =$request->all();
         $data['service_id'] = implode('|', $request->service_id);
         $term->update($data);
-        return redirect('/admin/terms')->with('message', 'Terms & Condition updated Successfully');;
+        return redirect('/admin/terms')->with('message', 'Terms & Condition updated Successfully');
     }
 
     /**
@@ -94,7 +94,7 @@ class TermController extends Controller
      */
     public function destroy(Term $term)
     {
-        $term->delete();
+        $term->update(['is_deleted'=>1]);
         return back()->with('message', 'Terms & Condition Deleted Successfully');
     }
 }

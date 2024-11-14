@@ -55,6 +55,9 @@ Route::get('/giftcards-sale', 'GiftsendController@giftsale')->name('giftcards-sa
 Route::post('/giftcancel','GiftsendController@giftcancel')->name('giftcancel');
 Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
+Route::resource('/unit', ServiceUnitController::class);
+Route::get('/unitdelete/{id}','ServiceUnitController@destroy')->name('unitdelete');
+
 Route::resource('/banner', BannerController::class);
 
 Route::post('/categories/import', [ProductCategoryImportController::class, 'import'])->name('categories.import');
