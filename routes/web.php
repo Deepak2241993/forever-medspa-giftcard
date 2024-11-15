@@ -161,7 +161,7 @@ Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals
 Route::get('invoice','StripeController@invoice')->name('invoice');
 
 
-
+Route::view('unit','product.unit_show');
 Route::resource('/product', ProductController::class);
 Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF']);
 

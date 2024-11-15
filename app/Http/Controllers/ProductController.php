@@ -182,6 +182,7 @@ class ProductController extends Controller
         $data = $this->getAPI('product/'.$id.'?user_token='.$token);
         $data=$data['result'];
         $data['cat_id']=explode('|',$data['cat_id']);
+        $data['unit_id']=explode('|',$data['unit_id']);
 
         $categoryresult = $this->postAPI('category-list',$categorydata);
         $category=$categoryresult['result'];
@@ -226,8 +227,8 @@ class ProductController extends Controller
     $data['discount_rate'] = $discount_percentage;
     //  Discount Code End
         $data = json_encode($data);
-        // dd($data);
         $data = $this->postAPI('product-update/'.$request->id,$data);
+        // dd($data);
         return redirect(route('product.index'))->with('success', $data['msg']);
     }
 
@@ -514,7 +515,6 @@ class ProductController extends Controller
             $finalarray = array_merge($search_category,$search_product);
     
             $search = json_encode($finalarray);
-    
     
             return view('product.product_details',compact('data','category','search','popular_service','description'));
             }

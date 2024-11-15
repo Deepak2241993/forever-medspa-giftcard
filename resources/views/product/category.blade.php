@@ -178,18 +178,20 @@
         <main>
 
             <div id="carouselExampleAutoplaying" class="carousel slide" style="margin-top: 80px" data-bs-ride="carousel">
-                  <div class="carousel-inner">
+                <div class="carousel-inner">
                     @foreach ($sliders as $key => $value)
                         @if ($key <= 5)
                             <div class="carousel-item @if ($key == 0) {{ 'active' }} @endif">
-                                <img src="{{ url($value->image) }}" class="d-block w-100" alt="..." onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
+                                <img src="{{ url($value->image) }}" class="d-block w-100" alt="..."
+                                    onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                 <div class="carousel-caption d-none d-md-block">
-                                 <a href="{{$value->url}}" target="_blank" class="btn btn-primary" style="width:120px;height:35px;font-size:15px">Explore More</a>
-                             </div>
+                                    <a href="{{ $value->url }}" target="_blank" class="btn btn-primary"
+                                        style="width:120px;height:35px;font-size:15px">Explore More</a>
+                                </div>
                             </div>
                         @endif
                     @endforeach
-                  </div>
+                </div>
 
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
                     data-bs-slide="prev">
@@ -212,7 +214,6 @@
                     <div class="row gy-50">
                         <div class="col-xxl-8 col-lg-8">
                             <div class="postbox__wrapper">
-
                                 @if (isset($data))
                                     @foreach ($data as $value)
                                         @php
@@ -260,7 +261,8 @@
                                             <article class="postbox__item mb-50 transition-3">
                                                 <div class="postbox__thumb w-img mb-30">
                                                     <a href="{{ route('product', ['slug' => $value['slug']]) }}">
-                                                        <img src="{{ $value['cat_image'] }}" alt="{{ $value['cat_name'] }}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
+                                                        <img src="{{ $value['cat_image'] }}" alt="{{ $value['cat_name'] }}"
+                                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                                     </a>
                                                 </div>
                                                 <div class="postbox__content">
@@ -378,7 +380,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              
+
                                 @if (count($popular_service) > 0)
                                     <div class="sidebar__widget mb-45">
                                         <h3 class="sidebar__widget-title">Popular Services</h3>
@@ -392,14 +394,15 @@
                                                                 <a
                                                                     href="{{ route('PopularService', ['id' => $value->id]) }}"><img
                                                                         src="{{ $value->product_image }}"
-                                                                        alt="{{ $value->product_name }}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
+                                                                        alt="{{ $value->product_name }}"
+                                                                        onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';"></a>
                                                             </div>
                                                             <div class="rc__post-content">
                                                                 <h4 class="rc__post-title">
                                                                     <a
                                                                         href="{{ route('PopularService', ['id' => $value->id]) }}">{{ Str::limit($value->product_name, 10, '...') }}</a>
                                                                 </h4>
-                                                         
+
                                                             </div>
                                                         </div>
                                                     @endif
@@ -421,7 +424,7 @@
             <!-- Newsletter area start -->
             <section class="newsletter-area p-relative">
                 <div class="newsletter-overlay theme-bg-3"></div>
-                <div class="container" 
+                <div class="container"
                     style="background-image: url('{{ url('/uploads/FOREVER-MEDSPA/giftcard.jpeg') }}'); 
                            background-size: cover; 
                            background-position: center; 
@@ -430,7 +433,7 @@
                            max-width: 1110px; 
                            height: auto; 
                            aspect-ratio: 1110 / 260.41;">
-                    
+
                     <div class="newsletter-grid p-relative">
                         <div class="row gy-4 align-items-center">
                             <div class="col-xxl-6 col-xl-6 col-lg-6">
@@ -441,7 +444,7 @@
                             <div class="col-xxl-6 col-xl-6 col-lg-6">
                                 <div class="newsletter-form">
                                     <div class="newsletter-input p-relative text-center">
-                                        <button class="fill-btn" type="submit" 
+                                        <button class="fill-btn" type="submit"
                                             style="padding: 12px 24px; font-size: 16px; max-width: 200px; width: 100%;"
                                             onclick="location.href='{{ url('/') }}';">
                                             <span class="fill-btn-inner">

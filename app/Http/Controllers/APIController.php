@@ -1942,7 +1942,6 @@ public function product_update(Request $request, $id)
     $data['product_image'] = url('/').$destinationPath.$filename;
     $result=$product->update($data);
     }
-
     $result=$product->update($data);
     if ($result) { // This check is now correctly looking for a non-null value
         return response()->json(['status' => 200, 'msg' => 'Product updated successfully'], 200);
