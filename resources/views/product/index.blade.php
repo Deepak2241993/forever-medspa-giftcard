@@ -209,15 +209,15 @@ input[type=text] {
                            <h3 class="postbox__title">
                               <a href="{{route('productdetails',['slug' => $value['product_slug']])}}">{{$value['product_name']}}</a>
                           </h3>
-<div class="hl05eU">
-   @if($value['discounted_amount']!=null)
-   {{-- <del class="yRaY8j"><b>${{$value['amount']}}</b></del>&nbsp;&nbsp; --}}
-    <div class="Nx9bqj"><b>${{$value['discounted_amount']}}</b></div>
-    {{-- <div class="UkUFwK"><span><b>{{$value['discount_rate'] >0 ? $value['discount_rate']:0}}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b> --}}
-    @else
-    <div class="Nx9bqj"><b>${{$value['amount']}}</b></div>
-    @endif
-</div>
+                           <div class="hl05eU">
+                              @if($value['discounted_amount']!=null)
+                              {{-- <del class="yRaY8j"><b>${{$value['amount']}}</b></del>&nbsp;&nbsp; --}}
+                              <div class="Nx9bqj"><b>${{$value['discounted_amount']}}</b></div>
+                              {{-- <div class="UkUFwK"><span><b>{{$value['discount_rate'] >0 ? $value['discount_rate']:0}}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b> --}}
+                              @else
+                              <div class="Nx9bqj"><b>${{$value['amount']}}</b></div>
+                              @endif
+                           </div>
                            <div class="postbox__text mt-4">
                               <p>{!!$value['product_description']!!}</p>
                            </div>
@@ -233,12 +233,21 @@ input[type=text] {
                            <div class="row">
                              
                               <div class="product__add-cart col-md-6">
+                                 @if(!empty($value->unit_id))
+                                 <a href="{{route('unit-page',$value->id)}}" class="fill-btn cart-btn">
+                                    <span class="fill-btn-inner">
+                                       <span class="fill-btn-normal">Explore<i class="fa-solid fa-basket-shopping"></i></span>
+                                       <span class="fill-btn-hover">Explore<i class="fa-solid fa-basket-shopping"></i></span>
+                                    </span>
+                                 </a>
+                                 @else
                                  <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$value->id}})">
                                     <span class="fill-btn-inner">
                                        <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
                                        <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
                                     </span>
                                  </a>
+                                 @endif
                               </div>
                            </div>
                            

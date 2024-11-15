@@ -69,7 +69,7 @@ class ProductController extends Controller
 
         $categoryresult = $this->postAPI('category-list',$categorydata);
         $category=$categoryresult['result'];
-        $units = ServiceUnit::where('status',1)->where('is_deleted',0)->get();
+        $units = ServiceUnit::where('status',1)->where('product_is_deleted',0)->get();
         
         return view('admin.product.product_create',compact('category','units'));
     }
@@ -297,38 +297,7 @@ class ProductController extends Controller
         return view('product.index',compact('data','category','search','popular_service'));
         }
 
-
-
-
-        //  Data Filter Category Wise
-        // Advance Search From Category and services 
-        // public function productCategory(Request $request, $id){
-        //     // $data=Product::where('product_is_deleted','=',0)->where('user_token','FOREVER-MEDSPA')->where('cat_id','LIKE',$id)->paginate(20);
-        //     $data = Product::where('cat_id', 'LIKE', '%|' . $id . '|%')
-        //            ->orWhere('cat_id', 'LIKE', $id . '|%')
-        //            ->orWhere('cat_id', 'LIKE', '%|' . $id)
-        //            ->orWhere('cat_id', $id)
-        //            ->paginate(20);
-        //     $category=ProductCategory::where('cat_is_deleted','=',0)->where('user_token','FOREVER-MEDSPA')->get();
-        //     $popular_service=Product::where('popular_service',1)->where('product_is_deleted','=',0)->where('user_token','FOREVER-MEDSPA')->get();
-        //      //  For Auto Search Complete
-        //      $search_category = ProductCategory::where('cat_is_deleted', 0)
-        //      ->where('user_token', 'FOREVER-MEDSPA')
-        //      ->pluck('cat_name')
-        //      ->toArray();
-        //      $search_product=Product::where('product_is_deleted','=',0)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
-        //      $finalarray = array_merge($search_category,$search_product);
- 
-        //      $search = json_encode($finalarray);
-        //     return view('product.index',compact('data','category','search','popular_service'));
-
-
-        // }
-
-
-
-
-        //  All Types Search
+       //  All Types Search
         // We Are Search From Category and services 
         public function ServicesSearch(Request $request){
             if(empty($request->search))

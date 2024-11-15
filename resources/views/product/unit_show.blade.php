@@ -14,12 +14,12 @@
             <div class="row justify-content-center">
                <div class="col-xxl-12">
                   <div class="breadcrumb__wrapper text-center">
-                     {{-- <h2 class="breadcrumb__title">{{$data->product_name}}</h2> --}}
+                     <h2 class="breadcrumb__title">{{$product->product_name}}</h2>
                      <div class="breadcrumb__menu">
                         <nav>
                            <ul>
                               <li><span><a href="{{url('/')}}">Home</a></span></li>
-                              {{-- <li><span>{{$data->product_name}}</span></li> --}}
+                              <li><span>{{$product->product_name}}</span></li>
                            </ul>
                         </nav>
                      </div>
@@ -34,38 +34,38 @@
       <div class="product__details-area section-space-medium">
          <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                @foreach($result as $key => $value)
+                @php
+                    $unit = App\Models\ServiceUnit::find($value);
+                    $image = explode('|',$unit->product_image);
+
+                @endphp
+                <div class="col-md-4">
+                    <div class="card">
+                        @if(!empty($image[0]!=''))
+                        <img src="{{$image[0]}}" class="card-img-top" alt="...">
+                        @else
+                        <img src="{{url('/No_Image_Available.jpg')}}" class="card-img-top" alt="...">
+                        @endif
                         <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="content p-4">
+                                <h4>{{ $unit ? $unit->product_name : '' }}</h4>
+                                <p class="card-text">
+                                    {{ $unit ? $unit->short_description : '' }}
+                                </p>
+                                <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$unit->id}})">
+                                    <span class="fill-btn-inner">
+                                    <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
+                                    <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
+                                    </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+            @endforeach
+
+                
             </div>
          </div>
       </div>
@@ -77,29 +77,29 @@
 
 @push('footerscript')
 <script>
-   function addcart(id) {
-    $.ajax({
-        url: '{{ route('cart') }}',
-        method: "post",
-        dataType: "json",
-        data: {
-            _token: '{{ csrf_token() }}',
-            product_id: id,
-            quantity: 1
-        },
-        success: function (response) {
-            if (response.success) {
-                window.location.href = '{{ route('cartview') }}'; 
-            } else {
-                $('.showbalance').html(response.error).show();
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // Handle the error here
-            $('.showbalance').html('An error occurred. Please try again.').show();
-        }
-    });
-}
-
-</script>
+    function addcart(id) {
+     $.ajax({
+         url: '{{ route('cart') }}',
+         method: "post",
+         dataType: "json",
+         data: {
+             _token: '{{ csrf_token() }}',
+             product_id: id,
+             quantity: 1
+         },
+         success: function (response) {
+             if (response.success) {
+                 window.location.href = '{{ route('cartview') }}'; 
+             } else {
+                 $('.showbalance').html(response.error).show();
+             }
+         },
+         error: function (jqXHR, textStatus, errorThrown) {
+             // Handle the error here
+             $('.showbalance').html('An error occurred. Please try again.').show();
+         }
+     });
+ }
+ 
+ </script>
 @endpush

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ServiceUnit;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Auth;
 class ServiceUnitController extends Controller
@@ -138,5 +139,14 @@ class ServiceUnitController extends Controller
         $data = ServiceUnit::find($request->id);
         $data->update(['product_is_deleted'=>1]);
         return back()->with('message', 'Unit is Deleted Successfully');
+    }
+
+    // For Frontend Unit page Show
+
+    public function UnitPageShow(Request $request, $id){
+       $product = Product::find($id);
+       $result = explode('|',$product->unit_id);
+    //    dd($result);
+        return view('product.unit_show',compact('result','product'));
     }
 }
