@@ -1622,7 +1622,12 @@ public function categoryDelete(Request $request, $id)
  *                  ),
  *                 @OA\Property(
  *                      property="cat_id",
- *                      type="integer",
+ *                      type="string",
+ *                      example="1"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="unit_id",
+ *                      type="string",
  *                      example="1"
  *                  ),
  *                      @OA\Property(
@@ -1856,7 +1861,12 @@ public function productDelete(Request $request, $id)
  *                  ),
  *                  @OA\Property(
  *                      property="cat_id",
- *                      type="integer",
+ *                      type="string",
+ *                      example="1"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="unit_id",
+ *                      type="string",
  *                      example="1"
  *                  ),
  *                      @OA\Property(

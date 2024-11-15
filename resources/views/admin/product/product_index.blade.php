@@ -156,8 +156,8 @@
                     </td>
                     <td>{{ $value['amount'] }}</td>
                     <td>{{ $value['discounted_amount'] }}</td>
-                    <td>{!! mb_strimwidth(isset($value['product_description']) ? $value['product_description'] : 'NULL',
-                        0, 100, '...') !!}</td>
+                    <td>{!! mb_strimwidth(htmlspecialchars(isset($value['product_description']) ? $value['product_description'] : 'NULL'), 0, 100, '...') !!}</td>
+
 
 
 

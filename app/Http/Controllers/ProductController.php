@@ -90,6 +90,7 @@ class ProductController extends Controller
     // Add the user's token to the data
     $data['user_token'] = $token;
     $data['cat_id']=implode('|',$request->cat_id);
+    $data['unit_id']=implode('|',$request->unit_id);
     $product_image = array();
 
     if ($request->hasFile('product_image')) {
@@ -201,6 +202,7 @@ class ProductController extends Controller
         $data = $request->except('_token','_method');
         $data['user_token'] = $token;
         $data['cat_id']=implode('|',$request->cat_id);
+        $data['unit_id']=implode('|',$request->unit_id);
          
         $product_image = array();
 
@@ -224,6 +226,7 @@ class ProductController extends Controller
     $data['discount_rate'] = $discount_percentage;
     //  Discount Code End
         $data = json_encode($data);
+        // dd($data);
         $data = $this->postAPI('product-update/'.$request->id,$data);
         return redirect(route('product.index'))->with('success', $data['msg']);
     }

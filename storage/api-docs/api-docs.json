@@ -1244,7 +1244,11 @@
                                         "example": 21
                                     },
                                     "cat_id": {
-                                        "type": "integer",
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "unit_id": {
+                                        "type": "string",
                                         "example": "1"
                                     },
                                     "search_keywords": {
@@ -1435,7 +1439,11 @@
                                         "example": 21
                                     },
                                     "cat_id": {
-                                        "type": "integer",
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "unit_id": {
+                                        "type": "string",
                                         "example": "1"
                                     },
                                     "search_keywords": {
