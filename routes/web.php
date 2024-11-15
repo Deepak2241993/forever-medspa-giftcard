@@ -98,6 +98,7 @@ Route::get('service/{slug}','ProductController@productdetails')->name('productde
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
 Route::get('unit-page/{id}','ServiceUnitController@UnitPageShow')->name('unit-page');
+Route::get('unit-details/{slug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
 Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
 Route::post('cart','PopularOfferController@Cart')->name('cart');
 Route::get('cartview','PopularOfferController@Cartview')->name('cartview');

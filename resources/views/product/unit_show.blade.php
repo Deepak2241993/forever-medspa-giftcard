@@ -53,10 +53,10 @@
                                 <p class="card-text">
                                     {{ $unit ? $unit->short_description : '' }}
                                 </p>
-                                <a href="javascript:void(0)" class="fill-btn cart-btn" onclick="addcart({{$unit->id}})">
+                                <a href="{{route('unit-details',$unit->product_slug)}}" class="fill-btn cart-btn">
                                     <span class="fill-btn-inner">
-                                    <span class="fill-btn-normal">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
-                                    <span class="fill-btn-hover">Add To Cart<i class="fa-solid fa-basket-shopping"></i></span>
+                                    <span class="fill-btn-normal">Buy Now</span>
+                                    <span class="fill-btn-hover">Buy Now</span>
                                     </span>
                                 </a>
                             </div>
