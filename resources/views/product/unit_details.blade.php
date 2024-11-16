@@ -155,7 +155,15 @@
                            <div class="product-quantity-wrapper">
                               <form action="#">
                                  <button class="cart-minus"><i class="fa-light fa-minus"></i></button>
-                                 <input class="cart-input" type="text" value="1" min="{{$unit->min_qty}}" max="{{$unit->max_qty}}">
+                                 <input 
+                                 class="cart-input" 
+                                 type="number" 
+                                 value="1" 
+                                 min="{{$unit->min_qty}}" 
+                                 max="{{$unit->max_qty}}" 
+                                 oninput="validateQuantity(this)" 
+                                 onblur="validateQuantity(this)"
+                              >
                                  <button class="cart-plus"><i class="fa-light fa-plus"></i></button>
                               </form>
                            </div>
@@ -270,5 +278,21 @@
     });
 }
 
+</script>
+
+<script>
+   function validateQuantity(input) {
+       const min = parseInt(input.min, 10);
+       const max = parseInt(input.max, 10);
+       const value = parseInt(input.value, 10);
+
+       if (value > max) {
+           alert(`The value cannot be greater than ${max}.`);
+           input.value = max; // Reset to max value
+       } else if (value < min) {
+           alert(`The value cannot be less than ${min}.`);
+           input.value = min; // Reset to min value
+       }
+   }
 </script>
 @endpush

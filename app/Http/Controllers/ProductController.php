@@ -90,7 +90,16 @@ class ProductController extends Controller
     // Add the user's token to the data
     $data['user_token'] = $token;
     $data['cat_id']=implode('|',$request->cat_id);
-    $data['unit_id']=implode('|',$request->unit_id);
+    if($request->unit_id!='')
+    {
+
+        $data['unit_id']=implode('|',$request->unit_id);
+    }
+    else
+    {
+        $data['unit_id'] = null;
+    }
+
     $product_image = array();
 
     if ($request->hasFile('product_image')) {
@@ -203,7 +212,15 @@ class ProductController extends Controller
         $data = $request->except('_token','_method');
         $data['user_token'] = $token;
         $data['cat_id']=implode('|',$request->cat_id);
-        $data['unit_id']=implode('|',$request->unit_id);
+        if($request->unit_id!='')
+        {
+    
+            $data['unit_id']=implode('|',$request->unit_id);
+        }
+        else
+        {
+            $data['unit_id'] = null;
+        }
          
         $product_image = array();
 
