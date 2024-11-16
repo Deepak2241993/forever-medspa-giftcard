@@ -38,7 +38,7 @@
                     @endif
                     @csrf
                     <div class="row">
-                        <div class="mb-3 col-lg-12 self">
+                        <div class="mb-3 col-lg-6 self">
                             <label class="form-label">Select Service <span class="text-danger">*</span></label>
                             @if ($services)
                                 @foreach ($services as $value)
@@ -53,6 +53,23 @@
                                 @endforeach
                             @else
                                 <div>No Services Found</div>
+                            @endif
+                        </div>
+                        <div class="mb-3 col-lg-6 self">
+                            <label class="form-label">Select Units <span class="text-danger">*</span></label>
+                            @if ($units)
+                                @foreach ($units as $value)
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="unit_id[]"
+                                            value="{{ $value['id'] }}"
+                                            {{ isset($term['unit_id']) && (is_array($term['unit_id']) ? in_array($value['id'], $term['unit_id']) : $term['unit_id'] == $value['id']) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="cat_{{ $value['id'] }}">
+                                            {{ $value['product_name'] }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div>No Units Found</div>
                             @endif
                         </div>
                         <div class="mb-12 col-lg-12 self">

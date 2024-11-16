@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Term;
+use App\Models\ServiceUnit;
 use App\Models\Product;
 use Auth;
 use Illuminate\Http\Request;
@@ -29,7 +30,8 @@ class TermController extends Controller
     public function create()
     {
         $services = Product:: where('status',1)->where('user_token','FOREVER-MEDSPA')->get();
-        return view('admin.terms.terms_create',compact('services'));
+        $units = ServiceUnit:: where('status',1)->where('user_token','FOREVER-MEDSPA')->get();
+        return view('admin.terms.terms_create',compact('services','units'));
     }
 
     /**
@@ -42,6 +44,14 @@ class TermController extends Controller
     {
         $data =$request->all();
         $data['service_id'] = implode('|', $request->service_id);
+        if($request->unit_id!='')
+        {
+            $data['unit_id']=implode('|',$request->unit_id);
+        }
+        else
+        {
+            $data['unit_id'] = null;
+        }
         $terms->create($data);
         return redirect('/admin/terms')->with('message', 'Terms & Condition Added Successfully');
 
@@ -67,8 +77,10 @@ class TermController extends Controller
     public function edit(Term $term)
     {
         $services = Product:: where('status',1)->where('user_token','FOREVER-MEDSPA')->get();
+        $units = ServiceUnit:: where('status',1)->where('user_token','FOREVER-MEDSPA')->get();
         $term['service_id']=explode('|',$term['service_id']);
-        return view('admin.terms.terms_create',compact('services','term'));
+        $term['unit_id']=explode('|',$term['unit_id']);
+        return view('admin.terms.terms_create',compact('services','term','units'));
     }
 
     /**
@@ -82,6 +94,15 @@ class TermController extends Controller
     {
         $data =$request->all();
         $data['service_id'] = implode('|', $request->service_id);
+        if($request->unit_id!='')
+        {
+            $data['unit_id']=implode('|',$request->unit_id);
+        }
+        else
+        {
+            $data['unit_id'] = null;
+        }
+      
         $term->update($data);
         return redirect('/admin/terms')->with('message', 'Terms & Condition updated Successfully');
     }
