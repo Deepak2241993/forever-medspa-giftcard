@@ -76,6 +76,7 @@
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product</th>
                                             <th class="product-quantity">No.of Session/Quantity</th>
+                                            <th class="product-subtotal">Price</th>
                                             <th class="product-subtotal">Total</th>
                                             <th class="product-remove">Remove</th>
                                         </tr>
@@ -93,6 +94,12 @@
                                         @php
                                             $product = App\Models\Product::find($item['id']);
                                             $image = explode('|', $product->product_image);
+                                            $price = $product->discounted_amount ?? $product->amount;
+                                            $subtotal = $price;
+                                            $amount += $subtotal;
+                                            if ($product->giftcard_redemption == 0) {
+                                                $redeem++;
+                                            }
                                         @endphp
                                         <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
                                             onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
@@ -100,6 +107,9 @@
                                         @php
                                             $unit = App\Models\ServiceUnit::find($item['id']);
                                             $image = explode('|', $unit->product_image);
+                                            $price = $unit->discounted_amount ?? $unit->amount;
+                                            $subtotal = $price*$item['quantity'];
+                                            $amount += $subtotal;
                                         @endphp
                                         <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
                                             onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
@@ -115,9 +125,16 @@
                                 <td>{{ $item['quantity'] }}</td>
                                 <td>
                                     @if ($item['type'] === 'product')
-                                        {{ $product->discounted_amount ?? $product->amount }}
+                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
                                     @elseif ($item['type'] === 'unit')
-                                        {{ $unit->discounted_amount ?? $unit->amount }}
+                                        {{ "$".$unit->discounted_amount ?? "$".$unit->amount }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($item['type'] === 'product')
+                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
+                                    @elseif ($item['type'] === 'unit')
+                                        {{ "$".$item['quantity']*$unit->discounted_amount ?? "$".$item['quantity']*$unit->amount }}
                                     @endif
                                 </td>
                                 <td>

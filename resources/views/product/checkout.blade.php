@@ -127,27 +127,68 @@
                                     <table>
                                         <thead>
                                             <tr>
+                                                <th class="product-name">Image</th>
                                                 <th class="product-name">Product</th>
+                                                <th class="product-name">Qty</th>
+                                                <th class="product-name">Price</th>
                                                 <th class="product-total">Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($cart as $item)
-                                                @php
-                                                    $cart_data = App\Models\Product::find($item['product_id']);
-                                                    $amount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
-                                                @endphp
-                                                <tr class="cart_item">
-                                                    <td class="product-name">
-                                                        {{ $cart_data->product_name }}<strong class="product-quantity"> ×
-                                                            {{ $cart_data->session_number ? $cart_data->session_number : 1 }}
-                                                            Sessions</strong>
-                                                    </td>
-                                                    <td class="product-total">
-                                                        <span class="amount">${{ number_format($cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount, 2) }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                            @foreach ($cart as $key => $item)
+                                            <tr>
+                                                {{-- <td>{{ $loop->iteration }}</td> --}}
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        @php
+                                                            $product = App\Models\Product::find($item['id']);
+                                                            $image = explode('|', $product->product_image);
+                                                            $price = $product->discounted_amount ?? $product->amount;
+                                                            $subtotal = $price;
+                                                            $amount += $subtotal;
+                                                            if ($product->giftcard_redemption == 0) {
+                                                                $redeem++;
+                                                            }
+                                                        @endphp
+                                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
+                                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
+                                                    @elseif ($item['type'] === 'unit')
+                                                        @php
+                                                            $unit = App\Models\ServiceUnit::find($item['id']);
+                                                            $image = explode('|', $unit->product_image);
+                                                            $price = $unit->discounted_amount ?? $unit->amount;
+                                                            $subtotal = $price*$item['quantity'];
+                                                            $amount += $subtotal;
+                                                        @endphp
+                                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
+                                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        {{ $product->product_name }}
+                                                    @elseif ($item['type'] === 'unit')
+                                                        {{ $unit->product_name }}
+                                                    @endif
+                                                </td>
+                                                <td>{{ $item['quantity'] }}</td>
+                                                
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
+                                                    @elseif ($item['type'] === 'unit')
+                                                        {{ "$".$unit->discounted_amount ?? "$".$unit->amount }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
+                                                    @elseif ($item['type'] === 'unit')
+                                                        {{ "$".$item['quantity']*$unit->discounted_amount ?? "$".$item['quantity']*$unit->amount }}
+                                                    @endif
+                                                </td>
+                                   
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
