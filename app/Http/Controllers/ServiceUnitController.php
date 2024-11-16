@@ -6,6 +6,7 @@ use App\Models\ServiceUnit;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\DB;
 class ServiceUnitController extends Controller
 {
     /**
@@ -153,6 +154,21 @@ class ServiceUnitController extends Controller
     public function UnitPageDetails(Request $request, $slug){
         $unit = ServiceUnit::where('product_slug',$slug)->first();
         $image = explode('|',$unit->product_image);
+        
+         // Fetch the term description if a unit was found
+         if ($unit) {
+            // Search for a term where `unit_id` includes the product's ID
+            $term = DB::table('terms')
+            ->where('status', 1)
+            ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$unit->id])
+            ->first();
+
+            // Display the description
+            $description = $term->description ?? 'No description available';
+            $terms_id = $term->id ?? 'No id';
+            }
+            $unit['terms_and_conditions'] = $description;
+            $unit['terms_id'] = $terms_id;
      //    dd($result);
          return view('product.unit_details',compact('unit','image'));
      }

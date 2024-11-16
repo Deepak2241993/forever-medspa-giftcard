@@ -56,6 +56,7 @@
                         <tr>
                             <th>#</th>
                             <th>Service Name</th>
+                            <th>Unit Name</th>
                             <th>Term & Conditions</th>
                             <th>Created at</th>
                             <th>Action</th>
@@ -75,6 +76,23 @@
                                     @foreach ($service_ids as $id)
                                         @php
                                             $product = App\Models\Product::find($id);
+                                            if ($product) {
+                                                $productNames[] = $product->product_name;
+                                            }
+                                        @endphp
+                                    @endforeach
+                                
+                                    {{ implode(', ', $productNames) ?: 'N/A' }}
+                                </td>
+                                <td>
+                                    @php
+                                        $unit_ids = explode('|', $value['unit_id']);
+                                        $productNames = [];
+                                    @endphp
+                                    
+                                    @foreach ($unit_ids as $id)
+                                        @php
+                                            $product = App\Models\ServiceUnit::find($id);
                                             if ($product) {
                                                 $productNames[] = $product->product_name;
                                             }
