@@ -49,6 +49,22 @@
    color: #9e9e9e;
    border: 0;
 }
+.product__quantity .product-quantity-wrapper .cart-qty {
+   position: absolute;
+   top: 50%;
+   left: 10px;
+   transform: translateY(-50%);
+   width: 30px;
+   height: 30px;
+   line-height: 30px;
+   display: inline-block;
+   vertical-align: middle;
+   text-align: center;
+   font-size: 16px;
+   background: transparent;
+   color: #9e9e9e;
+   border: 0;
+}
 
 .product__quantity .product-quantity-wrapper .cart-plus {
    position: absolute;
@@ -153,10 +169,12 @@
                      <div class="product__details-action mb-35">
                         <div class="product__quantity">
                            <div class="product-quantity-wrapper">
-                              <form action="#">
-                                 <button class="cart-minus"><i class="fa-light fa-minus"></i></button>
-                                 <input 
+                             
+                                 {{-- <button class="cart-minus"><i class="fa-light fa-minus"></i></button> --}}
+                                 <layout class="cart-qty">Qty:</layout>
+                                <input 
                                  class="cart-input" 
+                                 id="qty_{{$unit->id}}"
                                  type="number" 
                                  value="1" 
                                  min="{{$unit->min_qty}}" 
@@ -164,8 +182,7 @@
                                  oninput="validateQuantity(this)" 
                                  onblur="validateQuantity(this)"
                               >
-                                 <button class="cart-plus"><i class="fa-light fa-plus"></i></button>
-                              </form>
+                                 {{-- <button class="cart-plus"><i class="fa-light fa-plus"></i></button> --}}
                            </div>
                         </div>
                         <div class="product__add-cart">
@@ -255,14 +272,16 @@
 @push('footerscript')
 <script>
    function addcart(id) {
+      var qty = $('#qty_'+id).val();
     $.ajax({
         url: '{{ route('cart') }}',
         method: "post",
         dataType: "json",
         data: {
             _token: '{{ csrf_token() }}',
-            product_id: id,
-            quantity: 1
+            unit_id: id,
+            quantity: qty,
+            type: "unit",
         },
         success: function (response) {
             if (response.success) {

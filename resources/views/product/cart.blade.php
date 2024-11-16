@@ -72,10 +72,10 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
+                                            <th class="product-thumbnail">#</th>
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product</th>
-                                            {{-- <th class="product-price">Unit Price</th> --}}
-                                            <th class="product-quantity">No.of Session</th>
+                                            <th class="product-quantity">No.of Session/Quantity</th>
                                             <th class="product-subtotal">Total</th>
                                             <th class="product-remove">Remove</th>
                                         </tr>
@@ -83,51 +83,52 @@
                                     <tbody>
                                         @php
                                             $redeem = 0;
+                                            $amount = 0;
                                         @endphp
-
-                                        @foreach ($cart as $key => $item)
-                                            @php
-                                                $cart_data = App\Models\Product::find($item['product_id']);
-                                                $amount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
-                                                $image = explode('|', $cart_data->product_image);
-                                                if ($cart_data->giftcard_redemption == 0) {
-                                                    $redeem += 1; // Corrected increment logic
-                                                }
-                                            @endphp
-
-                                            {{-- {{dd($cart_data)}} --}}
-                                            <tr id="cart-item-{{ $cart_data->id }}">
-                                                <td class="product-thumbnail"><a href="product-details.html"><img
-                                                            src="{{ $image[0] }}" alt="img" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a></td>
-                                                <td class="product-name"><a
-                                                        href="product-details.html">{{ $cart_data->product_name }}</a></td>
-                                                {{-- <td class="product-price"><span class="amount">$24.00</span></td> --}}
-                                                <td class="product-quantity text-center">
-                                                    <div class="product-quantity mt-10 mb-10">
-                                                        <div class="product-quantity-form">
-
-
-                                                            <input class="cart-input" readonly type="text"
-                                                                value="{{ $cart_data->session_number }}">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="product-subtotal"><span
-                                                        class="amount">{{ $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount }}</span></td>
-                                                <td class="product-remove">
-                                                    <a href="javascript:void(0)"
-                                                        onclick="removeFromCart({{ $item['product_id'] }})">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
-
-                                                </td>
-                                            </tr>
-                                        @endforeach
-
-
+                            @foreach ($cart as $key => $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if ($item['type'] === 'product')
+                                        @php
+                                            $product = App\Models\Product::find($item['id']);
+                                            $image = explode('|', $product->product_image);
+                                        @endphp
+                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
+                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
+                                    @elseif ($item['type'] === 'unit')
+                                        @php
+                                            $unit = App\Models\ServiceUnit::find($item['id']);
+                                            $image = explode('|', $unit->product_image);
+                                        @endphp
+                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
+                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($item['type'] === 'product')
+                                        {{ $product->product_name }}
+                                    @elseif ($item['type'] === 'unit')
+                                        {{ $unit->product_name }}
+                                    @endif
+                                </td>
+                                <td>{{ $item['quantity'] }}</td>
+                                <td>
+                                    @if ($item['type'] === 'product')
+                                        {{ $product->discounted_amount ?? $product->amount }}
+                                    @elseif ($item['type'] === 'unit')
+                                        {{ $unit->discounted_amount ?? $unit->amount }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')" class="btn btn-danger">Remove</a>
+                                </td>
+                            </tr>
+                            @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                            
 
                             <div class="row">
                                 <div class="col-12">

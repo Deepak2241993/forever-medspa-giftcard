@@ -108,35 +108,63 @@ class PopularOfferController extends Controller
     }
     
 
-    public function Cart(Request $request){
-         // Validate the request
-         $request->validate([
-            'product_id' => 'required|integer|exists:products,id',
-        ]);
+    public function Cart(Request $request)
+{
+    // Validate common fields
+    $request->validate([
+        'product_id' => 'nullable|integer|exists:products,id',
+        'unit_id'    => 'nullable|integer|exists:service_units,id',
+        'quantity'   => 'required|integer|min:1'
+    ]);
 
-        // Retrieve cart from session or create a new one
-        $cart = session()->get('cart', []);
+    // Retrieve cart from session or initialize an empty array
+    $cart = session()->get('cart', []);
 
-        // Check if the product is already in the cart
-        $productId = $request->product_id;
+    // Handle Product Addition
+    if (!empty($request->product_id)) {
+        $productId = 'product_' . $request->product_id; // Use a prefixed key for products
+
         if (isset($cart[$productId])) {
-            // Update quantity if product exists in cart
+            // Update quantity if product already exists
             $cart[$productId]['quantity'] += $request->quantity;
         } else {
             // Add new product to cart
             $cart[$productId] = [
-                'product_id' => $productId,
-                'quantity' => $request->quantity
+                'type'      => 'product', // Distinguish between product and unit
+                'id'        => $request->product_id,
+                'quantity'  => $request->quantity
             ];
         }
-
-        // Save cart back to session
-        session()->put('cart', $cart);
-
-        // Redirect back with a success message
-        return response()->json(['status'=>'200','success'=> 'Product added to cart successfully!']);
-      
     }
+
+    // Handle Unit Service Addition
+    if (!empty($request->unit_id)) {
+        $unitId = 'unit_' . $request->unit_id; // Use a prefixed key for units
+
+        if (isset($cart[$unitId])) {
+            // Update quantity if unit already exists
+            $cart[$unitId]['quantity'] += $request->quantity;
+        } else {
+            // Add new unit to cart
+            $cart[$unitId] = [
+                'type'      => 'unit', // Distinguish between product and unit
+                'id'        => $request->unit_id,
+                'quantity'  => $request->quantity
+            ];
+        }
+    }
+
+    // Save the updated cart back to the session
+    session()->put('cart', $cart);
+
+    return response()->json([
+        'status'  => '200',
+        'success' => 'Item added to cart successfully!',
+        'cart'    => $cart
+    ]);
+}
+
+    
    //  For Cart view
     public function Cartview(Request $request){
         return view('product.cart');
@@ -148,14 +176,15 @@ class PopularOfferController extends Controller
     //  For Items Remove From Carts
     public function CartRemove(Request $request){
         $request->validate([
-            'product_id' => 'required|integer'
+            'product_id' => 'required|string'
         ]);
-
         $cart = session()->get('cart', []);
         $productId = $request->product_id;
+        $unitId = $request->unit_id;
 
-        if (isset($cart[$productId])) {
+        if (isset($cart[$productId]) || isset($cart[$unitId])) {
             unset($cart[$productId]);
+            unset($cart[$unitId]);
             session()->put('cart', $cart);
             return response()->json(['success' => 'Product removed from cart successfully!']);
         } else {

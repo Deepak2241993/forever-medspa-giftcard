@@ -132,7 +132,7 @@
                         <th>Actual Price</th>
                         <th>Deal Price</th>
                         <th>Product Description</th>
-                        <th>Created At</th>
+                        <th>Type</th>
                         <th>Action</th>
 
                     </tr>
@@ -161,7 +161,7 @@
 
 
 
-                    <td>{{ date('m-d-Y h:i:s', strtotime($value['created_at'])) }}
+                    <td>{{$value['unit_id']!=null ? "Unit Service":"Normal Deals & Service"}}
                     </td>
                     <td>
                         <a href="{{ route('product.edit', $value['id']) }}"
@@ -320,7 +320,8 @@
                 data: {
                     _token: '{{ csrf_token() }}',
                     product_id: id,
-                    quantity: 1
+                    quantity: 1,
+                    type: "product"
                 },
                 success: function (response) {
                     if (response.success) {

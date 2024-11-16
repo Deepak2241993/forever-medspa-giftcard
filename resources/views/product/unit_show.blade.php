@@ -85,7 +85,8 @@
          data: {
              _token: '{{ csrf_token() }}',
              product_id: id,
-             quantity: 1
+             quantity: 1,
+             type: "unit"
          },
          success: function (response) {
              if (response.success) {
