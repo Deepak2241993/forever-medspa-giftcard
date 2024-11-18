@@ -404,7 +404,7 @@
                             var totalValue = parseFloat(totalValueText.replace('$', '').trim());
                             if(response.actual_paid_amount > totalValue)
                             {
-                                alert("The giftcard amount can not we more than the cart total amount");
+                                alert("The giftcard amount can not be more than the cart total amount");
                                 return false; // Stop the execution if invalid
                             }
                            
