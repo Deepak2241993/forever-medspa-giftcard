@@ -101,12 +101,12 @@
                         required>{{ isset($data) ? $data['short_description'] : '' }}</textarea>
                     <span id="count" class="text-danger"></span>
                 </div>
-                <div class="mb-12 col-lg-12 self mt-3">
+                <div class="mb-12 col-lg-12 self mt-3 UnitHideShow">
                     <label for="product_description" class="form-label">Long Description</label>
                     <textarea name="product_description" id="product_description" class="form-control summernote"
                         onkeyup="calculate()">{{ isset($data) ? $data['product_description'] : '' }}</textarea>
                 </div>
-                <div class="mb-12 col-lg-12 self mt-3">
+                <div class="mb-12 col-lg-12 self mt-3 UnitHideShow">
                     <label for="prerequisites" class="form-label">Prerequisites</label>
                     <textarea name="prerequisites" id="prerequisites"
                         class="form-control summernote">{{ isset($data) ? $data['prerequisites'] : '' }}</textarea>
@@ -119,7 +119,7 @@
                     }
                 @endphp
                 @if(isset($image))
-                    <div class=" col-md-12 box" style="border:solid 1px;" id="image_class">
+                    <div class=" col-md-12 mt-4 box" style="border:solid 1px;" id="image_class">
                         <button type="button" style="
                         background-color: red;
                         color: #ffffff;
@@ -170,12 +170,12 @@
                         value="{{ isset($data) ? $data['discounted_amount'] : '' }}"
                         placeholder="Service Price" required step="0.01">
                 </div>
-                <div class="mb-3 col-lg-6 self">
+                <div class="mb-3 col-lg-6 self UnitHideShow">
                     <label for="session_number" class="form-label">Number of session<span
                             class="text-danger">*</span></label>
                     <input class="form-control" type="number" min="1" name="session_number"
                         value="{{ isset($data) ? $data['session_number'] : '1' }}"
-                        placeholder="Number Of Session" required>
+                        placeholder="Number Of Session" required id="session_number">
                 </div>
                 <div class="mb-3 col-lg-6">
                     <label for="status" class="form-label">Status</label>
@@ -221,7 +221,7 @@
                         No</option>
                 </select>
             </div>
-            <div class="mb-3 col-lg-6" id="formgiftcard_redemption">
+            <div class="mb-3 col-lg-6 UnitHideShow">
                 <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
                 <select class="form-control" name="giftcard_redemption" id="giftcard_redemption">
                     <option value="1"
@@ -251,10 +251,12 @@
         function toggleNumberInput() {
             if ($('.unit-checkbox:checked').length > 0) {
                 $('.numberInputContainer').hide();
-                $('#formgiftcard_redemption').hide();
+                $('.UnitHideShow').hide();
+               
             } else {
                 $('.numberInputContainer').show();
-                $('#formgiftcard_redemption').show();
+                $('.UnitHideShow').show();
+
             }
         }
         // Initial check on page load

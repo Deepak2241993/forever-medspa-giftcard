@@ -52,12 +52,17 @@
                                     class="text-danger">*</span></label>
                             <textarea class="form-control" name="message_email" id="message_email" cols="30" rows="10" required>{{ isset($emailTemplate) ? $emailTemplate->message_email : '' }}</textarea>
                         </div>
-                        <div class="mb-3 col-lg-12 col-md-6">
+                        <div class="mb-3 col-lg-6 col-md-6">
                             <label for="image" class="form-label">Occasion Image<span class="text-danger"> (600 X 350
                                     px)*</span></label>
                             <input class="form-control" type="file" name="image"
                                 id="image"{{ isset($emailTemplate) ? '' : 'required' }}>
                         </div>
+                        @if($emailTemplate)
+                        <div class="mb-3 col-lg-6 col-md-6">
+                            <img src="{{ isset($emailTemplate) ? $emailTemplate->image : '' }}" alt="" height="100" width="100">
+                        </div>
+                        @endif
                         <div class="mb-3 col-lg-12 col-md-6">
                             <label for="title" class="form-label">Footer Message<span
                                     class="text-danger">*</span></label>

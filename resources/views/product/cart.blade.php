@@ -125,7 +125,16 @@
                                         {{ $unit->product_name }}
                                     @endif
                                 </td>
-                                <td>{{ $item['quantity'] }}</td>
+                                {{--  For Quantity --}}
+                                <td>
+                                    @if ($item['type'] === 'product')
+                                        {{ "Session: ".$product->session_number }}
+                                    @elseif ($item['type'] === 'unit')
+                                        {{ "Qty: ".$item['quantity'] }}
+                                    @endif
+                                </td>
+                                {{-- <td>{{ $item['quantity'] }}</td> --}}
+                                {{--  For Price --}}
                                 <td>
                                     @if ($item['type'] === 'product')
                                         {{ "$".$product->discounted_amount ?? "$".$product->amount }}
@@ -133,6 +142,7 @@
                                         {{ "$".$unit->discounted_amount ?? "$".$unit->amount }}
                                     @endif
                                 </td>
+                                {{--  For total --}}
                                 <td>
                                     @if ($item['type'] === 'product')
                                         {{ "$".$product->discounted_amount ?? "$".$product->amount }}
