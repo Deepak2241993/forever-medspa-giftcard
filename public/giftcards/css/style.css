@@ -1647,7 +1647,7 @@ html {
   border-radius: 0px;
   margin-bottom: 25px;
   margin-top: 2px;
-  width: 100%;
+  /* width: 100%; */
   box-sizing: border-box;
   font-family: montserrat;
   color: #2C3E50;
@@ -1837,9 +1837,14 @@ select.list-dt:focus {
   object-fit: cover;
 }
 
+/*  Deepak Prasad Responsive Code  */
 
-
-
+@media (max-width: 767px) {
+    .customeamount_responsiv{
+        margin-top: 35px;
+    }
+   
+}
 
 
 
