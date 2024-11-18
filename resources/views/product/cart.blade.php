@@ -229,7 +229,10 @@
                                     <div class="cart-page-total">
                                         <h2>Cart totals</h2>
                                         <ul class="mb-20">
-                                            <li>Subtotal <span>${{ number_format($amount, 2) }}</span></li>
+                                            <li>Subtotal 
+                                                <span>${{ number_format($amount, 2) }}</span>
+                                                
+                                            </li>
                                             <li>Total Giftcard Applied <span id="giftcard_applied">$0</span></li>
                                             <li>Tax 10% <span id="tax_amount">
                                                     @php
@@ -396,9 +399,17 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
+                            var totalValueText = $('#totalValue').text(); 
+                            // Remove the '$' symbol and parse it as a number
+                            var totalValue = parseFloat(totalValueText.replace('$', '').trim());
+                            if(response.actual_paid_amount > totalValue)
+                            {
+                                alert("The giftcard amount can not we more than the cart total amount");
+                                return false; // Stop the execution if invalid
+                            }
+                           
                             // Add the gift card number to the array
                             giftCardNumbers.push(giftNumber);
-
                             console.log(response.success);
                             console.log(response.actual_paid_amount);
                             $('#success_' + key).html(
