@@ -221,9 +221,9 @@
                         No</option>
                 </select>
             </div>
-            <div class="mb-3 col-lg-6">
+            <div class="mb-3 col-lg-6" id="formgiftcard_redemption">
                 <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
-                <select class="form-control" name="giftcard_redemption" id="from">
+                <select class="form-control" name="giftcard_redemption" id="giftcard_redemption">
                     <option value="1"
                         {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
                         Yes</option>
@@ -251,8 +251,10 @@
         function toggleNumberInput() {
             if ($('.unit-checkbox:checked').length > 0) {
                 $('.numberInputContainer').hide();
+                $('#formgiftcard_redemption').hide();
             } else {
                 $('.numberInputContainer').show();
+                $('#formgiftcard_redemption').show();
             }
         }
         // Initial check on page load
@@ -353,4 +355,5 @@ totalAmt.addEventListener("change", (e)=>{
         });
 
     </script>
+    
 @endpush

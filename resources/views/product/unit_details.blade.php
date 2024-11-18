@@ -176,11 +176,9 @@
                                  class="cart-input" 
                                  id="qty_{{$unit->id}}"
                                  type="number" 
-                                 value="1" 
+                                 value="{{$unit->min_qty}}" 
                                  min="{{$unit->min_qty}}" 
                                  max="{{$unit->max_qty}}" 
-                                 oninput="validateQuantity(this)" 
-                                 onblur="validateQuantity(this)"
                               >
                                  {{-- <button class="cart-plus"><i class="fa-light fa-plus"></i></button> --}}
                            </div>
@@ -271,8 +269,19 @@
 
 @push('footerscript')
 <script>
-   function addcart(id) {
-      var qty = $('#qty_'+id).val();
+  function addcart(id) {
+    var qty = parseInt($('#qty_' + id).val()); // Get the entered quantity
+    var min = parseInt($('#qty_' + id).attr('min')); // Get the min value
+    var max = parseInt($('#qty_' + id).attr('max')); // Get the max value
+
+    // Check if qty is outside the range
+    if (qty < min || qty > max) {
+        alert('Quantity must be between ' + min + ' and ' + max + '.');
+        $('#qty_' + id).val(min);
+        return false; // Stop the execution if invalid
+    }
+
+    // Proceed with the AJAX request if valid
     $.ajax({
         url: '{{ route('cart') }}',
         method: "post",
@@ -297,9 +306,10 @@
     });
 }
 
+
 </script>
 
-<script>
+{{-- <script>
    function validateQuantity(input) {
        const min = parseInt(input.min, 10);
        const max = parseInt(input.max, 10);
@@ -313,5 +323,5 @@
            input.value = min; // Reset to min value
        }
    }
-</script>
+</script> --}}
 @endpush

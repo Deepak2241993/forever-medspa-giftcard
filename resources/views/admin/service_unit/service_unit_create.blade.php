@@ -154,7 +154,7 @@
                     </select>
                 </div>
 
-            {{-- <div class="mb-3 col-lg-6">
+            <div class="mb-3 col-lg-6">
                 <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
                 <select class="form-control" name="giftcard_redemption" id="from">
                     <option value="1"
@@ -164,7 +164,7 @@
                         {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
                         No</option>
                 </select>
-            </div> --}}
+            </div>
             <div class="mb-3 col-lg-6 mt-4">
                 <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
             </div>
