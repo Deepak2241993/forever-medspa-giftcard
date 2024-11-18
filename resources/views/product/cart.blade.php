@@ -110,6 +110,9 @@
                                             $price = $unit->discounted_amount ?? $unit->amount;
                                             $subtotal = $price*$item['quantity'];
                                             $amount += $subtotal;
+                                            if ($unit->giftcard_redemption == 0) {
+                                                $redeem++;
+                                            }
                                         @endphp
                                         <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
                                             onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
