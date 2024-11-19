@@ -75,7 +75,7 @@
                                             <th class="product-thumbnail">#</th>
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product</th>
-                                            <th class="product-quantity">No.of Session/Quantity</th>
+                                            <th class="product-quantity">Quantity</th>
                                             <th class="product-subtotal">Price</th>
                                             <th class="product-subtotal">Total</th>
                                             <th class="product-remove">Remove</th>
@@ -127,11 +127,12 @@
                                 </td>
                                 {{--  For Quantity --}}
                                 <td>
-                                    @if ($item['type'] === 'product')
+                                    {{ "Qty: ".$item['quantity'] }}
+                                    {{-- @if ($item['type'] === 'product')
                                         {{ "Session: ".$product->session_number }}
                                     @elseif ($item['type'] === 'unit')
                                         {{ "Qty: ".$item['quantity'] }}
-                                    @endif
+                                    @endif --}}
                                 </td>
                                 {{-- <td>{{ $item['quantity'] }}</td> --}}
                                 {{--  For Price --}}

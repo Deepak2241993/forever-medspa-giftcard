@@ -106,7 +106,63 @@ class PopularOfferController extends Controller
     public function popularDeals(){
         return view('product.offers_details');
     }
+  
+    // Old Cart Code 
+    // public function Cart(Request $request)
+    // {
+    //     // Validate common fields
+    //     $request->validate([
+    //         'product_id' => 'nullable|integer|exists:products,id',
+    //         'unit_id'    => 'nullable|integer|exists:service_units,id',
+    //         'quantity'   => 'required|integer|min:1'
+    //     ]);
     
+    //     // Retrieve cart from session or initialize an empty array
+    //     $cart = session()->get('cart', []);
+    //     // Handle Product Addition
+    //     if (!empty($request->product_id)) {
+    //         $productId = 'product_' . $request->product_id; // Use a prefixed key for products
+    
+    //         if (isset($cart[$productId])) {
+    //             // Update quantity if product already exists
+    //             $cart[$productId]['quantity'] += $request->quantity;
+    //         } else {
+    //             // Add new product to cart
+    //             $cart[$productId] = [
+    //                 'type'      => 'product', // Distinguish between product and unit
+    //                 'id'        => $request->product_id,
+    //                 'quantity'  => $request->quantity
+    //             ];
+    //         }
+    //     }
+    
+    //     // Handle Unit Service Addition
+    //     if (!empty($request->unit_id)) {
+    //         $unitId = 'unit_' . $request->unit_id; // Use a prefixed key for units
+    
+    //         if (isset($cart[$unitId])) {
+    //             // Update quantity if unit already exists
+    //             $cart[$unitId]['quantity'] += $request->quantity;
+    //         } else {
+    //             // Add new unit to cart
+    //             $cart[$unitId] = [
+    //                 'type'      => 'unit', // Distinguish between product and unit
+    //                 'id'        => $request->unit_id,
+    //                 'quantity'  => $request->quantity
+    //             ];
+    //         }
+    //     }
+    
+    //     // Save the updated cart back to the session
+    //     session()->put('cart', $cart);
+    
+    //     return response()->json([
+    //         'status'  => '200',
+    //         'success' => 'Item added to cart successfully!',
+    //         'cart'    => $cart
+    //     ]);
+    // }
+    // Old Cart Code End
 
     public function Cart(Request $request)
     {
