@@ -212,7 +212,48 @@ class PopularOfferController extends Controller
         ]);
     }
     
+//  For Update cart
+public function updateCart(Request $request)
+{
+    $request->validate([
+        'id'       => 'required|integer',
+        'quantity' => 'required|integer|min:1',
+    ]);
 
+    // Retrieve the cart from the session
+    $cart = session()->get('cart', []);
+
+    // Flag to check if the item was found
+    $itemFound = false;
+
+    // Search for the item in the cart
+    foreach ($cart as $key => $item) {
+        if ($item['id'] == $request->id && $item['type'] == 'unit') {
+            // Update the item's quantity
+            $cart[$key]['quantity'] = $request->quantity;
+            $itemFound = true;
+            break;
+        }
+    }
+
+    if ($itemFound) {
+        // Save the updated cart back to the session
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'status'  => '200',
+            'success' => 'Cart updated successfully!',
+            'cart'    => $cart,
+        ]);
+    }
+
+    return response()->json([
+        'status' => '400',
+        'error'  => 'Item not found in cart.',
+    ]);
+}
+
+//  Cart Update Code End
     
    //  For Cart view
     public function Cartview(Request $request){

@@ -33,7 +33,7 @@
       <!-- Product details area start -->
       <div class="product__details-area section-space-medium">
          <div class="container">
-            <div class="row">
+            <div class="row g-5">
                 @foreach($result as $key => $value)
                 @php
                     $unit = App\Models\ServiceUnit::find($value);
@@ -42,12 +42,14 @@
                 @endphp
                 <div class="col-md-4">
                     <div class="card">
-                        @if(!empty($image[0]!=''))
-                        <img src="{{$image[0]}}" class="card-img-top" alt="...">
-                        @else
-                        <img src="{{url('/No_Image_Available.jpg')}}" class="card-img-top" alt="...">
-                        @endif
-                        <div class="card-body">
+                        <div clss="project-thumb w-img">
+                            @if(!empty($image[0]!=''))
+                            <img src="{{$image[0]}}" class="card-img-top" alt="..." height="350">
+                            @else
+                            <img src="{{url('/No_Image_Available.jpg')}}" class="card-img-top" alt="..." height="350">
+                            @endif
+                        </div>
+                        <div class="card-body project-item">
                             <div class="content p-4">
                                 <h4>{{ $unit ? $unit->product_name : '' }}</h4>
                                 <p class="card-text">

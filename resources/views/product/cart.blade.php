@@ -75,8 +75,8 @@
                                             <th class="product-thumbnail">#</th>
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product</th>
-                                            <th class="product-quantity">Quantity</th>
                                             <th class="product-subtotal">Price</th>
+                                            <th class="product-quantity">Quantity</th>
                                             <th class="product-subtotal">Total</th>
                                             <th class="product-remove">Remove</th>
                                         </tr>
@@ -125,9 +125,32 @@
                                         {{ $unit->product_name }}
                                     @endif
                                 </td>
-                                {{--  For Quantity --}}
+                                {{--  For Unit Price --}}
                                 <td>
-                                    {{ "Qty: ".$item['quantity'] }}
+                                    @if ($item['type'] === 'product')
+                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
+                                    @elseif ($item['type'] === 'unit')
+                                        {{ "$".$unit->discounted_amount ?? "$".$unit->amount }}
+                                    @endif
+                                </td>
+                                {{--  For Quantity --}}
+                                    <td class="product-quantity text-center">
+                                        <div class="product-quantity mt-10 mb-10">
+                                            <div class="product-quantity-form">
+                                                <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
+                                                    <button type="button" class="cart-minus"><i class="far fa-minus"></i></button>
+                                                    @if ($item['type'] === 'product')
+                                                    <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}">
+                                                    @elseif ($item['type'] === 'unit')
+                                                    <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="{{$unit->min_qty ?? 1}}" max="{{$unit->max_qty ?? 1}}">
+                                                    @endif
+                                                    
+                                                    <button type="button" class="cart-plus"><i class="far fa-plus"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {{-- <input class="cart-input" id="qty_2" type="number" value="40" min="40" max="200"> --}}
+                                    {{-- {{ "Qty: ".$item['quantity'] }} --}}
                                     {{-- @if ($item['type'] === 'product')
                                         {{ "Session: ".$product->session_number }}
                                     @elseif ($item['type'] === 'unit')
@@ -136,13 +159,7 @@
                                 </td>
                                 {{-- <td>{{ $item['quantity'] }}</td> --}}
                                 {{--  For Price --}}
-                                <td>
-                                    @if ($item['type'] === 'product')
-                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
-                                    @elseif ($item['type'] === 'unit')
-                                        {{ "$".$unit->discounted_amount ?? "$".$unit->amount }}
-                                    @endif
-                                </td>
+                                
                                 {{--  For total --}}
                                 <td>
                                     @if ($item['type'] === 'product')
@@ -152,6 +169,7 @@
                                     @endif
                                 </td>
                                 <td>
+                                    <a href="javascript:void(0)" onclick="updateCart({{$item['id']}})" class="btn btn-success">Update</a>
                                     <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')" class="btn btn-danger">Remove</a>
                                 </td>
                             </tr>
@@ -559,6 +577,72 @@ function sumValues() {
 }
 
     </script>
+{{-- For Cart Update --}}
+<script>
+    // Update Cart
+    function updateCart(itemId) {
+        var quantity = $('#cart_qty_'+itemId).val();
+        var min = parseInt($('#cart_qty_' + itemId).attr('min')); // Get the min value
+        var max = parseInt($('#cart_qty_' + itemId).attr('max')); // Get the max value
+        if (quantity <= 0) {
+            alert("Quantity must be at least 1");
+            return;
+        }
+        if (quantity < min || quantity > max) {
+        alert('Quantity must be between ' + min + ' and ' + max + '.');
+        location.reload();
+    }
+
+        // Send AJAX request to update the cart
+        $.ajax({
+            url: '{{ route('update-cart') }}', // Replace with your actual route
+            method: 'POST',
+            data: {
+                id: itemId,
+                quantity: quantity,
+                _token: '{{ csrf_token() }}' // CSRF token for security
+            },
+            success: function(response) {
+                if (response.status === '200') {
+                    // Handle success (e.g., update total, refresh cart summary)
+                    console.log("Cart updated successfully!");
+                    const cartKey = Object.keys(response.cart)[0]; // Get the key of the updated cart item
+                    const updatedQuantity = response.cart[cartKey].quantity;
+                    console.log(updatedQuantity);
+                    location.reload();
+                } else {
+                    alert(response.error || "Failed to update the cart.");
+                }
+            },
+            error: function() {
+                alert("An error occurred while updating the cart.");
+            }
+        });
+    }
+
+    // Event Listeners
+    // $(document).on('click', '.cart-minus', function() {
+    //     const input = $(this).closest('.update-cart-form').find('.cart-input');
+    //     const itemId = input.data('id');
+    //     let quantity = parseInt(input.val(), 10) - 1;
+    //     input.val(quantity);
+    //     updateCart(itemId, quantity);
+    // });
+
+    // $(document).on('click', '.cart-plus', function() {
+    //     const input = $(this).closest('.update-cart-form').find('.cart-input');
+    //     const itemId = input.data('id');
+    //     let quantity = parseInt(input.val(), 10) + 1;
+    //     input.val(quantity);
+    //     updateCart(itemId, quantity);
+    // });
+
+    // $(document).on('keyup change', '.cart-input', function() {
+    //     const itemId = $(this).data('id');
+    //     const quantity = parseInt($(this).val(), 10);
+    //     updateCart(itemId, quantity);
+    // });
+</script>
 {{-- <script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
