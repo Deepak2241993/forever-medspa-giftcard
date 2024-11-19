@@ -135,13 +135,14 @@
                                 </td>
                                 {{--  For Quantity --}}
                                     <td class="product-quantity text-center">
+                                        @if ($item['type'] === 'product')
+                                        {{ $item['quantity'] }}
+                                         {{-- <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}"> --}}
+                                         @elseif ($item['type'] === 'unit')
                                         <div class="product-quantity mt-10 mb-10">
                                             <div class="product-quantity-form">
                                                 <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
                                                     <button type="button" class="cart-minus"><i class="far fa-minus"></i></button>
-                                                    @if ($item['type'] === 'product')
-                                                    <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}">
-                                                    @elseif ($item['type'] === 'unit')
                                                     <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="{{$unit->min_qty ?? 1}}" max="{{$unit->max_qty ?? 1}}">
                                                     @endif
                                                     
