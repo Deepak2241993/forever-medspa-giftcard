@@ -9,7 +9,7 @@
 
 .product__quantity .product-quantity-wrapper .cart-input {
    height: 60px;
-   width: 150px;
+   width: 170px;
    text-align: center;
    font-size: 16px;
    border: none;
@@ -23,7 +23,7 @@
 }
 .product__quantity .product-quantity-wrapper {
    position: relative;
-   width: 120px;
+   width: 160px;
    height: 60px;
    line-height: 60px;
    border: 1px solid var(--clr-border-2);
