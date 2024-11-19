@@ -9,7 +9,7 @@
 
 .product__quantity .product-quantity-wrapper .cart-input {
    height: 60px;
-   width: 120px;
+   width: 150px;
    text-align: center;
    font-size: 16px;
    border: none;
