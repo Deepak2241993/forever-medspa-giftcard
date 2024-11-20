@@ -190,10 +190,15 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
         {
             $orderId = $request->order_id;
             
-            $servicePurchases = ServiceOrder::select('service_orders.*', 'products.product_name')
-                ->join('products', 'service_orders.service_id', '=', 'products.id')
-                ->where('service_orders.order_id', $orderId)
-                ->get();
+            $servicePurchases = ServiceOrder::select(
+                'service_orders.*', 
+                'products.product_name', 
+                'service_units.product_name as unit_name'
+            )
+            ->join('products', 'service_orders.service_id', '=', 'products.id')
+            ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')
+            ->where('service_orders.order_id', $orderId)
+            ->get();
         
             $serviceRedeem = Service_redeem::select('service_redeems.*', 'products.product_name')
                 ->join('products', 'service_redeems.service_id', '=', 'products.id')

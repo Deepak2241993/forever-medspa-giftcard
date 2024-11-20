@@ -2165,13 +2165,16 @@ public function product_view(Request $request, $id)
     $query = DB::table('transaction_histories')
         ->join('service_orders', 'service_orders.order_id', '=', 'transaction_histories.order_id')
         ->join('products', 'products.id', '=', 'service_orders.service_id')
+        ->join('service_units', 'service_units.id', '=', 'service_orders.service_id')
         ->leftJoin('service_redeems', function($join) {
             $join->on('service_redeems.order_id', '=', 'service_orders.order_id')
                  ->on('service_redeems.service_id', '=', 'service_orders.service_id');
         })
         ->select(
             'products.product_name',
+            'service_units.product_name as unit_name',
             'service_orders.number_of_session',
+            'service_orders.service_type',
             'transaction_histories.email',
             'transaction_histories.phone',
             'transaction_histories.fname',
@@ -2189,7 +2192,9 @@ public function product_view(Request $request, $id)
         )
         ->groupBy(
             'products.product_name',
+            'service_units.product_name',
             'service_orders.number_of_session',
+            'service_orders.service_type',
             'transaction_histories.email',
             'transaction_histories.phone',
             'transaction_histories.fname',
@@ -2199,7 +2204,6 @@ public function product_view(Request $request, $id)
             'service_orders.discounted_amount',
             'service_orders.actual_amount'
         );
-
     // Apply filters based on the request
     if (!empty($email)) {
         $query->where('transaction_histories.email', 'like', '%' . $email . '%');

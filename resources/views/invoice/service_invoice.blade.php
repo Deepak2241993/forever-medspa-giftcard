@@ -66,8 +66,9 @@
                   <thead>
                     <tr>
                       <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg">Item</th>
-                      <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">Description</th>
-                      <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">No.Session</th>
+                      {{-- <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">Description</th> --}}
+                      <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">Price</th>
+                      <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">Qty</th>
                       <th class="tm_width_2 tm_semi_bold tm_primary_color tm_gray_bg tm_text_right">Total</th>
                     </tr>
                   </thead>
@@ -77,13 +78,22 @@
               @endphp
               @foreach ($orderdata as $key => $value)
                   @php
-                      $ServiceData = \App\Models\Product::find($value->service_id);
+                  if($value->service_type=='product')
+                  {
+                    $ServiceData = \App\Models\Product::find($value->service_id);
+                  }
+                  if($value->service_type=='unit')
+                  {
+                    $ServiceData = \App\Models\ServiceUnit::find($value->service_id);
+                  }
+                     
                   @endphp
                   <tr class="tm_table_baseline">
                       <td class="tm_width_3 tm_primary_color">{{ $ServiceData->product_name }}</td>
-                      <td class="tm_width_4">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td>
-                      <td class="tm_width_1">{{ $value->number_of_session }}</td>
-                      <td class="tm_width_2 tm_text_right">${{ $ServiceData->discounted_amount ? $ServiceData->discounted_amount : $ServiceData->amount}}</td>
+                      <td class="tm_width_3 tm_primary_color">{{ $ServiceData->discounted_amount ?? $ServiceData->actual_amount	 }}</td>
+                      {{-- <td class="tm_width_4">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td> --}}
+                      <td class="tm_width_1">{{ $value->qty }}</td>
+                      <td class="tm_width_2 tm_text_right">${{ $value->qty*$ServiceData->discounted_amount ?? $value->qty*$ServiceData->amount}}</td>
                   </tr> @endforeach
 
                     

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 use App\Models\Gift;
 use App\Models\Product;
+use App\Models\ServiceUnit;
 use App\Models\Giftsend;
 use App\Models\EmailTemplate;
 use App\Models\GiftcardsNumbers;
-use App\Models\GiftCoupon;
 use App\Models\TransactionHistory;
 use Illuminate\Http\Request;
-use Validator;
-use Illuminate\Support\Str;
 use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
@@ -265,8 +263,19 @@ class StripeController extends Controller
             $cards = session('cart', []);
            
             foreach ($cards as $item) {
-                $cart_data = Product::find($item['product_id']);
-                $totalAmount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
+                if($item['type']=='product')
+                {
+
+                    $cart_data = Product::find($item['id']);
+                    $totalAmount += $item['quantity']*$cart_data->discounted_amount ??  $item['quantity']*$cart_data->amount;
+                }
+                if($item['type']=='unit')
+                {
+
+                    $cart_data = ServiceUnit::find($item['id']);
+                    $totalAmount += $item['quantity']*$cart_data->discounted_amount ??  $item['quantity']*$cart_data->amount;
+                }
+
             }
 
             $taxamount = ($totalAmount * 10) / 100;
@@ -294,24 +303,46 @@ class StripeController extends Controller
         ];
 
         
-        // Store data in TransactionHistory
-        // TransactionHistory::create($data);
-        $result =  $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
-        
+            // Insert data and get the latest inserted ID
+            $latestId = DB::table('transaction_histories')->insertGetId($data);
+
+            // Concatenate order_id with the prefix and latest ID
+            $orderId = 'FMSWCSU' . str_pad($latestId, 8, '0', STR_PAD_LEFT); // Example: MSWC-SER-00000001
+
+            // Update the order_id field
+            DB::table('transaction_histories')
+                ->where('id', $latestId)
+                ->update(['order_id' => $orderId]);
+
+            // Optional: Store updated data in the controller
+            $data['order_id'] = $orderId;
+            // $this->transactionHistoryController->store(new \Illuminate\Http\Request($data));
         // Store data in ServiceOrder table
        
+        
         foreach ($cards as $item) {
-            $cart_data = Product::find($item['product_id']);
+            if($item['type']=='product')
+            {
+
+                $cart_data = Product::find($item['id']);
+            }
+            if($item['type']=='unit')
+            {
+
+                $cart_data = ServiceUnit::find($item['id']);
+            }
 
             $order_data = [
                 'order_id' => $orderId,
-                'service_id' => $item['product_id'],
+                'service_id' => $item['id'],
                 'status' => 0,
                 'number_of_session' => $cart_data->session_number,
                 'user_token' => 'FOREVER-MEDSPA',
                 'actual_amount' => $cart_data->amount,
                 'discounted_amount' => $cart_data->discounted_amount,
                 'payment_mode' => 'online',
+                'qty' => $item['quantity'],
+                'service_type' => $item['type'],
             ];
 
             // ServiceOrderController::create($order_data);

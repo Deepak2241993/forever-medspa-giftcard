@@ -252,7 +252,8 @@
                                         <th style="padding: 10px; text-align: left;">Transaction Number</th>
                                         <th style="padding: 10px; text-align: left;">Service Name</th>
                                         <th style="padding: 10px; text-align: left;">Message</th>
-                                        <th style="padding: 10px; text-align: left;">Service Session Purchases</th>
+                                        <th style="padding: 10px; text-align: left;">Service Session</th>
+                                        <th style="padding: 10px; text-align: left;">Qty</th>
                                         <th style="padding: 10px; text-align: left;">Service Session Redeem</th>
                                     </tr>`;
 
@@ -262,9 +263,13 @@
                     <tr style="background-color: #f2f2f2;">
                         <td style="padding: 10px;">${new Date(item.updated_at).toLocaleDateString()}</td>
                         <td style="padding: 10px;">${item.order_id}</td>
-                        <td style="padding: 10px;">${item.product_name}</td>
+                      <td style="padding: 10px;">
+    ${item.service_type === 'product' ? item.product_name : ''}
+    ${item.service_type === 'unit' ? item.unit_name : ''}
+</td>
                         <td style="padding: 10px;">Buy</td>
-                        <td style="padding: 10px;">${item.number_of_session}</td>
+                        <td style="padding: 10px;">${item.number_of_session ? item.number_of_session : 'NULL'}</td>
+                        <td style="padding: 10px;">${item.qty}</td>
                         <td style="padding: 10px;">--</td>
                     </tr>`;
                             });
@@ -358,7 +363,10 @@
                                 // Create a new row for each element
                                 var row = $('<tr ' + rowClass + '>').html(
                                     `<td>${index + 1}</td>
-                        <td>${element.product_name}</td>
+                        <td>
+                            ${element.service_type === 'product' ? element.product_name : ''}
+                            ${element.service_type === 'unit' ? element.unit_name : ''}
+                            </td>
                         <td>${element.number_of_session}</td>
                         <td id="row_${index + 1}">${element.remaining_sessions}</td>
                         <td>
@@ -535,7 +543,10 @@
                                 // Create a new row for each element
                                 var row = $('<tr ' + rowClass + '>').html(
                                     `<td>${index + 1}</td>
-                        <td>${element.product_name}</td>
+                        <td>
+                              ${element.service_type === 'product' ? element.product_name : ''}
+                              ${element.service_type === 'unit' ? element.unit_name : ''}
+                            </td>
                         <td>${element.number_of_session}</td>
                         <td id="row_${index + 1}">${element.remaining_sessions}</td>
                         <td>
