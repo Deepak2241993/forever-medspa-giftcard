@@ -86,6 +86,7 @@
                                             $redeem = 0;
                                             $amount = 0;
                                         @endphp
+                                        {{-- {{dd($cart)}} --}}
                             @foreach ($cart as $key => $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -135,15 +136,14 @@
                                 </td>
                                 {{--  For Quantity --}}
                                     <td class="product-quantity text-center">
-                                        @if ($item['type'] === 'product')
-                                        {{ $item['quantity'] }}
-                                         {{-- <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}"> --}}
-                                         @elseif ($item['type'] === 'unit')
                                         <div class="product-quantity mt-10 mb-10">
                                             <div class="product-quantity-form">
                                                 <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
                                                     <button type="button" class="cart-minus"><i class="far fa-minus"></i></button>
-                                                    <input class="cart-input" id="cart_qty_{{$item['id']}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="{{$unit->min_qty ?? 1}}" max="{{$unit->max_qty ?? 1}}">
+                                                    @if ($item['type'] === 'product')
+                                                    <input class="cart-input" id="cart_qty_{{$key}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="1">
+                                                    @elseif ($item['type'] === 'unit')
+                                                    <input class="cart-input" id="cart_qty_{{$key}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="{{$unit->min_qty ?? 1}}" max="{{$unit->max_qty ?? 1}}">
                                                     @endif
                                                     
                                                     <button type="button" class="cart-plus"><i class="far fa-plus"></i></button>
@@ -164,13 +164,13 @@
                                 {{--  For total --}}
                                 <td>
                                     @if ($item['type'] === 'product')
-                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
+                                        {{ "$".$item['quantity']*$product->discounted_amount ?? "$".$item['quantity']*$product->amount }}
                                     @elseif ($item['type'] === 'unit')
                                         {{ "$".$item['quantity']*$unit->discounted_amount ?? "$".$item['quantity']*$unit->amount }}
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0)" onclick="updateCart({{$item['id']}})" class="btn btn-success">Update</a>
+                                    <a href="javascript:void(0)" onclick="updateCart({{$item['id']}},'{{$item['type']}}','{{ $key }}')" class="btn btn-success">Update</a>
                                     <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')" class="btn btn-danger">Remove</a>
                                 </td>
                             </tr>
@@ -309,6 +309,7 @@
 @push('footerscript')
     <script>
         function removeFromCart(id) {
+            // alert(id);
             $.ajax({
                 url: '{{ route('cartremove') }}',
                 method: "POST",
@@ -581,45 +582,46 @@ function sumValues() {
 {{-- For Cart Update --}}
 <script>
     // Update Cart
-    function updateCart(itemId) {
-        var quantity = $('#cart_qty_'+itemId).val();
-        var min = parseInt($('#cart_qty_' + itemId).attr('min')); // Get the min value
-        var max = parseInt($('#cart_qty_' + itemId).attr('max')); // Get the max value
-        if (quantity <= 0) {
-            alert("Quantity must be at least 1");
-            return;
-        }
-        if (quantity < min || quantity > max) {
+    function updateCart(itemId, itemType,cart_id) {
+        var quantity = $('#cart_qty_' + cart_id).val();
+        var min = parseInt($('#cart_qty_' + cart_id).attr('min')); // Get the min value
+        var max = parseInt($('#cart_qty_' + cart_id).attr('max')); // Get the max value
+        // alert(quantity);
+
+    if (quantity <= 0) {
+        alert("Quantity must be at least 1");
+        return;
+    }
+    if (quantity < min || quantity > max) {
         alert('Quantity must be between ' + min + ' and ' + max + '.');
         location.reload();
     }
 
-        // Send AJAX request to update the cart
-        $.ajax({
-            url: '{{ route('update-cart') }}', // Replace with your actual route
-            method: 'POST',
-            data: {
-                id: itemId,
-                quantity: quantity,
-                _token: '{{ csrf_token() }}' // CSRF token for security
-            },
-            success: function(response) {
-                if (response.status === '200') {
-                    // Handle success (e.g., update total, refresh cart summary)
-                    console.log("Cart updated successfully!");
-                    const cartKey = Object.keys(response.cart)[0]; // Get the key of the updated cart item
-                    const updatedQuantity = response.cart[cartKey].quantity;
-                    console.log(updatedQuantity);
-                    location.reload();
-                } else {
-                    alert(response.error || "Failed to update the cart.");
-                }
-            },
-            error: function() {
-                alert("An error occurred while updating the cart.");
+    // Send AJAX request to update the cart
+    $.ajax({
+        url: '{{ route('update-cart') }}', // Replace with your actual route
+        method: 'POST',
+        data: {
+            id: itemId,
+            type: itemType,
+            quantity: quantity,
+            key: cart_id,
+            _token: '{{ csrf_token() }}' // CSRF token for security
+        },
+        success: function(response) {
+            if (response.status === '200') {
+                console.log("Cart updated successfully!");
+                location.reload();
+            } else {
+                alert(response.error || "Failed to update the cart.");
             }
-        });
-    }
+        },
+        error: function() {
+            alert("An error occurred while updating the cart.");
+        }
+    });
+}
+
 
     // Event Listeners
     // $(document).on('click', '.cart-minus', function() {

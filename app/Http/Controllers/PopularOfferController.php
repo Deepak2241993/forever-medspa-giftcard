@@ -217,41 +217,45 @@ public function updateCart(Request $request)
 {
     $request->validate([
         'id'       => 'required|integer',
+        'type'     => 'required|string',
         'quantity' => 'required|integer|min:1',
+        'key'  => 'required|string', // Ensure cart_id is provided
     ]);
 
-    // Retrieve the cart from the session
-    $cart = session()->get('cart', []);
-
-    // Flag to check if the item was found
-    $itemFound = false;
-
-    // Search for the item in the cart
-    foreach ($cart as $key => $item) {
-        if ($item['id'] == $request->id && $item['type'] == 'unit') {
-            // Update the item's quantity
-            $cart[$key]['quantity'] = $request->quantity;
-            $itemFound = true;
-            break;
-        }
-    }
-
-    if ($itemFound) {
+       // Retrieve the cart from the session
+       $cart = session()->get('cart', []);
+    //    dd($cart);
+       $cartId = $request->key;
+   
+       if (isset($cart[$cartId]) && $cart[$cartId]['type'] == 'unit') {
+           $cart[$cartId]['quantity'] = $request->quantity;
         // Save the updated cart back to the session
         session()->put('cart', $cart);
-
         return response()->json([
-            'status'  => '200',
+            'status' => '200',
             'success' => 'Cart updated successfully!',
-            'cart'    => $cart,
+            'cart' => [$request->key => $cart[$request->key]], // Return only the updated item
         ]);
     }
+    if (isset($cart[$cartId]) && $cart[$cartId]['type'] == 'product') {
+
+        $cart[$cartId]['quantity'] = $request->quantity;
+     // Save the updated cart back to the session
+     session()->put('cart', $cart);
+     return response()->json([
+         'status' => '200',
+         'success' => 'Cart updated successfully!',
+         'cart' => [$request->key => $cart[$request->key]], // Return only the updated item
+     ]);
+ }
 
     return response()->json([
         'status' => '400',
-        'error'  => 'Item not found in cart.',
+        'error' => 'Item not found in cart.',
     ]);
 }
+
+
 
 //  Cart Update Code End
     
@@ -271,7 +275,7 @@ public function updateCart(Request $request)
         $cart = session()->get('cart', []);
         $productId = $request->product_id;
         $unitId = $request->unit_id;
-
+// dd($cart[$productId]);
         if (isset($cart[$productId]) || isset($cart[$unitId])) {
             unset($cart[$productId]);
             unset($cart[$unitId]);
