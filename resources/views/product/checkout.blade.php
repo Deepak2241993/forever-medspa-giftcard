@@ -144,7 +144,7 @@
                                                             $product = App\Models\Product::find($item['id']);
                                                             $image = explode('|', $product->product_image);
                                                             $price = $product->discounted_amount ?? $product->amount;
-                                                            $subtotal = $price;
+                                                            $subtotal = $price*$item['quantity'];
                                                             $amount += $subtotal;
                                                            
                                                         @endphp
