@@ -96,7 +96,7 @@
                                             $product = App\Models\Product::find($item['id']);
                                             $image = explode('|', $product->product_image);
                                             $price = $product->discounted_amount ?? $product->amount;
-                                            $subtotal = $price;
+                                            $subtotal = $price*$item['quantity'];
                                             $amount += $subtotal;
                                             if ($product->giftcard_redemption == 0) {
                                                 $redeem++;
@@ -595,6 +595,7 @@ function sumValues() {
     if (quantity < min || quantity > max) {
         alert('Quantity must be between ' + min + ' and ' + max + '.');
         location.reload();
+        return false;
     }
 
     // Send AJAX request to update the cart
