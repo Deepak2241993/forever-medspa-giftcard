@@ -78,7 +78,7 @@
                                             <th class="product-subtotal">Price</th>
                                             <th class="product-quantity">Quantity</th>
                                             <th class="product-subtotal">Total</th>
-                                            <th class="product-remove">Remove</th>
+                                            <th class="product-remove">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -180,6 +180,7 @@
                             </div>
                             
 
+                            <p class="text-danger mt-4">* Click on Update after increasing or decreasing the quantity to see the changes in the price</p>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
@@ -195,6 +196,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        
                                         <div class="coupon d-flex align-items-center">
                                             <div class="row">
                                                 {{-- {{dd($redeem);}} --}}
@@ -214,6 +216,7 @@
                                                                     readonly style="padding-left: 22px;">
 
                                                             </div>
+                                                            
                                                             <div class="col-md-3 mt-4">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
                                                                     class="btn btn-success giftcartbutton" type="button">
@@ -225,6 +228,7 @@
                                                                     </span>
                                                                 </button>
                                                             </div>
+                                                            
                                                             <div class="col-md-12">
                                                                 <span class="text-danger mt-4" id="error_0"></span>
                                                                 <span class="text-success mt-4" id="success_0"></span>

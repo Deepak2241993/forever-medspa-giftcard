@@ -543,7 +543,7 @@
                             ${element.service_type === 'product' ? element.product_name : ''}
                             ${element.service_type === 'unit' ? element.unit_name : ''}
                         </td>
-                        <td>${element.total_sessions || 0}</td>
+                        <td>${element.number_of_session || 0}</td>
                         <td id="row_${index + 1}">${element.remaining_sessions || 0}</td>
                         <td>
                             <input type="hidden" name="service_id[]" value="${element.service_id}">
