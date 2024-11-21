@@ -212,10 +212,11 @@ input[type=text] {
                            <div class="hl05eU">
                               @if($value['discounted_amount']!=null)
                               {{-- <del class="yRaY8j"><b>${{$value['amount']}}</b></del>&nbsp;&nbsp; --}}
-                              <div class="Nx9bqj"><b>${{$value['discounted_amount']}}</b></div>
+                              <div class="Nx9bqj"><b>{{ "$".$value['discounted_amount']}}</b></div>
                               {{-- <div class="UkUFwK"><span><b>{{$value['discount_rate'] >0 ? $value['discount_rate']:0}}% off</b></span> </div>  &nbsp;<b>for {{ $value->session_number }} Sessions</b> --}}
-                              @else
-                              <div class="Nx9bqj"><b>${{$value['amount']}}</b></div>
+                              @endif
+                              @if($value['amount']!=null)
+                              <div class="Nx9bqj"><b>{{ "$".$value['amount']}}</b></div>
                               @endif
                            </div>
                            <div class="postbox__text mt-4">

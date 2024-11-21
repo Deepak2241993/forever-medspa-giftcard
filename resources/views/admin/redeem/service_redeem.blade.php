@@ -140,10 +140,6 @@
                 </div>
                 <div class="modal-body">
                     <div style="display: flex; flex-direction: column;">
-                        {{-- <h5 id="client_name"></h5>
-                    <h5 id="client_email"></h5>
-                    <h5 id="client_phone"></h5> --}}
-                        {{-- <h5 id="client_Order_number"></h5> --}}
                         <h3> Order Details</h3>
                         <span class="text-danger" id="error"></span>
                         <span class="text-success" id="success"></span>
@@ -253,7 +249,7 @@
                                         <th style="padding: 10px; text-align: left;">Service Name</th>
                                         <th style="padding: 10px; text-align: left;">Message</th>
                                         <th style="padding: 10px; text-align: left;">Service Session</th>
-                                        <th style="padding: 10px; text-align: left;">Qty</th>
+
                                         <th style="padding: 10px; text-align: left;">Service Session Redeem</th>
                                     </tr>`;
 
@@ -264,12 +260,11 @@
                         <td style="padding: 10px;">${new Date(item.updated_at).toLocaleDateString()}</td>
                         <td style="padding: 10px;">${item.order_id}</td>
                       <td style="padding: 10px;">
-    ${item.service_type === 'product' ? item.product_name : ''}
-    ${item.service_type === 'unit' ? item.unit_name : ''}
+                        ${item.service_type === 'product' ? item.product_name : ''}
+                        ${item.service_type === 'unit' ? item.unit_name : ''}
 </td>
                         <td style="padding: 10px;">Buy</td>
                         <td style="padding: 10px;">${item.number_of_session ? item.number_of_session : 'NULL'}</td>
-                        <td style="padding: 10px;">${item.qty}</td>
                         <td style="padding: 10px;">--</td>
                     </tr>`;
                             });
@@ -280,7 +275,11 @@
                     <tr>
                         <td style="padding: 10px;">${new Date(value.updated_at).toLocaleDateString()}</td>
                         <td style="padding: 10px;">${value.transaction_id}</td>
-                        <td style="padding: 10px;">${value.product_name}</td>
+
+                        <td style="padding: 10px;">
+                        ${value.service_type === 'product' ? value.product_name : ''}
+                        ${value.service_type === 'unit' ? value.unit_name : ''}
+                            </td>
                         <td style="padding: 10px;">${value.comments ? value.comments : ''}</td>
                         <td style="padding: 10px;">--</td>
                         <td style="padding: 10px;">${value.number_of_session_use}</td>
@@ -492,78 +491,75 @@
 
             //  For Order View Code Start
             function OrderView(id, order_id) {
-                $('.deepak').attr('id', 'staticBackdrop_' + id);
-                $('#staticBackdrop_' + id).modal('show');
+    $('.deepak').attr('id', 'staticBackdrop_' + id);
+    $('#staticBackdrop_' + id).modal('show');
 
-                $.ajax({
-                    url: '{{ route('order-search') }}',
-                    method: "post",
-                    dataType: "json",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        order_id: order_id,
-                        email: "",
-                        phone: "",
-                        user_token: '{{ Auth::user()->user_token }}',
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            // Clear previous table content
-                            $('#giftcardsshow').empty();
+    $.ajax({
+        url: '{{ route('redeemcalculation') }}',
+        method: "post",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            order_id: order_id,
+            user_token: '{{ Auth::user()->user_token }}',
+        },
+        success: function (response) {
+            if (response.success) {
+                var servicePurchases = response.servicePurchases;
+                // Clear previous table content
+                $('#giftcardsshow').empty();
 
-                            // Create form and table structure
-                            var form = $('<form>', {
-                                action: '{{ route("redeem-services") }}',
-                                method: 'POST'
-                            });
-                            var table = $('<table class="table table-bordered table-striped">');
-                            var thead = $('<thead>').html(
-                                '<tr>' +
-                                '<th>#</th>' +
-                                '<th>Product Name</th>' +
-                                '<th>Total Session</th>' +
-                                '<th>Remaining Session</th>' +
-                                '<th>Session Usage</th>' +
-                                '<th>Message</th>' +
-                                '<th>Action</th>' +
-                                '</tr>'
-                            );
-                            var tbody = $('<tbody>');
+                // Create form and table structure
+                var form = $('<form>', {
+                    action: '{{ route("redeem-services") }}',
+                    method: 'POST'
+                });
 
-                            // Append header to the table
-                            table.append(thead);
+                var table = $('<table class="table table-bordered table-striped">');
+                var thead = $('<thead>').html(
+                    '<tr>' +
+                    '<th>#</th>' +
+                    '<th>Service Name</th>' +
+                    '<th>Total Sessions</th>' +
+                    '<th>Remaining Sessions</th>' +
+                    '<th>Session Usage</th>' +
+                    '<th>Message</th>' +
+                    '<th>Action</th>' +
+                    '</tr>'
+                );
+                table.append(thead);
+                var tbody = $('<tbody>');
 
-                            // Loop through the response result array
-                            $.each(response.result, function (index, element) {
-                                // Determine if the row should be disabled
-                                var isDisabled = element.remaining_sessions === 0 ? 'disabled' : '';
-                                var rowClass = element.remaining_sessions === 0 ?
-                                    'class="disabled-row"' : '';
+                // Loop through the response result array
+                $.each(servicePurchases, function (index, element) {
+                    // Determine if the row should be disabled
+                    var isDisabled = element.remaining_sessions === 0 ? 'disabled' : '';
+                    var rowClass = element.remaining_sessions === 0 ? 'class="disabled-row"' : '';
 
-                                // Create a new row for each element
-                                var row = $('<tr ' + rowClass + '>').html(
-                                    `<td>${index + 1}</td>
+                    // Create a new row for each element
+                    var row = $('<tr ' + rowClass + '>').html(
+                        `<td>${index + 1}</td>
                         <td>
-                              ${element.service_type === 'product' ? element.product_name : ''}
-                              ${element.service_type === 'unit' ? element.unit_name : ''}
-                            </td>
-                        <td>${element.number_of_session}</td>
-                        <td id="row_${index + 1}">${element.remaining_sessions}</td>
+                            ${element.service_type === 'product' ? element.product_name : ''}
+                            ${element.service_type === 'unit' ? element.unit_name : ''}
+                        </td>
+                        <td>${element.total_sessions || 0}</td>
+                        <td id="row_${index + 1}">${element.remaining_sessions || 0}</td>
                         <td>
-                            <input type="hidden" name="service_id" value="${element.service_id}">
-                            <input type="hidden" name="order_id" value="${element.order_id}">
+                            <input type="hidden" name="service_id[]" value="${element.service_id}">
+                            <input type="hidden" name="order_id[]" value="${element.order_id}">
                             <input onkeyup="valueValidate(this, ${element.remaining_sessions})" 
                                    onchange="valueValidate(this, ${element.remaining_sessions})" 
                                    type="number" 
                                    max="${element.remaining_sessions}" 
                                    min="0" 
-                                   name="number_of_session_use" 
+                                   name="number_of_session_use[]" 
                                    value="${element.remaining_sessions}" 
                                    class="form-control" 
                                    ${isDisabled}>
                         </td>
                         <td>
-                            <textarea class="form-control" name="comments" ${isDisabled}></textarea>
+                            <textarea class="form-control" name="comments[]" ${isDisabled}></textarea>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary mt-2 submit-btn" ${isDisabled}>
@@ -571,94 +567,83 @@
                                 Redeem
                             </button>
                         </td>`
-                                );
+                    );
 
-                                // Append the row to the tbody
-                                tbody.append(row);
-                            });
-
-                            // Append tbody to the table
-                            table.append(tbody);
-
-                            // Append table to form
-                            form.append(table);
-
-                            // Append form to #giftcardsshow
-                            $('#giftcardsshow').append(form);
-
-                            // Add event listener for submit button clicks
-                            $('.submit-btn').click(function () {
-                                var button = $(this);
-                                var spinner = button.find('.spinner-border');
-
-                                // Show the spinner
-                                spinner.show();
-                                button.prop('disabled', true);
-
-                                var currentRow = button.closest('tr');
-                                var number_of_session_use = currentRow.find(
-                                    'input[name="number_of_session_use"]').val();
-                                var remaining_sessions = currentRow.find('td:nth-child(4)')
-                            .text(); // get remaining sessions value from table cell
-
-                                // Validate that the number of sessions to use does not exceed remaining sessions
-                                if (parseInt(number_of_session_use) > parseInt(
-                                    remaining_sessions)) {
-                                    alert(
-                                        'You cannot redeem more sessions than the remaining sessions.');
-                                    spinner.hide();
-                                    button.prop('disabled', false);
-                                    return; // Stop the form submission
-                                }
-
-                                var rowData = {
-                                    _token: '{{ csrf_token() }}', // Add CSRF token
-                                    service_id: currentRow.find('input[name="service_id"]')
-                                    .val(),
-                                    order_id: currentRow.find('input[name="order_id"]').val(),
-                                    number_of_session_use: number_of_session_use,
-                                    comments: currentRow.find('textarea[name="comments"]').val()
-                                };
-
-                                $.ajax({
-                                    url: form.attr('action'),
-                                    method: form.attr('method'),
-                                    data: rowData, // Send only the current row data
-                                    success: function (response) {
-                                        if (response.success) {
-                                            // Display a success message
-                                            alert('Action completed successfully.');
-                                            $('#success').html();
-                                            // Disable the current row's input fields and button
-                                            currentRow.find('input, textarea, button')
-                                                .prop('disabled', true);
-                                        } else {
-                                            alert('Action failed. Please try again.');
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        alert(
-                                            'An error occurred. Please try again later.');
-                                    },
-                                    complete: function () {
-                                        // Hide the spinner and enable the button after the request completes
-                                        spinner.hide();
-                                        button.prop('disabled', true);
-                                    }
-                                });
-                            });
-
-                        } else {
-                            // Handle the case when the response is not successful
-                            $('#giftcardsshow').html('<p>No services found.</p>');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle error response
-                        $('#giftcardsshow').html('<p>An error occurred. Please try again later.</p>');
-                    }
+                    // Append the row to the tbody
+                    tbody.append(row);
                 });
+
+                // Append tbody to the table
+                table.append(tbody);
+
+                // Append table to form
+                form.append(table);
+
+                // Append form to #giftcardsshow
+                $('#giftcardsshow').append(form);
+
+                // Add event listener for submit button clicks
+                $('.submit-btn').click(function () {
+                    var button = $(this);
+                    var spinner = button.find('.spinner-border');
+
+                    // Show the spinner
+                    spinner.show();
+                    button.prop('disabled', true);
+
+                    var currentRow = button.closest('tr');
+                    var number_of_session_use = currentRow.find(
+                        'input[name="number_of_session_use[]"]').val();
+                    var remaining_sessions = currentRow.find('td:nth-child(4)').text(); // Get remaining sessions value from table cell
+
+                    // Validate session usage
+                    if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
+                        alert('You cannot redeem more sessions than the remaining sessions.');
+                        spinner.hide();
+                        button.prop('disabled', false);
+                        return; // Stop the form submission
+                    }
+
+                    var rowData = {
+                        _token: '{{ csrf_token() }}', // Add CSRF token
+                        service_id: currentRow.find('input[name="service_id[]"]').val(),
+                        order_id: currentRow.find('input[name="order_id[]"]').val(),
+                        number_of_session_use: number_of_session_use,
+                        comments: currentRow.find('textarea[name="comments[]"]').val()
+                    };
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: rowData, // Send only the current row data
+                        success: function (response) {
+                            if (response.success) {
+                                alert('Action completed successfully.');
+                                currentRow.find('input, textarea, button').prop('disabled', true);
+                            } else {
+                                alert('Action failed. Please try again.');
+                            }
+                        },
+                        error: function () {
+                            alert('An error occurred. Please try again later.');
+                        },
+                        complete: function () {
+                            spinner.hide();
+                            button.prop('disabled', false);
+                        }
+                    });
+                });
+
+            } else {
+                $('#giftcardsshow').html('<p>No services found.</p>');
             }
+        },
+        error: function () {
+            $('#giftcardsshow').html('<p>An error occurred. Please try again later.</p>');
+        }
+    });
+}
+
 
 
 

@@ -200,8 +200,12 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
             ->where('service_orders.order_id', $orderId)
             ->get();
         
-            $serviceRedeem = Service_redeem::select('service_redeems.*', 'products.product_name')
-                ->join('products', 'service_redeems.service_id', '=', 'products.id')
+            $serviceRedeem = Service_redeem::select(
+                'service_redeems.*',
+                'products.product_name',
+                'service_units.product_name as unit_name')
+                ->join('products', 'service_redeems.product_id', '=', 'products.id')
+                ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
                 ->where('service_redeems.order_id', $orderId)
                 ->get();
         
@@ -211,6 +215,39 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 'success' => true,
                 'servicePurchases' => $servicePurchases,
                 'serviceRedeem' => $serviceRedeem,
+                'totalAmount' => $totalAmount
+            ]);
+        } 
+
+        //  For Redeem Calculation 
+        public function redeemcalculation(Request $request)
+        {
+            $orderId = $request->order_id;
+            
+            $servicePurchases = ServiceOrder::select(
+                'service_orders.*', 
+                'products.product_name', 
+                'service_units.product_name as unit_name'
+            )
+            ->join('products', 'service_orders.service_id', '=', 'products.id')
+            ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')
+            ->where('service_orders.order_id', $orderId)
+            ->get();
+        
+            $serviceRedeem = Service_redeem::select(
+                'service_redeems.*',
+                'products.product_name',
+                'service_units.product_name as unit_name')
+                ->join('products', 'service_redeems.product_id', '=', 'products.id')
+                ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
+                ->where('service_redeems.order_id', $orderId)
+                ->get();
+        
+            $totalAmount = $servicePurchases->sum('number_of_session') - $serviceRedeem->sum('number_of_session_use');
+        
+            return response()->json([
+                'success' => true,
+                'servicePurchases' => $servicePurchases,
                 'totalAmount' => $totalAmount
             ]);
         }

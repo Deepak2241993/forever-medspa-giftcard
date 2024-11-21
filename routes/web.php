@@ -68,6 +68,7 @@ Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('
 Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('redeem-services');
 Route::get('/search-service-order','ServiceOrderController@SearchServiceOrder')->name('search-service-order');
 Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')->name('service-statement');
+Route::post('/redeemcalculation', 'ServiceOrderController@redeemcalculation')->name('redeemcalculation');
 Route::post('/do-cancel', 'ServiceOrderController@DoCancel')->name('do-cancel');
 Route::get('/cancel-service', 'ServiceOrderController@ServiceCancel')->name('cancel-service');
 Route::resource('/popular-offers', PopularOfferController::class);

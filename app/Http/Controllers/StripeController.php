@@ -336,7 +336,7 @@ class StripeController extends Controller
                 'order_id' => $orderId,
                 'service_id' => $item['id'],
                 'status' => 0,
-                'number_of_session' => $cart_data->session_number,
+                'number_of_session' => $cart_data->session_number?$item['quantity']*$cart_data->session_number:$item['quantity'],
                 'user_token' => 'FOREVER-MEDSPA',
                 'actual_amount' => $cart_data->amount,
                 'discounted_amount' => $cart_data->discounted_amount,

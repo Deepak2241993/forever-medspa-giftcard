@@ -180,7 +180,7 @@
                                                 </td>
                                                 <td>
                                                     @if ($item['type'] === 'product')
-                                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
+                                                        {{ "$".$item['quantity']*$product->discounted_amount ?? "$".$item['quantity']*$product->amount }}
                                                     @elseif ($item['type'] === 'unit')
                                                         {{ "$".$item['quantity']*$unit->discounted_amount ?? "$".$item['quantity']*$unit->amount }}
                                                     @endif
