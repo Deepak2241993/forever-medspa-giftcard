@@ -8,17 +8,13 @@ use App\Models\Service_redeem;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Auth;
-use Session;
-use Validator;
 use Mail;
+use DB;
 use App\Mail\DealsCancle;
 use App\Mail\ServiceRedeemReceipt;
 use App\Mail\RefundReceiptMail;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use Stripe\Stripe;
 use Stripe\Refund;
 
@@ -227,7 +223,9 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
             $servicePurchases = ServiceOrder::select(
                 'service_orders.*', 
                 'products.product_name', 
-                'service_units.product_name as unit_name'
+                'service_units.product_name as unit_name',
+                DB::raw('IFNULL(SUM(service_redeems.number_of_session_use), 0) as total_redeemed_sessions'),
+                // DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions'),
             )
             ->join('products', 'service_orders.service_id', '=', 'products.id')
             ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')

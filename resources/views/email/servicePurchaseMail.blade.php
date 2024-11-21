@@ -271,7 +271,8 @@ cellpadding="0" cellspacing="0">
                                         <tr>
                                             <th style="width: 25%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Service Name</th>
                                             <th style="width: 35%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Description</th>
-                                            <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">No. Session</th>
+                                            <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Price</th>
+                                            <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Qty</th>
                                             <th style="width: 25%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc; text-align: right;">Total</th>
                                         </tr>
                                     </thead>
@@ -280,14 +281,23 @@ cellpadding="0" cellspacing="0">
                                             $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
                                         @endphp
                                         @foreach ($orderdata as $key => $value)
-                                            @php
-                                                $ServiceData = \App\Models\Product::find($value->service_id);
+                                        @php
+                                        if($value->service_type=='product')
+                                        {
+                                            $ServiceData = \App\Models\Product::find($value->service_id);
+                                        }
+                                        if($value->service_type=='unit')
+                                        {
+                                            $ServiceData = \App\Models\ServiceUnit::find($value->service_id);
+                                        }
+                                                
                                             @endphp
                                             <tr>
                                                 <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $ServiceData->product_name }}</td>
                                                 <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td>
-                                                <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $value->number_of_session }}</td>
-                                                <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $ServiceData->discounted_amount ? $ServiceData->discounted_amount : $ServiceData->amount }}</td>
+                                                <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">${{ $ServiceData->discounted_amount ? $ServiceData->discounted_amount : $ServiceData->amount }}</td>
+                                                <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $value->qty }}</td>
+                                                <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $ServiceData->discounted_amount ? $value->qty*$ServiceData->discounted_amount : $value->qty*$ServiceData->amount }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
