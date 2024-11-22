@@ -127,25 +127,21 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
       
           // Create a new record using the validated data
         //   try {
-          $data = $request->all();
-          $data['user_token']='FOREVER-MEDSPA';
-          $data['transaction_id']='SER-RED'.time();
-         $result= $service_redeem->create($data);
-            // } catch (\Exception $e) {
-            //     Log::error('Service Redeem Data Entry: ' . $e->getMessage());
-            //     return back()->withErrors(['error' => $e->getMessage()]);
-            // }
-         if($result)
-         {
-            // try {
-            $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
-            Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
-            // } catch (\Exception $e) {
-            //     Log::error('Service Redeem Statment Email: ' . $e->getMessage());
-            //     return back()->withErrors(['error' => $e->getMessage()]);
-            // }
-         }
-      
+            $data = $request->all();
+            $data['user_token'] = 'FOREVER-MEDSPA';
+            $data['transaction_id'] = 'SER-RED' . time();
+            
+            // Create the record and get the inserted model instance
+            $result = $service_redeem->create($data);
+            
+            // Update the transaction ID with the concatenated latest inserted ID
+            if ($result) {
+                $result->transaction_id = 'SER-RED' . $result->id;
+                $result->save();
+                $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
+                Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
+            }
+
           // Return a JSON response indicating success
           return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
       }

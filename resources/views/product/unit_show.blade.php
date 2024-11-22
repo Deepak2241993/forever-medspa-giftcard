@@ -36,18 +36,24 @@
             <div class="row g-5">
                 @foreach($result as $key => $value)
                 @php
-                    $unit = App\Models\ServiceUnit::find($value);
-                    $image = explode('|',$unit->product_image);
+                   $unit = App\Models\ServiceUnit::where('status', 1)->where('id', $value)->first();
 
+                    if ($unit) {
+                        $image = explode('|', $unit->product_image);
+                    } else {
+                        $image = []; // Handle the case where no matching record is found
+                    }
                 @endphp
+                @if($unit)
                 <div class="col-md-4">
                     <div class="card">
                         <div clss="project-thumb w-img">
-                            @if(!empty($image[0]!=''))
-                            <img src="{{$image[0]}}" class="card-img-top" alt="..." height="350">
-                            @else
-                            <img src="{{url('/No_Image_Available.jpg')}}" class="card-img-top" alt="..." height="350">
-                            @endif
+                            @if(!empty($image) && !empty($image[0]))
+                            <img src="{{ $image[0] }}" class="card-img-top" alt="..." height="350">
+                        @else
+                            <img src="{{ url('/No_Image_Available.jpg') }}" class="card-img-top" alt="No Image Available" height="350">
+                        @endif
+                        
                         </div>
                         <div class="card-body project-item">
                             <div class="content p-4">
@@ -65,6 +71,8 @@
                         </div>
                     </div>
                 </div>
+                @endif
+                
             @endforeach
 
                 
