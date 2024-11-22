@@ -34,6 +34,7 @@
       <div class="product__details-area section-space-medium">
          <div class="container">
             <div class="row g-5">
+                @if($result)
                 @foreach($result as $key => $value)
                 @php
                    $unit = App\Models\ServiceUnit::where('status', 1)->where('id', $value)->first();
@@ -74,7 +75,9 @@
                 @endif
                 
             @endforeach
-
+            @else
+            <h1> No Data Found</h1>
+            @endif
                 
             </div>
          </div>
