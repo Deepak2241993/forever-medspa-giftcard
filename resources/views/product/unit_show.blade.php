@@ -48,15 +48,15 @@
                 @if($unit)
                 <div class="col-md-4">
                     <div class="card">
-                        <div clss="project-thumb w-img" style="height:320px;">
+                        <div clss="project-thumb w-img">
                             @if(!empty($image) && !empty($image[0]))
-                            <img src="{{ $image[0] }}" class="card-img-top" alt="..." height="320px">
+                            <img src="{{ $image[0] }}" class="card-img-top" alt="...">
                         @else
                             <img src="{{ url('/No_Image_Available.jpg') }}" class="card-img-top" alt="No Image Available" height="350">
                         @endif
                         
                         </div>
-                        <div class="card-body project-item" style="height:348px;">
+                        <div class="card-body project-item">
                             <div class="content p-4">
                                 <h4>{{ $unit ? $unit->product_name : '' }}</h4>
                                 <p class="card-text">
