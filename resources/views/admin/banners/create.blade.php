@@ -137,7 +137,7 @@
     }
 
     function seturl(data) {
-        // Define the base URLs (without the slug)
+        // Define the base URLs (without the slug)  
         var productBaseUrl = @json(route('services', ''));
         var productDetailsBaseUrl = @json(route('productdetails', ''));
 
