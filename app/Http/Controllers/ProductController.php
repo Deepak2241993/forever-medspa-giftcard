@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Auth;
+
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
 class ProductController extends Controller
@@ -394,10 +396,9 @@ class ProductController extends Controller
     
            
         }
-
-
-
 //  For Generate Keywords Report View
+
+
 //  View Keywords Search
         public function KeywordsReports(Request $request){
             $keywordsData = DB::table('search_keywords')

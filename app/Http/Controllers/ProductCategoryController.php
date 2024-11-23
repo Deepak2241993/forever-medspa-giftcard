@@ -6,7 +6,6 @@ use App\Models\ProductCategory;
 use App\Models\Banner;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Auth;
 use Str;
 use Illuminate\Support\Facades\Storage;

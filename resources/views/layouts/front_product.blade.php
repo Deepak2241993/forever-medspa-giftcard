@@ -75,9 +75,12 @@
                          <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
 						<li>
-                            <a class="nav-link {{ Request::is('category/FOREVER-MEDSPA') ? 'active' : '' }}" href="{{ route('category', ['token' => 'FOREVER-MEDSPA']) }}">
+                            <a class="nav-link {{ Request::is('services') ? 'active' : '' }}" href="{{ route('services') }}">
                                 Services
                             </a>
+                            {{-- <a class="nav-link {{ Request::is('category/FOREVER-MEDSPA') ? 'active' : '' }}" href="{{ route('category', ['token' => 'FOREVER-MEDSPA']) }}">
+                                Services
+                            </a> --}}
                         </li>
                         {{-- Cart Code --}}
                         @php
