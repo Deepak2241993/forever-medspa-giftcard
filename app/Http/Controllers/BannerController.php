@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\ProductCategory;
+use App\Models\ServiceUnit;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; // Import Log facade
@@ -27,16 +28,15 @@ class BannerController extends Controller
      */
     public function create()
     {
-        $deals = ProductCategory::where('cat_is_deleted', 0)
+        $unit = ServiceUnit::where('product_is_deleted', 0)
         ->where('status', 1)
-        ->where('deal_end_date', '>', today())
         ->get();
 
         $services = Product::where('product_is_deleted', 0)
         ->where('status', 1)
         ->get();
 
-        return view('admin.banners.create',compact('deals','services'));
+        return view('admin.banners.create',compact('unit','services'));
     }
 
     /**
@@ -127,15 +127,15 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        $deals = ProductCategory::where('cat_is_deleted', 0)
+        $unit = ServiceUnit::where('product_is_deleted', 0)
         ->where('status', 1)
-        ->where('deal_end_date', '>', today())
         ->get();
+
 
         $services = Product::where('product_is_deleted', 0)
         ->where('status', 1)
         ->get();
-        return view('admin.banners.create',compact('banner','deals','services'));
+        return view('admin.banners.create',compact('banner','unit','services'));
     }
 
     /**

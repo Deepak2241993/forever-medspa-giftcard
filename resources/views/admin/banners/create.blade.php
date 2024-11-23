@@ -72,17 +72,17 @@
         <!-- Radio Buttons for Deals/Services -->
         <div class="mb-3 col-lg-6">
             <label class="form-label">Select Type</label><br>
-            <input type="radio" name="type" value="1" id="dealsRadio" onclick="toggleSelectOptions()" required> Deals
-            <input type="radio" name="type" value="2" id="servicesRadio" onclick="toggleSelectOptions()" required> Services
+            <input type="radio" name="type" value="1" id="dealsRadio" onclick="toggleSelectOptions()" required> Unit
+            <input type="radio" name="type" value="2" id="servicesRadio" onclick="toggleSelectOptions()" required> Service
         </div>
 
         <!-- Deals Select Option (Initially Hidden) -->
         <div class="mb-3 col-lg-6" id="dealsSelect" style="display: none;">
-            <label for="deals" class="form-label">Select Deals</label>
-            <select class="form-control" name="deals_and_service" id="deals" onchange="seturl('deals')">
-                <option value="">Select Deals</option>
-                @foreach($deals as $value)
-                <option value="{{$value->slug}}">{{$value->cat_name}}</option>
+            <label for="deals" class="form-label">Select Unit</label>
+            <select class="form-control" name="deals_and_service" id="deals" onchange="seturl('unit')">
+                <option value="">Select Unit</option>
+                @foreach($unit as $value)
+                <option value="{{$value->product_slug}}">{{$value->product_name}}</option>
                 @endforeach
                 <!-- Add more deals as needed -->
             </select>
@@ -138,10 +138,10 @@
 
     function seturl(data) {
         // Define the base URLs (without the slug)
-        var productBaseUrl = @json(route('product', ''));
+        var productBaseUrl = @json(route('services', ''));
         var productDetailsBaseUrl = @json(route('productdetails', ''));
 
-        if (data === 'deals') {
+        if (data === 'unit') {
             var deals = $('#deals').val();  // Get the value of the deals field
             var updatedUrl = productBaseUrl + '/' + deals;  // Append the deal slug
             $('#url').val(updatedUrl);  // Set the updated URL in the input field
