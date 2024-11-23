@@ -324,6 +324,7 @@ class ProductController extends Controller
                 return back();
             }
 
+            //  For inserting New Key
             $data=['keywords'=>$request->search];
             Search_keyword::create($data);
             $getsearch = '%' . $request->search . '%';
@@ -346,8 +347,9 @@ class ProductController extends Controller
                 ->where('status','=',1)
                 ->pluck('cat_name')
                 ->toArray();
+                $search_unit=ServiceUnit::where('product_is_deleted','=',0)->where('status','=',1)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
                 $search_product=Product::where('product_is_deleted','=',0)->where('status','=',1)->where('user_token','FOREVER-MEDSPA')->pluck('product_name')->toArray();
-                $finalarray = array_merge($search_category,$search_product);
+                $finalarray = array_merge($search_category,$search_unit,$search_product);
 
                 $search = json_encode($finalarray);
 
@@ -360,6 +362,7 @@ class ProductController extends Controller
                                     ->orWhere('cat_id', 'LIKE', '%|' . $id)
                                     ->orWhere('cat_id', $id);
                             })
+                            
                             ->where('product_is_deleted', 0)
                             ->where('status', 1)
                             ->paginate(50);

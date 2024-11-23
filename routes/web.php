@@ -96,11 +96,11 @@ Route::get('productdetails/{slug}','ProductController@productdetails')->name('pr
 // Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
 Route::get('services','ServiceUnitController@ServicePage')->name('services');
 Route::get('services/{slug}','ServiceUnitController@UnitPageShow')->name('serviceunit');
+Route::get('services/{product_slug}/{unitslug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
 // Route::get('services/{slug}','ProductController@productpage')->name('product');
 Route::get('service/{slug}','ProductController@productdetails')->name('productdetails');
 Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
 Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
-Route::get('unit-details/{slug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
 Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
 Route::post('cart','PopularOfferController@Cart')->name('cart');
 Route::get('cartview','PopularOfferController@Cartview')->name('cartview');

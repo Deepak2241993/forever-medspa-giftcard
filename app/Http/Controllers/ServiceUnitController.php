@@ -153,7 +153,7 @@ class ServiceUnitController extends Controller
         return view('product.unit_show',compact('result','product'));
     }
 
-    public function UnitPageDetails(Request $request, $slug){
+    public function UnitPageDetails(Request $request, $product_slug,$slug){
         $unit = ServiceUnit::where('product_slug',$slug)->first();
         $image = explode('|',$unit->product_image);
         

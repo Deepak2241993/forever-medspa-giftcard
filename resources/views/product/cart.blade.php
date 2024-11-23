@@ -187,7 +187,7 @@
                                         <div class="col-12">
                                             <div class="coupon2">
                                                 <button
-                                                    onclick="window.location.href='{{ route('category', 'FOREVER-MEDSPA') }}'"
+                                                    onclick="window.location.href='{{ route('services') }}'"
                                                     class="fill-btn" type="button">
                                                     <span class="fill-btn-inner">
                                                         <span class="fill-btn-normal">+Add More</span>

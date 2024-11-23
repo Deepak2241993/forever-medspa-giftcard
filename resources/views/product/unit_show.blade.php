@@ -33,7 +33,15 @@
       <!-- Product details area start -->
       <div class="product__details-area section-space-medium">
          <div class="container">
-            <div class="row g-5">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h2 class="fs-1">{{ $product->product_name}}</h2>
+                    <div class="text text-wrap">
+                        {!! $product->short_description !!}
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5 mt-2">
                 @if($result)
                 @foreach($result as $key => $value)
                 @php
@@ -62,7 +70,8 @@
                                 <p class="card-text">
                                     {{ $unit ? $unit->short_description : '' }}
                                 </p>
-                                <a href="{{route('unit-details',$unit->product_slug)}}" class="fill-btn cart-btn">
+                                <a href="{{ route('unit-details', ['product_slug' => $product->product_slug, 'unitslug' => $unit->product_slug]) }}
+" class="fill-btn cart-btn">
                                     <span class="fill-btn-inner">
                                     <span class="fill-btn-normal">Buy Now</span>
                                     <span class="fill-btn-hover">Buy Now</span>
