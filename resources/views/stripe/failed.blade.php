@@ -139,6 +139,11 @@
                     <ul class="navbar-nav">
                          <li><a class="nav-link active" href="{{url('/')}}">Home</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/">Forever Medspa</a></li>
+                        <li>
+                            <a class="nav-link {{ Request::is('services') ? 'active' : '' }}" href="{{ route('services') }}">
+                                Black Friday Deals
+                            </a>
+                        </li>
                         
                     </ul>
                 </div>
