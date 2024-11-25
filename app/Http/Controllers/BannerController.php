@@ -62,38 +62,53 @@ class BannerController extends Controller
     if ($request->hasFile('image')) {
         $image = $request->file('image');
         $imageSize = getimagesize($image); // Get image dimensions
-
-        // Check if the width and height meet the required dimensions
-        if ($imageSize[0] <= 1349 && $imageSize[1] <= 550) {
+        $fileSize = $image->getSize(); // Get file size in bytes
+    
+        // File size constraints
+        $minSize = 10 * 1024; // 10 KB in bytes
+        $maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+    
+        // Check if the file meets size and dimension requirements
+        if ($fileSize >= $minSize && $fileSize <= $maxSize && $imageSize[0] <= 1349 && $imageSize[1] <= 550) {
             $destinationPath = '/sliders/';
             $filename = $image->getClientOriginalName();
-            
+    
             // Log image details before moving
             Log::info('Uploading image', [
                 'filename' => $filename,
                 'width' => $imageSize[0],
                 'height' => $imageSize[1],
+                'size_in_kb' => round($fileSize / 1024, 2),
                 'destination' => public_path($destinationPath)
             ]);
-
+    
             $image->move(public_path($destinationPath), $filename);
             $data['image'] = url('/') . $destinationPath . $filename;
-
+    
             // Log successful image upload
             Log::info('Image successfully uploaded', ['image_url' => $data['image']]);
-           
         } else {
-            Log::error('Image dimensions exceeded', [
-                'width' => $imageSize[0],
-                'height' => $imageSize[1],
-                'max_width' => 1349,
-                'max_height' => 550
+            // Log error for failing conditions
+            $errorMessage = 'Image upload failed due to the following reasons: ';
+            $errors = [];
+            if ($fileSize < $minSize) {
+                $errors[] = 'Image size must be at least 10 KB.';
+            }
+            if ($fileSize > $maxSize) {
+                $errors[] = 'Image size must not exceed 2 MB.';
+            }
+            if ($imageSize[0] > 1349 || $imageSize[1] > 550) {
+                $errors[] = 'Image dimensions should not exceed 1349x550 pixels.';
+            }
+    
+            Log::error($errorMessage, $errors);
+    
+            return view('admin.banners.create')->with([
+                'image' => implode(' ', $errors)
             ]);
-
-            return view('admin.banners.create')->with(['image' => 'Image dimensions should not exceed 1349x550 pixels.']);
         }
-       
     }
+    
 
     $result = $banner->create($data);
     if ($result) {
