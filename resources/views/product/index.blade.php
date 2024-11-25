@@ -404,23 +404,6 @@ input[type=text] {
    </main>
    <!-- Body main wrapper end -->
 
-
-   <!-- JS here -->
-   <script src="{{url('/product_page')}}/js/jquery-3.6.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/waypoints.min.js"></script>
-   <script src="{{url('/product_page')}}/js/bootstrap.bundle.min.js"></script>
-   <script src="{{url('/product_page')}}/js/meanmenu.min.js"></script>
-   <script src="{{url('/product_page')}}/js/swiper.min.js"></script>
-   <script src="{{url('/product_page')}}/js/slick.min.js"></script>
-   <script src="{{url('/product_page')}}/js/magnific-popup.min.js"></script>
-   <script src="{{url('/product_page')}}/js/counterup.js"></script>
-   <script src="{{url('/product_page')}}/js/wow.js"></script>
-   <script src="{{url('/product_page')}}/js/ajax-form.js"></script>
-   <script src="{{url('/product_page')}}/js/beforeafter.jquery-1.0.0.min.js"></script>
-   <script src="{{url('/product_page')}}/js/main.js"></script>
-</body>
-
-</html>
 @endsection
 @push('footerscript')
 <script src="{{url('/')}}/giftcards/js/custom.js"></script>

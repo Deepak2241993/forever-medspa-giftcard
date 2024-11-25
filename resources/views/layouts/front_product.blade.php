@@ -65,12 +65,12 @@
 		<nav class="navbar header-nav navbar-expand-lg">
             <div class="container">
 				<a class="navbar-brand" href="{{url('/')}}"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:81px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-wd" aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
-					<span></span>
-					<span></span>
-					<span></span>
-				</button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-wd" aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
                     <ul class="navbar-nav">
                          <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Forever Medspa</a></li>
