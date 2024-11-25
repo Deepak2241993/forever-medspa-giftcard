@@ -150,7 +150,7 @@
                 <div class="mb-3 col-lg-12 self" id="image_field"
                     style="display:{{ isset($data['id']) ? 'none' : 'block' }}">
                     <label for="product_image" class="form-label">Service Image<span
-                            class="text-danger">*</span></label><br>
+                            class="text-danger">* 350 X 350 Px</span></label><br>
                     <input class="form-control" id="image" type="file" name="product_image[]" multiple
                         {{ isset($data) ? '' : 'required' }}>
                 </div>

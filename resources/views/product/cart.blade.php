@@ -42,7 +42,7 @@
         @endpush
         <!-- Breadcrumb area start  -->
         <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
-            <div class="breadcrumb__thumb" data-background="{{url('/uploads/FOREVER-MEDSPA')}}/med-spa-banner.jpg"></div>
+            <div class="breadcrumb__thumb" data-background="{{ url('/uploads/FOREVER-MEDSPA') }}/med-spa-banner.jpg"></div>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xxl-12">
@@ -69,7 +69,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-content table-responsive">
-                                <table class="table">
+                                <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th class="product-thumbnail">#</th>
@@ -86,108 +86,100 @@
                                             $redeem = 0;
                                             $amount = 0;
                                         @endphp
-                                        {{-- {{dd($cart)}} --}}
-                            @foreach ($cart as $key => $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if ($item['type'] === 'product')
-                                        @php
-                                            $product = App\Models\Product::find($item['id']);
-                                            $image = explode('|', $product->product_image);
-                                            $price = $product->discounted_amount ?? $product->amount;
-                                            $subtotal = $price*$item['quantity'];
-                                            $amount += $subtotal;
-                                            if ($product->giftcard_redemption == 0) {
-                                                $redeem++;
-                                            }
-                                        @endphp
-                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
-                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
-                                    @elseif ($item['type'] === 'unit')
-                                        @php
-                                            $unit = App\Models\ServiceUnit::find($item['id']);
-                                            $image = explode('|', $unit->product_image);
-                                            $price = $unit->discounted_amount ?? $unit->amount;
-                                            $subtotal = $price*$item['quantity'];
-                                            $amount += $subtotal;
-                                            if ($unit->giftcard_redemption == 0) {
-                                                $redeem++;
-                                            }
-                                        @endphp
-                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;" 
-                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($item['type'] === 'product')
-                                        {{ $product->product_name }}
-                                    @elseif ($item['type'] === 'unit')
-                                        {{ $unit->product_name }}
-                                    @endif
-                                </td>
-                                {{--  For Unit Price --}}
-                                <td>
-                                    @if ($item['type'] === 'product')
-                                        {{ "$".$product->discounted_amount ?? "$".$product->amount }}
-                                    @elseif ($item['type'] === 'unit')
-                                        {{ "$".$unit->discounted_amount ?? "$".$unit->amount }}
-                                    @endif
-                                </td>
-                                {{--  For Quantity --}}
-                                    <td class="product-quantity text-center">
-                                        <div class="product-quantity mt-10 mb-10">
-                                            <div class="product-quantity-form">
-                                                <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
-                                                    <button type="button" class="cart-minus"><i class="far fa-minus"></i></button>
+                                        @foreach ($cart as $key => $item)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
                                                     @if ($item['type'] === 'product')
-                                                    <input class="cart-input" id="cart_qty_{{$key}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="1">
+                                                        @php
+                                                            $product = App\Models\Product::find($item['id']);
+                                                            $image = explode('|', $product->product_image);
+                                                            $price = $product->discounted_amount ?? $product->amount;
+                                                            $subtotal = $price * $item['quantity'];
+                                                            $amount += $subtotal;
+                                                            if ($product->giftcard_redemption == 0) {
+                                                                $redeem++;
+                                                            }
+                                                        @endphp
+                                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;"
+                                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                                     @elseif ($item['type'] === 'unit')
-                                                    <input class="cart-input" id="cart_qty_{{$key}}" type="number" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="{{$unit->min_qty ?? 1}}" max="{{$unit->max_qty ?? 1}}">
+                                                        @php
+                                                            $unit = App\Models\ServiceUnit::find($item['id']);
+                                                            $image = explode('|', $unit->product_image);
+                                                            $price = $unit->discounted_amount ?? $unit->amount;
+                                                            $subtotal = $price * $item['quantity'];
+                                                            $amount += $subtotal;
+                                                            if ($unit->giftcard_redemption == 0) {
+                                                                $redeem++;
+                                                            }
+                                                        @endphp
+                                                        <img src="{{ $image[0] }}" style="height:100px; width:100px;"
+                                                            onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                                     @endif
-                                                    
-                                                    <button type="button" class="cart-plus"><i class="far fa-plus"></i></button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    {{-- <input class="cart-input" id="qty_2" type="number" value="40" min="40" max="200"> --}}
-                                    {{-- {{ "Qty: ".$item['quantity'] }} --}}
-                                    {{-- @if ($item['type'] === 'product')
-                                        {{ "Session: ".$product->session_number }}
-                                    @elseif ($item['type'] === 'unit')
-                                        {{ "Qty: ".$item['quantity'] }}
-                                    @endif --}}
-                                </td>
-                                {{-- <td>{{ $item['quantity'] }}</td> --}}
-                                {{--  For Price --}}
-                                
-                                {{--  For total --}}
-                                <td>
-                                    @if ($item['type'] === 'product')
-                                        {{ "$".$item['quantity']*$product->discounted_amount ?? "$".$item['quantity']*$product->amount }}
-                                    @elseif ($item['type'] === 'unit')
-                                        {{ "$".$item['quantity']*$unit->discounted_amount ?? "$".$item['quantity']*$unit->amount }}
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)" onclick="updateCart({{$item['id']}},'{{$item['type']}}','{{ $key }}')" class="btn btn-success">Update</a>
-                                    <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')" class="btn btn-danger">Remove</a>
-                                </td>
-                            </tr>
-                            @endforeach
+                                                </td>
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        {{ $product->product_name }}
+                                                    @elseif ($item['type'] === 'unit')
+                                                        {{ $unit->product_name }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        {{ "$" . $product->discounted_amount ?? "$" . $product->amount }}
+                                                    @elseif ($item['type'] === 'unit')
+                                                        {{ "$" . $unit->discounted_amount ?? "$" . $unit->amount }}
+                                                    @endif
+                                                </td>
+                                                <td class="product-quantity text-center">
+                                                    <div class="product-quantity mt-10 mb-10">
+                                                        <div class="product-quantity-form">
+                                                            <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
+                                                                <button type="button" class="cart-minus"><i class="far fa-minus"></i></button>
+                                                                @if ($item['type'] === 'product')
+                                                                    <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
+                                                                        value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="1">
+                                                                @elseif ($item['type'] === 'unit')
+                                                                    <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
+                                                                        value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}"
+                                                                        min="{{ $unit->min_qty ?? 1 }}" max="{{ $unit->max_qty ?? 1 }}">
+                                                                @endif
+                                                                <button type="button" class="cart-plus"><i class="far fa-plus"></i></button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @if ($item['type'] === 'product')
+                                                        {{ "$" . $item['quantity'] * $product->discounted_amount ?? "$" . $item['quantity'] * $product->amount }}
+                                                    @elseif ($item['type'] === 'unit')
+                                                        {{ "$" . $item['quantity'] * $unit->discounted_amount ?? "$" . $item['quantity'] * $unit->amount }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0)"
+                                                        onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
+                                                        class="btn btn-success">Update</a>
+                                                    <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')"
+                                                        class="btn btn-danger">Remove</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                             
 
-                            <p class="text-danger mt-4">* Click on Update after increasing or decreasing the quantity to see the changes in the price</p>
+
+                            <p class="text-danger mt-4">* Click on Update after increasing or decreasing the quantity to see
+                                the changes in the price</p>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
                                         <div class="col-12">
                                             <div class="coupon2">
-                                                <button
-                                                    onclick="window.location.href='{{ route('services') }}'"
+                                                <button onclick="window.location.href='{{ route('services') }}'"
                                                     class="fill-btn" type="button">
                                                     <span class="fill-btn-inner">
                                                         <span class="fill-btn-normal">+Add More</span>
@@ -196,7 +188,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="coupon d-flex align-items-center">
                                             <div class="row">
                                                 {{-- {{dd($redeem);}} --}}
@@ -212,23 +204,25 @@
                                                             <div class="col-md-3">
                                                                 <input id="giftcard_amount_0" placeholder="$0.00"
                                                                     class="input-text" name="coupon_code" type="number"
-                                                                    min="0" onkeyup="validateGiftAmount(this)" onchange="validateGiftAmount(this)"
-                                                                    readonly style="padding-left: 22px;">
+                                                                    min="0" onkeyup="validateGiftAmount(this)"
+                                                                    onchange="validateGiftAmount(this)" readonly
+                                                                    style="padding-left: 22px;">
 
                                                             </div>
-                                                            
+
                                                             <div class="col-md-3 mt-4">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
                                                                     class="btn btn-success giftcartbutton" type="button">
                                                                     <span class="fill-btn-inner">
                                                                         <span class="fill-btn-normal"><i class="fa fa-check"
                                                                                 aria-hidden="true"></i></span>
-                                                                        <span class="fill-btn-hover"><i class="fa fa-check"
+                                                                        <span class="fill-btn-hover"><i
+                                                                                class="fa fa-check"
                                                                                 aria-hidden="true"></i></span>
                                                                     </span>
                                                                 </button>
                                                             </div>
-                                                            
+
                                                             <div class="col-md-12">
                                                                 <span class="text-danger mt-4" id="error_0"></span>
                                                                 <span class="text-success mt-4" id="success_0"></span>
@@ -263,9 +257,9 @@
                                     <div class="cart-page-total">
                                         <h2>Cart totals</h2>
                                         <ul class="mb-20">
-                                            <li>Subtotal 
+                                            <li>Subtotal
                                                 <span>${{ number_format($amount, 2) }}</span>
-                                                
+
                                             </li>
                                             <li>Total Giftcard Applied <span id="giftcard_applied">$0</span></li>
                                             <li>Tax 10% <span id="tax_amount">
@@ -290,10 +284,11 @@
                         </div>
                     </div>
                     <div class="disclamer" style="margin-top:50px">
-                    <hr>
-                    <p>
-                    <b class="mt-2">Disclaimer: Giftcards are only applicable if all the services added in the cart has the Giftcard redeem offer activated.
-                    For any queries please contact <a href="mailto:admin@forevermedspanj.com">admin@forevermedspanj.com </a></b> 
+                        <hr>
+                        <p>
+                            <b class="mt-2">Disclaimer: Giftcards are only applicable if all the services added in the
+                                cart has the Giftcard redeem offer activated.
+                                For any queries please contact <a href="mailto:admin@forevermedspanj.com">admin@forevermedspanj.com </a></b> 
                     </p>
                     <hr/>
                     </div>
@@ -302,12 +297,10 @@
             </div>
             <!-- Cart area end  -->
         @else
-            <h3>Your Cart is Empty</h3>
-        @endif
+            <h3>Your Cart is Empty</h3> @endif
 
-    </main>
-    <!-- Body main wrapper end -->
-
+        </main>
+        <!-- Body main wrapper end -->
 @endsection
 
 @push('footerscript')
@@ -434,15 +427,18 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
-                            var totalValueText = $('#totalValue').text(); 
+                            var totalValueText = $('#totalValue').text();
                             // Remove the '$' symbol and parse it as a number
-                            var totalValue = parseFloat(totalValueText.replace('$', '').trim());
-                            if(response.actual_paid_amount > totalValue)
-                            {
-                                alert("The giftcard amount can not be more than the cart total amount");
+                            var totalValue = parseFloat(totalValueText.replace('$', '').replace(',',
+                                '').trim());
+                            // alert(response.actual_paid_amount);
+                            // alert(totalValue);
+                            if (response.actual_paid_amount > totalValue) {
+                                alert(
+                                    "The giftcard amount can not be more than the cart total amount");
                                 return false; // Stop the execution if invalid
                             }
-                           
+
                             // Add the gift card number to the array
                             giftCardNumbers.push(giftNumber);
                             console.log(response.success);
@@ -457,7 +453,8 @@
                         } else {
                             alert('Invalid Giftcard. Please enter the correct number');
                             console.log(response.error);
-                            $('#error_' + key).html(response.error || 'Invalid Giftcard. Please enter the correct number');
+                            $('#error_' + key).html(response.error ||
+                                'Invalid Giftcard. Please enter the correct number');
                             $('#success_' + key).html('');
                         }
                     },
@@ -524,7 +521,8 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert(
-                            'An error occurred while submitting the Gift Cards. Please try again.');
+                            'An error occurred while submitting the Gift Cards. Please try again.'
+                            );
                     }
                 });
             });
@@ -535,123 +533,124 @@
 
         let alertShownCount = 0;
 
-function validateGiftAmount(inputElement) {
-    // Retrieve the maximum allowed value
-    var maxValue = parseFloat($(inputElement).attr('max'));
-    // Retrieve the current value from the input
-    var currentValue = parseFloat($(inputElement).val());
+        function validateGiftAmount(inputElement) {
+            // Retrieve the maximum allowed value
+            var maxValue = parseFloat($(inputElement).attr('max'));
+            // Retrieve the current value from the input
+            var currentValue = parseFloat($(inputElement).val());
 
-    // If currentValue exceeds maxValue, reset and handle alerts
-    if (currentValue > maxValue) {
-        if (alertShownCount === 0) {
-            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. Please enter a valid amount.');
-            alertShownCount++;
-        } else {
-            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. The value has been set to the maximum.');
-        }
-        // Set the input value to the maximum allowed
-        $(inputElement).val(maxValue);
-    }
-
-    // Call the sum calculation function to update totals
-    sumValues();
-}
-
-// Sum Calculation Function
-function sumValues() {
-    let sum = 0;
-
-    // Iterate through all gift card amount inputs and calculate the sum
-    $('input[id^="giftcard_amount_"]').each(function() {
-        let value = parseFloat($(this).val());
-        if (!isNaN(value)) {
-            sum += value;
-        }
-    });
-
-    // Retrieve the total value from the cart
-    var total_value_from_cart = {{ $amount }};
-    var new_final_amount = total_value_from_cart - sum;
-
-    // Calculate the tax amount (10% of the new final amount)
-    var taxamount = (new_final_amount * 10) / 100;
-
-    // Update the display values on the page
-    $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
-    $('#giftcard_applied').text('-$' + sum.toFixed(2));
-    $('#tax_amount').text('+$' + taxamount.toFixed(2));
-}
-
-    </script>
-{{-- For Cart Update --}}
-<script>
-    // Update Cart
-    function updateCart(itemId, itemType,cart_id) {
-        var quantity = $('#cart_qty_' + cart_id).val();
-        var min = parseInt($('#cart_qty_' + cart_id).attr('min')); // Get the min value
-        var max = parseInt($('#cart_qty_' + cart_id).attr('max')); // Get the max value
-        // alert(quantity);
-
-    if (quantity <= 0) {
-        alert("Quantity must be at least 1");
-        return;
-    }
-    if (quantity < min || quantity > max) {
-        alert('Quantity must be between ' + min + ' and ' + max + '.');
-        location.reload();
-        return false;
-    }
-
-    // Send AJAX request to update the cart
-    $.ajax({
-        url: '{{ route('update-cart') }}', // Replace with your actual route
-        method: 'POST',
-        data: {
-            id: itemId,
-            type: itemType,
-            quantity: quantity,
-            key: cart_id,
-            _token: '{{ csrf_token() }}' // CSRF token for security
-        },
-        success: function(response) {
-            if (response.status === '200') {
-                console.log("Cart updated successfully!");
-                location.reload();
-            } else {
-                alert(response.error || "Failed to update the cart.");
+            // If currentValue exceeds maxValue, reset and handle alerts
+            if (currentValue > maxValue) {
+                if (alertShownCount === 0) {
+                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
+                        '. Please enter a valid amount.');
+                    alertShownCount++;
+                } else {
+                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
+                        '. The value has been set to the maximum.');
+                }
+                // Set the input value to the maximum allowed
+                $(inputElement).val(maxValue);
             }
-        },
-        error: function() {
-            alert("An error occurred while updating the cart.");
+
+            // Call the sum calculation function to update totals
+            sumValues();
         }
-    });
-}
+
+        // Sum Calculation Function
+        function sumValues() {
+            let sum = 0;
+
+            // Iterate through all gift card amount inputs and calculate the sum
+            $('input[id^="giftcard_amount_"]').each(function() {
+                let value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            });
+
+            // Retrieve the total value from the cart
+            var total_value_from_cart = {{ $amount }};
+            var new_final_amount = total_value_from_cart - sum;
+
+            // Calculate the tax amount (10% of the new final amount)
+            var taxamount = (new_final_amount * 10) / 100;
+
+            // Update the display values on the page
+            $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
+            $('#giftcard_applied').text('-$' + sum.toFixed(2));
+            $('#tax_amount').text('+$' + taxamount.toFixed(2));
+        }
+    </script>
+    {{-- For Cart Update --}}
+    <script>
+        // Update Cart
+        function updateCart(itemId, itemType, cart_id) {
+            var quantity = $('#cart_qty_' + cart_id).val();
+            var min = parseInt($('#cart_qty_' + cart_id).attr('min')); // Get the min value
+            var max = parseInt($('#cart_qty_' + cart_id).attr('max')); // Get the max value
+            // alert(quantity);
+
+            if (quantity <= 0) {
+                alert("Quantity must be at least 1");
+                return;
+            }
+            if (quantity < min || quantity > max) {
+                alert('Quantity must be between ' + min + ' and ' + max + '.');
+                location.reload();
+                return false;
+            }
+
+            // Send AJAX request to update the cart
+            $.ajax({
+                url: '{{ route('update-cart') }}', // Replace with your actual route
+                method: 'POST',
+                data: {
+                    id: itemId,
+                    type: itemType,
+                    quantity: quantity,
+                    key: cart_id,
+                    _token: '{{ csrf_token() }}' // CSRF token for security
+                },
+                success: function(response) {
+                    if (response.status === '200') {
+                        console.log("Cart updated successfully!");
+                        location.reload();
+                    } else {
+                        alert(response.error || "Failed to update the cart.");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while updating the cart.");
+                }
+            });
+        }
 
 
-    // Event Listeners
-    // $(document).on('click', '.cart-minus', function() {
-    //     const input = $(this).closest('.update-cart-form').find('.cart-input');
-    //     const itemId = input.data('id');
-    //     let quantity = parseInt(input.val(), 10) - 1;
-    //     input.val(quantity);
-    //     updateCart(itemId, quantity);
-    // });
+        // Event Listeners
+        // $(document).on('click', '.cart-minus', function() {
+        //     const input = $(this).closest('.update-cart-form').find('.cart-input');
+        //     const itemId = input.data('id');
+        //     let quantity = parseInt(input.val(), 10) - 1;
+        //     input.val(quantity);
+        //     updateCart(itemId, quantity);
+        // });
 
-    // $(document).on('click', '.cart-plus', function() {
-    //     const input = $(this).closest('.update-cart-form').find('.cart-input');
-    //     const itemId = input.data('id');
-    //     let quantity = parseInt(input.val(), 10) + 1;
-    //     input.val(quantity);
-    //     updateCart(itemId, quantity);
-    // });
+        // $(document).on('click', '.cart-plus', function() {
+        //     const input = $(this).closest('.update-cart-form').find('.cart-input');
+        //     const itemId = input.data('id');
+        //     let quantity = parseInt(input.val(), 10) + 1;
+        //     input.val(quantity);
+        //     updateCart(itemId, quantity);
+        // });
 
-    // $(document).on('keyup change', '.cart-input', function() {
-    //     const itemId = $(this).data('id');
-    //     const quantity = parseInt($(this).val(), 10);
-    //     updateCart(itemId, quantity);
-    // });
-</script>
-{{-- <script>
+        // $(document).on('keyup change', '.cart-input', function() {
+        //     const itemId = $(this).data('id');
+        //     const quantity = parseInt($(this).val(), 10);
+        //     updateCart(itemId, quantity);
+        // });
+    </script>
+    {{-- <script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
     event.preventDefault();
