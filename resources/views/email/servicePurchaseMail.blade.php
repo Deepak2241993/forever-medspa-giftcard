@@ -248,197 +248,104 @@ cellpadding="0" cellspacing="0">
         </div>
     </div>
 </div>
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
+<div class="u-row-container" style="padding: 0px; background-color: transparent;">
     <div class="u-row"
-        style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
+        style="margin: 0 auto; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
         <div
-            style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
+            style="border-collapse: collapse; display: table; width: 100%; height: 100%; background-color: transparent;">
             <div class="u-col u-col-100"
-                style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
+                style="max-width: 600px; display: table-cell; vertical-align: top;">
                 <div
-                    style="background-color: #ffffff;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                    style="background-color: #ffffff; height: 100%; width: 100%; border-radius: 0px;">
                     <div
-                        style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                        <p style="line-height: 24px; padding: 20px; font-size: 16px; word-wrap: break-word; font-family: arial, helvetica, sans-serif;">
+                        style="box-sizing: border-box; padding: 20px; border: 1px solid #e0e0e0;">
+
+                        <p style="line-height: 1.5; font-size: 16px; font-family: Arial, Helvetica, sans-serif;">
                             Dear <b>{{ $maildata->fname . ' ' . $maildata->lname }}</b>,<br>
                             Thank you for the order!
                         </p>
-                        <div style="margin: 20px;">
-                            {{-- Service Details --}}
-                            <div style="width: 100%; overflow-x: auto; margin: 20px 0;">
-                                <table style="width: 100%; border-collapse: collapse; font-family: arial, helvetica, sans-serif;">
+
+                        <!-- Responsive Table -->
+                        <div style="margin: 20px 0; overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 10px; font-weight: 600; color: #333; background-color: #f8f8f8; border: 1px solid #ccc;">Service Name</th>
+                                        <th style="padding: 10px; font-weight: 600; color: #333; background-color: #f8f8f8; border: 1px solid #ccc;">Description</th>
+                                        <th style="padding: 10px; font-weight: 600; color: #333; background-color: #f8f8f8; border: 1px solid #ccc;">Price</th>
+                                        <th style="padding: 10px; font-weight: 600; color: #333; background-color: #f8f8f8; border: 1px solid #ccc;">Qty</th>
+                                        <th style="padding: 10px; font-weight: 600; color: #333; background-color: #f8f8f8; border: 1px solid #ccc; text-align: right;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($orderdata as $value)
+                                        <tr>
+                                            <td style="padding: 10px; color: #333; border: 1px solid #ccc;">{{ $ServiceData->product_name }}</td>
+                                            <td style="padding: 10px; color: #333; border: 1px solid #ccc;">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td>
+                                            <td style="padding: 10px; color: #333; border: 1px solid #ccc;">${{ $ServiceData->discounted_amount }}</td>
+                                            <td style="padding: 10px; color: #333; border: 1px solid #ccc;">{{ $value->qty }}</td>
+                                            <td style="padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $value->qty * $ServiceData->discounted_amount }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Responsive Terms Table -->
+                        <div style="margin: 20px 0;">
+                            <h3 style="margin-bottom: 10px;">Terms & Conditions</h3>
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif;">
                                     <thead>
                                         <tr>
-                                            <th style="width: 25%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Service Name</th>
-                                            <th style="width: 35%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Description</th>
-                                            <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Price</th>
-                                            <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Qty</th>
-                                            <th style="width: 25%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc; text-align: right;">Total</th>
+                                            <th style="padding: 10px; background-color: #f8f8f8; border: 1px solid #ccc;">Service Name</th>
+                                            <th style="padding: 10px; background-color: #f8f8f8; border: 1px solid #ccc;">Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php
-                                            $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
-                                        @endphp
-                                        @foreach ($orderdata as $key => $value)
-                                        @php
-                                        if($value->service_type=='product')
-                                        {
-                                            $ServiceData = \App\Models\Product::find($value->service_id);
-                                        }
-                                        if($value->service_type=='unit')
-                                        {
-                                            $ServiceData = \App\Models\ServiceUnit::find($value->service_id);
-                                        }
-                                                
-                                            @endphp
+                                        @foreach ($descriptions as $description => $serviceNames)
                                             <tr>
-                                                <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $ServiceData->product_name }}</td>
-                                                <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td>
-                                                <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">${{ $ServiceData->discounted_amount ? $ServiceData->discounted_amount : $ServiceData->amount }}</td>
-                                                <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $value->qty }}</td>
-                                                <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $ServiceData->discounted_amount ? $value->qty*$ServiceData->discounted_amount : $value->qty*$ServiceData->amount }}</td>
+                                                <td style="padding: 10px; border: 1px solid #ccc;">{{ implode(' | ', $serviceNames) }}</td>
+                                                <td style="padding: 10px; border: 1px solid #ccc;">{!! $description !!}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            
-                            {{-- Services Details End --}}
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <tbody>
-                                    <tr style="background-color: #f0f0f0; border: 1px solid #ccc;">
-                                        <td style="width: 50%; padding: 10px; color: #333; font-weight: bold; border: none;">
-                                            Subtotal
-                                        </td>
-                                        <td style="width: 50%; text-align: right; padding: 10px; color: #333; font-weight: bold; border: none;">
-                                            ${{ $maildata->sub_amount }}
-                                        </td>
-                                    </tr>
-                        
-                                    @if ($maildata->gift_card_amount != null)
-                                        @php
-                                            $giftamount = explode('|', $maildata->gift_card_amount);
-                                            $Totalgiftamount = 0;
-                                            foreach ($giftamount as $value) {
-                                                $Totalgiftamount += $value;
-                                            }
-                                        @endphp
-                                        <tr style="background-color: #f0f0f0; border: 1px solid #ccc;">
-                                            <td style="width: 50%; padding: 10px; color: #333; border: none;">
-                                                Giftcard Applied
-                                            </td>
-                                            <td style="width: 50%; text-align: right; padding: 10px; color: #d9534f; border: none;">
-                                                - ${{ $Totalgiftamount }}
-                                            </td>
-                                        </tr>
-                                    @endif
-                        
-                                    <tr style="background-color: #f0f0f0; border: 1px solid #ccc;">
-                                        <td style="width: 50%; padding: 10px; color: #333; border: none;">
-                                            Tax <span style="color: #666;">(10%)</span>
-                                        </td>
-                                        <td style="width: 50%; text-align: right; padding: 10px; color: #333; border: none;">
-                                            +${{ $maildata->tax_amount }}
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: #e0e0e0; border: 1px solid #ccc;">
-                                        <td style="width: 50%; padding: 10px; color: #333; font-weight: bold; font-size: 18px; border-top: none;">
-                                            Grand Total
-                                        </td>
-                                        <td style="width: 50%; text-align: right; padding: 10px; color: #333; font-weight: bold; font-size: 18px; border-top: none;">
-                                            ${{ $maildata->final_amount }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        </div>
 
-                            {{-- For Terms & Condition --}}
-                        <div style="width: 100%; overflow-x: auto; margin: 20px 0;">
-                            <h2>Terms & Conditions</h2>
-                            <table style="width: 100%; border-collapse: collapse; font-family: arial, helvetica, sans-serif;">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25%; padding: 10px; font-weight: 200; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Service Name</th>
-                                        <th style="width: 35%; padding: 10px; font-weight: 200; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;" colspan="2">Terms & Conditions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                    $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
-                                    $descriptions = [];
-                                @endphp
-                                
-                                @foreach ($orderdata as $key => $value)
-                                    @php
-                                        $ServiceData = \App\Models\Product::find($value->service_id);
-                                
-                                        // Fetch the related terms description
-                                        $term = \DB::table('terms')
-                                            ->where('status', 1)
-                                            ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$value->service_id])
-                                            ->first();
-                                
-                                        $description = $term->description ?? 'No description available';
-                                
-                                        // Group by description
-                                        if (isset($descriptions[$description])) {
-                                            $descriptions[$description][] = $ServiceData->product_name;
-                                        } else {
-                                            $descriptions[$description] = [$ServiceData->product_name];
-                                        }
-                                    @endphp
-                                @endforeach
-                                
-                                @foreach ($descriptions as $description => $serviceNames)
-                                    <tr>
-                                        <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">
-                                            {{ implode(' | ', $serviceNames) }}
-                                        </td>
-                                        <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;" colspan="2">
-                                            {!! $description !!}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                
-                                </tbody>
-                            </table>
-                        </div>
-                        {{-- End Terms And Conditions --}}
-                        </div>
-                        
-                        
-                        <table id="u_content_text_2"
-                            style="font-family:arial,helvetica,sans-serif;" role="presentation"
-                            cellpadding="0" cellspacing="0" width="100%" border="0">
-                            <tbody>
-                                <tr>
-                                    <td style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px;font-family:arial,helvetica,sans-serif;"
-                                        align="left">
-                                        <div class="v-line-height v-font-size"
-                                            style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
-                                            <p style="line-height: 130%;">At My Forever MedSpa, we
-                                                believe that every special occasion deserves to
-                                            </p>
-                                            <p style="line-height: 130%;">be celebrated in style.
-                                                Whether it's a birthday, anniversary,
-                                            </p>
-                                            <p style="line-height: 130%;">or just a "just because"
-                                                moment, we're here to make it unforgettable.
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                        
+                        <!-- Footer -->
+                        <p style="font-size: 14px; text-align: center; color: #555;">
+                            Thank you for shopping with us! If you have any questions, feel free to contact us.
+                        </p>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Responsive Styles -->
+<style>
+    @media screen and (max-width: 600px) {
+        .u-row {
+            max-width: 100% !important;
+        }
+        .u-col {
+            display: block !important;
+            width: 100% !important;
+        }
+        table {
+            width: 100% !important;
+        }
+        th, td {
+            font-size: 14px !important;
+            padding: 8px !important;
+        }
+    }
+</style>
+
 
 
 <div class="u-row-container" style="padding: 0px;background-color: transparent">
