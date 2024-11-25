@@ -199,12 +199,25 @@ totalAmt.addEventListener("change", (e)=>{
 
     </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.summernote').summernote({
+                height: 300, // Set height of the editor
+                width: 860, // Set width of the editor
+                focus: true, // Focus the editor on load
+                fontSizes: ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36', '48', '64', '82', '150'], // Font sizes
+                toolbar: [
+                    ['undo', ['undo']],
+                    ['redo', ['redo']],
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['font', ['strikethrough']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ol', 'paragraph']],
+                    ['insert', ['picture', 'link']] // Add picture button for image upload
+                    // ['para', ['ul','ol', 'paragraph']],
+                ],
                 popover: {
                     image: [
-
-                        // This is a Custom Button in a new Toolbar Area
                         ['custom', ['examplePlugin']],
                         ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
                         ['float', ['floatLeft', 'floatRight', 'floatNone']],
@@ -213,8 +226,8 @@ totalAmt.addEventListener("change", (e)=>{
                 }
             });
         });
-
     </script>
+    
     <script>
         function slugCreate() {
             $.ajax({
