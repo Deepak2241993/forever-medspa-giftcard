@@ -10911,7 +10911,7 @@ div[class*=col]:last-child .counter-item-2::after {
 }
 .cart-area .cart-input {
   height: 58px;
-  width: 35px;
+  width: 70px;
   text-align: center;
   font-size: 14px;
   border: none;
