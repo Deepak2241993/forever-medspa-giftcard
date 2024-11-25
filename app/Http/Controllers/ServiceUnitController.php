@@ -200,7 +200,6 @@ class ServiceUnitController extends Controller
     public function UnitPageDetails(Request $request, $product_slug,$slug){
         $unit = ServiceUnit::where('product_slug',$slug)->first();
         $image = explode('|',$unit->product_image);
-        
          // Fetch the term description if a unit was found
          if ($unit) {
             // Search for a term where `unit_id` includes the product's ID
