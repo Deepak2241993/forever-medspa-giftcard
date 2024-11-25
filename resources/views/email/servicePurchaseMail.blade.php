@@ -371,7 +371,15 @@ cellpadding="0" cellspacing="0">
                                 
                                 @foreach ($orderdata as $key => $value)
                                     @php
+                                    if($value->service_type=='product')
+                                    {
                                         $ServiceData = \App\Models\Product::find($value->service_id);
+                                    }
+                                    if($value->service_type=='unit')
+                                    {
+                                        $ServiceData = \App\Models\ServiceUnit::find($value->service_id);
+                                    }
+                                       
                                 
                                         // Fetch the related terms description
                                         $term = \DB::table('terms')
