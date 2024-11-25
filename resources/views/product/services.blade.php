@@ -215,6 +215,7 @@
                 <div class="container">
                     <div class="row gy-50">
                         <div class="col-xxl-8 col-lg-8">
+                            <h2>Black Friday Deals 2024</h2>
                             <div class="postbox__wrapper">
                                 @if (isset($data))
                                     @foreach ($data as $value)
