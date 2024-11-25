@@ -21,11 +21,11 @@
 <section class="content-header">
     <!--begin::App Content-->
     <div class="app-content">
-        <span class="text-danger">
-            @if(session()->has('error'))
+        @if(session()->has('error'))
+        <span class="alert alert-danger">
                 {{ session()->get('error') }}
+            </span>
             @endif
-        </span>
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->

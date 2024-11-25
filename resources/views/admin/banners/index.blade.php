@@ -36,6 +36,17 @@
                             </ul>
                         </div>
                     @endif
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach(explode(' ', session('error')) as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                
+
                 </div>
                 <span class="text-success" id="response_msg"></span>
                 <div class="scroll-container">

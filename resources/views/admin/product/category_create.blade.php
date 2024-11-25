@@ -22,11 +22,11 @@
     <!--end::App Content Header-->
     <!--begin::App Content-->
     <div class="app-content">
-        <span class="text-danger">
-            @if(session()->has('error'))
+        @if(session()->has('error'))
+        <span class="alert alert-danger">
                 {{ session()->get('error') }}
+            </span>
             @endif
-        </span>
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
@@ -72,7 +72,8 @@
                     </div>
                     @if(isset($data))
                         <div class="mb-3 col-lg-6 mt-4 self">
-                            <label for="image" class="form-label">Deal Image</label>
+                            <label for="image" class="form-label">Deal Image <span
+                                class="text-danger">* 670 X 250 Px</span></label>
                             @isset($data['cat_image'])
                                 <div id="image_class">
                                     <img src="{{ $data['cat_image'] }}"

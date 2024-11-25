@@ -120,11 +120,31 @@ class ProductCategoryController extends Controller
     if ($request->hasFile('cat_image')) {
         $folder = str_replace(" ", "_", $token);
         $image = $request->file('cat_image');
-        $destinationPath = '/uploads/' . $folder."/";
+    
+        // Validate file size
+        $fileSize = $image->getSize(); // Size in bytes
+        $fileSizeKB = $fileSize / 1024; // Convert to KB
+    
+        if ($fileSizeKB < 10 || $fileSizeKB > 2048) { // 2 MB = 2048 KB
+            return redirect()->back()->with('error', 'Image must be between 10 KB and 2 MB.');
+        }
+    
+        // Validate image dimensions
+        $imageDimensions = getimagesize($image); // Get width and height
+        $width = $imageDimensions[0];
+        $height = $imageDimensions[1];
+    
+        if ($width != 670 || $height != 250) {
+            return redirect()->back()->with('error', 'Image must have dimensions of 670x250 pixels.');
+        }
+    
+        // Move the image if all validations pass
+        $destinationPath = '/uploads/' . $folder . "/";
         $filename = $image->getClientOriginalName();
         $image->move(public_path($destinationPath), $filename);
-        $data['cat_image'] = url('/').$destinationPath.$filename;
+        $data['cat_image'] = url('/') . $destinationPath . $filename;
     }
+    
     // Send data to API endpoint using cURL
     $curl = curl_init();
   
@@ -213,11 +233,31 @@ public function update(Request $request,$id)
     if ($request->hasFile('cat_image')) {
         $folder = str_replace(" ", "_", $token);
         $image = $request->file('cat_image');
-        $destinationPath = '/uploads/' . $folder."/";
+    
+        // Validate file size
+        $fileSize = $image->getSize(); // Size in bytes
+        $fileSizeKB = $fileSize / 1024; // Convert to KB
+    
+        if ($fileSizeKB < 10 || $fileSizeKB > 2048) { // 2 MB = 2048 KB
+            return redirect()->back()->with('error', 'Image must be between 10 KB and 2 MB.');
+        }
+    
+        // Validate image dimensions
+        $imageDimensions = getimagesize($image); // Get width and height
+        $width = $imageDimensions[0];
+        $height = $imageDimensions[1];
+    
+        if ($width != 670 || $height != 250) {
+            return redirect()->back()->with('error', 'Image must have dimensions of 670x250 pixels.');
+        }
+    
+        // Move the image if all validations pass
+        $destinationPath = '/uploads/' . $folder . "/";
         $filename = $image->getClientOriginalName();
         $image->move(public_path($destinationPath), $filename);
-        $data['cat_image'] = url('/').$destinationPath.$filename;
+        $data['cat_image'] = url('/') . $destinationPath . $filename;
     }
+    
     
     $data = json_encode($data);
     $data = $this->postAPI('category-update/'.$id,$data);

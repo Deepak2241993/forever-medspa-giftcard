@@ -102,20 +102,43 @@ class ProductController extends Controller
         $data['unit_id'] = null;
     }
 
-    $product_image = array();
+$product_image = [];
 
-    if ($request->hasFile('product_image')) {
-        $folder = str_replace(" ", "_", $token);
-        $destinationPath = '/uploads/' . $folder . "/";
-    
-        foreach ($request->file('product_image') as $image) {
-            $filename = $image->getClientOriginalName();
-            $image->move(public_path($destinationPath), $filename);
-            array_push($product_image, url('/') . $destinationPath . $filename);
+if ($request->hasFile('product_image')) {
+    $folder = str_replace(" ", "_", $token);
+    $destinationPath = '/uploads/' . $folder . "/";
+
+    foreach ($request->file('product_image') as $image) {
+        // Get the image size in bytes
+        $fileSize = $image->getSize(); // Size in bytes
+        
+        // Convert the size to KB for comparison
+        $fileSizeKB = $fileSize / 1024;
+
+        // Validate file size
+        if ($fileSizeKB < 10 || $fileSizeKB > 2048) { // 2MB = 2048 KB
+            return redirect()->back()->with('error', 'Each image must be between 10 KB and 2 MB.');
         }
-        $finalImageUrl = implode('|',$product_image);
-        $data['product_image'] = $finalImageUrl;
+
+        // Validate image dimensions
+        $imageDimensions = getimagesize($image); // Get width and height
+        $width = $imageDimensions[0];
+        $height = $imageDimensions[1];
+
+        if ($width != 350 || $height != 350) {
+            return redirect()->back()->with('error', 'Each image must be exactly 350x350 pixels.');
+        }
+
+        // Move the image if all validations pass
+        $filename = $image->getClientOriginalName();
+        $image->move(public_path($destinationPath), $filename);
+        $product_image[] = url('/') . $destinationPath . $filename;
     }
+
+    $finalImageUrl = implode('|', $product_image);
+    $data['product_image'] = $finalImageUrl;
+}
+
     
     //  Discount Calcultion
     $price = $request->discounted_amount;
@@ -224,20 +247,42 @@ class ProductController extends Controller
             $data['unit_id'] = null;
         }
          
-        $product_image = array();
+        $product_image = [];
 
-        if ($request->hasFile('product_image')) {
-            $folder = str_replace(" ", "_", $token);
-            $destinationPath = '/uploads/' . $folder . "/";
+if ($request->hasFile('product_image')) {
+    $folder = str_replace(" ", "_", $token);
+    $destinationPath = '/uploads/' . $folder . "/";
+
+    foreach ($request->file('product_image') as $image) {
+        // Get the image size in bytes
+        $fileSize = $image->getSize(); // Size in bytes
         
-            foreach ($request->file('product_image') as $image) {
-                $filename = $image->getClientOriginalName();
-                $image->move(public_path($destinationPath), $filename);
-                array_push($product_image, url('/') . $destinationPath . $filename);
-            }
-            $finalImageUrl = implode('|',$product_image);
-            $data['product_image'] = $finalImageUrl;
+        // Convert the size to KB for comparison
+        $fileSizeKB = $fileSize / 1024;
+
+        // Validate file size
+        if ($fileSizeKB < 10 || $fileSizeKB > 2048) { // 2MB = 2048 KB
+            return redirect()->back()->with('error', 'Each image must be between 10 KB and 2 MB.');
         }
+
+        // Validate image dimensions
+        $imageDimensions = getimagesize($image); // Get width and height
+        $width = $imageDimensions[0];
+        $height = $imageDimensions[1];
+
+        if ($width != 350 || $height != 350) {
+            return redirect()->back()->with('error', 'Each image must be exactly 350x350 pixels.');
+        }
+
+        // Move the image if all validations pass
+        $filename = $image->getClientOriginalName();
+        $image->move(public_path($destinationPath), $filename);
+        $product_image[] = url('/') . $destinationPath . $filename;
+    }
+
+    $finalImageUrl = implode('|', $product_image);
+    $data['product_image'] = $finalImageUrl;
+}
         
     //  Discount Calcultion
     $price = $request->discounted_amount;

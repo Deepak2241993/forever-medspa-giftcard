@@ -57,7 +57,7 @@ class BannerController extends Controller
 
     $data = $request->all();
  
-    
+   
 
     if ($request->hasFile('image')) {
         $image = $request->file('image');
@@ -103,13 +103,13 @@ class BannerController extends Controller
     
             Log::error($errorMessage, $errors);
     
-            return view('admin.banners.create')->with([
+            return redirect()->route('banner.index')->with([
                 'image' => implode(' ', $errors)
             ]);
         }
     }
     
-
+    // dd($data);
     $result = $banner->create($data);
     if ($result) {
         // Log success
