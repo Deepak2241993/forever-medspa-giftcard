@@ -56,7 +56,7 @@
 
         <!-- Slider Image -->
         <div class="mb-3 col-lg-6">
-            <label for="image" class="form-label">Slider Image<span class="text-danger">* Width 1349 Height 550</span></label>
+            <label for="image" class="form-label">Slider Image<span class="text-danger">* Width 1349 Height 550 Size Should be between 10kb to 2mb</span></label>
             <input class="form-control" id="image" type="file" name="image" required>
         </div>
 

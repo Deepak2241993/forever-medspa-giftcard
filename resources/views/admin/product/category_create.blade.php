@@ -73,7 +73,7 @@
                     @if(isset($data))
                         <div class="mb-3 col-lg-6 mt-4 self">
                             <label for="image" class="form-label">Deal Image <span
-                                class="text-danger">* 670 X 250 Px</span></label>
+                                class="text-danger">* 670 X 250 Px Size Should be between 10kb to 2mb</span></label>
                             @isset($data['cat_image'])
                                 <div id="image_class">
                                     <img src="{{ $data['cat_image'] }}"
