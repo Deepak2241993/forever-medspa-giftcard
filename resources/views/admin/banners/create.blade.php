@@ -133,22 +133,33 @@
     }
 
     function seturl(data) {
-        // Define the base URLs (without the slug)  
-        var productBaseUrl = @json(route('services', ''));
-        var productDetailsBaseUrl = @json(route('productdetails', ''));
+    // Define the base URLs with placeholders for dynamic segments
+    var unitBaseUrl = @json(route('unit-details', ['product_slug' => 'placeholder', 'unitslug' => 'placeholder']));
+    var productDetailsBaseUrl = @json(route('productdetails', ['slug' => 'placeholder']));
 
-        if (data === 'unit') {
-            var deals = $('#deals').val();  // Get the value of the deals field
-            var updatedUrl = productBaseUrl + '/' + deals;  // Append the deal slug
+    if (data === 'unit') {
+        var deals = $('#deals').val();  // Get the value of the deals field
+        if (deals) {
+            // Replace placeholders with actual values
+            var updatedUrl = unitBaseUrl.replace('placeholder', 'banners').replace('placeholder', deals);
             $('#url').val(updatedUrl);  // Set the updated URL in the input field
-        }
-
-        if (data === 'services') {
-            var services = $('#services').val();  // Get the value of the services field
-            var updatedUrl = productDetailsBaseUrl + '/' + services;  // Append the service slug
-            $('#url').val(updatedUrl);  // Set the updated URL in the input field
+        } else {
+            alert('Please select a deal!');
         }
     }
+
+    if (data === 'services') {
+        var services = $('#services').val();  // Get the value of the services field
+        if (services) {
+            // Replace placeholder with actual value
+            var updatedUrl = productDetailsBaseUrl.replace('placeholder', services);
+            $('#url').val(updatedUrl);  // Set the updated URL in the input field
+        } else {
+            alert('Please select a service!');
+        }
+    }
+}
+
 </script>
 
 @endpush

@@ -187,7 +187,7 @@
                                         onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                     <div class="carousel-caption d-none d-md-block">
                                         <a href="{{ $value->url }}" target="_blank" class="btn btn-primary"
-                                            style="width:120px;height:35px;font-size:15px">Explore More</a>
+                                            style="width:120px;height:35px;font-size:15px">Buy Now</a>
                                     </div>
                                 </div>
                             @endif

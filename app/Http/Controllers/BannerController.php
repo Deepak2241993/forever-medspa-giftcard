@@ -56,8 +56,6 @@ class BannerController extends Controller
     ]);
 
     $data = $request->all();
- 
-   
 
     if ($request->hasFile('image')) {
         $image = $request->file('image');

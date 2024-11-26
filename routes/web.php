@@ -94,8 +94,9 @@ Route::resource('/terms', TermController::class);
 Route::get('product-page/{token?}/{slug}', 'ProductController@productpage')->name('product_list');
 Route::get('productdetails/{slug}','ProductController@productdetails')->name('productdetails');
 // Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
+
 Route::get('services','ServiceUnitController@ServicePage')->name('services');
-Route::get('services/{slug}','ServiceUnitController@UnitPageShow')->name('serviceunit');
+Route::get('services/{slug}','ServiceUnitController@UnitPageShow')->name('serviceunit');// This is  For Service Frontend and Backend Banner Service
 Route::get('services/{product_slug}/{unitslug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
 // Route::get('services/{slug}','ProductController@productpage')->name('product');
 Route::get('service/{slug}','ProductController@productdetails')->name('productdetails');
