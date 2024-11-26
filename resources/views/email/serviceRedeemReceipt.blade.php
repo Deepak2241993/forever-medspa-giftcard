@@ -1,13 +1,23 @@
 @php
-    $servicePurchases = App\Models\ServiceOrder::select('service_orders.*', 'products.product_name')
-        ->join('products', 'service_orders.service_id', '=', 'products.id')
-        ->where('service_orders.order_id', $data->order_id)
-        ->get();
 
-    $serviceRedeem = App\Models\Service_redeem::select('service_redeems.*', 'products.product_name')
-        ->join('products', 'service_redeems.service_id', '=', 'products.id')
-        ->where('service_redeems.order_id', $data->order_id)
-        ->get();
+$servicePurchases = App\Models\ServiceOrder::select(
+                'service_orders.*', 
+                'products.product_name', 
+                'service_units.product_name as unit_name'
+            )
+            ->join('products', 'service_orders.service_id', '=', 'products.id')
+            ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')
+            ->where('service_orders.order_id', $data->order_id)
+            ->get();
+
+$serviceRedeem = App\Models\Service_redeem::select(
+                'service_redeems.*',
+                'products.product_name',
+                'service_units.product_name as unit_name')
+                ->join('products', 'service_redeems.product_id', '=', 'products.id')
+                ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
+                ->where('service_redeems.order_id', $data->order_id)
+                ->get();
 
     // Calculate total amount
     $totalAmount = $servicePurchases->sum('number_of_session') - $serviceRedeem->sum('number_of_session_use');
@@ -132,7 +142,14 @@
                                                                                                 {{ $item->order_id }}
                                                                                             </td>
                                                                                             <td style="padding: 10px;">
+                                                                                                {{--  For Product Name --}}
+                                                                                                @if($item->service_type == 'product')
                                                                                                 {{ $item->product_name }}
+                                                                                                @endif
+                                                                                                {{--  For Unit Name --}}
+                                                                                                @if($item->service_type == 'unit')
+                                                                                                {{ $item->unit_name }}
+                                                                                                @endif
                                                                                             </td>
                                                                                             <td style="padding: 10px;">
                                                                                                 Buy</td>
@@ -145,10 +162,10 @@
                                                                                     @endforeach
 
                                                                                     <!-- Loop through each redemption to show debits -->
+                                                                                   
                                                                                     @foreach ($serviceRedeem as $value)
                                                                                         @php
-                                                                                            $balance -=
-                                                                                                $value->number_of_session_use; // Subtract from balance for each redemption
+                                                                                            $balance -= $value->number_of_session_use; // Subtract from balance for each redemption
                                                                                         @endphp
                                                                                         <tr>
                                                                                             <td style="padding: 10px;">
@@ -158,7 +175,15 @@
                                                                                                 {{ $value->transaction_id }}
                                                                                             </td>
                                                                                             <td style="padding: 10px;">
+                                                                                                @if($value->service_type == 'product')
+                                                                                             
                                                                                                 {{ $value->product_name }}
+                                                                                                @endif
+                                                                                                {{--  For Unit Name --}}
+                                                                                                @if($value->service_type == 'unit')
+                                                                                                
+                                                                                                {{ $value->unit_name }}
+                                                                                                @endif
                                                                                             </td>
                                                                                             <td style="padding: 10px;">
                                                                                                 {{ $value->comments ?: '' }}

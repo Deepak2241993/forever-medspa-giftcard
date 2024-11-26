@@ -371,6 +371,7 @@
                         <td>
                             <input type="hidden" name="refund_amount" value="${element.refund_amount > 0 ? element.refund_amount : 0}">
                             <input type="hidden" name="service_id" value="${element.service_id}">
+                         
                             <input type="hidden" name="order_id" value="${element.order_id}">
                             <input  onkeyup="valueValidate(this, ${element.remaining_sessions})" 
                                    onchange="valueValidate(this, ${element.remaining_sessions})" 
@@ -555,6 +556,8 @@
                         <td>
                             <input type="hidden" name="service_id[]" value="${element.service_id}">
                             <input type="hidden" name="order_id[]" value="${element.order_id}">
+                            <input type="hidden" name="service_type[]" value="${element.service_type}">
+                            <input type="hidden" name="service_order_id[]" value="${element.id}">
                             <input onkeyup="valueValidate(this, ${element.remaining_sessions})" 
                                    onchange="valueValidate(this, ${element.remaining_sessions})" 
                                    type="number" 
@@ -615,6 +618,8 @@
                         _token: '{{ csrf_token() }}', // Add CSRF token
                         product_id: currentRow.find('input[name="service_id[]"]').val(),
                         order_id: currentRow.find('input[name="order_id[]"]').val(),
+                        service_type: currentRow.find('input[name="service_type[]"]').val(),
+                        service_order_id: currentRow.find('input[name="service_order_id[]"]').val(),
                         number_of_session_use: number_of_session_use,
                         comments: currentRow.find('textarea[name="comments[]"]').val()
                     };
