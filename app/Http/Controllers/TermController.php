@@ -43,7 +43,14 @@ class TermController extends Controller
     public function store(Request $request,Term $terms)
     {
         $data =$request->all();
-        $data['service_id'] = implode('|', $request->service_id);
+        if($request->service_id!='')
+        {
+            $data['service_id'] = implode('|', $request->service_id);
+        }
+        else{
+            $data['service_id'] = null;
+        }
+       
         if($request->unit_id!='')
         {
             $data['unit_id']=implode('|',$request->unit_id);
@@ -93,7 +100,14 @@ class TermController extends Controller
     public function update(Request $request, Term $term)
     {
         $data =$request->all();
-        $data['service_id'] = implode('|', $request->service_id);
+        if($request->service_id!='')
+        {
+            $data['service_id'] = implode('|', $request->service_id);
+        }
+        else{
+            $data['service_id'] = null;
+        }
+       
         if($request->unit_id!='')
         {
             $data['unit_id']=implode('|',$request->unit_id);

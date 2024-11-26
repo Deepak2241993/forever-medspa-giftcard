@@ -134,7 +134,7 @@
 
     
     
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('input[name="service_id[]"]');
             const submitBtn = document.getElementById('submitBtn');
@@ -151,5 +151,5 @@
             // Initial check on page load
             toggleSubmitButton();
         });
-    </script>
+    </script> --}}
 @endpush

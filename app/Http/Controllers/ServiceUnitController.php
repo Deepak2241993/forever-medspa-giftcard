@@ -205,7 +205,7 @@ class ServiceUnitController extends Controller
             // Search for a term where `unit_id` includes the product's ID
             $term = DB::table('terms')
             ->where('status', 1)
-            ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$unit->id])
+            ->whereRaw("FIND_IN_SET(?, REPLACE(unit_id, '|', ','))", [$unit->id])
             ->first();
 
             // Display the description
