@@ -119,7 +119,6 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
       {
           // Validate the request data
           $validatedData = $request->validate([
-              'service_id' => 'required|integer',
               'order_id' => 'required|string|max:255',
               'number_of_session_use' => 'required|integer|min:1',
               'comments' => 'nullable|string|max:255',

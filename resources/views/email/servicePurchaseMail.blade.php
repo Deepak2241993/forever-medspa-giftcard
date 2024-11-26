@@ -270,7 +270,6 @@ cellpadding="0" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th style="width: 25%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Service Name</th>
-                                            <th style="width: 35%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Description</th>
                                             <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Price</th>
                                             <th style="width: 15%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Qty</th>
                                             <th style="width: 25%; padding: 10px; font-weight: 600; color: #333; background-color: #f0f0f0; border: 1px solid #ccc; text-align: right;">Total</th>
@@ -294,7 +293,6 @@ cellpadding="0" cellspacing="0">
                                             @endphp
                                             <tr>
                                                 <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $ServiceData->product_name }}</td>
-                                                <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ Str::limit($ServiceData->short_description, 50, '...') }}</td>
                                                 <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">${{ $ServiceData->discounted_amount ? $ServiceData->discounted_amount : $ServiceData->amount }}</td>
                                                 <td style="width: 15%; padding: 10px; color: #333; border: 1px solid #ccc;">{{ $value->qty }}</td>
                                                 <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc; text-align: right;">${{ $ServiceData->discounted_amount ? $value->qty*$ServiceData->discounted_amount : $value->qty*$ServiceData->amount }}</td>
@@ -365,35 +363,43 @@ cellpadding="0" cellspacing="0">
                                 </thead>
                                 <tbody>
                                     @php
+                                    // Fetch all service orders related to the mail data
                                     $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
                                     $descriptions = [];
                                 @endphp
                                 
-                                @foreach ($orderdata as $key => $value)
+                                @foreach ($orderdata as $value)
                                     @php
-                                    if($value->service_type=='product')
-                                    {
-                                        $ServiceData = \App\Models\Product::find($value->service_id);
-                                    }
-                                    if($value->service_type=='unit')
-                                    {
-                                        $ServiceData = \App\Models\ServiceUnit::find($value->service_id);
-                                    }
-                                       
+                                        $ServiceData = null;
+                                        $description = 'No description available';
                                 
-                                        // Fetch the related terms description
-                                        $term = \DB::table('terms')
-                                            ->where('status', 1)
-                                            ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$value->service_id])
-                                            ->first();
+                                        if ($value->service_type == 'product') {
+                                            // Fetch product data
+                                            $ServiceData = \App\Models\Product::find($value->service_id);
                                 
-                                        $description = $term->description ?? 'No description available';
+                                            // Fetch the related terms description for product
+                                            $term = \DB::table('terms')
+                                                ->where('status', 1)
+                                                ->whereRaw("FIND_IN_SET(?, REPLACE(service_id, '|', ','))", [$value->service_id])
+                                                ->first();
                                 
-                                        // Group by description
-                                        if (isset($descriptions[$description])) {
+                                            $description = $term->description ?? $description;
+                                        } elseif ($value->service_type == 'unit') {
+                                            // Fetch service unit data
+                                            $ServiceData = \App\Models\ServiceUnit::find($value->service_id);
+                                
+                                            // Fetch the related terms description for service unit
+                                            $term = \DB::table('terms')
+                                                ->where('status', 1)
+                                                ->whereRaw("FIND_IN_SET(?, REPLACE(unit_id, '|', ','))", [$value->service_id])
+                                                ->first();
+                                
+                                            $description = $term->description ?? $description;
+                                        }
+                                
+                                        // Group service names by description
+                                        if ($ServiceData && isset($ServiceData->product_name)) {
                                             $descriptions[$description][] = $ServiceData->product_name;
-                                        } else {
-                                            $descriptions[$description] = [$ServiceData->product_name];
                                         }
                                     @endphp
                                 @endforeach
@@ -408,6 +414,7 @@ cellpadding="0" cellspacing="0">
                                         </td>
                                     </tr>
                                 @endforeach
+                                
                                 
                                 </tbody>
                             </table>

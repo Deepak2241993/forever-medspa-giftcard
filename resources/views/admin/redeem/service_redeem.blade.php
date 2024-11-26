@@ -309,7 +309,7 @@
             }
 
 
-            // Do Cancel Service
+// Do Cancel Service ******************************************
             function CancelView(id, order_id) {
                 $('.cancel').attr('id', 'cancel_view_' + id);
                 $('#cancel_view_' + id).modal('show');
@@ -487,9 +487,16 @@
                     }
                 });
             }
-            //  Order Cancel Code End
 
-            //  For Order View Code Start
+
+
+
+
+
+//  Order Cancel Code End ***********************************************************************
+
+
+//  For Order View Code Start ********************************************************************
             function OrderView(id, order_id) {
     $('.deepak').attr('id', 'staticBackdrop_' + id);
     $('#staticBackdrop_' + id).modal('show');
@@ -606,7 +613,7 @@
 
                     var rowData = {
                         _token: '{{ csrf_token() }}', // Add CSRF token
-                        service_id: currentRow.find('input[name="service_id[]"]').val(),
+                        product_id: currentRow.find('input[name="service_id[]"]').val(),
                         order_id: currentRow.find('input[name="order_id[]"]').val(),
                         number_of_session_use: number_of_session_use,
                         comments: currentRow.find('textarea[name="comments[]"]').val()
