@@ -18,14 +18,10 @@
 </section>
 <section class="content-header">
     <!--begin::App Content Header-->
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    @if ($errors->has('image'))
+    <div class="alert alert-danger">
+        {{ $errors->first('image') }}
+    </div>
     @endif
     <!--end::App Content Header-->
     <!--begin::App Content-->

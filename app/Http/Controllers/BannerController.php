@@ -71,7 +71,7 @@ class BannerController extends Controller
         // Check if the file meets size and dimension requirements
         if ($fileSize >= $minSize && $fileSize <= $maxSize && $imageSize[0] <= 1349 && $imageSize[1] <= 550) {
             $destinationPath = '/sliders/';
-            $filename = $image->getClientOriginalName();
+            $filename = time() . '_' . $image->getClientOriginalName(); // Adding timestamp to avoid filename conflicts
     
             // Log image details before moving
             Log::info('Uploading image', [
@@ -88,8 +88,7 @@ class BannerController extends Controller
             // Log successful image upload
             Log::info('Image successfully uploaded', ['image_url' => $data['image']]);
         } else {
-            // Log error for failing conditions
-            $errorMessage = 'Image upload failed due to the following reasons: ';
+            // Prepare error messages
             $errors = [];
             if ($fileSize < $minSize) {
                 $errors[] = 'Image size must be at least 10 KB.';
@@ -101,13 +100,20 @@ class BannerController extends Controller
                 $errors[] = 'Image dimensions should not exceed 1349x550 pixels.';
             }
     
-            Log::error($errorMessage, $errors);
+            Log::error('Image upload failed', ['errors' => $errors]);
     
-            return redirect()->route('banner.index')->with([
+            // Redirect back to the form with error messages
+            return redirect()->back()->withErrors([
                 'image' => implode(' ', $errors)
-            ]);
+            ])->withInput();
         }
+    } else {
+        // Handle case where no file is uploaded
+        return redirect()->back()->withErrors([
+            'image' => 'No image file was uploaded.'
+        ])->withInput();
     }
+    
     
     // dd($data);
     $result = $banner->create($data);
