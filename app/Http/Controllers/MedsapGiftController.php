@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\MedsapGift;
-use App\Models\GiftCategory;
 use App\Models\EmailTemplate;
 use Illuminate\Http\Request;
 
@@ -17,8 +16,7 @@ class MedsapGiftController extends Controller
     public function index(Request $request)
     {
         // $data=MedsapGift::OrderBy('id','DESC')->get();
-       $data = MedsapGift::select('medsap_gifts.*', 'email_templates.title as template_title', 'gift_categories.name as category_name')
-        ->leftJoin('gift_categories', 'medsap_gifts.category_id', '=', 'gift_categories.id')
+       $data = MedsapGift::select('medsap_gifts.*', 'email_templates.title as template_title')
         ->leftJoin('email_templates', 'medsap_gifts.template_id', '=', 'email_templates.id')
         ->orderBy('id', 'DESC') // Use 'orderBy' instead of 'OrderBy'
         ->get();
@@ -30,11 +28,11 @@ class MedsapGiftController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(GiftCategory $category,EmailTemplate $email_template)
+    public function create(EmailTemplate $email_template)
     {
-        $gatcategory=$category->where('status',1)->get();
+
         $template=$email_template->where('status',1)->get();
-        return view('medsapgift.create',compact('gatcategory','template'));
+        return view('medsapgift.create',compact('template'));
     }
 
     /**
@@ -68,7 +66,7 @@ class MedsapGiftController extends Controller
      * @param  \App\Models\MedsapGift  $medsapGift
      * @return \Illuminate\Http\Response
      */
-    public function show(MedsapGift $medsapGift)
+    public function show()
     {
         //
     }
@@ -79,12 +77,11 @@ class MedsapGiftController extends Controller
      * @param  \App\Models\MedsapGift  $medsapGift
      * @return \Illuminate\Http\Response
      */
-    public function edit(MedsapGift $medsapGift,GiftCategory $category,EmailTemplate $email_template,$medspa_gift)
+    public function edit(MedsapGift $medsapGift,EmailTemplate $email_template,$medspa_gift)
     {
        $medsapGift= $medsapGift->find($medspa_gift);
-        $gatcategory=$category->where('status',1)->get();
         $template=$email_template->where('status',1)->get();
-        return view('medsapgift.create',compact('medsapGift','gatcategory','template'));
+        return view('medsapgift.create',compact('medsapGift','template'));
     }
 
     /**
