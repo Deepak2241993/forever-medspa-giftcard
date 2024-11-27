@@ -285,13 +285,12 @@ class GiftController extends Controller
 
 
     public function christmas_gift_card(){
-        $gift=MedsapGift::where('status',1)->orderBy('id','DESC')->get();
          $coupon_code = GiftCoupon::select('gift_coupons.*', 'gift_categories.name as category_name')
         ->leftJoin('gift_categories', 'gift_categories.id', '=', 'gift_coupons.category_id')
         ->orderBy('id', 'DESC')->where('gift_coupons.status',1) // Use 'orderBy' instead of 'OrderBy'
         ->get();
         $occassion = EmailTemplate::where('status',1)->get();
-        return view('pages_for_occasion.christmas',compact('gift','coupon_code','occassion'));
+        return view('pages_for_occasion.christmas',compact('coupon_code','occassion'));
     } 
 
 
