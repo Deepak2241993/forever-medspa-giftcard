@@ -216,11 +216,11 @@
                     <div class="row gy-50">
                         <div class="col-xxl-8 col-lg-8">
                             <h2>Black Friday Deals 2024</h2>
-                            
+                            <img src="{{url('/images/balac_friday.jpg')}}" alt="" class="image">
                             <div class="postbox__wrapper">
                                 @if (isset($data))
                                     @foreach ($data as $value)
-                                        <article class="postbox__item mb-50 transition-3">
+                                        <article class="postbox__item mb-30 transition-3">
                                             {{-- <div class="postbox__thumb w-img mb-30">
                                                 <a href="@if(!empty($value['unit_id'])){{route('serviceunit',$value->product_slug)}}@else{{route('productdetails',['slug' => $value['product_slug']])}} @endif">
                                                     <img src="{{ $value['product_image'] }}"
@@ -293,6 +293,11 @@
 
                                                     </div>
 
+                                                </div>
+                                                <div style="
+                                                    margin-top: 50px !important;
+                                                ">
+                                                <hr style=" border-top: 2px dashed red; margin-top:10px">
                                                 </div>
                                         </article>
                                     @endforeach
