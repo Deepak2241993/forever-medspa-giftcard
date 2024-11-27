@@ -285,7 +285,7 @@ class GiftController extends Controller
 
 
     public function christmas_gift_card(){
-         $coupon_code = GiftCoupon::select('gift_coupons.*', 'gift_categories.name as category_name')
+         $coupon_code = GiftCoupon::select('gift_coupons.*')
         ->orderBy('id', 'DESC')->where('gift_coupons.status',1)
         ->get();
         $occassion = EmailTemplate::where('status',1)->get();
