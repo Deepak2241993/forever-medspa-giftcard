@@ -219,8 +219,9 @@
                             <img src="{{url('/images/balac_friday.jpg')}}" alt="" class="image" width="730">
                             <div class="postbox__wrapper">
                                 @if (isset($data))
+                                <article class="postbox__item mb-30 transition-3">
                                     @foreach ($data as $value)
-                                        <article class="postbox__item mb-30 transition-3">
+                                    <div class="rc__post">
                                             {{-- <div class="postbox__thumb w-img mb-30">
                                                 <a href="@if(!empty($value['unit_id'])){{route('serviceunit',$value->product_slug)}}@else{{route('productdetails',['slug' => $value['product_slug']])}} @endif">
                                                     <img src="{{ $value['product_image'] }}"
@@ -299,6 +300,8 @@
                                                 ">
                                                 <hr style=" border-top: 2px dashed red; margin-top:10px">
                                                 </div>
+                                            </div>
+                                        </div>
                                         </article>
                                     @endforeach
                                 @else
@@ -389,37 +392,25 @@
             <!-- Newsletter area start -->
             <section class="newsletter-area p-relative">
                 <div class="newsletter-overlay theme-bg-3"></div>
+                
                 <div class="container"
-                    style="background-image: url('{{ url('/uploads/FOREVER-MEDSPA/giftcard.jpeg') }}'); 
+                    style="background-image: url('{{ url('/uploads/FOREVER-MEDSPA/giftcards.jpg') }}'); 
                            background-size: cover; 
                            background-position: center; 
                            background-repeat: no-repeat; 
                            width: 100%; 
                            max-width: 1110px; 
                            height: auto; 
-                           aspect-ratio: 1110 / 260.41;">
+                           aspect-ratio: 1110 / 260.41;" onclick="location.href='{{ url('/') }}';">
 
                     <div class="newsletter-grid p-relative">
                         <div class="row gy-4 align-items-center">
-                            <div class="col-xxl-6 col-xl-6 col-lg-6">
+                            <div class="col-xxl-12 col-xl-12 col-lg-12">
                                 <div class="newsletter-content">
                                     <!-- Removed the <h3> tag -->
                                 </div>
                             </div>
-                            <div class="col-xxl-6 col-xl-6 col-lg-6">
-                                <div class="newsletter-form">
-                                    <div class="newsletter-input p-relative text-center">
-                                        <button class="fill-btn" type="submit"
-                                            style="padding: 12px 24px; font-size: 16px; max-width: 200px; width: 100%;"
-                                            onclick="location.href='{{ url('/') }}';">
-                                            <span class="fill-btn-inner">
-                                                Buy Now
-                                                <span class="fill-btn-hover">Buy Now</span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
