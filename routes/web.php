@@ -39,7 +39,7 @@ Route::get('/giftcards-redeem-view', 'GiftController@history_view')->name('giftc
 Route::post('/giftcards-redeem', 'GiftController@redeem_store')->name('giftcards-redeem');
 Route::resource('/service-order-history', TransactionHistoryController::class);
 Route::resource('/coupon', GiftCouponController::class);
-Route::resource('/gift-category', GiftCategoryController::class);
+// Route::resource('/gift-category', GiftCategoryController::class);
 Route::resource('/medspa-gift', MedsapGiftController::class);
 Route::resource('/email-template', EmailTemplateController::class);
 Route::post('/ckeditor-image-post', 'CkeditorController@uploadImage')->name('ckeditor-image-upload');

@@ -29,8 +29,8 @@ class TermController extends Controller
      */
     public function create()
     {
-        $services = Product:: where('status',1)->where('user_token','FOREVER-MEDSPA')->where('unit_id',null)->get();
-        $units = ServiceUnit:: where('status',1)->where('user_token','FOREVER-MEDSPA')->get();
+        $services = Product:: where('status',1)->where('user_token','FOREVER-MEDSPA')->where('product_is_deleted',0)->where('unit_id',null)->get();
+        $units = ServiceUnit:: where('status',1)->where('user_token','FOREVER-MEDSPA')->where('product_is_deleted',0)->get();
         return view('admin.terms.terms_create',compact('services','units'));
     }
 
@@ -83,8 +83,9 @@ class TermController extends Controller
      */
     public function edit(Term $term)
     {
-        $services = Product:: where('status',1)->where('user_token','FOREVER-MEDSPA')->where('unit_id',null)->get();
-        $units = ServiceUnit:: where('status',1)->where('user_token','FOREVER-MEDSPA')->get();
+        $services = Product:: where('status',1)->where('user_token','FOREVER-MEDSPA')->where('product_is_deleted',0)->where('unit_id',null)->get();
+        $units = ServiceUnit:: where('status',1)->where('user_token','FOREVER-MEDSPA')->where('product_is_deleted',0)->get();
+
         $term['service_id']=explode('|',$term['service_id']);
         $term['unit_id']=explode('|',$term['unit_id']);
         return view('admin.terms.terms_create',compact('services','term','units'));

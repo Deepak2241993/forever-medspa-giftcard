@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\GiftCoupon;
-use App\Models\MedsapGift;
-use App\Models\GiftCategory;
 use Illuminate\Http\Request;
 
 
@@ -17,8 +15,7 @@ class GiftCouponController extends Controller
      */
     public function index(GiftCoupon $coupon)
     {
-        $data = GiftCoupon::select('gift_coupons.*', 'gift_categories.name as category_name')
-        ->leftJoin('gift_categories', 'gift_categories.id', '=', 'gift_coupons.category_id')
+        $data = GiftCoupon::select('gift_coupons.*')
         ->orderBy('id', 'DESC') // Use 'orderBy' instead of 'OrderBy'
         ->get();
         return view('coupon.index',compact('data'));
@@ -29,10 +26,9 @@ class GiftCouponController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(GiftCategory $category)
+    public function create()
     {
-        $gatcategory=$category->where('status',1)->get();
-        return view('coupon.create',compact('gatcategory'));
+        return view('coupon.create');
     }
 
     /**
@@ -65,11 +61,10 @@ class GiftCouponController extends Controller
      * @param  \App\Models\GiftCoupon  $giftCoupon
      * @return \Illuminate\Http\Response
      */
-    public function edit(GiftCoupon $giftCoupon,GiftCategory $category,$coupon)
+    public function edit(GiftCoupon $giftCoupon,$coupon)
     {
         $giftCoupon=$giftCoupon->find($coupon);
-        $gatcategory=$category->where('status',1)->get();
-        return view('coupon.create',compact('giftCoupon','gatcategory'));
+        return view('coupon.create',compact('giftCoupon'));
     }
 
     /**

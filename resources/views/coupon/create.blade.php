@@ -48,20 +48,7 @@
                                 value="{{ isset($giftCoupon) ? $giftCoupon->title : '' }}" placeholder="Coupon Title"
                                 maxlength="20" id="title" required>
                         </div>
-                        @if (count($gatcategory) > 0)
-                            <div class="mb-3 col-lg-6 self">
-                                <label for="title" class="form-label">Select Category<span
-                                        class="text-danger">*</span></label>
-                                <select class="form-control" name="category_id" required>
-                                    <option value="">Select Category</option>
-                                    @foreach ($gatcategory as $key => $value)
-                                        <option
-                                            value="{{ $value->id }}"{{ isset($giftCoupon) && $giftCoupon->category_id == $value->id ? 'selected' : '' }}>
-                                            {{ $value->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
+            
                         <div class="mb-3 col-lg-6 self">
                             <label for="coupon_code" class="form-label">Coupon Code<span
                                     class="text-danger">*</span></label>
