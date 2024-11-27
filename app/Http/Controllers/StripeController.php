@@ -220,7 +220,7 @@ class StripeController extends Controller
         'lname' => 'required|string|max:255',
         'city' => 'required|string|max:255',
         'country' => 'required|string|max:255',
-        'zip_code' => 'required|digits:6',
+        'zip_code' => 'required|digits:5',
         'email' => 'required|email|max:255',
         'phone' => 'required|digits_between:7,10',
         'address' => 'required|string|max:255',

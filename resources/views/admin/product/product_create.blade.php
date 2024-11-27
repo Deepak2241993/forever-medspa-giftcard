@@ -160,7 +160,7 @@
                     </label>
                     <input class="form-control float_class" type="number" min="0" name="amount"
                         value="{{ isset($data) ? $data['amount'] : '' }}"
-                        placeholder="Service Original Price" required step="0.01">
+                        placeholder="Service Original Price"  step="0.01">
                     <input class="form-control" type="hidden" min="0" name="id"
                         value="{{ isset($data) ? $data['id'] : '' }}">
                 </div>
@@ -168,7 +168,7 @@
                     <label for="discounted_amount" class="form-label">Service Price<span class="text-danger">*</span></label>
                     <input class="form-control float_class" type="number" min="0" name="discounted_amount"
                         value="{{ isset($data) ? $data['discounted_amount'] : '' }}"
-                        placeholder="Service Price" required step="0.01">
+                        placeholder="Service Price"  step="0.01">
                 </div>
                 <div class="mb-3 col-lg-6 self UnitHideShow">
                     <label for="session_number" class="form-label">Number of session<span

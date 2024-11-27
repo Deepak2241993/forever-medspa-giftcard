@@ -220,14 +220,14 @@
                                 @if (isset($data))
                                     @foreach ($data as $value)
                                         <article class="postbox__item mb-50 transition-3">
-                                            <div class="postbox__thumb w-img mb-30">
+                                            {{-- <div class="postbox__thumb w-img mb-30">
                                                 <a href="@if(!empty($value['unit_id'])){{route('serviceunit',$value->product_slug)}}@else{{route('productdetails',['slug' => $value['product_slug']])}} @endif">
                                                     <img src="{{ $value['product_image'] }}"
                                                         alt="{{ $value['product_name'] }}"
                                                         onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';"
                                                         style="height:250px">
                                                 </a>
-                                            </div>
+                                            </div> --}}
                                             <div class="postbox__content">
 
                                                 <h3 class="postbox__title">
@@ -314,7 +314,7 @@
                         </div>
                         <div class="col-xxl-4 col-lg-4">
                             <div class="sidebar__wrapper bd-sticky pl-30">
-                                <div class="sidebar__widget mb-20">
+                                {{-- <div class="sidebar__widget mb-20">
                                     <div class="sidebar__widget-content">
                                         <div class="sidebar__search">
                                             <form autocomplete="off" action="{{ route('ServicesSearch') }}" method="post">
@@ -338,7 +338,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 @if (count($popular_service) > 0)
                                     <div class="sidebar__widget mb-45">
