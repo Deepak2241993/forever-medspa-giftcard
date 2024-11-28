@@ -113,7 +113,7 @@
                         {{ isset($data) ? '' : 'required' }}>
                 </div>
 
-                <div class="mb-3 col-lg-6 self mt-2">
+                {{-- <div class="mb-3 col-lg-6 self mt-2">
                     <label for="amount" class="form-label">Unit Original Price<span class="text-danger">*</span>
                     </label>
                     <input class="form-control" type="number" min="0" name="amount"
@@ -121,7 +121,7 @@
                         placeholder="Original Price" required step="0.01">
                     <input class="form-control" type="hidden" min="0" name="id"
                         value="{{ isset($data) ? $data['id'] : '' }}">
-                </div>
+                </div> --}}
                 <div class="mb-3 col-lg-6 self mt-2">
                     <label for="discounted_amount" class="form-label">Unit Discounted Price<span class="text-danger">*</span></label>
                     <input 

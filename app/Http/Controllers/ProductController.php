@@ -288,10 +288,13 @@ if ($request->hasFile('product_image')) {
 }
         
     //  Discount Calcultion
+    if($request->discounted_amount !=null && $request->amount )
+    {
     $price = $request->discounted_amount;
     $original_price = $request->amount;
     $discount_percentage = round((($original_price - $price) / $original_price) * 100);
     $data['discount_rate'] = $discount_percentage;
+    }
     //  Discount Code End
         $data = json_encode($data);
         $data = $this->postAPI('product-update/'.$request->id,$data);

@@ -81,7 +81,7 @@
                         {{-- <span class="old-price">${{$data->amount}}</span> --}}
                         <span class="new-price">${{$data->discounted_amount}}</span>
                         @else
-                        <span class="new-price">${{$data->amount}}</span>
+                        {{-- <span class="new-price">${{$data->amount}}</span> --}}
                         @endif
 
                      </div>
