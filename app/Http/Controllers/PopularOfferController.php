@@ -430,7 +430,7 @@ public function updateCart(Request $request)
                     $order_data = [
                         'order_id' => $orderId,
                         'service_id' => $item['product_id'],
-                        'status' => 0,
+                        'status' => 1,
                         'number_of_session' => $cart_data->session_number,
                         'user_token' => 'FOREVER-MEDSPA',
                         'actual_amount' => $cart_data->amount,
