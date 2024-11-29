@@ -77,8 +77,8 @@
                                         <td>{{ $value->status ==1 ? 'Active' : 'Inactive' }}
                                         </td>
                                         <td>
-                                            <!-- <a href="{{ route('banner.edit', $value->id) }}"
-                                                class="btn btn-primary">Edit</a> -->
+                                            <a href="{{ route('banner.edit', $value->id) }}"
+                                                class="btn btn-primary">Edit</a>
                                             <form
                                                 action="{{ route('banner.destroy', $value->id) }}"
                                                 method="POST">
