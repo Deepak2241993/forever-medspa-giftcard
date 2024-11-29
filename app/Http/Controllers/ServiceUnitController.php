@@ -118,24 +118,29 @@ class ServiceUnitController extends Controller
 
     // Handle product images if any are uploaded
     $product_image = [];
-
     if ($request->hasFile('product_image')) {
         $folder = str_replace(" ", "_", $token);
-        $destinationPath = '/uploads/' . $folder . "/";
-    
+        $destinationPath = public_path('/uploads/' . $folder);
+     
         foreach ($request->file('product_image') as $image) {
-            // Move the image to the destination path
             $filename = $image->getClientOriginalName();
-            $image->move(public_path($destinationPath), $filename);
-    
-            // Store the image URL
-            $product_image[] = url('/') . $destinationPath . $filename;
+
+        // Debugging: Check if the file is being moved
+        try {
+            $image->move($destinationPath, $filename);
+            $product_image[] = url('/') . '/uploads/' . $folder . '/' . $filename;
+        } catch (\Exception $e) {
+            // Log the error if file move fails
+            \Log::error("Image upload failed: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Image upload failed. Please try again.');
         }
-    
-        // Combine the image URLs into a single string
-        $finalImageUrl = implode('|', $product_image);
-        $data['product_image'] = $finalImageUrl;
     }
+
+    $finalImageUrl = implode('|', $product_image);
+    $data['product_image'] = $finalImageUrl;
+}
+
+
     
     // dd($updateData);
     // Update the service unit with the prepared data

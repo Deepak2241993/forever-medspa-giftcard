@@ -295,11 +295,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div style="
-                                                    margin-top: 50px !important;
-                                                ">
-                                                <hr style=" border-top: 2px dashed red; margin-top:10px">
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                         </article>
