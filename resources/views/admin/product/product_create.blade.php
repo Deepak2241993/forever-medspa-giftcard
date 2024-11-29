@@ -175,7 +175,7 @@
                             class="text-danger">*</span></label>
                     <input class="form-control" type="number" min="1" name="session_number"
                         value="{{ isset($data) ? $data['session_number'] : '1' }}"
-                        placeholder="Number Of Session" required id="session_number">
+                        placeholder="Number Of Session" id="session_number">
                 </div>
                 <div class="mb-3 col-lg-6">
                     <label for="status" class="form-label">Status</label>

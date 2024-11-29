@@ -262,6 +262,7 @@ if ($request->hasFile('product_image')) {
     $original_price = $request->amount;
     $discount_percentage = round((($original_price - $price) / $original_price) * 100);
     $data['discount_rate'] = $discount_percentage;
+    $data['session_number'] = $request->session_number;
     }
     //  Discount Code End
         $data = json_encode($data);

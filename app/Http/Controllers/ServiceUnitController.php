@@ -104,10 +104,6 @@ class ServiceUnitController extends Controller
      */
     public function update(Request $request, ServiceUnit $serviceUnit)
 {
-    // Check if the service unit exists
-    if (!$serviceUnit) {
-        return redirect()->back()->with('error', 'Service unit not found.');
-    }
 
     // Get the authenticated user's token
     $token = Auth::user()->user_token;
@@ -120,31 +116,25 @@ class ServiceUnitController extends Controller
     $product_image = [];
     if ($request->hasFile('product_image')) {
         $folder = str_replace(" ", "_", $token);
-        $destinationPath = public_path('/uploads/' . $folder);
-     
+        $destinationPath = '/uploads/' . $folder . "/";
+
         foreach ($request->file('product_image') as $image) {
+            // Move the image to the destination path
             $filename = $image->getClientOriginalName();
+            $image->move(public_path($destinationPath), $filename);
 
-        // Debugging: Check if the file is being moved
-        try {
-            $image->move($destinationPath, $filename);
-            $product_image[] = url('/') . '/uploads/' . $folder . '/' . $filename;
-        } catch (\Exception $e) {
-            // Log the error if file move fails
-            \Log::error("Image upload failed: " . $e->getMessage());
-            return redirect()->back()->with('error', 'Image upload failed. Please try again.');
+            // Store the image URL
+            array_push($product_image,url('/') . $destinationPath . $filename);
         }
+        // Combine the image URLs into a single string
+        $finalImageUrl = implode('|', $product_image);
+        $data['product_image'] = $finalImageUrl;
     }
-
-    $finalImageUrl = implode('|', $product_image);
-    $data['product_image'] = $finalImageUrl;
-}
-
-
+    // dd($product_image);
     
-    // dd($updateData);
     // Update the service unit with the prepared data
     $data = ServiceUnit::find($request->id);
+    // dd($data);
     $data->update($updateData);
 
     // Redirect back to the admin unit page with a success message

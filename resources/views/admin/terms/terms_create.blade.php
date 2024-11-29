@@ -76,7 +76,7 @@
                             <label for="description" class="form-label">Short Description
                                
                             </label>
-                            <textarea name="description" id="description" class="form-control summernote" required>{{ isset($term) ? $term['description'] : '' }}</textarea>
+                            <textarea name="description" id="description" class="form-control" required>{{ isset($term) ? $term['description'] : '' }}</textarea>
                             <span id="count" class="text-danger"></span>
                         </div>
                         <div class="mb-3 col-lg-6">
