@@ -362,7 +362,7 @@ cellpadding="0" cellspacing="0">
                                     </tr>
                                 </thead>
                                 <tbody> --}}
-                                    @php
+                                    {{-- @php
                                     // Fetch all service orders related to the mail data
                                     $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
                                     $descriptions = [];
@@ -413,9 +413,17 @@ cellpadding="0" cellspacing="0">
                                         <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;" colspan="2">
                                             {!! $description !!}
                                         </td>
-                                    </tr> --}}
-                                @endforeach
-                                
+                                    </tr> 
+                                @endforeach --}}
+                                <ul>
+                                    <li>Bank Your Botox/Dysport/Xeomin: Pay the discounted rate upfront to secure units, which must be redeemed within the validity period.</li>
+                                    <li>Laser Hair Reduction Packages: Pay $100 upfront to secure the deal and enjoy 20% off up to $2,500 worth of treatments.</li>
+                                    <li>15% Off Services: Pay $100-$300 upfront to lock in 15% off treatments or packages up to $2,500 Redeemed within 1 year from the date of purchase</li>
+                                    <li>Deals can be redeemed for one service, package, or session and must be used in a single transaction.</li>
+                                    <li>Unused Services: If the purchased service is not redeemed, the monetary value paid can be transferred to another treatment at Forever MedSpa & Wellness Center.</li>
+                                    <li>Payments made for Black Friday deals are non-refundable.</li>
+                                    <li>If deemed unsuitable for a specific treatment during consultation, the monetary value paid can be applied to other services offered at the clinic.</li>
+                                </ul>
                                 
                                 {{-- </tbody>
                             </table> --}}
