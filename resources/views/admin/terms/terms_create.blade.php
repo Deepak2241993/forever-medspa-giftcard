@@ -74,9 +74,9 @@
                         </div>
                         <div class="mb-12 col-lg-12 self">
                             <label for="description" class="form-label">Short Description
-                               
+                                <span class="text-danger"> (Text Limit 50 Word)</span>
                             </label>
-                            <textarea name="description" id="description" class="form-control" required>{{ isset($term) ? $term['description'] : '' }}</textarea>
+                            <textarea name="description" id="description" class="form-control summernote" required>{{ isset($term) ? $term['description'] : '' }}</textarea>
                             <span id="count" class="text-danger"></span>
                         </div>
                         <div class="mb-3 col-lg-6">

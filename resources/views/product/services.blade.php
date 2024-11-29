@@ -214,9 +214,9 @@
             <section class="postbox__area grey-bg-4 section-space">
                 <div class="container">
                     <div class="row gy-50">
-                        <div class="col-xxl-8 col-lg-8">
+                        <div class="col-xxl-12 col-lg-12">
                             <h2>Black Friday Deals 2024</h2>
-                            <img src="{{url('/images/balac_friday.jpg')}}" alt="" class="image" width="730">
+                            {{-- <img src="{{url('/images/balac_friday.jpg')}}" alt="" class="image" width="730"> --}}
                             <div class="postbox__wrapper">
                                 @if (isset($data))
                                 <article class="postbox__item mb-30 transition-3">
@@ -295,7 +295,7 @@
                                                     </div>
 
                                                 </div>
-                                               
+                                              
                                             </div>
                                         </div>
                                         </article>
@@ -317,9 +317,9 @@
 
                             </div>
                         </div>
-                        <div class="col-xxl-4 col-lg-4">
+                        {{-- <div class="col-xxl-4 col-lg-4">
                             <div class="sidebar__wrapper bd-sticky pl-30">
-                                {{-- <div class="sidebar__widget mb-20">
+                                <div class="sidebar__widget mb-20">
                                     <div class="sidebar__widget-content">
                                         <div class="sidebar__search">
                                             <form autocomplete="off" action="{{ route('ServicesSearch') }}" method="post">
@@ -343,7 +343,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
 
                                 @if (count($popular_service) > 0)
                                     <div class="sidebar__widget mb-45">
@@ -379,7 +379,7 @@
                                 @endif
 
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </section>

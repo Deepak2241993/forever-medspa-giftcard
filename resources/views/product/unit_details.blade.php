@@ -157,10 +157,10 @@
                      <h3 class="product__details-title">{{$unit->product_name}}</h3>
                      <div class="product__details-price">
                         @if($unit->discounted_amount!=null)
-                        {{-- <span class="old-price">${{$unit->amount}}</span> --}}
+                        <span class="old-price">${{$unit->amount}}</span>
                         <span class="new-price">${{$unit->discounted_amount}}</span>
                         @else
-                        {{-- <span class="new-price">${{$unit->amount}}</span> --}}
+                        <span class="new-price">${{$unit->amount}}</span>
                         @endif
 
                      </div>

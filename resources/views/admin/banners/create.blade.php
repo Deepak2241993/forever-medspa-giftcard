@@ -47,26 +47,14 @@
         <!-- URL -->
         <div class="mb-3 col-lg-6">
             <label for="url" class="form-label">URL<span class="text-danger">*</span></label>
-            <input class="form-control" id="url" type="url" name="url" value="{{ isset($banner) ? $banner->url : '' }}" placeholder="Url" required>
+            <input class="form-control" id="url"  type="url" name="url" value="{{ isset($banner) ? $banner->url : '' }}" placeholder="Url" required>
         </div>
 
         <!-- Slider Image -->
-        @if(!empty($banner->image))
-        <div class="mb-3 col-lg-12">
-            <label for="current_image" class="form-label">Current Slider Image</label>
-            <div>
-                <img src="{{ $banner->image }}" alt="Current Image" class="img-thumbnail" style="max-width: 200px;">
-            </div>
+        <div class="mb-3 col-lg-6">
+            <label for="image" class="form-label">Slider Image<span class="text-danger">* Width 1349 Height 550 Size Should be between 10kb to 2mb</span></label>
+            <input class="form-control" id="image" type="file" name="image" required>
         </div>
-    @endif
-    
-    <div class="mb-3 col-lg-6">
-        <label for="image" class="form-label">Slider Image
-            <span class="text-danger">* Width 1349 Height 550 Size Should be between 10KB to 2MB</span>
-        </label>
-        <input class="form-control" id="image" type="file" name="image" {{ isset($banner) ? '' : 'required' }}>
-    </div>
-    
 
         <!-- Status -->
         <div class="mb-3 col-lg-6">
@@ -82,10 +70,10 @@
             <label class="form-label">Select Type</label><br>
             <input type="radio" name="type" value="1" id="dealsRadio" onclick="toggleSelectOptions()" required> Unit
             <input type="radio" name="type" value="2" id="servicesRadio" onclick="toggleSelectOptions()" required> Service
-        </div>
+        </div> --}}
 
         <!-- Deals Select Option (Initially Hidden) -->
-        <div class="mb-3 col-lg-6" id="dealsSelect" style="display: none;">
+        {{-- <div class="mb-3 col-lg-6" id="dealsSelect" style="display: none;">
             <label for="deals" class="form-label">Select Unit</label>
             <select class="form-control" name="deals_and_service" id="deals" onchange="seturl('unit')">
                 <option value="">Select Unit</option>

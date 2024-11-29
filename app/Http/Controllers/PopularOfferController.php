@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\PopularOffer;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\ServiceUnit;
 use App\Models\TransactionHistory;
 use Stripe\Stripe;
 use Stripe\Charge;
@@ -183,14 +182,10 @@ class PopularOfferController extends Controller
             $productKey = 'product_' . $request->product_id . '_' . time();
     
             // Add the product to the cart
-            $product_data= Product::find($request->product_id);
             $cart[$productKey] = [
                 'type'      => 'product',
                 'id'        => $request->product_id,
                 'quantity'  => $request->quantity,
-                'session_number'  => $product_data->session_number,
-                'amount'  => $product_data->amount,
-                'discounted_amount'  => $product_data->discounted_amount
             ];
         }
     
@@ -198,14 +193,12 @@ class PopularOfferController extends Controller
         if (!empty($request->unit_id)) {
             // Generate a unique key for each unit
             $unitKey = 'unit_' . $request->unit_id . '_' . time();
+    
             // Add the unit to the cart
-            $unit_data= ServiceUnit::find($request->unit_id);
             $cart[$unitKey] = [
                 'type'      => 'unit',
                 'id'        => $request->unit_id,
                 'quantity'  => $request->quantity,
-                'amount'  => $unit_data->amount,
-                'discounted_amount'  => $unit_data->discounted_amount
             ];
         }
     
@@ -393,7 +386,7 @@ public function updateCart(Request $request)
                         $totalAmount += $cart_data->discounted_amount ? $cart_data->discounted_amount : $cart_data->amount;
                     }
 
-                    $taxamount = ($totalAmount * 10) / 100;
+                    $taxamount = ($totalAmount * 0) / 100;
                     $sub_amount = $totalAmount;
                     $final_amount = $totalAmount + $taxamount;
                 }
@@ -437,7 +430,7 @@ public function updateCart(Request $request)
                     $order_data = [
                         'order_id' => $orderId,
                         'service_id' => $item['product_id'],
-                        'status' => 1,
+                        'status' => 0,
                         'number_of_session' => $cart_data->session_number,
                         'user_token' => 'FOREVER-MEDSPA',
                         'actual_amount' => $cart_data->amount,

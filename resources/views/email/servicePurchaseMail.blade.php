@@ -334,7 +334,7 @@ cellpadding="0" cellspacing="0">
                         
                                     <tr style="background-color: #f0f0f0; border: 1px solid #ccc;">
                                         <td style="width: 50%; padding: 10px; color: #333; border: none;">
-                                            Tax <span style="color: #666;">(10%)</span>
+                                            Tax <span style="color: #666;">(0%)</span>
                                         </td>
                                         <td style="width: 50%; text-align: right; padding: 10px; color: #333; border: none;">
                                             +${{ $maildata->tax_amount }}
@@ -354,14 +354,14 @@ cellpadding="0" cellspacing="0">
                             {{-- For Terms & Condition --}}
                         <div style="width: 100%; overflow-x: auto; margin: 20px 0;">
                             <h2>Terms & Conditions</h2>
-                            <table style="width: 100%; border-collapse: collapse; font-family: arial, helvetica, sans-serif;">
+                            {{-- <table style="width: 100%; border-collapse: collapse; font-family: arial, helvetica, sans-serif;">
                                 <thead>
                                     <tr>
                                         <th style="width: 25%; padding: 10px; font-weight: 200; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;">Service Name</th>
                                         <th style="width: 35%; padding: 10px; font-weight: 200; color: #333; background-color: #f0f0f0; border: 1px solid #ccc;" colspan="2">Terms & Conditions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody> --}}
                                     @php
                                     // Fetch all service orders related to the mail data
                                     $orderdata = \App\Models\ServiceOrder::where('order_id', $maildata->order_id)->get();
@@ -405,19 +405,20 @@ cellpadding="0" cellspacing="0">
                                 @endforeach
                                 
                                 @foreach ($descriptions as $description => $serviceNames)
-                                    <tr>
+                                {!! $description !!}
+                                    {{-- <tr>
                                         <td style="width: 25%; padding: 10px; color: #333; border: 1px solid #ccc;">
                                             {{ implode(' | ', $serviceNames) }}
                                         </td>
                                         <td style="width: 35%; padding: 10px; color: #333; border: 1px solid #ccc;" colspan="2">
                                             {!! $description !!}
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                 @endforeach
                                 
                                 
-                                </tbody>
-                            </table>
+                                {{-- </tbody>
+                            </table> --}}
                         </div>
                         {{-- End Terms And Conditions --}}
                         </div>

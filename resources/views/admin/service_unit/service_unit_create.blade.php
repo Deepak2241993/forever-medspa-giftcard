@@ -106,12 +106,12 @@
                 @endif
 
                 <div class="mb-3 col-lg-12 self" id="image_field"
-                style="display:{{ isset($data['id']) ? 'none' : 'block' }}">
-                <label for="product_image" class="form-label">Service unit Image<span
-                        class="text-danger">* 350 X 350 Px Size Should be between 10kb to 2mb</span></label><br>
-                <input class="form-control" id="image" type="file" name="product_image[]" multiple
-                    {{ isset($data) ? '' : 'required' }}>
-            </div>
+                    style="display:{{ isset($data['id']) ? 'none' : 'block' }}">
+                    <label for="product_image" class="form-label">Service Image<span
+                            class="text-danger"><span class="text-danger">* 350 X 350 Px Size Should be between 10kb to 2mb</span></span></label><br>
+                    <input class="form-control" id="image" type="file" name="product_image[]" multiple
+                        {{ isset($data) ? '' : 'required' }}>
+                </div>
 
                 <div class="mb-3 col-lg-6 self mt-2">
                     <label for="amount" class="form-label">Unit Original Price<span class="text-danger">*</span>

@@ -203,7 +203,7 @@
                                                 <tr class="cart-subtotal">
                                                     <td>Tax 10%:</td>
                                                     @php
-                                                    $taxamount = ($amount * 10) / 100;
+                                                    $taxamount = ($amount * 0) / 100;
                                                     // echo "+$" . $taxamount;
                                                     @endphp
                                                     <td> +${{ session('tax_amount') ? session('tax_amount'):$taxamount }}</td>

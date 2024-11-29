@@ -227,9 +227,9 @@
                                         <ul class="cart-totals-list mb-20">
                                             <li class="cart-totals-item">Subtotal <span class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
                                             <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li>
-                                            <li class="cart-totals-item">Tax 10% <span class="cart-totals-value" id="tax_amount">
+                                            <li class="cart-totals-item">Tax 0% <span class="cart-totals-value" id="tax_amount">
                                                     @php
-                                                        $taxamount = ($amount * 10) / 100;
+                                                        $taxamount = ($amount * 0) / 100;
                                                         echo "+$" . number_format($taxamount, 2);
                                                     @endphp
                                                 </span></li>
@@ -512,7 +512,7 @@ function sumValues() {
     var new_final_amount = total_value_from_cart - sum;
 
     // Calculate the tax amount (10% of the new final amount)
-    var taxamount = (new_final_amount * 10) / 100;
+    var taxamount = (new_final_amount * 0) / 100;
 
     // Update the display values on the page
     $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));

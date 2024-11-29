@@ -91,9 +91,7 @@
 
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if(!empty($value->payment_intent))
-                                    <a type="button" class="btn btn-success" data-bs-toggle="modal"
+                                <td><a type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                         onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
                                         Redeem Service
@@ -105,8 +103,7 @@
                                         data-bs-target="#statement_view_{{ $value['id'] }}"
                                         onclick="StatementView({{ $key }},'{{ $value['order_id'] }}')">
                                         Statement
-                                    </a>
-                                @endif</td>
+                                    </a></td>
                                 <td>{{ $value->order_id }}</td>
                                 <td>{{ $value->fname ." ".$value->lname }}</td>
                                 <td>{{ $value->email }}</td>

@@ -139,7 +139,7 @@
 
                                                 <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                     <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Tax
-                                                        <span class="tm_ternary_color">(10%)</span></td>
+                                                        <span class="tm_ternary_color">(0%)</span></td>
                                                     <td
                                                         class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
                                                         +${{ $transaction_data->tax_amount }}</td>

@@ -262,9 +262,9 @@
 
                                             </li>
                                             <li>Total Giftcard Applied <span id="giftcard_applied">$0</span></li>
-                                            <li>Tax 10% <span id="tax_amount">
+                                            <li>Tax 0% <span id="tax_amount">
                                                     @php
-                                                        $texamount = ($amount * 10) / 100;
+                                                        $texamount = ($amount * 0) / 100;
                                                         echo "+$" . $texamount;
                                                     @endphp
                                                 </span></li>
@@ -574,7 +574,7 @@
             var new_final_amount = total_value_from_cart - sum;
 
             // Calculate the tax amount (10% of the new final amount)
-            var taxamount = (new_final_amount * 10) / 100;
+            var taxamount = (new_final_amount * 0) / 100;
 
             // Update the display values on the page
             $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
@@ -582,6 +582,9 @@
             $('#tax_amount').text('+$' + taxamount.toFixed(2));
         }
     </script>
+
+
+
     {{-- For Cart Update --}}
     <script>
         // Update Cart
@@ -650,6 +653,11 @@
         //     updateCart(itemId, quantity);
         // });
     </script>
+
+
+
+
+
     {{-- <script>
 // Disable right-click context menu
 document.addEventListener('contextmenu', function(event) {
