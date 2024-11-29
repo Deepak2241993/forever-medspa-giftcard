@@ -423,7 +423,7 @@ cellpadding="0" cellspacing="0">
                         {{-- End Terms And Conditions --}}
                         </div>
                         
-                        
+                        <hr>
                         <table id="u_content_text_2"
                             style="font-family:arial,helvetica,sans-serif;" role="presentation"
                             cellpadding="0" cellspacing="0" width="100%" border="0">
