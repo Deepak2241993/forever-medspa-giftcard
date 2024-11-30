@@ -103,43 +103,51 @@ class ServiceUnitController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ServiceUnit $serviceUnit)
-{
+        {
 
-    // Get the authenticated user's token
-    $token = Auth::user()->user_token;
+            // Get the authenticated user's token
+            $token = Auth::user()->user_token;
 
-    // Prepare the data to update, excluding '_token' and '_method' fields
-    $updateData = $request->except('_token', '_method');
-    $updateData['user_token'] = $token;
+            // Prepare the data to update, excluding '_token' and '_method' fields
+            $updateData = $request->except('_token', '_method');
+            $updateData['user_token'] = $token;
 
-    // Handle product images if any are uploaded
-    $product_image = [];
-    if ($request->hasFile('product_image')) {
-        $folder = str_replace(" ", "_", $token);
-        $destinationPath = '/uploads/' . $folder . "/";
+            // Handle product images if any are uploaded
+            $product_image = [];
+            if ($request->hasFile('product_image')) {
+                // Generate a folder name by replacing spaces with underscores
+                $folder = str_replace(" ", "_", $token);
+                $destinationPath = public_path('uploads' . DIRECTORY_SEPARATOR . $folder);
+            
+                // Ensure the folder exists
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+            // dd($request->file('product_image'));
+                foreach ($request->file('product_image') as $image) {
+                    // Validate that the uploaded file is an image
+                    if ($image->isValid() && in_array($image->extension(), ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
+                        // Generate a unique filename to avoid overwrites
+                        $filename = time() . '_' . $image->getClientOriginalName();
+                        $image->move($destinationPath, $filename);
+            
+                        // Append the image URL to the array
+                        $product_image[] = url('uploads/' . $folder . '/' . $filename);
+                    }
+                }
+            
+                // Combine the image URLs into a single string
+                $updateData['product_image'] = implode('|', $product_image);
+            }
+            
+            
+            // Update the service unit with the prepared data
+            $data = ServiceUnit::find($request->id);
+            $data->update($updateData);
 
-        foreach ($request->file('product_image') as $image) {
-            // Move the image to the destination path
-            $filename = $image->getClientOriginalName();
-            $image->move(public_path($destinationPath), $filename);
-
-            // Store the image URL
-            array_push($product_image,url('/') . $destinationPath . $filename);
+            // Redirect back to the admin unit page with a success message
+            return redirect('/admin/unit')->with('message', 'Unit is updated successfully');
         }
-        // Combine the image URLs into a single string
-        $finalImageUrl = implode('|', $product_image);
-        $data['product_image'] = $finalImageUrl;
-    }
-    // dd($product_image);
-    
-    // Update the service unit with the prepared data
-    $data = ServiceUnit::find($request->id);
-    // dd($data);
-    $data->update($updateData);
-
-    // Redirect back to the admin unit page with a success message
-    return redirect('/admin/unit')->with('message', 'Unit is updated successfully');
-}
 
     
 

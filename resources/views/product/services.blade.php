@@ -161,6 +161,35 @@
                 --bs-nav-tabs-link-active-color: #fca52a;
                 --bs-nav-tabs-link-active-border-color: #fca52a #fca52a #f6f6f6;
             }
+            .custom-btn {
+    display: inline-block;
+    background-color: #ff5722; /* Attractive orange */
+    color: #fff; /* White text */
+    font-size: 16px; /* Larger text */
+    font-weight: bold; /* Bold text */
+    padding: 8px 12px; /* Spacing around the text */
+    border-radius: 25px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    text-decoration: none; /* Remove underline */
+    transition: all 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+.custom-btn:hover {
+    background-color: #e64a19; /* Slightly darker orange */
+    color: #fff; /* Ensure text remains visible */
+    transform: scale(1.1); /* Slight zoom effect */
+    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+.carousel-caption {
+    position: absolute;
+    right: 15%;
+    bottom: -0.75rem;
+    left: 15%;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    color: #fff;
+    text-align: center;
+}
         </style>
     @endpush
 
@@ -182,17 +211,17 @@
                     <div class="carousel-inner">
                         @foreach ($sliders as $key => $value)
                             @if ($key <= 5)
-                                <div class="carousel-item @if ($key == 0) {{ 'active' }} @endif">
+                                <div class="carousel-item @if ($key == 0) active @endif">
                                     <img src="{{ url($value->image) }}" class="d-block w-100" alt="..."
                                         onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <a href="{{ $value->url }}" target="_blank" class="btn btn-primary"
-                                            style="width:120px;height:35px;font-size:15px">Buy Now</a>
+                                    <div class="carousel-caption d-block">
+                                        <a href="{{ $value->url }}" target="_blank" class="custom-btn">Buy Now</a>
                                     </div>
                                 </div>
                             @endif
                         @endforeach
                     </div>
+                    
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
