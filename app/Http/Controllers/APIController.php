@@ -2158,8 +2158,6 @@ public function product_view(Request $request, $id)
 {
     $token = $request->user_token;
     $order_id = $request->order_id;
-    $email = $request->email;
-    $phone = $request->phone;
 
     // Start the query with necessary joins and selections
     $query = DB::table('transaction_histories')
@@ -2175,6 +2173,8 @@ public function product_view(Request $request, $id)
             'service_units.product_name as unit_name',
             'service_orders.number_of_session',
             'service_orders.service_type',
+            'service_orders.qty',
+            'service_orders.id as service_order_id',
             'transaction_histories.email',
             'transaction_histories.phone',
             'transaction_histories.fname',
@@ -2186,8 +2186,9 @@ public function product_view(Request $request, $id)
             'service_orders.discounted_amount',
             'service_orders.actual_amount',
             // Correct calculation for refund_amount
-            DB::raw('(service_orders.discounted_amount - (service_orders.actual_amount / service_orders.number_of_session) * IFNULL(SUM(service_redeems.number_of_session_use), 0)) as refund_amount')
-            //          Discounted Amount-Actualamount/
+            DB::raw('(service_orders.discounted_amount * service_orders.qty) - (service_orders.actual_amount * IFNULL(SUM(service_redeems.number_of_session_use), 0)) as refund_amount')
+
+            // Discounted Amount-Actualamount/
 
         )
         ->groupBy(
@@ -2195,6 +2196,8 @@ public function product_view(Request $request, $id)
             'service_units.product_name',
             'service_orders.number_of_session',
             'service_orders.service_type',
+            'service_orders.qty',
+            'service_orders.id',
             'transaction_histories.email',
             'transaction_histories.phone',
             'transaction_histories.fname',
@@ -2205,13 +2208,6 @@ public function product_view(Request $request, $id)
             'service_orders.actual_amount'
         );
     // Apply filters based on the request
-    if (!empty($email)) {
-        $query->where('transaction_histories.email', 'like', '%' . $email . '%');
-    }
-
-    if (!empty($phone)) {
-        $query->where('transaction_histories.phone', 'like', '%' . $phone . '%');
-    }
 
     if (!empty($order_id)) {
         $query->where('service_orders.order_id', $order_id);

@@ -52,18 +52,21 @@
                     @foreach($data as $key => $value)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $value->order_id }}</td>
                             <td>
-                                {{-- <a type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop_{{ $value->id }}"
-                                    onclick="OrderView({{ $key }}, '{{ $value->order_id }}')">
-                                    Orders
-                                </a>
-                                | --}}
+                               
+                                {{ $value->order_id }}
+                               
+                            </td>
+                            <td>
+                             
+                                @if(!empty($value->payment_intent))
                                 <a class="btn btn-warning"
                                     href="{{ route('service-invoice', ['transaction_data' => $value->id]) }}">
                                     Invoice
                                 </a>
+                                @else
+                                <span class="text-danger">No Payment</span>
+                                @endif
                             </td>
                             <td>{{ $value->fname . " " . $value->lname }}</td>
                             <td>{{ $value->email }}</td>

@@ -442,7 +442,8 @@ private function sendLeadCaptureRequest(array $api_data)
 
             // Update the transaction history record
             $transaction_data->update($data);
-            $ServiceOrder->update(['status' => 1]);
+            $ServiceOrder->where('order_id', $ServiceOrder->order_id)->update(['status' => 1]);
+
 
             if ($transaction_data->gift_card_applyed != null) {
                 $giftcardnumbers = explode('|', $transaction_data->gift_card_applyed);

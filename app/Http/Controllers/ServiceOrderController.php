@@ -214,83 +214,83 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
 
         //  For Redeem Calculation 
         public function redeemcalculation(Request $request)
-{
-    $orderId = $request->order_id;
+        {
+            $orderId = $request->order_id;
 
-    // Fetch order data
-    $orderData = ServiceOrder::where('order_id', $orderId)->get();
+            // Fetch order data
+            $orderData = ServiceOrder::where('order_id', $orderId)->get();
 
-    // Initialize an array to store services
-    $services = [];
+            // Initialize an array to store services
+            $services = [];
 
-    foreach ($orderData as $value) {
-        if ($value->service_type == 'product') {
-            $services[] = Product::find($value->service_id);
-        } elseif ($value->service_type == 'unit') {
-            $services[] = ServiceUnit::find($value->service_id);
+            foreach ($orderData as $value) {
+                if ($value->service_type == 'product') {
+                    $services[] = Product::find($value->service_id);
+                } elseif ($value->service_type == 'unit') {
+                    $services[] = ServiceUnit::find($value->service_id);
+                }
+            }
+
+            // Fetch service purchases
+            $servicePurchases = ServiceOrder::select(
+                'service_orders.*',
+                'products.product_name',
+                'service_units.product_name as unit_name',
+                DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions')
+            )
+            ->leftJoin('products', 'service_orders.service_id', '=', 'products.id')
+            ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')
+            ->leftJoin('service_redeems', 'service_orders.id', '=', 'service_redeems.service_order_id')
+            ->where('service_orders.order_id', $orderId)
+            ->groupBy(
+                'service_orders.id',
+                'products.product_name',
+                'service_units.product_name',
+                'service_orders.number_of_session',
+                'service_orders.order_id',
+                'service_orders.service_id',
+                'service_orders.created_at',
+                'service_orders.updated_at',
+                'service_orders.service_type',
+                'service_orders.qty',
+                'service_orders.status',
+                'service_orders.is_deleted',
+                'service_orders.updated_by',
+                'service_orders.actual_amount',
+                'service_orders.discounted_amount',
+                'service_orders.payment_mode',
+                'service_orders.user_token'
+            )
+            ->get();
+
+            // Fetch service redeem data
+            $serviceRedeem = Service_redeem::select(
+                'service_redeems.*',
+                'products.product_name',
+                'service_units.product_name as unit_name'
+            )
+            ->join('products', 'service_redeems.product_id', '=', 'products.id')
+            ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
+            ->where('service_redeems.order_id', $orderId)
+            ->get();
+
+            // Calculate total amount
+            $totalAmount = $servicePurchases->sum('remaining_sessions') - $serviceRedeem->sum('number_of_session_use');
+
+            return response()->json([
+                'success' => true,
+                'servicePurchases' => $servicePurchases,
+                'totalAmount' => $totalAmount
+            ]);
         }
-    }
-
-    // Fetch service purchases
-    $servicePurchases = ServiceOrder::select(
-        'service_orders.*',
-        'products.product_name',
-        'service_units.product_name as unit_name',
-        DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions')
-    )
-    ->leftJoin('products', 'service_orders.service_id', '=', 'products.id')
-    ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')
-    ->leftJoin('service_redeems', 'service_orders.id', '=', 'service_redeems.service_order_id')
-    ->where('service_orders.order_id', $orderId)
-    ->groupBy(
-        'service_orders.id',
-        'products.product_name',
-        'service_units.product_name',
-        'service_orders.number_of_session',
-        'service_orders.order_id',
-        'service_orders.service_id',
-        'service_orders.created_at',
-        'service_orders.updated_at',
-        'service_orders.service_type',
-        'service_orders.qty',
-        'service_orders.status',
-        'service_orders.is_deleted',
-        'service_orders.updated_by',
-        'service_orders.actual_amount',
-        'service_orders.discounted_amount',
-        'service_orders.payment_mode',
-        'service_orders.user_token'
-    )
-    ->get();
-
-    // Fetch service redeem data
-    $serviceRedeem = Service_redeem::select(
-        'service_redeems.*',
-        'products.product_name',
-        'service_units.product_name as unit_name'
-    )
-    ->join('products', 'service_redeems.product_id', '=', 'products.id')
-    ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
-    ->where('service_redeems.order_id', $orderId)
-    ->get();
-
-    // Calculate total amount
-    $totalAmount = $servicePurchases->sum('remaining_sessions') - $serviceRedeem->sum('number_of_session_use');
-
-    return response()->json([
-        'success' => true,
-        'servicePurchases' => $servicePurchases,
-        'totalAmount' => $totalAmount
-    ]);
-}
 
      
         
         public function DoCancel(Request $request, Service_redeem $service_redeem)
 {
     // Validate the request data
-    $validatedData = $request->validate([
-        'service_id' => 'required|integer',
+    $request->validate([
+        'product_id' => 'required|integer',
         'order_id' => 'required|string|max:255',
         'number_of_session_use' => 'required|integer|min:1',
         'comments' => 'nullable|string|max:255',
@@ -299,12 +299,13 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
     try {
         $data = $request->all();
         $data['user_token'] = 'FOREVER-MEDSPA';
-        $data['transaction_id'] = 'SER-CAN-' . time();
         
-
         $result = $service_redeem->create($data);
 
         if ($result) {
+            $result->transaction_id = 'SER-CAN-' . $result->id;
+            $result->save();
+
             $transactionresult = TransactionHistory::where('order_id', $result->order_id)->first();
 
             try {

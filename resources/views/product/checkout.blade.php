@@ -201,7 +201,7 @@
                                                 </tr>
                                             @endif
                                                 <tr class="cart-subtotal">
-                                                    <td>Tax 10%:</td>
+                                                    <td>Tax 0%:</td>
                                                     @php
                                                     $taxamount = ($amount * 0) / 100;
                                                     // echo "+$" . $taxamount;

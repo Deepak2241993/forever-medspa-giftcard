@@ -5,7 +5,7 @@
         ->get();
 
     $serviceRedeem = App\Models\Service_redeem::select('service_redeems.*', 'products.product_name','products.amount','products.discounted_amount')
-        ->join('products', 'service_redeems.service_id', '=', 'products.id')
+        ->join('products', 'service_redeems.product_id', '=', 'products.id')
         ->where('service_redeems.order_id', $data->order_id)
         ->get();
 

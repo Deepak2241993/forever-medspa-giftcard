@@ -91,13 +91,12 @@
 
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if(!empty($value->payment_intent))
-                                    <a type="button" class="btn btn-success" data-bs-toggle="modal"
+                                <td><a type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                         onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
                                         Redeem Service
-                                    </a> | <a type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    </a> 
+                                    | <a type="button" class="btn btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                         onclick="CancelView({{ $key }},'{{ $value['order_id'] }}')">
                                         Do Cancel
@@ -105,11 +104,7 @@
                                         data-bs-target="#statement_view_{{ $value['id'] }}"
                                         onclick="StatementView({{ $key }},'{{ $value['order_id'] }}')">
                                         Statement
-                                    </a>
-                                @else
-                                <span class="text-danger"> No Payment</span>
-                                @endif
-                            </td>
+                                    </a></td>
                                 <td>{{ $value->order_id }}</td>
                                 <td>{{ $value->fname ." ".$value->lname }}</td>
                                 <td>{{ $value->email }}</td>
@@ -376,7 +371,9 @@
                         <td id="row_${index + 1}">${element.remaining_sessions}</td>
                         <td>
                             <input type="hidden" name="refund_amount" value="${element.refund_amount > 0 ? element.refund_amount : 0}">
-                            <input type="hidden" name="service_id" value="${element.service_id}">
+                            <input type="hidden" name="product_id" value="${element.service_id}">
+                            <input type="hidden" name="service_type" value="${element.service_type}">
+                            <input type="hidden" name="service_order_id" value="${element.service_order_id}">
                          
                             <input type="hidden" name="order_id" value="${element.order_id}">
                             <input  onkeyup="valueValidate(this, ${element.remaining_sessions})" 
@@ -446,7 +443,11 @@
 
                                 var rowData = {
                                     _token: '{{ csrf_token() }}', // Add CSRF token
-                                    service_id: currentRow.find('input[name="service_id"]')
+                                    product_id: currentRow.find('input[name="product_id"]')
+                                    .val(),
+                                    service_order_id: currentRow.find('input[name="service_order_id"]')
+                                    .val(),
+                                    service_type: currentRow.find('input[name="service_type"]')
                                     .val(),
                                     refund_amount: currentRow.find(
                                         'input[name="refund_amount"]').val(),
@@ -494,6 +495,11 @@
                     }
                 });
             }
+
+
+
+
+
 
 //  Order Cancel Code End ***********************************************************************
 

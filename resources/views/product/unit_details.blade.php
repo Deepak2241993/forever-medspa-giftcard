@@ -234,26 +234,20 @@
                                  {!! $unit->product_description !!}
                               </div>
                            </div>
-                           
-                           <div class="tab-pane fade" id="nav-review" role="tabpanel"
+
+                           <div class="tab-pane fade show" id="nav-review" role="tabpanel"
                            aria-labelledby="nav-review-tab">
-                              <div class="product__details-info">
-                                 <div style="text-align:end">
-                                 <a href="{{url('/generate-pdf',$unit->terms_id)}}" class="fill-btn cart-btn">
-                                    <span class="fill-btn-inner">
-                                       <span class="fill-btn-normal">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
-                                       <span class="fill-btn-hover">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
-                                    </span>
-                                 </a>
-                                 </div>
-                                 <hr>
-                                 <div class="mt-4">
-                                 
-                                 {!! $unit->terms_and_conditions !!}
-                                 </div>
-                              </div>
+                           <a href="{{url('/generate-pdf',$unit->terms_id)}}" class="fill-btn cart-btn">
+                              <span class="fill-btn-inner">
+                                 <span class="fill-btn-normal">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
+                                 <span class="fill-btn-hover">Download Terms & Conditions<i class="fa-regular fa-file"></i></i></span>
+                              </span>
+                           </a>
+                           <div class="product__details-des">
+                              {!! $unit->terms_and_conditions !!}
                            </div>
-                           
+                        </div>
+                            
                         </div>
                      </div>
                   </div>
