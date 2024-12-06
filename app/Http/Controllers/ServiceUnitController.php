@@ -19,7 +19,6 @@ class ServiceUnitController extends Controller
     public function index()
     {
         $result = ServiceUnit::where('product_is_deleted',0)->orderBy('id','DESC')->paginate(10);
-        // dd($result);
         return view('admin.service_unit.service_unit_index', compact('result'));
     }
 
@@ -42,13 +41,9 @@ class ServiceUnitController extends Controller
     public function store(Request $request,ServiceUnit $serviceUnit)
     {
         $token = Auth::user()->user_token;
-
-    // Retrieve all request data except '_token'
-    $data = $request->except('_token');
-
-    // Add the user's token to the data
-    $data['user_token'] = $token;
-    $product_image = [];
+        $data = $request->except('_token');
+        $data['user_token'] = $token;
+        $product_image = [];
 
     if ($request->hasFile('product_image')) {
         $folder = str_replace(" ", "_", $token);
@@ -72,43 +67,16 @@ class ServiceUnitController extends Controller
         return redirect('/admin/unit')->with('message', 'Unit Added Successfully');;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ServiceUnit  $serviceUnit
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ServiceUnit $serviceUnit)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ServiceUnit  $serviceUnit
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function edit(ServiceUnit $serviceUnit,$id)
     {
        $data = ServiceUnit::find($id);
         return view('admin.service_unit.service_unit_create',compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ServiceUnit  $serviceUnit
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ServiceUnit $serviceUnit)
+    public function update(Request $request)
         {
-
-            // Get the authenticated user's token
             $token = Auth::user()->user_token;
-
-            // Prepare the data to update, excluding '_token' and '_method' fields
             $updateData = $request->except('_token', '_method');
             $updateData['user_token'] = $token;
 
@@ -152,7 +120,7 @@ class ServiceUnitController extends Controller
     
 
     
-    public function destroy(Request $request,ServiceUnit $serviceUnit)
+    public function destroy(Request $request)
     {
         $data = ServiceUnit::find($request->id);
         $data->update(['product_is_deleted'=>1]);
@@ -164,7 +132,6 @@ class ServiceUnitController extends Controller
     public function UnitPageShow(Request $request, $slug){
        $product = Product::where('product_slug',$slug)->first();
        $result = explode('|',$product->unit_id);
-    //    dd($result);
         return view('product.unit_show',compact('result','product'));
     }
 

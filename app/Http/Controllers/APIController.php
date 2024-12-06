@@ -2159,12 +2159,12 @@ public function product_view(Request $request, $id)
     $token = $request->user_token;
     $order_id = $request->order_id;
 
-    // Start the query with necessary joins and selections
+    // Build the query with necessary joins and selections
     $query = DB::table('transaction_histories')
         ->join('service_orders', 'service_orders.order_id', '=', 'transaction_histories.order_id')
-        ->join('products', 'products.id', '=', 'service_orders.service_id')
-        ->join('service_units', 'service_units.id', '=', 'service_orders.service_id')
-        ->leftJoin('service_redeems', function($join) {
+        ->leftJoin('products', 'products.id', '=', 'service_orders.service_id')
+        ->leftJoin('service_units', 'service_units.id', '=', 'service_orders.service_id')
+        ->leftJoin('service_redeems', function ($join) {
             $join->on('service_redeems.order_id', '=', 'service_orders.order_id')
                  ->on('service_redeems.product_id', '=', 'service_orders.service_id');
         })
@@ -2185,11 +2185,10 @@ public function product_view(Request $request, $id)
             DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions'),
             'service_orders.discounted_amount',
             'service_orders.actual_amount',
-            // Correct calculation for refund_amount
-            DB::raw('(service_orders.discounted_amount * service_orders.qty) - (service_orders.actual_amount * IFNULL(SUM(service_redeems.number_of_session_use), 0)) as refund_amount')
-
-            // Discounted Amount-Actualamount/
-
+            DB::raw('
+                (service_orders.discounted_amount * service_orders.qty) - 
+                (service_orders.actual_amount * IFNULL(SUM(service_redeems.number_of_session_use), 0)) as refund_amount'
+            )
         )
         ->groupBy(
             'products.product_name',
@@ -2207,8 +2206,8 @@ public function product_view(Request $request, $id)
             'service_orders.discounted_amount',
             'service_orders.actual_amount'
         );
-    // Apply filters based on the request
 
+    // Apply filters based on request input
     if (!empty($order_id)) {
         $query->where('service_orders.order_id', $order_id);
     }
@@ -2216,15 +2215,24 @@ public function product_view(Request $request, $id)
     // Filter by user token
     $query->where('service_orders.user_token', $token);
 
-    // Get the results without pagination
+    // Fetch the results
     $results = $query->get();
 
+    // Return response based on results
     if ($results->isNotEmpty()) {
-        return response()->json(['result' => $results, 'status' => 200, 'success' => 'Order Details Found'], 200);
+        return response()->json([
+            'result' => $results,
+            'status' => 200,
+            'success' => 'Order Details Found',
+        ], 200);
     } else {
-        return response()->json(['error' => 'Order Details Not Found', 'status' => 404]);
+        return response()->json([
+            'error' => 'Order Details Not Found',
+            'status' => 404,
+        ], 404);
     }
 }
+
 
 
 }

@@ -10,7 +10,7 @@ $servicePurchases = App\Models\ServiceOrder::select(
             ->where('service_orders.order_id', $data->order_id)
             ->get();
 
-$serviceRedeem = App\Models\Service_redeem::select(
+$serviceRedeem = App\Models\ServiceRedeem::select(
                 'service_redeems.*',
                 'products.product_name',
                 'service_units.product_name as unit_name')

@@ -10,7 +10,7 @@ use App\Models\GiftCoupon;
 use App\Models\Giftsend;
 use App\Models\GiftcardRedeem;
 use App\Models\Search_keyword;
-use App\Models\Service_redeem;
+use App\Models\ServiceRedeem;
 use App\Models\TransactionHistory;
 
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +58,7 @@ class HomeController extends Controller
             $Product = Product::count();
             $user=User::where('user_type',1)->count();
             $search_keyword=Search_keyword::all()->count();
-            $cancel_deals=Service_redeem::where('status',0)->count();
+            $cancel_deals=ServiceRedeem::where('status',0)->count();
             $TotalServiceSale=TransactionHistory::where('payment_status','paid')->count();
             
 

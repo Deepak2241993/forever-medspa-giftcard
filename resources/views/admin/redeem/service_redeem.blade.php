@@ -104,7 +104,8 @@
                                         data-bs-target="#statement_view_{{ $value['id'] }}"
                                         onclick="StatementView({{ $key }},'{{ $value['order_id'] }}')">
                                         Statement
-                                    </a></td>
+                                    </a>
+                                </td>
                                 <td>{{ $value->order_id }}</td>
                                 <td>{{ $value->fname ." ".$value->lname }}</td>
                                 <td>{{ $value->email }}</td>
