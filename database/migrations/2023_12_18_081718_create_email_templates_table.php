@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
 
             $table->string('title')->nullable();
-            $table->string('subject')->nullable();
+            $table->mediumInteger('message_email')->nullable();
             $table->longText('html_code')->nullable();
             $table->tinyInteger('status')->default(1);
+            $table->string('image')->nullable();
+            $table->string('footer_message')->nullable();
             $table->timestamps();
         });
     }

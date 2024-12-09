@@ -14,21 +14,29 @@ return new class extends Migration
     public function up()
     {
         Schema::create('giftsends', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->nullable();
+            $table->bigIncrements('id'); // Primary Key
+            $table->tinyInteger('future_mail_status')->default(0);
             $table->integer('qty')->nullable();
-            $table->decimal('amount', 8, 2)->nullable()->default(0.00);
-            $table->string('your_name')->nullable();
-            $table->string('recipient_name')->nullable();
-            $table->string('recipient_email')->nullable();
-            $table->string('message')->nullable();
-            $table->string('gift_card_send_type')->nullable();
-            $table->string('in_future')->nullable();
+            $table->decimal('amount', 8, 2)->default(0.00);
+            $table->string('your_name', 191)->nullable();
+            $table->string('recipient_name', 191)->nullable();
+            $table->string('message', 191)->nullable();
+            $table->string('gift_card_send_type', 191)->nullable();
+            $table->string('in_future', 191)->nullable();
             $table->tinyInteger('status')->default(0);
-            $table->string('coupon_code')->nullable();
-            $table->string('gift_send_for')->nullable();
-            $table->string('user_token')->nullable();
-            $table->timestamps();
+            $table->string('coupon_code', 191)->nullable();
+            $table->string('gift_send_to', 191)->nullable();
+            $table->string('user_token', 191)->nullable();
+            $table->timestamps(); // created_at and updated_at
+            $table->string('receipt_email', 255)->nullable();
+            $table->float('discount', 8, 2)->nullable();
+            $table->string('transaction_id', 255)->nullable();
+            $table->string('payment_status', 255)->nullable();
+            $table->string('payment_time', 255)->nullable();
+            $table->float('transaction_amount', 8, 2)->nullable();
+            $table->string('giftcards_number', 255)->nullable();
+            $table->string('payment_mode', 191)->nullable();
+            $table->unsignedBigInteger('event_id')->nullable();
         });
     }
 
