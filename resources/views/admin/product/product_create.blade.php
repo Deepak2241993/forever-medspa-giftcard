@@ -233,7 +233,7 @@
                 </select>
             </div>
             <div class="mb-3 col-lg-6 mt-4">
-                <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
+                <button  class="btn btn-block btn-outline-primary" type="submit" id="submitBtn">Submit</button>
             </div>
         </div>
         </form>

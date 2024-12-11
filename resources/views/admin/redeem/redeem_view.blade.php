@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-1 d-flex align-items-end">
                 <input type="hidden" class="form-control" name="user_token" value="{{ Auth::user()->user_token }}">
-                <button type="submit" class="btn btn-success">Search</button>
+                <button type="submit"  class="btn btn-block btn-outline-success">Search</button>
             </div>
         </div>
     </div>
@@ -67,13 +67,13 @@
                         <td>{!! $value['status']!=0?'<span class="badge text-bg-success">Active</span>':'<span class="badge text-bg-danger">Inactive</span>' !!}</td>
                         <td>
                             @if($value['status']!=0 && $value['total_amount']!=0)
-                            <a type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#redeem_{{$value['user_id']}}" onclick="modalopen({{$value['user_id']}},'{{$value['giftnumber']}}','{{$value['total_amount']}}')">
+                            <a type="button"  class="btn btn-block btn-outline-success" data-bs-toggle="modal" data-bs-target="#redeem_{{$value['user_id']}}" onclick="modalopen({{$value['user_id']}},'{{$value['giftnumber']}}','{{$value['total_amount']}}')">
                            Redeem
-                            </a> | <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#docancel_{{$value['user_id']}}" onclick="docancel({{$value['user_id']}},'{{$value['giftnumber']}}')">
+                            </a> | <a type="button"  class="btn btn-block btn-outline-danger" data-bs-toggle="modal" data-bs-target="#docancel_{{$value['user_id']}}" onclick="docancel({{$value['user_id']}},'{{$value['giftnumber']}}')">
                                 Do cancel
                                  </a> |
                             @endif
-                        <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Statment_{{$value['user_id']}}" onclick="Statment({{$value['user_id']}},'{{$value['giftnumber']}}')">
+                        <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Statment_{{$value['user_id']}}" onclick="Statment({{$value['user_id']}},'{{$value['giftnumber']}}')">
                             View Statement</a>
                         
                         </td>
@@ -120,12 +120,12 @@
                         <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
                         <input type="hidden" class="user_id" id="user_id_" name="user_id" value="">
                 
-                        <button type="button" class="btn btn-primary mt-3 redeembutton" id="" event_id="" onclick="redeemgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Redeem</button>
+                        <button type="button"  class="btn btn-block btn-outline-primary mt-3 redeembutton" id="" event_id="" onclick="redeemgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Redeem</button>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -152,12 +152,12 @@
                             <input type="hidden" class="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
                             <input type="hidden" class="cancel_user_id" id="cancel_user_id_" name="cancel_user_id" value="">
                     
-                            <button type="button" class="btn btn-primary mt-3 cancel_button" id="" event_id=""  onclick="cancelgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Cancel Giftcard</button>
+                            <button type="button"  class="btn btn-block btn-outline-primary mt-3 cancel_button" id="" event_id=""  onclick="cancelgiftcard(event)"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>Cancel Giftcard</button>
                         </div>
                     </form>
                 </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -178,7 +178,7 @@
                     <b><span class="text-danger">*</span>Any Transaction Number starting with the prefix "CANCEL", denotes the particular Giftcard has been cancelled and is inactive henceforth</b>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

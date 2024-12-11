@@ -94,7 +94,7 @@
                                                     href="#" class="text-primary">Terms of Use</a></p>
                                         </div>
                                         <div class="mb-3">
-                                            <button class="btn btn-primary w-100 waves-effect waves-light"
+                                            <button  class="btn btn-block btn-outline-primary w-100 waves-effect waves-light"
                                                 type="submit">Register</button>
                                         </div>
                                     </form>

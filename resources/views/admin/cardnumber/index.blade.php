@@ -63,7 +63,7 @@
             <section class="content">
                 <div class="container-fluid">
                     <!--begin::Row-->
-                    {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a> --}}
+                    {{-- <a href="{{route('medspa-gift.create')}}"  class="btn btn-block btn-outline-primary">Add More</a> --}}
                     <div class="card-header">
                         @if (session()->has('error'))
                             <p class="text-danger"> {{ session()->get('error') }}</p>
@@ -147,7 +147,7 @@
 
                                                 <td><?php echo date('m-d-Y h:i:A', strtotime($value['created_at'])); ?></td>
                                                 <td>
-                                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                                         onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
                                                         View Card
@@ -157,9 +157,9 @@
                                                 <td>
                                                     @if ($value['payment_status'] == 'succeeded')
                                                         <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
-                                                            class="btn btn-warning" id="mailsend_{{ $value['id'] }}">Mail
+                                                             class="btn btn-block btn-outline-warning" id="mailsend_{{ $value['id'] }}">Mail
                                                             Resend</a>
-                                                        {{-- <button class="btn btn-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
+                                                        {{-- <button  class="btn btn-block btn-outline-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
                                                     @endif
                                                 </td>
 
@@ -216,7 +216,7 @@
                                 value="{{ Auth::user()->user_token }}">
                             <input type="hidden" class="gift_id" id="gift_id_" name="id" value="">
 
-                            <button type="button" class="btn btn-primary mt-3 paymentstatusbutton" id="paymentstatusbutton"
+                            <button type="button"  class="btn btn-block btn-outline-primary mt-3 paymentstatusbutton" id="paymentstatusbutton"
                                 gift_id="gift_id_" onclick="updatestatus(event)"><span
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                     style="display: none;"></span>Update</button>
@@ -224,7 +224,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -247,7 +247,7 @@
                     <h2 id="giftcardsshow"></h2>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

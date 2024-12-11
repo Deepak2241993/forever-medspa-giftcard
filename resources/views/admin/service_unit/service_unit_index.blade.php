@@ -27,7 +27,7 @@
                 <!--begin::Row-->
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <!-- Add More Button (Left Side) -->
-                    <a href="{{ route('unit.create') }}" class="btn btn-dark mb-4">Add More</a>
+                    <a href="{{ route('unit.create') }}"  class="btn btn-block btn-dark mb-4">Add More</a>
 
                     <!-- Form and Demo Download (Right Side) -->
 
@@ -75,8 +75,8 @@
                                 <td>{{ $value->status == 1 ?  "Active":"Inactive" }}</td>
                                 
                                 <td>
-                                    <a href="{{ route('unit.edit', $value['id']) }}" class="btn btn-primary">Edit</a>
-                                    <a href="{{ route('unitdelete', $value['id']) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ route('unit.edit', $value['id']) }}"  class="btn btn-block btn-outline-primary">Edit</a>
+                                    <a href="{{ route('unitdelete', $value['id']) }}"  class="btn btn-block btn-outline-danger">Delete</a>
                                   
                                 </td>
 

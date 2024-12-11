@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-md-1">
                         <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                        <button type="submit" class="btn btn-success mt-4">Search</button>
+                        <button type="submit"  class="btn btn-block btn-outline-success mt-4">Search</button>
                     </div>
                 </div>
             </form>
@@ -91,16 +91,16 @@
 
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td><a type="button" class="btn btn-success" data-bs-toggle="modal"
+                                <td><a type="button"  class="btn btn-block btn-outline-success" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                         onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
                                         Redeem Service
                                     </a> 
-                                    | <a type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    | <a type="button"  class="btn btn-block btn-outline-danger" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                         onclick="CancelView({{ $key }},'{{ $value['order_id'] }}')">
                                         Do Cancel
-                                    </a> | <a type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    </a> | <a type="button"  class="btn btn-block btn-outline-warning" data-bs-toggle="modal"
                                         data-bs-target="#statement_view_{{ $value['id'] }}"
                                         onclick="StatementView({{ $key }},'{{ $value['order_id'] }}')">
                                         Statement
@@ -149,7 +149,7 @@
 
                     </div>
                     <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                       <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -202,7 +202,7 @@
                         <h2 id="cancelorder" class="mt-4"></h2>
                     </div>
                     <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                       <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -396,7 +396,7 @@
                             <textarea class="form-control" name="comments" ${isDisabled}></textarea>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger mt-2 submit-btn" ${isDisabled}>
+                            <button type="button"  class="btn btn-block btn-outline-danger mt-2 submit-btn" ${isDisabled}>
                                 <span class="spinner-border spinner-border-sm" style="display: none;"></span>
                                 Do Cancel
                             </button>
@@ -580,7 +580,7 @@
                             <textarea class="form-control" name="comments[]" ${isDisabled}></textarea>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary mt-2 submit-btn" ${isDisabled}>
+                            <button type="button"  class="btn btn-block btn-outline-primary mt-2 submit-btn" ${isDisabled}>
                                 <span class="spinner-border spinner-border-sm" style="display: none;"></span>
                                 Redeem
                             </button>

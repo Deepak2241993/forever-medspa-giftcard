@@ -43,7 +43,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                        <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
+                                        <button type="button"  class="btn btn-block btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                                             <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                         </button>
                                         <label for="input-password">Password</label>
@@ -64,7 +64,7 @@
 
                                     </div>
                                     <div class="mb-3">
-                                        <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
+                                        <button  class="btn btn-block btn-outline-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                                     </div>
                                 </form>
 

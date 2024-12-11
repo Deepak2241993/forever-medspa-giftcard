@@ -30,7 +30,7 @@
                     <input class="form-control form-control-sidebar" type="search" placeholder="Search"
                         aria-label="Search">
                     <div class="input-group-append">
-                        <button class="btn btn-sidebar">
+                        <button  class="btn btn-block btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
                         </button>
                     </div>
@@ -170,6 +170,34 @@
                         </li>
                       </ul>
                     </li>
+                    {{--  Program Management  --}}
+                    <li class="nav-header">Prgram Management</li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                          <i class="nav-icon fa-solid fa-receipt"></i>
+                          <p>
+                            Prgram Management
+                              <i class="fas fa-angle-left right"></i>
+                              <span class="badge badge-info right">3</span>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('program.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>
+                                    Prgram List
+
+                                </p>
+                            </a>
+                        </li>
+                        
+                      </ul>
+                    </li>
+                    {{-- Program Management Code end  --}}
+                    
+                    <li class="nav-header">MISCELLANEOUS</li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa-solid fa-receipt"></i>
@@ -190,7 +218,6 @@
 
                         </ul>
                     </li>
-                    <li class="nav-header">MISCELLANEOUS</li>
                     <li class="nav-item">
                         <a href="{{ route('coupon.index') }}" class="nav-link">
                             <i class="nav-icon fa fa-barcode"></i>

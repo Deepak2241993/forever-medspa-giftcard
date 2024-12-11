@@ -29,7 +29,7 @@
             <!--begin::Container-->
             <div class="container-fluid">
                 <!--begin::Row-->
-                <a href="{{ route('product.create') }}" class="btn btn-primary">Add More</a>
+                <a href="{{ route('product.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
                 <div class="card-header">
 
                     <span class="text-success">
@@ -64,11 +64,11 @@
 
                                     <td>{{ date('m-d-Y h:i:s', strtotime($value['created_at'])) }}</td>
                                     <td>
-                                        <a href="{{ route('product.edit', $value['id']) }}" class="btn btn-primary">Edit</a>
+                                        <a href="{{ route('product.edit', $value['id']) }}"  class="btn btn-block btn-outline-primary">Edit</a>
                                         <form action="{{ route('product.destroy', $value['id']) }}" method="POST">
                                             @method('DELETE')
                                             @csrf <!-- Include CSRF token for security -->
-                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                            <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                         </form>
                                     </td>
 
@@ -111,7 +111,7 @@
                     <h2 id="giftcardsshow"></h2>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

@@ -190,7 +190,7 @@
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
-                                                                    class="btn btn-success giftcartbutton" type="button">
+                                                                     class="btn btn-block btn-outline-success giftcartbutton" type="button">
                                                                     <i class="fa fa-check"
                                                                                 aria-hidden="true"></i>
                                                                 </button>
@@ -201,7 +201,7 @@
                                                             </div>
                                                             <div id="parentElement"></div>
                                                             <div class="col-md-5  mt-4 mb-4">
-                                                                <button class="btn btn-primary" id="addGiftCardButton"
+                                                                <button  class="btn btn-block btn-outline-primary" id="addGiftCardButton"
                                                                     type="button">Apply More
                                                                     Giftcard
                                                                     
@@ -310,7 +310,7 @@
                 </div>
                 <div class="col-md-3" style="display:flex;">
                     <button onclick="validategiftnumber(${key})"
-                        class="btn btn-success giftcartbutton" type="button">
+                         class="btn btn-block btn-outline-success giftcartbutton" type="button">
                         <span class="fill-btn-inner">
                             <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
                             <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -318,7 +318,7 @@
                     </button> 
                     |
                     <button 
-                        class="btn btn-danger giftcartdelete remove-button" type="button" data-key="${key}">
+                         class="btn btn-block btn-outline-danger giftcartdelete remove-button" type="button" data-key="${key}">
                         <span class="fill-btn-inner">
                             <span class="fill-btn-normal">X</span>
                             <span class="fill-btn-hover">X</span>

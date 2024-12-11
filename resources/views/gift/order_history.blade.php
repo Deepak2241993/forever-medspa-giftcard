@@ -60,7 +60,7 @@
                             <td>
                              
                                 @if(!empty($value->payment_intent))
-                                <a class="btn btn-warning"
+                                <a  class="btn btn-block btn-outline-warning"
                                     href="{{ route('service-invoice', ['transaction_data' => $value->id]) }}">
                                     Invoice
                                 </a>
@@ -121,7 +121,7 @@
                 <h2 id="giftcardsshow"></h2>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('programs', function (Blueprint $table) {
             $table->id();
+            $table->string('program_name')->nullable();
+            $table->mediumText('description')->nullable();
+            $table->float('selling_price')->default(0.00);
+            $table->mediumText('terms_and_conditions')->nullable();
+            $table->tinyInteger('status')->default(1); 
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\ServiceUnit;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -14,7 +15,9 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        //
+        $data = Program::paginate(10);
+        return view('admin.program.index', compact('data'));
+
     }
 
     /**
@@ -24,7 +27,7 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.program.create');
     }
 
     /**

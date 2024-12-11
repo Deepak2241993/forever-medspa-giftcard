@@ -98,7 +98,7 @@
 
         <!-- Submit Button -->
         <div class="mb-3 col-lg-6">
-            <button class="btn btn-primary" type="submit" name="submit">Submit</button>
+            <button  class="btn btn-block btn-outline-primary" type="submit" name="submit">Submit</button>
         </div>
     </div>
     </form>

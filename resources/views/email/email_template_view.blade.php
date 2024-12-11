@@ -61,7 +61,7 @@
 
                             </div>
                             <div class="mb-3 col-lg-10">
-                                <BUTTON class="btn btn-primary">Send</BUTTON>
+                                <BUTTON  class="btn btn-block btn-outline-primary">Send</BUTTON>
 
                             </div>
                         </div>

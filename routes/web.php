@@ -82,6 +82,7 @@ Route::get('payment-process','PopularOfferController@AdminPaymentProcess')->name
 Route::post('servic-checkout-process','PopularOfferController@CheckoutProcess')->name('servic-checkout-process');
 Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
 Route::resource('/terms', TermController::class);
+Route::resource('/program', ProgramController::class);
 
 });
 

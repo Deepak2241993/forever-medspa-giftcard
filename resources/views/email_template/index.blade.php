@@ -24,7 +24,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            <a href="{{ route('email-template.create') }}" class="btn btn-primary">Add More</a>
+            <a href="{{ route('email-template.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
             <form class="mt-2" method="get" action="{{ route('ServicesSearch') }}">
                 @csrf
                 <div class="row mb-4">
@@ -36,7 +36,7 @@
 
                     <div class="col-md-1">
                         <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                        <button type="submit" class="btn btn-success mt-4">Search</button>
+                        <button type="submit"  class="btn btn-block btn-outline-success mt-4">Search</button>
                     </div>
                 </div>
             </form>
@@ -77,12 +77,12 @@
                             <td>{{ $value->status == 1 ? 'Active' : 'Deactive' }}
                             </td>
                             <td><a href="{{ route('email-template.edit', $value->id) }}"
-                                    class="btn btn-primary"><i class="bx bx-pencil"></i>Edit </a>
+                                     class="btn btn-block btn-outline-primary"><i class="bx bx-pencil"></i>Edit </a>
                                 <form method="post"
                                     action="{{ route('email-template.destroy', $value->id) }}">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-danger"
+                                    <button type="submit"  class="btn btn-block btn-outline-danger"
                                         onclick="return confirm('Are You sure')"><i
                                             class="bx bx-trash-alt"></i>Delete</button>
 

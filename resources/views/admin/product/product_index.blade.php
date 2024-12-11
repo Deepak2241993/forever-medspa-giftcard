@@ -27,17 +27,17 @@
             <!--begin::Row-->
             <div style="display: flex; justify-content: space-between; align-items: center;">
     <!-- Add More Button (Left Side) -->
-            <a href="{{ route('product.create') }}" class="btn btn-dark">Add More</a>
+            <a href="{{ route('product.create') }}"  class="btn btn-block btn-dark">Add More</a>
 
             <!-- Form and Demo Download (Right Side) -->
             <div style="display: flex; align-items: center; gap: 10px;">
                 @if($paginator->isEmpty())
-                <a href="{{url('/services.csv')}}" class="btn btn-info" download="services.csv">Download Service Template</a>
+                <a href="{{url('/services.csv')}}"  class="btn btn-block btn-outline-info" download="services.csv">Download Service Template</a>
                 @else
-                <a href="{{url('/admin/export-services')}}" class="btn btn-info" download="services.csv">Download Service Template</a>
+                <a href="{{url('/admin/export-services')}}"  class="btn btn-block btn-outline-info" download="services.csv">Download Service Template</a>
                 @endif
-                <a href="{{url('/admin/export-categories')}}" class="btn btn-warning" download="deals.csv">Download Deals Data</a>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#media_modal">
+                <a href="{{url('/admin/export-categories')}}"  class="btn btn-block btn-outline-warning" download="deals.csv">Download Deals Data</a>
+                <button type="button"  class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#media_modal">
                     Media
                   </button>
             </div>
@@ -74,7 +74,7 @@
                     @endforeach
                 </ul>
             </li>
-            <li> <a href="{{ route('clear.errors') }}" class="btn btn-danger">Clear Errors</a></li>
+            <li> <a href="{{ route('clear.errors') }}"  class="btn btn-block btn-outline-danger">Clear Errors</a></li>
         @endforeach
     </ul>
 </div>
@@ -100,7 +100,7 @@
                                     <input type="file" name="file" class="form-control" accept=".csv" required>
                                 </div>
                                 <div class="form-group col-md-4 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100">Import</button>
+                                    <button type="submit"  class="btn btn-block btn-outline-primary w-100">Import</button>
                                 </div>
                             </div>
                         </form>
@@ -115,7 +115,7 @@
                                     <input type="hidden" class="form-control" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
                                 </div>
                                 <div class="form-group col-md-4 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-success w-100">Search</button>
+                                    <button type="submit"  class="btn btn-block btn-outline-success w-100">Search</button>
                                 </div>
                             </div>
                         </form>
@@ -141,7 +141,7 @@
                     @foreach($paginator as $value)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a class="btn btn-primary"
+                            <td><a  class="btn btn-block btn-outline-primary"
                                     onclick="addcart({{ $value['id'] }})">Buy</a></td>
                             <td>{{ $value['product_name'] ? $value['product_name'] : 'NULL' }}
                             </td>
@@ -165,13 +165,13 @@
                     </td>
                     <td>
                         <a href="{{ route('product.edit', $value['id']) }}"
-                            class="btn btn-primary">Edit</a>
+                             class="btn btn-block btn-outline-primary">Edit</a>
                         <form
                             action="{{ route('product.destroy', $value['id']) }}"
                             method="POST">
                             @method('DELETE')
                             @csrf<!-- Include CSRF token for security -->
-                            <button class="btn btn-danger" type="submit">Delete</button>
+                            <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                         </form>
                     </td>
 
@@ -211,7 +211,7 @@
                 <h2 id="giftcardsshow"></h2>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -245,7 +245,7 @@
                             style="display: flex; align-items: center; gap: 10px;">
                             <input type="file" class="form-control" name="images[]" id="images" multiple
                                 style="width: auto;" required accept="image/jpg, image/jpeg, image/png" />
-                            <button type="submit" class="btn btn-success">Upload Images</button>
+                            <button type="submit"  class="btn btn-block btn-outline-success">Upload Images</button>
                         </form>
                         <!-- Display Uploaded Images -->
                         <div id="progressWrapper" style="display: none; margin-top: 10px;">
@@ -256,7 +256,7 @@
                         <!-- Display Uploaded Images -->
         </div>
         <div class="modal-footer">
-            {{-- <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button> --}}
+            {{-- <button  class="btn btn-block btn-outline-warning" onclick="window.location.reload();">Refresh</button> --}}
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                 <div class="row">
                     @foreach ($images as $key => $image)
@@ -266,7 +266,7 @@
                                 <button type="button" class="rounded-circle btn-close delete-image text-danger" aria-label="Close" style="position: absolute; top: -23px; right: -24px; background: transparent; border: 1px; font-size: 20px;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
                                 
                                 <!-- Copy URL Button -->
-                                <input type="button" class="form-control btn btn-success mt-1 mb-2" id="copy_url_{{ $key }}" url_link="{{ url('/') }}{{ Storage::url($image) }}" value="Copy URL" onclick="Copy({{ $key }});" />
+                                <input type="button" class="form-control btn btn-outline-success mt-1 mb-2" id="copy_url_{{ $key }}" url_link="{{ url('/') }}{{ Storage::url($image) }}" value="Copy URL" onclick="Copy({{ $key }});" />
                             </div>
                         </div>
                     @endforeach

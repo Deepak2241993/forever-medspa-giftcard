@@ -26,18 +26,18 @@
 
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <a href="{{ route('category.create') }}" class="btn btn-primary">Add More</a>
+                        <a href="{{ route('category.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
                     </div>
 
                     <div style="display: flex; align-items: center; gap: 10px;">
                         @if ($paginator->isEmpty())
-                            <a href="{{ url('/deals.csv') }}" class="btn btn-info" download="deals.csv">Deals Template
+                            <a href="{{ url('/deals.csv') }}"  class="btn btn-block btn-outline-info" download="deals.csv">Deals Template
                                 Download</a>
                         @else
-                            <a href="{{ url('/admin/export-categories-with-full-data') }}" class="btn btn-info"
+                            <a href="{{ url('/admin/export-categories-with-full-data') }}"  class="btn btn-block btn-outline-info"
                                 download="deals.csv">Deals Template Download</a>
                         @endif
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                        <button type="button"  class="btn btn-block btn-outline-primary" data-toggle="modal"
                             data-target="#media_modal">Media</button>
 
                     </div>
@@ -72,7 +72,7 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li> <a href="{{ route('clear.errors') }}" class="btn btn-danger">Clear Errors</a></li>
+                                <li> <a href="{{ route('clear.errors') }}"  class="btn btn-block btn-outline-danger">Clear Errors</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -98,7 +98,7 @@
                                     <input type="file" accept=".csv" name="file" class="form-control" required>
                                 </div>
                                 <div class="form-group col-md-4 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100">Import</button>
+                                    <button type="submit"  class="btn btn-block btn-outline-primary w-100">Import</button>
                                 </div>
                             </div>
                         </form>
@@ -115,7 +115,7 @@
                                         value="{{ Auth::user()->user_token }}">
                                 </div>
                                 <div class="form-group col-md-4 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-success w-100">Search</button>
+                                    <button type="submit"  class="btn btn-block btn-outline-success w-100">Search</button>
                                 </div>
                             </div>
                         </form>
@@ -154,12 +154,12 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('category.edit', $value['id']) }}"
-                                            class="btn btn-primary">Edit</a>
+                                             class="btn btn-block btn-outline-primary">Edit</a>
                                         <form action="{{ route('category.destroy', $value['id']) }}" method="POST"
                                             style="display:inline;">
                                             @method('DELETE')
                                             @csrf
-                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                            <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -197,7 +197,7 @@
                         <h2 id="giftcardsshow"></h2>
                     </div>
                     <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                       <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -233,7 +233,7 @@
                             style="display: flex; align-items: center; gap: 10px;">
                             <input type="file" class="form-control" name="images[]" id="images" multiple
                                 style="width: auto;" required accept="image/jpg, image/jpeg, image/png" />
-                            <button type="submit" class="btn btn-success">Upload Images</button>
+                            <button type="submit"  class="btn btn-block btn-outline-success">Upload Images</button>
                         </form>
                         <!-- Display Uploaded Images -->
                         <div id="progressWrapper" style="display: none; margin-top: 10px;">
@@ -244,7 +244,7 @@
                         <!-- Display Uploaded Images -->
                     </div>
                     <div class="modal-footer">
-                        {{-- <button class="btn btn-warning" onclick="window.location.reload();">Refresh</button> --}}
+                        {{-- <button  class="btn btn-block btn-outline-warning" onclick="window.location.reload();">Refresh</button> --}}
                         <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="row">
                             @foreach ($images as $key => $image)
@@ -254,7 +254,7 @@
                                         <button type="button" class="rounded-circle btn-close delete-image text-danger" aria-label="Close" style="position: absolute; top: -23px; right: -24px; background: transparent; border: 1px; font-size: 20px;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
                                         
                                         <!-- Copy URL Button -->
-                                        <input type="button" class="form-control btn btn-success mt-1 mb-2" id="copy_url_{{ $key }}" url_link="{{ url('/') }}{{ Storage::url($image) }}" value="Copy URL" onclick="Copy({{ $key }});" />
+                                        <input type="button" class="form-control btn btn-outline-success mt-1 mb-2" id="copy_url_{{ $key }}" url_link="{{ url('/') }}{{ Storage::url($image) }}" value="Copy URL" onclick="Copy({{ $key }});" />
                                     </div>
                                 </div>
                             @endforeach

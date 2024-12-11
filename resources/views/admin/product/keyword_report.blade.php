@@ -32,11 +32,11 @@
                         <input type="date" class="form-control" placeholder="From Date">
                     </div>
                     <div class="col-md-4">
-                        <button class="form-control btn btn-primary">Export</button>
+                        <button class="form-control btn btn-outline-primary">Export</button>
                     </div>
                 </div>
                </form> --}}
-            <a href="{{ route('export_date') }}" class="btn btn-primary">Click For Data Export</a>
+            <a href="{{ route('export_date') }}"  class="btn btn-block btn-outline-primary">Click For Data Export</a>
             <div class="card-header">
 
                 <span class="text-success">
