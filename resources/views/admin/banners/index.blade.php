@@ -14,7 +14,7 @@
                 </ol>
             </div>
         </div>
-        <a href="{{ route('banner.create') }}" class="btn btn-primary">Add More</a>
+        <a href="{{ route('banner.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
     </div><!-- /.container-fluid -->
 </section>
 <section class="content-header">
@@ -24,8 +24,8 @@
         <section class="content">
             <div class="container-fluid">
                 <!--begin::Row-->
-                {{-- <a href="{{route('medspa-gift.create') }}" class="btn
-                btn-primary">Add More</a> --}}
+                {{-- <a href="{{route('medspa-gift.create') }}"  class="btn btn-block
+                btn-outline-primary">Add More</a> --}}
                 <div class="card-header">
                     @if($errors->any())
                         <div class="alert alert-danger">
@@ -78,14 +78,14 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('banner.edit', $value->id) }}"
-                                                class="btn btn-primary">Edit</a>
+                                                 class="btn btn-block btn-outline-primary">Edit</a>
                                             <form
                                                 action="{{ route('banner.destroy', $value->id) }}"
                                                 method="POST">
                                                 @method('DELETE')
                                                 
                                                   @csrf
-                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                             </form>
                                         </td>
 

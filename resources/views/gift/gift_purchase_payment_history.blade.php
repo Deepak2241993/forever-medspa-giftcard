@@ -75,7 +75,7 @@
                 </table>
             </div>
         </div>
-            <button class="btn btn-warning mt-4"onclick="printDiv()"> Print</button>
+            <button  class="btn btn-block btn-outline-warning mt-4"onclick="printDiv()"> Print</button>
         </center>
                 
                 <!-- /.Start col -->

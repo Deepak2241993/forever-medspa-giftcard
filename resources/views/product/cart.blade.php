@@ -160,9 +160,9 @@
                                                 <td>
                                                     <a href="javascript:void(0)"
                                                         onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
-                                                        class="btn btn-success">Update</a>
+                                                         class="btn btn-block btn-outline-success">Update</a>
                                                     <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')"
-                                                        class="btn btn-danger">Remove</a>
+                                                         class="btn btn-block btn-outline-danger">Remove</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -212,7 +212,7 @@
 
                                                             <div class="col-md-3 mt-4">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
-                                                                    class="btn btn-success giftcartbutton" type="button">
+                                                                     class="btn btn-block btn-outline-success giftcartbutton" type="button">
                                                                     <span class="fill-btn-inner">
                                                                         <span class="fill-btn-normal"><i class="fa fa-check"
                                                                                 aria-hidden="true"></i></span>
@@ -358,7 +358,7 @@
                 </div>
                 <div class="col-md-3 mt-4" style="display:flex;">
                     <button onclick="validategiftnumber(${key})"
-                        class="btn btn-success giftcartbutton" type="button">
+                         class="btn btn-block btn-outline-success giftcartbutton" type="button">
                         <span class="fill-btn-inner">
                             <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
                             <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -366,7 +366,7 @@
                     </button> 
                     |
                     <button 
-                        class="btn btn-danger giftcartdelete remove-button" type="button" data-key="${key}">
+                         class="btn btn-block btn-outline-danger giftcartdelete remove-button" type="button" data-key="${key}">
                         <span class="fill-btn-inner">
                             <span class="fill-btn-normal">X</span>
                             <span class="fill-btn-hover">X</span>

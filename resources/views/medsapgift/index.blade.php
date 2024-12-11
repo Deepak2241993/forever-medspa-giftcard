@@ -30,7 +30,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a>
+            <a href="{{route('medspa-gift.create')}}"  class="btn btn-block btn-outline-primary">Add More</a>
             <div class="card-header">
                 @if(session()->has('error'))
                     {{ session()->get('error') }}
@@ -67,11 +67,11 @@
                         <td>{{ $value->created_at }}</td>
                         <td>{{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
                         <td>
-                            <a href="{{route('medspa-gift.edit',$value->id)}}" class="btn btn-primary">Edit</a>
+                            <a href="{{route('medspa-gift.edit',$value->id)}}"  class="btn btn-block btn-outline-primary">Edit</a>
                             <form action="{{route('medspa-gift.destroy',$value->id) }}" method="POST">
                                 @method('DELETE')
                                 @csrf <!-- Include CSRF token for security -->
-                                <button class="btn btn-danger" type="submit">Delete</button>
+                                <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>

@@ -78,7 +78,7 @@
                                 <div id="image_class">
                                     <img src="{{ $data['cat_image'] }}"
                                         style="width:80%; height:100px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"><span>
-                                        <buttom class="btn btn-danger" onclick="hideImage()">X</buttom>
+                                        <buttom  class="btn btn-block btn-outline-danger" onclick="hideImage()">X</buttom>
                                     </span>
                                 </div>
                             @endisset
@@ -107,7 +107,7 @@
                 </div> --}}
 
                 <div class="mb-3 col-lg-12">
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button  class="btn btn-block btn-outline-primary" type="submit">Submit</button>
                 </div>
             </div>
             </form>

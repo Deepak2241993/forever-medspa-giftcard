@@ -95,25 +95,25 @@
                                              <li class="list-group-item"><span class="giftlist">$25
                                                 gift card</span>
                                                 <span class="giftamount">$25</span>
-                                                <button class="btn btn-warning"
+                                                <button  class="btn btn-block btn-outline-warning"
                                                    type="button"onclick="fixamount(25)">Buy</button>
                                              </li>
                                              <li class="list-group-item"><span class="giftlist">$50
                                                 gift card</span>
                                                 <span class="giftamount">$50</span>
-                                                <button class="btn btn-warning"
+                                                <button  class="btn btn-block btn-outline-warning"
                                                    type="button"onclick="fixamount(50)">Buy</button>
                                              </li>
                                              <li class="list-group-item"><span class="giftlist">$75
                                                 gift card</span>
                                                 <span class="giftamount">$75</span>
-                                                <button class="btn btn-warning"
+                                                <button  class="btn btn-block btn-outline-warning"
                                                    type="button"onclick="fixamount(75)">Buy</button>
                                              </li>
                                              <li class="list-group-item"><span class="giftlist">$100
                                                 gift card</span>
                                                 <span class="giftamount">$100</span>
-                                                <button class="btn btn-warning"
+                                                <button  class="btn btn-block btn-outline-warning"
                                                    type="button"onclick="fixamount(100)">Buy</button>
                                              </li>
                                              <li class="list-group-item">
@@ -127,7 +127,7 @@
                                                          onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
                                                    </div>
                                                 </div>
-                                                <button class="btn btn-warning customeamount_responsiv"
+                                                <button  class="btn btn-block btn-outline-warning customeamount_responsiv"
                                                    type="button"onclick="customeamount()">Buy
                                                 </button>
                                                 
@@ -150,11 +150,11 @@
                                              coupondiscount="0"></h2>
                                           <p>For use at Forever Medspa Clinic</p>
                                           <div class="button-group ml-4">
-                                             <button type="button"class="btn btn-light active"
+                                             <button type="button" class="btn btn-block btn-light active"
                                                 id="someone" onclick="someOneElse('someone')"><i
                                                 class="fa fa-gift" aria-hidden="true"></i>
                                              Someone else</button>
-                                             <button type="button"class="btn btn-light"
+                                             <button type="button" class="btn btn-block btn-light"
                                                 id="self"onclick="someOneElse('self')"><i
                                                 class="fa fa-user" aria-hidden="true"></i>
                                              Yourself</button>
@@ -203,8 +203,8 @@
                                                    <textarea name="msg" id="message" autocomplete="off" rows="4" class="form-control"></textarea>
                                                 </div>
                                                 <div class="button-group">
-                                                   {{-- <button type="button"class="btn btn-light active" id="giftSendonemail" onclick="giftsendsomeone('onemail')"><i class="fa fa-envelope" aria-hidden="true"></i> By email</button> --}}
-                                                   {{-- <button type="button"class="btn btn-light" id="giftSendonprint"onclick="giftsendsomeone('onprint')"><i class="fa fa-print" aria-hidden="true"></i> By Print</button> --}}
+                                                   {{-- <button type="button" class="btn btn-block btn-light active" id="giftSendonemail" onclick="giftsendsomeone('onemail')"><i class="fa fa-envelope" aria-hidden="true"></i> By email</button> --}}
+                                                   {{-- <button type="button" class="btn btn-block btn-light" id="giftSendonprint"onclick="giftsendsomeone('onprint')"><i class="fa fa-print" aria-hidden="true"></i> By Print</button> --}}
                                                 </div>
                                                 <div id="emailfields">
                                                    <div class="mb-3 col-lg-12 mt-2"
@@ -302,7 +302,7 @@
                                                          id="coupon_code" message="">
                                                    </div>
                                                    <div class="col-md-3">
-                                                      <button class="btn btn-warning"
+                                                      <button  class="btn btn-block btn-outline-warning"
                                                          type="button"onclick="CheckCoupon()">Apply
                                                       Code
                                                       </button>
@@ -314,11 +314,11 @@
                                                    </div>
                                                 </div>
                                                 <div class="mb-3 col-lg-12 mt-2">
-                                                   <button class="btn btn-primary"
+                                                   <button  class="btn btn-block btn-outline-primary"
                                                       id="couponaply"
                                                       onclick="sendsomeOneElse()" type="button"
                                                       name="submit">Submit</button>
-                                                   <button class="btn btn-warning"
+                                                   <button  class="btn btn-block btn-outline-warning"
                                                       id="submitFormButton" type="button"
                                                       onclick="firstboxshow()">Back</button>
                                                 </div>
@@ -364,13 +364,13 @@
                                                 </div>
                                                 <div class="button-group">
                                                    <button
-                                                      type="button"class="btn btn-light active"
+                                                      type="button" class="btn btn-block btn-light active"
                                                       id="onemail"
                                                       onclick="giftsend('onemail')"><i
                                                       class="fa fa-envelope"
                                                       aria-hidden="true"></i> By
                                                    email</button>
-                                                   {{-- <button type="button"class="btn btn-light" id="onprint"onclick="giftsend('onprint')"><i class="fa fa-print" aria-hidden="true"></i> By Print</button> --}}
+                                                   {{-- <button type="button" class="btn btn-block btn-light" id="onprint"onclick="giftsend('onprint')"><i class="fa fa-print" aria-hidden="true"></i> By Print</button> --}}
                                                 </div>
                                                 <div class="mb-3 col-lg-12 mt-2"
                                                    id="giftSendByEmail">
@@ -391,7 +391,7 @@
                                                          id="scoupon_code" message="">
                                                    </div>
                                                    <div class="col-md-3">
-                                                      <button class="btn btn-warning"
+                                                      <button  class="btn btn-block btn-outline-warning"
                                                          type="button"onclick="SelfCoupon()">Apply
                                                       Code
                                                       </button>
@@ -404,10 +404,10 @@
                                                       id="SCoupon_error"></div>
                                                 </div>
                                                 <div class="mb-3 col-lg-12 mt-2">
-                                                   <button class="btn btn-primary"
+                                                   <button  class="btn btn-block btn-outline-primary"
                                                       onclick="selfValidation()" type="button"
                                                       name="submit">Submit</button>
-                                                   <button class="btn btn-warning" id="back"
+                                                   <button  class="btn btn-block btn-outline-warning" id="back"
                                                       type="button"
                                                       onclick="firstboxshow()">Back</button>
                                                 </div>
@@ -442,7 +442,7 @@
                                           id="gift_card_code">
                                        </div>
                                        <div class="col-md-3">
-                                       <button class="btn btn-warning mb-4"
+                                       <button  class="btn btn-block btn-outline-warning mb-4"
                                           type="button" onclick="check_balance()">Check
                                        Balance
                                        </button>

@@ -9,12 +9,12 @@
         <a href="{{ url('/users/user-dashboard') }}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ url('/') }}" class="nav-link">View Website</a>
+        <a href="{{ url('/') }}" target="_blank" class="nav-link">View Website</a>
       </li>
       @if(count(session()->get('cart', []))>0)
       <li class="nav-item d-none d-sm-inline-block">
-                  <div id="cart" class="btn-group btn-block">
-                      <button onclick="window.location.href='{{route('service-cart')}}'" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-bag"></i> <span id="cart-total" class="hidden-xs">{{ count(session()->get('cart', [])) ? count(session()->get('cart', [])) : 0 }}
+                  <div id="cart"  class="btn btn-block-group btn-block">
+                      <button onclick="window.location.href='{{route('service-cart')}}'" type="button" data-toggle="dropdown" data-loading-text="Loading..."  class="btn btn-block btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-bag"></i> <span id="cart-total" class="hidden-xs">{{ count(session()->get('cart', [])) ? count(session()->get('cart', [])) : 0 }}
                       </span></button>
                       {{-- <ul class="dropdown-menu pull-right">    <li>
                           <p class="text-center">Your shopping cart is empty!</p>
@@ -36,10 +36,10 @@
             <div class="input-group input-group-sm">
               <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
+                <button  class="btn btn-block btn-navbar" type="submit">
                   <i class="fas fa-search"></i>
                 </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                <button  class="btn btn-block btn-navbar" type="button" data-widget="navbar-search">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
@@ -164,8 +164,8 @@
 
                    <!--begin::Menu Footer-->
                    <li class="user-footer">
-                       <a href="#" class="btn btn-default btn-flat">Profile</a>
-                       <a href="{{ url('/logout') }}" class="btn btn-default btn-flat float-end">Sign out</a>
+                       <a href="#"  class="btn btn-block btn-default btn-flat">Profile</a>
+                       <a href="{{ url('/logout') }}"  class="btn btn-block btn-default btn-flat float-end">Sign out</a>
                    </li>
                    <!--end::Menu Footer-->
                </ul>

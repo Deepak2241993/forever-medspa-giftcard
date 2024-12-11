@@ -22,6 +22,8 @@ return new class extends Migration
             $table->tinyInteger('status')->defalut();
             $table->string('apply_condition')->nullable();
             $table->mediumText('redeem_description')->nullable();
+            $table->string('discount_type')->nullable();
+            $table->string('user_token')->nullable();
 
             $table->timestamps();
         });

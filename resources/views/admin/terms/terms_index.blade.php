@@ -27,7 +27,7 @@
                 <!--begin::Row-->
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <!-- Add More Button (Left Side) -->
-                    <a href="{{ route('terms.create') }}" class="btn btn-dark mb-4">Add More</a>
+                    <a href="{{ route('terms.create') }}"  class="btn btn-block btn-dark mb-4">Add More</a>
 
                     <!-- Form and Demo Download (Right Side) -->
 
@@ -107,11 +107,11 @@
 
                                 <td>{{ date('m-d-Y h:i:s', strtotime($value['created_at'])) }}</td>
                                 <td>
-                                    <a href="{{ route('terms.edit', $value['id']) }}" class="btn btn-primary">Edit</a>
+                                    <a href="{{ route('terms.edit', $value['id']) }}"  class="btn btn-block btn-outline-primary">Edit</a>
                                     <form action="{{ route('terms.destroy', $value['id']) }}" method="POST">
                                         @method('DELETE')
                                         @csrf<!-- Include CSRF token for security -->
-                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                        <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                     </form>
                                 </td>
 

@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-3 mt-4">
-                                        <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Reset</button>
+                                        <button  class="btn btn-block btn-outline-primary w-100 waves-effect waves-light" type="submit">Reset</button>
                                     </div>
                                 </form>
 

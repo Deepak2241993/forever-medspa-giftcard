@@ -57,7 +57,7 @@
                                         <label for="userpassword" class="form-label">Confirm Password</label>
                                     </div>
                                     <div class="text-end">
-                                        <button class="btn btn-primary w-md waves-effect waves-light"
+                                        <button  class="btn btn-block btn-outline-primary w-md waves-effect waves-light"
                                             type="submit">Reset</button>
                                     </div>
                                 </form>

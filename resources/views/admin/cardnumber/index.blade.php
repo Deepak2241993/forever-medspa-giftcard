@@ -62,8 +62,9 @@
             <!--begin::Container-->
             <section class="content">
                 <div class="container-fluid">
+
                     <!--begin::Row-->
-                    {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a> --}}
+                    {{-- <a href="{{route('medspa-gift.create')}}"  class="btn btn-block btn-outline-primary">Add More</a> --}}
                     <div class="card-header">
                         @if (session()->has('error'))
                             <p class="text-danger"> {{ session()->get('error') }}</p>
@@ -73,6 +74,25 @@
                         @endif
                     </div>
                     <span class="text-success"id="response_msg"></span>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0">Search Data</h4>
+                        </div>
+                        <div class="card-body"> 
+                                <div class="mb-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="recipient_name" name="recipient_name" placeholder="Enter Gift Card Holder Name" onkeyup="SearchView()">
+                                        </div>
+                                        <div class="col-md-6">
+                                        
+                                            <input type="text" class="form-control" id="receipt_email" name="receipt_email" placeholder="Enter Gift Card Holder Email" onkeyup="SearchView()">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
                     <div class="scroll-container">
                         <div style="overflow: scroll">
                             {{-- <div class="scroll-content"> --}}
@@ -97,7 +117,7 @@
                                             <th>Send Mail</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="data-table-body">
                                         @foreach($paginatedItems as $key=>$value)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -147,7 +167,7 @@
 
                                                 <td><?php echo date('m-d-Y h:i:A', strtotime($value['created_at'])); ?></td>
                                                 <td>
-                                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                                         onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
                                                         View Card
@@ -157,9 +177,9 @@
                                                 <td>
                                                     @if ($value['payment_status'] == 'succeeded')
                                                         <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
-                                                            class="btn btn-warning" id="mailsend_{{ $value['id'] }}">Mail
+                                                             class="btn btn-block btn-outline-warning" id="mailsend_{{ $value['id'] }}">Mail
                                                             Resend</a>
-                                                        {{-- <button class="btn btn-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
+                                                        {{-- <button  class="btn btn-block btn-outline-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
                                                     @endif
                                                 </td>
 
@@ -216,7 +236,7 @@
                                 value="{{ Auth::user()->user_token }}">
                             <input type="hidden" class="gift_id" id="gift_id_" name="id" value="">
 
-                            <button type="button" class="btn btn-primary mt-3 paymentstatusbutton" id="paymentstatusbutton"
+                            <button type="button"  class="btn btn-block btn-outline-primary mt-3 paymentstatusbutton" id="paymentstatusbutton"
                                 gift_id="gift_id_" onclick="updatestatus(event)"><span
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                     style="display: none;"></span>Update</button>
@@ -224,7 +244,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -247,7 +267,7 @@
                     <h2 id="giftcardsshow"></h2>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -371,5 +391,89 @@
                 }
             });
         }
+
+        function SearchView() {
+    var recipient_name = $('#recipient_name').val();
+    var receipt_email = $('#receipt_email').val();
+
+    $.ajax({
+        url: '{{ route('gift-card-transaction-search') }}', // API endpoint
+        method: "GET",
+        dataType: "json",
+        data: {
+            recipient_name: recipient_name,
+            receipt_email: receipt_email
+        },
+        success: function (response) {
+            if (response.status === 'success' && response.data.data.length > 0) {
+                var tableBody = $('#data-table-body'); // ID of your table body
+                tableBody.empty(); // Clear existing rows
+
+                // Loop through the response data and populate the table
+                $.each(response.data.data, function (key, value) {
+                    // Format date
+                    var updatedDate = value.updated_at
+                        ? new Date(value.updated_at).toLocaleString('en-US', {
+                            month: '2-digit',
+                            day: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                        })
+                        : 'N/A';
+
+                    // Handle product images dynamically
+                    var productImages = value.product_image ? value.product_image.split('|') : [];
+                    var firstImage = productImages.length > 0 ? productImages[0] : '{{ url("/No_Image_Available.jpg") }}';
+
+                    // Handle payment status
+                    var paymentStatusBadge = '';
+                    if (value.payment_status === 'succeeded') {
+                        paymentStatusBadge = '<span class="badge text-bg-success">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
+                    } else if (value.payment_status === 'processing') {
+                        paymentStatusBadge = '<span class="badge text-bg-primary">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
+                    } else {
+                        paymentStatusBadge = '<span class="badge text-bg-danger">Incompleted</span>';
+                    }
+
+                    // Append rows
+                    tableBody.append(`
+                        <tr>
+                            <td>${key + 1}</td>
+                            <td>${value.recipient_name || value.your_name}</td>
+                            <td>${value.payment_mode === 'Payment Gateway' ? (value.recipient_name ? value.your_name : 'Self') : '{{ Auth::user()->user_token }}'}</td>
+                            <td>${value.receipt_email || 'Medspa'}</td>
+                            <td class="text-uppercase">${value.coupon_code || '----'}</td>
+                            <td>${value.qty || '----'}</td>
+                            <td>${value.amount ? '$' + value.amount : '$ 0'}</td>
+                            <td>${value.discount ? '$' + value.discount : '$ 0'}</td>
+                            <td>${value.transaction_amount ? '$' + value.transaction_amount : '$ 0'}</td>
+                            <td>${paymentStatusBadge}</td>
+                            <td>${value.transaction_id}</td>
+                            <td>${new Date(value.created_at).toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</td>
+                            <td>
+                                <a type="button" class="btn btn-block btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop_${value.id}" onclick="cardview(${value.id},'${value.transaction_id}')">
+                                    View Card
+                                </a>
+                            </td>
+                        </tr>
+                    `);
+                });
+            } else {
+                // Handle empty results
+                $('#data-table-body').empty().append('<tr><td colspan="9">No results found.</td></tr>');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            alert('An error occurred while fetching data.');
+        },
+    });
+}
+
+
+
+
     </script>
 @endpush

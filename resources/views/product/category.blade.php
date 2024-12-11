@@ -185,7 +185,7 @@
                                 <img src="{{ url($value->image) }}" class="d-block w-100" alt="..."
                                     onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <a href="{{ $value->url }}" target="_blank" class="btn btn-primary"
+                                    <a href="{{ $value->url }}" target="_blank"  class="btn btn-block btn-outline-primary"
                                         style="width:120px;height:35px;font-size:15px">Explore More</a>
                                 </div>
                             </div>
@@ -330,7 +330,7 @@
                                                             </a>
                                                         </div>
                                                         {{-- <div class="postbox__read-more">
-                              <a class="btn btn-primary" href="{{ route('product', ['slug' => $value['slug']]) }}">Explore</a>
+                              <a  class="btn btn-block btn-outline-primary" href="{{ route('product', ['slug' => $value['slug']]) }}">Explore</a>
                            </div> --}}
                                                     </div>
                                             </article>

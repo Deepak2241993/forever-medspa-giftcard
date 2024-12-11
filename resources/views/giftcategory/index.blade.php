@@ -30,7 +30,7 @@
             <!--begin::Container-->
             <div class="container-fluid">
                 <!--begin::Row-->
-                <a href="{{ route('gift-category.create') }}" class="btn btn-primary">Add More</a>
+                <a href="{{ route('gift-category.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
                 <div class="card-header">
                     @if (session()->has('error'))
                         {{ session()->get('error') }}
@@ -62,12 +62,12 @@
                                 <td> {{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
                                 <th>
                                     <a href="{{ route('gift-category.edit', ['gift_category' => $value->id]) }}"
-                                        class="btn btn-primary">Edit</a>
+                                         class="btn btn-block btn-outline-primary">Edit</a>
                                     <form action="{{ route('gift-category.destroy', ['gift_category' => $value->id]) }}"
                                         method="POST">
                                         @method('DELETE')
                                         @csrf <!-- You should include CSRF token for security -->
-                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                        <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                     </form>
 
 
