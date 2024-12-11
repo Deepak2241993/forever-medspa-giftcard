@@ -529,6 +529,60 @@ if ($request->hasFile('product_image')) {
             return view('product.product_details',compact('data','category','search','popular_service','description'));
             }
 
+            public function ServiceSearch(Request $request, Product $product)
+            {
+                // Start with a base query
+                $query = $product->query();
+            
+                // Check if 'service_name' is provided in the request
+                if ($request->filled('service_name')) {
+                    $service_name = strtolower($request->service_name);  // Get the search term
+            
+                    // Apply the filter on both 'product_name' and 'product_slug'
+                    $query->where(function($q) use ($service_name) {
+                        $q->whereRaw('LOWER(product_name) LIKE ?', ['%' . $service_name . '%'])
+                          ->orWhereRaw('LOWER(product_slug) LIKE ?', ['%' . $service_name . '%']);
+                    });
+                }
+            
+                // Order and paginate results (you can adjust this based on your requirements)
+                $data = $query->orderBy('id', 'DESC')->paginate(10);
+            
+                // Return response as JSON
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Search results retrieved successfully.',
+                    'data' => $data,
+                ], 200);
+            }
+            //  For Unit Search
+            public function UnitSearch(Request $request, ServiceUnit $unit)
+            {
+                // Start with a base query
+                $query = $unit->query();
+            
+                // Check if 'service_name' is provided in the request
+                if ($request->filled('service_name')) {
+                    $service_name = strtolower($request->service_name);  // Get the search term
+            
+                    // Apply the filter on both 'product_name' and 'product_slug'
+                    $query->where(function($q) use ($service_name) {
+                        $q->whereRaw('LOWER(product_name) LIKE ?', ['%' . $service_name . '%'])
+                          ->orWhereRaw('LOWER(product_slug) LIKE ?', ['%' . $service_name . '%']);
+                    });
+                }
+            
+                // Order and paginate results (you can adjust this based on your requirements)
+                $data = $query->orderBy('id', 'DESC')->paginate(10);
+            
+                // Return response as JSON
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Search results retrieved successfully.',
+                    'data' => $data,
+                ], 200);
+            }
+            
 
     }
 

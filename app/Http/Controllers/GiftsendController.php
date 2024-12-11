@@ -514,4 +514,37 @@ public function giftcardValidate(Request $request){
     return $result;
 
 }
+
+public function GifttransactionSearch(Request $request, Giftsend $giftTransactions)
+{
+    // Start with a base query
+    $query = $giftTransactions->query();
+
+    // Check if 'recipient_name' is provided in the request
+    if ($request->filled('recipient_name')) {
+        $recipient_name = strtolower($request->recipient_name);  // Get the search term
+        // Apply the filter on 'recipient_name'
+        $query->whereRaw('LOWER(recipient_name) LIKE ?', ['%' . $recipient_name . '%']);
+    }
+
+    // Check if 'receipt_email' is provided in the request
+    if ($request->filled('receipt_email')) {
+        $receipt_email = strtolower($request->receipt_email);  // Get the search term
+        // Apply the filter on 'receipt_email'
+        $query->whereRaw('LOWER(receipt_email) LIKE ?', ['%' . $receipt_email . '%']);
+    }
+
+    // Order and paginate results
+    $data = $query->orderBy('id', 'DESC')->paginate(10);
+
+    // Return response as JSON
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Search results retrieved successfully.',
+        'data' => $data,
+    ], 200);
+}
+
+
+
 }

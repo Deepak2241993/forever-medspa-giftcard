@@ -23,16 +23,30 @@
         <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
-
-                <!--begin::Row-->
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <!-- Add More Button (Left Side) -->
-                    <a href="{{ route('unit.create') }}"  class="btn btn-block btn-dark mb-4">Add More</a>
-
-                    <!-- Form and Demo Download (Right Side) -->
-
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Search Data</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-end">
+                            <!-- Service Search Form -->
+                            <div class="col-md-8">
+                                <form method="GET" action="{{ route('product.index') }}">
+                                    @csrf
+                                    <div class="mb-0">
+                                        <label for="service_name" class="form-label">Search by Service Name:</label>
+                                        <input type="text" class="form-control" id="service_name" name="service_name" placeholder="Enter Service Name" onkeyup="SearchView()">
+                                        <input type="hidden" class="form-control" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Add More Button -->
+                            <div class="col-md-4">
+                                <a href="{{ route('unit.create') }}" class="btn btn-dark w-100">Add More</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- Display Uploaded Images -->
 
                 @if (session('message'))
                     <div class="alert alert-success mt-4">
@@ -48,9 +62,6 @@
                         </ul>
                     </div>
                 @endif
-          
-            
-                
                 <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                     <thead>
                         <tr>
@@ -63,7 +74,7 @@
 
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="data-table-body">
                         @foreach ($result as $value)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -252,5 +263,69 @@
                 console.error("Could not copy text: ", error);
             });
         }
+        function SearchView() {
+    var service_name = $('#service_name').val();
+    $.ajax({
+        url: '{{ route('unit-search') }}', // API endpoint
+        method: "GET",
+        dataType: "json",
+        data: {
+            service_name: service_name,
+        },
+        success: function (response) {
+            if (response.status === 'success' && response.data.data.length > 0) {
+                var tableBody = $('#data-table-body'); // ID of your table body
+                tableBody.empty(); // Clear existing rows
+
+                // Loop through the response data and populate the table
+                $.each(response.data.data, function (key, value) {
+                    // Format date
+                    var updatedDate = value.updated_at
+                        ? new Date(value.updated_at).toLocaleString('en-US', {
+                              month: '2-digit',
+                              day: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              second: '2-digit',
+                          })
+                        : 'N/A';
+
+                    // Handle product images dynamically
+                    var productImages = value.product_image ? value.product_image.split('|') : [];
+                    var firstImage = productImages.length > 0 ? productImages[0] : '{{ url("/No_Image_Available.jpg") }}';
+
+                    // Append rows
+                    tableBody.append(`
+                        <tr>
+                            <td>${key + 1}</td>
+                            <td><a class="btn btn-block btn-outline-primary" onclick="addcart(${value.id})">Buy</a></td>
+                            <td>${value.product_name || 'N/A'}</td>
+                            <td>${value.amount || '0.00'}</td>
+                            <td>${value.discounted_amount || '0.00'}</td>
+                            <td>${value.short_description ? value.short_description.substring(0, 100) + '...' : 'N/A'}</td>
+                            <td>${value.unit_id !== null ? 'Unit Service' : 'Normal Deals & Service'}</td>
+                            <td>
+                                <a href="/product/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
+                                <form action="/product/${value.id}" method="POST" style="display:inline;">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    `);
+                });
+            } else {
+                // Handle empty results
+                $('#data-table-body').empty().append('<tr><td colspan="9">No results found.</td></tr>');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            alert('An error occurred while fetching data.');
+        },
+    });
+}
     </script>
 @endpush

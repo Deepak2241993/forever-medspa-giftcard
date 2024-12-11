@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
-                                            <label>State / County <span class="required">*</span></label>
+                                            <label>State / Country <span class="required">*</span></label>
                                             <input type="text" placeholder="" name="country" value="{{ old('country') }}">
                                             @error('country')
                                                 <span class="text-danger">{{ 'Please Enter State / County' }}</span>

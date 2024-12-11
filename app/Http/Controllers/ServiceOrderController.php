@@ -147,37 +147,41 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
           return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
       }
       
-      public function SearchServiceOrder(Request $request, TransactionHistory $transaction)
-        {
-            // Start with a base query
-            $query = $transaction->query();
+      
+        
+        // For onkey press function call
+        
+        public function SearchOrderApi(Request $request, TransactionHistory $transaction)
+            {
+                // Start with a base query
+                $query = $transaction->query();
 
-            // Apply different logic based on user type
-            if (Auth::user()->user_type == 1) {
-                // Admin user type logic: filter based on form inputs
-                if ($request->filled('order_id')) {
-                    $query->where('order_id', 'LIKE', '%' . $request->order_id . '%');
+                // Apply filters if present in the request
+                if ($request->filled('fname')) {
+                    $query->whereRaw('LOWER(fname) LIKE ?', ['%' . strtolower($request->fname) . '%']);
+                }
+
+                if ($request->filled('lname')) {
+                    $query->whereRaw('LOWER(lname) LIKE ?', ['%' . strtolower($request->lname) . '%']);
                 }
 
                 if ($request->filled('email')) {
-                    $query->where('email', 'LIKE', '%' . $request->email . '%');
+                    $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($request->email) . '%']);
                 }
 
-                if ($request->filled('phone')) {
-                    $query->where('phone', 'LIKE', '%' . $request->phone . '%');
-                }
+                // Order and paginate results
+                $data = $query->orderBy('id', 'DESC')->paginate(10);
 
-            } else {
-                // Non-admin user logic: filter based on user ID
-                $id = Auth::user()->id;
-                $query->where('user_id', $id);
+                // Return response as JSON
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Search results retrieved successfully.',
+                    'data' => $data,
+                ], 200);
             }
 
-            // Order and paginate results
-            $data = $query->orderBy('id', 'DESC')->paginate(10);
+        //  End function
 
-            return view('admin.redeem.service_redeem', compact('data'));
-        }
 
         public function getServiceStatement(Request $request)
         {

@@ -223,7 +223,6 @@ class StripeController extends Controller
         'zip_code' => 'required|digits:5',
         'email' => 'required|email|max:255',
         'phone' => 'required|digits_between:7,10',
-        'address' => 'required|string|max:255',
     ]);
 
     DB::beginTransaction();  // Start transaction

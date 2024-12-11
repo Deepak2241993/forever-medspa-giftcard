@@ -171,12 +171,12 @@
                       </ul>
                     </li>
                     {{--  Program Management  --}}
-                    <li class="nav-header">Prgram Management</li>
+                    <li class="nav-header">Program Management</li>
                     <li class="nav-item">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fa-solid fa-receipt"></i>
                           <p>
-                            Prgram Management
+                            Program Management
                               <i class="fas fa-angle-left right"></i>
                               <span class="badge badge-info right">3</span>
                           </p>
@@ -187,7 +187,7 @@
                             <a href="{{ route('program.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
-                                    Prgram List
+                                    Program List
 
                                 </p>
                             </a>

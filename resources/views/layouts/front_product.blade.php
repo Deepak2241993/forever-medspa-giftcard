@@ -73,11 +73,11 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
                     <ul class="navbar-nav">
                         <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Home</a></li>
-						<li>
+						{{-- <li>
                             <a class="nav-link {{ Request::is('services') ? 'active' : '' }}" href="{{ route('services') }}">
                                 Black Friday Deals
                             </a>
-                        </li>
+                        </li> --}}
                          <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
                         {{-- Cart Code --}}
                         @php

@@ -24,24 +24,7 @@
             <div class="container-fluid">
                 <!--begin::Row-->
 
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <a href="{{ route('category.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
-                    </div>
-
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        @if ($paginator->isEmpty())
-                            <a href="{{ url('/deals.csv') }}"  class="btn btn-block btn-outline-info" download="deals.csv">Deals Template
-                                Download</a>
-                        @else
-                            <a href="{{ url('/admin/export-categories-with-full-data') }}"  class="btn btn-block btn-outline-info"
-                                download="deals.csv">Deals Template Download</a>
-                        @endif
-                        <button type="button"  class="btn btn-block btn-outline-primary" data-toggle="modal"
-                            data-target="#media_modal">Media</button>
-
-                    </div>
-                </div>
+                
                 @if (session('success'))
                     <div class="alert alert-success mt-4">
                         {{ session('success') }}
@@ -88,39 +71,65 @@
                         </ul>
                     </div>
                 @endif
-                <div class="row">
-                    <div class="col-md-6">
-                        <form action="{{ route('categories.import') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    <label for="file">Upload Bulk Data</label>
-                                    <input type="file" accept=".csv" name="file" class="form-control" required>
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0">Search Data</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- Top Section with Buttons and Search Form -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <!-- Add More Button -->
+                                    <a href="{{ route('category.create') }}" class="btn btn-outline-primary w-100">Add More</a>
                                 </div>
-                                <div class="form-group col-md-4 d-flex align-items-end">
-                                    <button type="submit"  class="btn btn-block btn-outline-primary w-100">Import</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <form method="GET" action="{{ route('category.index') }}">
-                            @csrf
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    <label for="cat_name">Deals Name:</label>
-                                    <input type="text" class="form-control" id="cat_name" name="cat_name"
-                                        placeholder="Deals Name">
-                                    <input type="hidden" class="form-control" id="user_token" name="user_token"
-                                        value="{{ Auth::user()->user_token }}">
-                                </div>
-                                <div class="form-group col-md-4 d-flex align-items-end">
-                                    <button type="submit"  class="btn btn-block btn-outline-success w-100">Search</button>
+                
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <!-- Search Form -->
+                                    <form method="GET" action="{{ route('category.index') }}" class="d-flex w-100">
+                                        @csrf
+                                        <input type="text" class="form-control" id="cat_name" name="cat_name" placeholder="Deals Name" aria-label="Deals Name">
+                                        <input type="hidden" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
+                                        <button type="submit" class="btn btn-outline-success ml-2">Search</button>
+                                    </form>
                                 </div>
                             </div>
-                        </form>
+                
+                            <!-- Bulk Data Upload & Template Download Section -->
+                            <div class="row">
+                                <!-- Bulk Data Upload -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card shadow-sm p-3">
+                                        <h5>Upload Bulk Data</h5>
+                                        <form action="{{ route('categories.import') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="file">Choose CSV File</label>
+                                                <input type="file" accept=".csv" name="file" class="form-control" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-outline-primary w-100">Import</button>
+                                        </form>
+                                    </div>
+                                </div>
+                
+                                <!-- Deals Template Download & Media Button -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card shadow-sm p-3">
+                                        <h5>Deals Template</h5>
+                                        @if ($paginator->isEmpty())
+                                            <a href="{{ url('/deals.csv') }}" class="btn btn-outline-info w-100" download="deals.csv">Download Template</a>
+                                        @else
+                                            <a href="{{ url('/admin/export-categories-with-full-data') }}" class="btn btn-outline-info w-100" download="deals.csv">Download Full Data</a>
+                                        @endif
+                                        <button type="button" class="btn btn-outline-primary w-100 mt-3" data-toggle="modal" data-target="#media_modal">Media</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
+                
 
                 @if ($paginator->isEmpty())
                     <p>No categories found.</p>

@@ -42,6 +42,7 @@ Route::resource('/medspa-gift', MedsapGiftController::class);
 Route::resource('/email-template', EmailTemplateController::class);
 Route::post('/ckeditor-image-post', 'CkeditorController@uploadImage')->name('ckeditor-image-upload');
 Route::get('/cardgenerated-list','GiftsendController@cardgeneratedList')->name('cardgenerated-list');
+Route::get('/gift-card-transaction-search','GiftsendController@GifttransactionSearch')->name('gift-card-transaction-search');
 Route::post('/cardview-route','APIController@cardview')->name('cardview-route');
 Route::get('/giftcardredeem-view','GiftsendController@giftcardredeemView')->name('giftcardredeem-view');
 Route::get('/giftcardsearch','GiftsendController@GiftCardSearch')->name('giftcard-search');
@@ -51,6 +52,8 @@ Route::get('/giftcards-sale', 'GiftsendController@giftsale')->name('giftcards-sa
 Route::post('/giftcancel','GiftsendController@giftcancel')->name('giftcancel');
 Route::resource('/category', ProductCategoryController::class);
 Route::resource('/product', ProductController::class);
+Route::get('/service-search','ProductController@ServiceSearch')->name('service-search');
+Route::get('/unit-search','ProductController@UnitSearch')->name('unit-search');
 Route::resource('/unit', ServiceUnitController::class);
 Route::get('/unitdelete/{id}','ServiceUnitController@destroy')->name('unitdelete');
 Route::resource('/banner', BannerController::class);
@@ -64,7 +67,8 @@ Route::get('/export-categories-with-full-data', [CategoryExportController::class
 Route::get('/export-services', [CategoryExportController::class, 'exportServices']);
 Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('service-redeem-view');
 Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('redeem-services');
-Route::get('/search-service-order','ServiceOrderController@SearchServiceOrder')->name('search-service-order');
+
+Route::get('/search-order-api','ServiceOrderController@SearchOrderApi')->name('search-order-api');
 Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')->name('service-statement');
 Route::post('/redeemcalculation', 'ServiceOrderController@redeemcalculation')->name('redeemcalculation');
 Route::post('/do-cancel', 'ServiceOrderController@DoCancel')->name('do-cancel');
