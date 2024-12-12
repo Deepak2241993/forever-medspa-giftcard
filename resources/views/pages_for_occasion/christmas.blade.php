@@ -17,439 +17,397 @@
    .main_box_coupon .single-coupon-content {
    margin-top: 0px;
    }
+   #gift_card_code {
+   height: 45px; /* Adjust height for a balanced look */
+   border-radius: 5px;
+   }
+   .btn-warning {
+   background-color: #ffc107;
+   border: none;
+   font-weight: bold;
+   }
 </style>
 <!-- wish -->
 <div class="about-box" style="padding-bottom: 0;">
-<div class="about-a1" style="background:#f7f7f7;margin-top: 50px; padding: 40px 20px 50px 20px;">
-   <div class="container">
-      <input type="hidden" id="user_token"value="FOREVER-MEDSPA" placeholder="" />
-      <div class="row">
-         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row align-items-center about-main-info">
-               <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h2><b>Giftcards made simple</b>
-                  </h2>
-                  <p style="text-align: justify;">We're thrilled to express our gratitude to the loyal
-                     customers of MedSpa Wellness centre, with our ! Whether it's a token of appreciation, a
-                     celebration, or a simple gesture of kindness, our gift cards provide the perfect
-                     opportunity to share the joy of our products and services. Delight your loved ones with
-                     the freedom to explore and indulge in what they love most. With each gift card, we're
-                     extending our heartfelt thanks for your continued support and patronage. Spread the joy
-                     and make someone's day a little brighter with our gift cards
-                  </p>
-                  @if (isset($coupon_code) && count($coupon_code) > 0)
-                  <hr>
-                  <h4 class="mt-2 mb-2">Get your Coupon and Save more!</h4>
-                  <hr>
-                  @foreach ($coupon_code as $key => $value)
-                  @if ($key < 5)
-                  <div class="row main_box_coupon mt-2">
-                     <div class="col-md-3"></div>
-                     <div class="col-md-5">
-                        <strong
-                           style="margin-left: 2px;margin-right: 2px;font-size:20px;text-align: center;"><u>{{ $value->title ? $value->title : '' }}</u></strong>
-                        <p
-                           style="font-weight: 700;margin-left: 5px;margin-right: 18px;text-align: center;">
-                           {{ $value->title ? $value->redeem_description : '' }}
-                        </p>
+   <div class="about-a1" style="background:#f7f7f7;margin-top: 50px; padding: 40px 20px 50px 20px;">
+      <div class="container">
+         <input type="hidden" id="user_token"value="FOREVER-MEDSPA" placeholder="" />
+         <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+               <div class="row align-items-center about-main-info">
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                     <h2><b>Giftcards made simple</b>
+                     </h2>
+                     <p style="text-align: justify;">We're thrilled to express our gratitude to the loyal
+                        customers of MedSpa Wellness centre, with our ! Whether it's a token of appreciation, a
+                        celebration, or a simple gesture of kindness, our gift cards provide the perfect
+                        opportunity to share the joy of our products and services. Delight your loved ones with
+                        the freedom to explore and indulge in what they love most. With each gift card, we're
+                        extending our heartfelt thanks for your continued support and patronage. Spread the joy
+                        and make someone's day a little brighter with our gift cards
+                     </p>
+                     @if (isset($coupon_code) && count($coupon_code) > 0)
+                     <hr>
+                     <h4 class="mt-2 mb-2">Get your Coupon and Save more!</h4>
+                     <hr>
+                     @foreach ($coupon_code as $key => $value)
+                     @if ($key < 5)
+                     <div class="row main_box_coupon mt-2">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-5">
+                           <strong
+                              style="margin-left: 2px;margin-right: 2px;font-size:20px;text-align: center;"><u>{{ $value->title ? $value->title : '' }}</u></strong>
+                           <p
+                              style="font-weight: 700;margin-left: 5px;margin-right: 18px;text-align: center;">
+                              {{ $value->title ? $value->redeem_description : '' }}
+                           </p>
+                        </div>
+                        <div class="col-md-4" style="text-align:center">
+                           <span class="mt-2">
+                              Coupon Code
+                              <h3>
+                                 <b>{{ $value->title ? $value->coupon_code : '' }}</b>
+                              </h3>
+                           </span>
+                        </div>
                      </div>
-                     <div class="col-md-4" style="text-align:center">
-                        <span class="mt-2">
-                           Coupon Code
-                           <h3>
-                              <b>{{ $value->title ? $value->coupon_code : '' }}</b>
-                           </h3>
-                        </span>
-                     </div>
-                  </div>
-                  @endif
-                  @endforeach
-                  @endif
-               </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 text_align_center">
-                  <div>
-                     @if (session()->has('message'))
-                     {{ session()->get('message') }}
                      @endif
-                     <!-- MultiStep Form -->
-                     <div class="row justify-content-center mt-0">
-                        <div class="col-11 col-sm-9 col-md-7 col-lg-11 text-center p-0 mt-3 mb-2">
-                           <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                              <h2><strong>Send Gift Cards </strong></h2>
-                              <p>Fill all form field to go to next step</p>
-                              <div class="row">
-                                 <div class="col-md-12 mx-0">
-                                    <div id="msform">
-                                       <!-- progressbar -->
-                                       <ul id="progressbar">
-                                          <li class="active" id="gift"><strong>Gift</strong></li>
-                                          <li id="personal"><strong>Personal</strong></li>
-                                          <li id="payment"><strong>Payment</strong></li>
-                                          {{-- 
-                                          <li id="confirm"><strong>Finish</strong></li>
-                                          --}}
-                                       </ul>
-                                       <!-- fieldsets -->
-                                       <fieldset id="firstbox">
-                                          <ul class="list-group">
-                                             <li class="list-group-item"><span class="giftlist">$25
-                                                gift card</span>
-                                                <span class="giftamount">$25</span>
-                                                <button  class="btn btn-block btn-outline-warning"
-                                                   type="button"onclick="fixamount(25)">Buy</button>
-                                             </li>
-                                             <li class="list-group-item"><span class="giftlist">$50
-                                                gift card</span>
-                                                <span class="giftamount">$50</span>
-                                                <button  class="btn btn-block btn-outline-warning"
-                                                   type="button"onclick="fixamount(50)">Buy</button>
-                                             </li>
-                                             <li class="list-group-item"><span class="giftlist">$75
-                                                gift card</span>
-                                                <span class="giftamount">$75</span>
-                                                <button  class="btn btn-block btn-outline-warning"
-                                                   type="button"onclick="fixamount(75)">Buy</button>
-                                             </li>
-                                             <li class="list-group-item"><span class="giftlist">$100
-                                                gift card</span>
-                                                <span class="giftamount">$100</span>
-                                                <button  class="btn btn-block btn-outline-warning"
-                                                   type="button"onclick="fixamount(100)">Buy</button>
-                                             </li>
-                                             <li class="list-group-item">
-                                                <div class="row">
-                                                   <span class="giftlist p-4">Choose an amount…</span>
-                                                   <div class="col-md-12">
-                                                      <input type="number" step="1"
-                                                         min="25" max="2000"
-                                                         id="customeamount"
-                                                         size="8"placeholder="$25"
-                                                         onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
-                                                   </div>
-                                                </div>
-                                                <button  class="btn btn-block btn-outline-warning customeamount_responsiv"
-                                                   type="button"onclick="customeamount()">Buy
-                                                </button>
-                                                
-                                                   
-                                                
-                                             </li>
-                                             <p class="p-4">Give the gift of rejuvenation and
-                                                relaxation with a Medspa gift card - perfect for you
-                                                and your friends!
-                                             </p>
-                                             <p class="text-warning p-4" onclick="checkbalance()"
-                                                href="javascript:void(0)">Check your gift card
-                                                balance
-                                             </p>
+                     @endforeach
+                     @endif
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 text_align_center">
+                     <div>
+                        @if (session()->has('message'))
+                        {{ session()->get('message') }}
+                        @endif
+                        <!-- MultiStep Form -->
+                        <div class="row justify-content-center mt-0">
+                           <div class="col-11 col-sm-9 col-md-7 col-lg-11 text-center p-0 mt-3 mb-2">
+                              <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                                 <h2><strong>Send Gift Cards </strong></h2>
+                                 <p>Fill all form field to go to next step</p>
+                                 <div class="row">
+                                    <div class="col-md-12 mx-0">
+                                       <div id="msform">
+                                          <!-- progressbar -->
+                                          <ul id="progressbar">
+                                             <li class="active" id="gift"><strong>Gift</strong></li>
+                                             <li id="personal"><strong>Personal</strong></li>
+                                             <li id="payment"><strong>Payment</strong></li>
+                                             {{-- 
+                                             <li id="confirm"><strong>Finish</strong></li>
+                                             --}}
                                           </ul>
-                                          {{-- <input type="button" name="next" class="next" value="Next Step"/> --}}
-                                       </fieldset>
-                                       <fieldset id="secondbox">
-                                          <h2 id="amountdisplay" amount="0" finalAmount="0"
-                                             coupondiscount="0"></h2>
-                                          <p>For use at Forever Medspa Clinic</p>
-                                          <div class="button-group ml-4">
-                                             <button type="button" class="btn btn-block btn-light active"
-                                                id="someone" onclick="someOneElse('someone')"><i
-                                                class="fa fa-gift" aria-hidden="true"></i>
-                                             Someone else</button>
-                                             <button type="button" class="btn btn-block btn-light"
-                                                id="self"onclick="someOneElse('self')"><i
-                                                class="fa fa-user" aria-hidden="true"></i>
-                                             Yourself</button>
-                                          </div>
-                                          <form id ="someoneform" method="post"
-                                             enctype="multipart/form-data" class="p-4 text-left">
-                                             @csrf
-                                             <div class="row">
-                                                <!-- /ko -->
-                                                <div class="mb-3 col-lg-12 self">
-                                                   <label for="to_1"
-                                                      class="form-label">Quantity</label>
-                                                   <select class="form-control" name="qty"
-                                                      id="qty" onchange="qtychange()">
-                                                   @for ($i = 1; $i <= 10; $i++)
-                                                   <option
-                                                   value="{{ $i }}"{{ $i == 1 ? 'selected' : '' }}>
-                                                   {{ $i }}</option>
-                                                   @endfor
-                                                   </select>
-                                                </div>
-                                                <div class="mb-3 col-lg-12 self">
-                                                   <label for="your_name" class="form-label">Your
-                                                   name<span
-                                                      class="text-danger">*</span></label>
-                                                   <input class="form-control" type="text"
-                                                      name="your_name" value=""
-                                                      placeholder="From Name" id="your_name"
-                                                      autocomplete="off" required>
-                                                   <input type="hidden" value="0"
-                                                      name="template_id">
-                                                </div>
-                                                <div class="mb-3 col-lg-12">
-                                                   <label for="recipient_name"
-                                                      class="form-label">Recipient name<span
-                                                      class="text-danger">*</span></label>
-                                                   <input class="form-control" type="text"
-                                                      name="to_name" value=""
-                                                      placeholder="To Name" id="recipient_name"
-                                                      autocomplete="off" required>
-                                                </div>
-                                                <div class="mb-3 col-lg-12">
-                                                   <label for="message"
-                                                      class="form-label">Message<span
-                                                      class="text-danger">*</span></label>
-                                                   <textarea name="msg" id="message" autocomplete="off" rows="4" class="form-control"></textarea>
-                                                </div>
-                                                <div class="button-group">
-                                                   {{-- <button type="button" class="btn btn-block btn-light active" id="giftSendonemail" onclick="giftsendsomeone('onemail')"><i class="fa fa-envelope" aria-hidden="true"></i> By email</button> --}}
-                                                   {{-- <button type="button" class="btn btn-block btn-light" id="giftSendonprint"onclick="giftsendsomeone('onprint')"><i class="fa fa-print" aria-hidden="true"></i> By Print</button> --}}
-                                                </div>
-                                                <div id="emailfields">
-                                                   <div class="mb-3 col-lg-12 mt-2"
-                                                      id="giftSendByEmail">
-                                                      <label for="recipient_email"
-                                                         class="form-label"><b>What email
-                                                      address should we send the gift card
-                                                      to?<span
-                                                         class="text-danger">*</span></b></label>
-                                                      <input class="form-control" type="email"
-                                                         name="to_email" value=""
-                                                         placeholder="Recipient Email Address"
-                                                         id="gift_send_to" autocomplete="off"
-                                                         required>
-                                                   </div>
-                                                   <div class="mb-3 col-lg-12 mt-2"
-                                                      id="giftSendByEmail">
-                                                      <label for="recipient_email"
-                                                         class="form-label"><b>Your email
-                                                      address (for the receipt)<span
-                                                         class="text-danger">*</span></b></label>
-                                                      <input class="form-control" type="email"
-                                                         name="from_email" value=""
-                                                         placeholder="Sender's Email address (for the receipt)"
-                                                         id="recipient_email"
-                                                         autocomplete="off" required>
-                                                   </div>
-                                                   @if (count($occassion) > 0)
-                                                   <div class="mb-3 col-lg-12 mt-2"
-                                                      id="giftSendByEmail">
-                                                      <label for="recipient_email"
-                                                         class="form-label"><b>Select
-                                                      Event<span
-                                                         class="text-danger">*</span></b></label>
-                                                      <select class="form-control"
-                                                         id="Event_id" name="">
-                                                         <option value="">Select Event
-                                                         </option>
-                                                         @foreach ($occassion as $value)
-                                                         <option
-                                                            value="{{ $value->id }}">
-                                                            {{ $value->title }}
-                                                         </option>
-                                                         @endforeach
-                                                      </select>
-                                                   </div>
-                                                   @endif
-                                                   <div class="mb-3 col-12 d-flex align-items-center">
-                                                      <label class="form-label mb-0"><b>Send In Future: <span class="text-danger">*</span></b></label>
-                                                  </div>
-                                                  {{-- For Radio Button --}}
-                                                  <div class="form-check">
-                                                   <input 
-                                                   class="form-check-input" 
-                                                   type="radio" 
-                                                   id="future_yes" 
-                                                   value="yes" 
-                                                   name="future_status" 
-                                                   onclick="futureDate()" 
-                                                   autocomplete="off">
-                                                   <label class="form-check-label" for="future_yes">Send on a future date</label>
-                                                 </div>
-                                                 <div class="form-check">
-                                                   <input 
-                                                   class="form-check-input" 
-                                                   type="radio" 
-                                                   id="future_no" 
-                                                   value="no" 
-                                                   name="future_status" 
-                                                   onclick="futureDate()" 
-                                                   autocomplete="off" 
-                                                   checked>
-                                                   <label class="form-check-label"  for="future_no">Send instantly</label>
-                                                   </label>
-                                                 </div>
-                                                  
-
-                                                   <div class="mb-3 col-lg-12"
-                                                      id="future_date_section">
-                                                      <label for="in_future"
-                                                         class="form-label"><b>Select
-                                                      Date</b></label>
-                                                      <input class="form-control" id="in_future"
-                                                         type="date" name="future_date"
-                                                         autocomplete="off" required>
-                                                      <span id="error_msg"
-                                                         class="text-danger"></span>
-                                                   </div>
-                                                </div>
-                                                <hr />
-                                                <div class="row">
-                                                   <div class="mb-3 col-lg-9">
-                                                      <input class="text-uppercase"
-                                                         type="text"placeholder="Have a promo code?"
-                                                         id="coupon_code" message="">
-                                                   </div>
-                                                   <div class="col-md-3">
-                                                      <button  class="btn btn-block btn-outline-warning"
-                                                         type="button"onclick="CheckCoupon()">Apply
-                                                      Code
-                                                      </button>
-                                                   </div>
-                                                   <div class="text-success"style="margin-left: 20px;"
-                                                      id="Coupon_success"></div>
-                                                   <div class="text-danger"
-                                                      style="margin-left: 20px;"id="Coupon_error">
-                                                   </div>
-                                                </div>
-                                                <div class="mb-3 col-lg-12 mt-2">
-                                                   <button  class="btn btn-block btn-outline-primary"
-                                                      id="couponaply"
-                                                      onclick="sendsomeOneElse()" type="button"
-                                                      name="submit">Submit</button>
-                                                   <button  class="btn btn-block btn-outline-warning"
-                                                      id="submitFormButton" type="button"
-                                                      onclick="firstboxshow()">Back</button>
-                                                </div>
-                                                <div class="mb-3 col-lg-12">
-                                                   <p>Give the gift of rejuvenation and relaxation
-                                                      with a Medspa gift card - perfect for you
-                                                      and your friends! 
-                                                   </p>
-                                                   <p class="text-warning p-2"
-                                                      onclick="checkbalance()"
-                                                      href="javascript:void(0)">Check your gift
-                                                      card balance
-                                                   </p>
-                                                </div>
-                                             </div>
-                                          </form>
-                                          <form id="selfform" method="post"
-                                             enctype="multipart/form-data" class="p-4 text-left">
-                                             @csrf
-                                             <div class="row">
-                                                <div class="mb-3 col-lg-12 self">
-                                                   <label for="to_1"
-                                                      class="form-label">Quantity</label>
-                                                   <select class="form-control" id="sqty"
-                                                      onchange="sqtychange()">
-                                                   @for ($i = 1; $i <= 10; $i++)
-                                                   <option value="{{ $i }}"
-                                                   {{ $i == 1 ? 'selected' : '' }}>
-                                                   {{ $i }}</option>
-                                                   @endfor
-                                                   </select>
-                                                </div>
-                                                <div class="mb-3 col-lg-12 self">
-                                                   <label for="syour_name"
-                                                      class="form-label">Your Name<span
-                                                      class="text-danger">*</span></label>
-                                                   <input class="form-control" type="text"
-                                                      name="from_name" value=""
-                                                      placeholder="From Name" id="syour_name"
-                                                      required autocomplete="off">
-                                                   <input type="hidden" value="0"
-                                                      name="template_id">
-                                                </div>
-                                                <div class="button-group">
-                                                   <button
-                                                      type="button" class="btn btn-block btn-light active"
-                                                      id="onemail"
-                                                      onclick="giftsend('onemail')"><i
-                                                      class="fa fa-envelope"
-                                                      aria-hidden="true"></i> By
-                                                   email</button>
-                                                   {{-- <button type="button" class="btn btn-block btn-light" id="onprint"onclick="giftsend('onprint')"><i class="fa fa-print" aria-hidden="true"></i> By Print</button> --}}
-                                                </div>
-                                                <div class="mb-3 col-lg-12 mt-2"
-                                                   id="giftSendByEmail">
-                                                   <label for="to_email_1"
-                                                      class="form-label"><b>What email address
-                                                   should we send the gift card to?<span
-                                                      class="text-danger">*</span></b></label>
-                                                   <input class="form-control" type="email"
-                                                      name="to_email" value=""
-                                                      placeholder="Enter Your Email"
-                                                      id="sto_email" autocomplete="off"
-                                                      required>
-                                                </div>
-                                                <div class="row">
-                                                   <div class="col-md-9">
-                                                      <input class="text-uppercase"
-                                                         type="text"placeholder="Have a promo code?"
-                                                         id="scoupon_code" message="">
-                                                   </div>
-                                                   <div class="col-md-3">
-                                                      <button  class="btn btn-block btn-outline-warning"
-                                                         type="button"onclick="SelfCoupon()">Apply
-                                                      Code
-                                                      </button>
-                                                   </div>
-                                                   <div class="text-success"
-                                                      style="margin-left: 20px;"
-                                                      id="SCoupon_success"></div>
-                                                   <div class="text-danger"
-                                                      style="margin-left: 20px;"
-                                                      id="SCoupon_error"></div>
-                                                </div>
-                                                <div class="mb-3 col-lg-12 mt-2">
-                                                   <button  class="btn btn-block btn-outline-primary"
-                                                      onclick="selfValidation()" type="button"
-                                                      name="submit">Submit</button>
-                                                   <button  class="btn btn-block btn-outline-warning" id="back"
+                                          <!-- fieldsets -->
+                                          <fieldset id="firstbox">
+                                             <ul class="list-group">
+                                                <!-- Gift card items -->
+                                                <li
+                                                   class="list-group-item d-flex justify-content-between align-items-center">
+                                                   <span class="giftlist">$25 gift card</span>
+                                                   <span class="d-flex align-items-center">
+                                                   <span class="giftamount me-3">$25</span>
+                                                   <button class="btn btn-outline-warning"
                                                       type="button"
-                                                      onclick="firstboxshow()">Back</button>
+                                                      onclick="fixamount(25)">Buy</button>
+                                                   </span>
+                                                </li>
+                                                <li
+                                                   class="list-group-item d-flex justify-content-between align-items-center">
+                                                   <span class="giftlist">$50 gift card</span>
+                                                   <span class="d-flex align-items-center">
+                                                   <span class="giftamount me-3">$50</span>
+                                                   <button class="btn btn-outline-warning"
+                                                      type="button"
+                                                      onclick="fixamount(50)">Buy</button>
+                                                   </span>
+                                                </li>
+                                                <li
+                                                   class="list-group-item d-flex justify-content-between align-items-center">
+                                                   <span class="giftlist">$75 gift card</span>
+                                                   <span class="d-flex align-items-center">
+                                                   <span class="giftamount me-3">$75</span>
+                                                   <button class="btn btn-outline-warning"
+                                                      type="button"
+                                                      onclick="fixamount(75)">Buy</button>
+                                                   </span>
+                                                </li>
+                                                <li
+                                                   class="list-group-item d-flex justify-content-between align-items-center">
+                                                   <span class="giftlist">$100 gift card</span>
+                                                   <span class="d-flex align-items-center">
+                                                   <span class="giftamount me-3">$100</span>
+                                                   <button class="btn btn-outline-warning"
+                                                      type="button"
+                                                      onclick="fixamount(100)">Buy</button>
+                                                   </span>
+                                                </li>
+                                                <!-- Custom amount input -->
+                                                <li class="list-group-item">
+                                                   <!-- Label Section (Responsive) -->
+                                                   <div class="mb-3">
+                                                      <h6 class="mb-0">Choose a Custom Amount:</h6>
+                                                      <small class="text-muted d-block mb-2">Enter an amount between $25 and $2000.</small>
+                                                   </div>
+                                                   <!-- Input Field Section -->
+                                                   <div class="input-group w-100">
+                                                      <input 
+                                                         type="number" 
+                                                         step="1"
+                                                         min="25" 
+                                                         max="2000" 
+                                                         id="customeamount" 
+                                                         class="form-control" 
+                                                         placeholder="$30" 
+                                                         onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                                                         aria-label="Custom amount" 
+                                                         style="margin-top: 25px;">
+                                                   </div>
+                                                   <!-- Buy Button Section -->
+                                                   <div class="mt-3">
+                                                      <button class="btn btn-outline-warning w-100 w-md-auto" 
+                                                         type="button" 
+                                                         onclick="customeamount()">Buy</button>
+                                                   </div>
+                                                </li>
+                                                <!-- Additional content -->
+                                                <p class="p-4">Give the gift of rejuvenation and
+                                                   relaxation with a Medspa gift card - perfect for you
+                                                   and your friends!
+                                                </p>
+                                                <p class="text-warning p-4" onclick="checkbalance()"
+                                                   href="javascript:void(0)">Check your gift card
+                                                   balance
+                                                </p>
+                                             </ul>
+                                             {{-- <input type="button" name="next" class="next" value="Next Step"/> --}}
+                                          </fieldset>
+                                          <fieldset id="secondbox">
+                                             <h2 id="amountdisplay" amount="0" finalAmount="0"
+                                                coupondiscount="0"></h2>
+                                             <p>For use at Forever Medspa Clinic</p>
+                                             <div class="button-group ml-4 d-flex justify-content-between">
+                                                <button type="button" class="btn btn-light flex-fill active" id="someone" onclick="someOneElse('someone')">
+                                                    <i class="fa fa-gift" aria-hidden="true"></i> Someone else
+                                                </button>
+                                                <button type="button" class="btn btn-light flex-fill" id="self" onclick="someOneElse('self')">
+                                                    <i class="fa fa-user" aria-hidden="true"></i> Yourself
+                                                </button>
+                                            </div>
+                                            
+                                            
+                                            <form id="someoneform" method="post" enctype="multipart/form-data" class="p-4 text-left">
+                                                @csrf
+                                                <div class="row">
+                                                    <!-- Quantity Field -->
+                                                    <div class="mb-3 col-lg-12 col-md-12">
+                                                        <label for="to_1" class="form-label">Quantity</label>
+                                                        <select class="form-control" name="qty" id="qty" onchange="qtychange()">
+                                                            @for ($i = 1; $i <= 10; $i++)
+                                                                <option value="{{ $i }}"{{ $i == 1 ? 'selected' : '' }}>{{ $i }}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                            
+                                                    <!-- Your Name Field -->
+                                                    <div class="mb-3 col-lg-12 col-md-12 self">
+                                                        <label for="your_name" class="form-label">Your name <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" name="your_name" value="" placeholder="From Name" id="your_name" autocomplete="off" required>
+                                                        <input type="hidden" value="0" name="template_id">
+                                                    </div>
+                                            
+                                                    <!-- Recipient Name Field -->
+                                                    <div class="mb-3 col-lg-12 col-md-12">
+                                                        <label for="recipient_name" class="form-label">Recipient name <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" name="to_name" value="" placeholder="To Name" id="recipient_name" autocomplete="off" required>
+                                                    </div>
+                                            
+                                                    <!-- Message Field -->
+                                                    <div class="mb-3 col-lg-12 col-md-12">
+                                                        <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
+                                                        <textarea name="msg" id="message" autocomplete="off" rows="4" class="form-control"></textarea>
+                                                    </div>
+                                            
+                                                    <!-- Email Fields -->
+                                                    <div id="emailfields">
+                                                        <!-- Recipient Email -->
+                                                        <div class="mb-3 col-lg-12 col-md-12 mt-2" id="giftSendByEmail">
+                                                            <label for="recipient_email" class="form-label"><b>What email address should we send the gift card to? <span class="text-danger">*</span></b></label>
+                                                            <input class="form-control" type="email" name="to_email" value="" placeholder="Recipient Email Address" id="gift_send_to" autocomplete="off" required>
+                                                        </div>
+                                            
+                                                        <!-- Sender Email -->
+                                                        <div class="mb-3 col-lg-12 col-md-12 mt-2" id="giftSendByEmail">
+                                                            <label for="recipient_email" class="form-label"><b>Your email address (for the receipt) <span class="text-danger">*</span></b></label>
+                                                            <input class="form-control" type="email" name="from_email" value="" placeholder="Sender's Email address (for the receipt)" id="recipient_email" autocomplete="off" required>
+                                                        </div>
+                                            
+                                                        <!-- Select Event -->
+                                                        @if (count($occassion) > 0)
+                                                            <div class="mb-3 col-lg-12 col-md-12 mt-2" id="giftSendByEmail">
+                                                                <label for="recipient_email" class="form-label"><b>Select Event <span class="text-danger">*</span></b></label>
+                                                                <select class="form-control" id="Event_id" name="">
+                                                                    <option value="">Select Event</option>
+                                                                    @foreach ($occassion as $value)
+                                                                        <option value="{{ $value->id }}">{{ $value->title }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                            
+                                                      <!-- Future Send Section -->
+                                                      <div class="mb-3 col-md-12">
+                                                          <label class="form-label"><b>Send In Future: <span class="text-danger">*</span></b></label>
+                                                      </div>
+                                                    
+                                                         <div class="row" style="margin-left: 20px;" >
+                                                             <div class="col-md-8 d-flex align-items-center">
+                                                                 <input class="form-check-input" style="transform: scale(1.5); margin-right: 10px;" type="radio" id="future_yes" value="yes" name="future_status" onclick="futureDate()" autocomplete="off">
+                                                                 <label class="form-check-label" for="future_yes" style="font-size: 20px;">Send on a future date</label>
+                                                             </div>
+                                                             
+                                                             <div class="col-md-6 d-flex align-items-center">
+                                                                 <input class="form-check-input" style="transform: scale(1.5); margin-right: 10px;" type="radio" id="future_no" value="no" name="future_status" onclick="futureDate()" autocomplete="off" checked>
+                                                                 <label class="form-check-label" for="future_no" style="font-size: 20px;">Send instantly</label>
+                                                             </div>
+                                                         </div>
+                                                     
+                                                     
+
+                                             <!-- Future Date Input (Visible only if "Send on a future date" is selected) -->
+                                             <div class="mb-3 col-12 mt-2" id="future_date_section" style="display: none;">
+                                                <label for="in_future" class="form-label"><b>Select Date</b></label>
+                                                <input class="form-control" id="in_future" type="date" name="future_date" autocomplete="off" required>
+                                                <span id="error_msg" class="text-danger"></span>
+                                             </div>
+
                                                 </div>
+                                            
                                                 <hr />
-                                                <div class="mb-3 col-lg-12">
-                                                   <p>Give the gift of rejuvenation and relaxation
-                                                      with a Medspa gift card - perfect for you
-                                                      and your friends!
-                                                   </p>
-                                                   <p class="text-warning"
-                                                      onclick="checkbalance()"
-                                                      href="javascript:void(0)">Check your gift
-                                                      card balance
-                                                   </p>
+                                            
+                                                <!-- Promo Code Section -->
+                                                <div class="row">
+                                                   <div class="mb-3 col-lg-8 col-md-12 col-sm-6 col-12">
+                                                        <input class="text-uppercase form-control" type="text" placeholder="Have a promo code?" id="coupon_code">
+                                                    </div>
+                                                    <div class="mt-4 col-lg-4 col-md-12 col-sm-6 col-12">
+                                                        <button class="btn btn-block btn-outline-warning" type="button" onclick="CheckCoupon()">Apply Code</button>
+                                                    </div>
+                                                    <div class="text-success" style="margin-left: 20px;" id="Coupon_success"></div>
+                                                    <div class="text-danger" style="margin-left: 20px;" id="Coupon_error"></div>
                                                 </div>
+                                            
+                                                <!-- Submit and Back Buttons -->
+                                                <div class="mb-3 col-lg-12 col-md-12 mt-2">
+                                                    <button class="btn btn-block btn-outline-primary" id="couponaply" onclick="sendsomeOneElse()" type="button" name="submit">Submit</button>
+                                                    <button class="btn btn-block btn-outline-warning" id="submitFormButton" type="button" onclick="firstboxshow()">Back</button>
+                                                </div>
+                                            
+                                                <!-- Additional Info Section -->
+                                                <div class="mb-3 col-lg-12 col-md-12">
+                                                    <p>Give the gift of rejuvenation and relaxation with a Medspa gift card - perfect for you and your friends!</p>
+                                                    <p class="text-warning p-2" onclick="checkbalance()" href="javascript:void(0)">Check your gift card balance</p>
+                                                </div>
+                                            </form>
+                                            
+                                             <form id="selfform" method="post" enctype="multipart/form-data" class="p-4 text-left">
+                                                @csrf
+                                                <div class="row">
+                                                   <div class="mb-3 col-12">
+                                                         <label for="to_1" class="form-label">Quantity</label>
+                                                         <select class="form-control" id="sqty" onchange="sqtychange()">
+                                                            @for ($i = 1; $i <= 10; $i++)
+                                                               <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>
+                                                                     {{ $i }}
+                                                               </option>
+                                                            @endfor
+                                                         </select>
+                                                   </div>
+
+                                                   <div class="mb-3 col-12">
+                                                         <label for="syour_name" class="form-label">Your Name <span class="text-danger">*</span></label>
+                                                         <input class="form-control" type="text" name="from_name" placeholder="From Name" id="syour_name" required autocomplete="off">
+                                                         <input type="hidden" value="0" name="template_id">
+                                                   </div>
+
+                                                   <div class="mb-3 col-12">
+                                                         <div class="button-group d-flex justify-content-between">
+                                                            <button type="button" class="btn btn-block btn-light active" id="onemail" onclick="giftsend('onemail')">
+                                                               <i class="fa fa-envelope" aria-hidden="true"></i> By email
+                                                            </button>
+                                                            {{-- <button type="button" class="btn btn-block btn-light" id="onprint" onclick="giftsend('onprint')">
+                                                               <i class="fa fa-print" aria-hidden="true"></i> By Print
+                                                            </button> --}}
+                                                         </div>
+                                                   </div>
+
+                                                   <div class="mb-3 col-12 mt-2" id="giftSendByEmail">
+                                                         <label for="to_email_1" class="form-label"><b>What email address should we send the gift card to? <span class="text-danger">*</span></b></label>
+                                                         <input class="form-control" type="email" name="to_email" placeholder="Enter Your Email" id="sto_email" autocomplete="off" required>
+                                                   </div>
+
+                                                   <div class="row mb-3 col-12 mt-2">
+                                                         <div class="mb-3 col-lg-8 col-md-12 col-sm-6 col-12">
+                                                            <input class="form-control text-uppercase" type="text" placeholder="Have a promo code?" id="scoupon_code">
+                                                         </div>
+                                                         <div class="mb-3 col-lg-4 col-md-12 col-sm-6 col-12">
+                                                            <button class="mt-4 btn btn-block btn-outline-warning" type="button" onclick="SelfCoupon()">Apply Code</button>
+                                                         </div>
+                                                         <div class="text-success" style="margin-left: 20px;" id="SCoupon_success"></div>
+                                                         <div class="text-danger" style="margin-left: 20px;" id="SCoupon_error"></div>
+                                                   </div>
+
+                                                   <div class="mb-3 col-12 mt-2">
+                                                         <button class="btn btn-block btn-outline-primary" onclick="selfValidation()" type="button" name="submit">Submit</button>
+                                                         <button class="btn btn-block btn-outline-warning" id="back" type="button" onclick="firstboxshow()">Back</button>
+                                                   </div>
+
+                                                   <hr />
+
+                                                   <div class="mb-3 col-12">
+                                                         <p>Give the gift of rejuvenation and relaxation with a Medspa gift card - perfect for you and your friends!</p>
+                                                         <p class="text-warning" onclick="checkbalance()" href="javascript:void(0)">Check your gift card balance</p>
+                                                   </div>
+                                                </div>
+                                             </form>
+
+                                          </fieldset>
+                                          <fieldset id="paymentdbox" class="p-4">
+                                          <h2 class="fs-title">Order summary</h2>
+                                          <div id="paymentresult"></div>
+                                          <form action="{{ url('/giftcardpayment') }}"
+                                             method="POST" class="mb-4">
+                                          @csrf
+                                          <div id="paymentscript"></div>
                                           </form>
-                                       </fieldset>
-                                       <fieldset id="paymentdbox" class="p-4">
-                                       <h2 class="fs-title">Order summary</h2>
-                                       <div id="paymentresult"></div>
-                                       <form action="{{ url('/giftcardpayment') }}"
-                                          method="POST" class="mb-4">
-                                       @csrf
-                                       <div id="paymentscript"></div>
-                                       </form>
-                                       </fieldset>
-                                       <div class="giftcardField">
-                                       <div class="row p-4">
-                                       <div class="col-md-8">
-                                       <input
-                                          type="text"placeholder="Enter gift card code.."
-                                          id="gift_card_code">
-                                       </div>
-                                       <div class="col-md-3">
-                                       <button  class="btn btn-block btn-outline-warning mb-4"
-                                          type="button" onclick="check_balance()">Check
-                                       Balance
-                                       </button>
-                                       </div>
-                                       </div>
-                                       </div>
-                                       <span class="showbalance"></span>
+                                          </fieldset>
+                                          <div class="giftcardField">
+                                          <div class="row align-items-center p-4 g-3">
+                                          <!-- Input Field -->
+                                          <div class="col-md-8">
+                                          <div class="input-group">
+                                          <input 
+                                             type="text" 
+                                             placeholder="Enter gift card code..." 
+                                             id="gift_card_code" 
+                                             class="form-control"
+                                             aria-label="Gift Card Code">
+                                          </div>
+                                          </div>
+                                          <!-- Button -->
+                                          <div class="col-md-4 text-md-end">
+                                          <button 
+                                             class="btn btn-warning w-100 w-md-auto px-9" 
+                                             type="button" 
+                                             onclick="check_balance()">
+                                          Check Balance
+                                          </button>
+                                          </div>
+                                          </div>
+                                          </div>
+                                          </div>
+                                          <span class="showbalance"></span>
                                        </div>
                                     </div>
                                  </div>
@@ -772,7 +730,8 @@
                    }
                    if (response.data[0]['discount_type'] == 'percentage') {
                        var discountRate = response.data[0][
-                       'discount_rate']; // Assuming discount_rate is a percentage (e.g., 10 for 10%)
+                           'discount_rate'
+                       ]; // Assuming discount_rate is a percentage (e.g., 10 for 10%)
                        var discountAmount = (amount * discountRate) / 100;
                        var afterDiscount = amount - discountAmount;
                        $("#amountdisplay").attr('coupondiscount', discountAmount);
@@ -816,7 +775,8 @@
                    }
                    if (response.data[0]['discount_type'] == 'percentage') {
                        var discountRate = response.data[0][
-                       'discount_rate']; // Assuming discount_rate is a percentage (e.g., 10 for 10%)
+                           'discount_rate'
+                       ]; // Assuming discount_rate is a percentage (e.g., 10 for 10%)
                        var discountAmount = (amount * discountRate) / 100;
                        var afterDiscount = amount - discountAmount;
                        $("#amountdisplay").attr('coupondiscount', discountAmount);
