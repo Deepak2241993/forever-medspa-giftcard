@@ -382,7 +382,7 @@
                                                 <span class="giftlist">$25 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$25</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(25, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -390,7 +390,7 @@
                                                 <span class="giftlist">$50 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$50</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(50, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -398,7 +398,7 @@
                                                 <span class="giftlist">$75 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$75</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(75, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -406,7 +406,7 @@
                                                 <span class="giftlist">$100 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$100</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(100, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -421,7 +421,7 @@
                                                             onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                                     </div>
                                                     {{-- <div class="col-md-2">
-                                                       <button  class="btn btn-block btn-outline-warning right-content button_width" type="button" onclick="CustomeamountOther()">Buy</button>
+                                                       <button  class="btn btn-warning right-content button_width" type="button" onclick="CustomeamountOther()">Buy</button>
                                                    </div> --}}
                                                 </div>
                                                 <span class="text-danger amounterror"></span>
@@ -429,8 +429,10 @@
                                             <p class="p-2">Give the gift of rejuvenation and relaxation with a Medspa
                                                 gift card - perfect for you and your friends!</p>
                                         </ul>
-                                        <input type="button" id="check_amount_other_button" name="next"
-                                            class="next action-button" value="Next Step" />
+                                        <input type="button" id="check_amount_other_button" name="next" class="next action-button" 
+    onclick="$('#personal').addClass('active'); $('#payment').removeClass('active');" value="Next Step" />
+
+
                                     </section>
 
                                     <section id="o_two">
@@ -519,7 +521,7 @@
                                                         id="coupon_code">
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <button  class="btn btn-block btn-outline-warning couponValidate" type="button"
+                                                    <button  class="btn btn-warning couponValidate" type="button"
                                                         onclick="CheckCoupon()">Apply Code</button>
                                                 </div>
                                             </div>
@@ -565,7 +567,7 @@
                                         </div>
                                         <button type="button" class="previous btn btn-dark action-button-previous">Go
                                             Back</button>
-                                        <input type="submit" name="cok" value="Submit"  class="btn btn-block btn-outline-success" style="width: 50%;
+                                        <input type="submit" name="cok" value="Submit"  class="btn btn-success" style="width: 50%;
                                        font-weight: bold;
                                        color: white;
                                        border: 0 none;
@@ -596,7 +598,7 @@
                                                 <span class="giftlist">$25 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$25</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(25, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -604,7 +606,7 @@
                                                 <span class="giftlist">$50 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$50</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(50, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -612,7 +614,7 @@
                                                 <span class="giftlist">$75 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$75</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(75, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -620,7 +622,7 @@
                                                 <span class="giftlist">$100 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$100</span>
-                                                    <button  class="btn btn-block btn-outline-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(100, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -635,7 +637,7 @@
                                                             onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                                     </div>
                                                     {{-- <div class="col-md-2">
-                                                       <button  class="btn btn-block btn-outline-warning right-content button_width" type="button" onclick="CustomeamountSelf()">Buy</button>
+                                                       <button  class="btn btn-warning right-content button_width" type="button" onclick="CustomeamountSelf()">Buy</button>
                                                    </div> --}}
                                                 </div>
                                                 <span class="text-danger amounterror"></span>
@@ -693,7 +695,7 @@
                                                             id="scoupon_code" message="">
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <button  class="btn btn-block btn-outline-warning right-content" type="button"
+                                                        <button  class="btn btn-warning right-content" type="button"
                                                             onclick="SCheckCoupon()">Apply Code</button>
                                                     </div>
                                                     <div class="text-success Coupon_success" style="margin-left: 20px;">
@@ -798,7 +800,6 @@
             for (var i = 0; i < selectElements.length; i++) {
                 selectElements[i].value = '1';
             }
-
             console.log('Amount selected:', amount);
         }
 
@@ -1167,15 +1168,9 @@
                 document.getElementById('o_two').style.display = 'none';
                 // Assuming the next section has an id of 'nextSection'
                 document.getElementById('o_three').style.display = 'block';
-                $('#payment').addClass("active");
-
+               
             }
-            // else {
-            //     // If validation fails, do not proceed
-            //     // Optionally, you can show an error message or highlight invalid fields
-            //     alert('Please fill in all required fields.');
-            //     document.getElementById('o_three').style.display = 'none';
-            // }
+            $('#payment').addClass('active');
             var amount = $('#fix_amount').val();
             $('#amount_input').val(amount);
             $('#samount_input').val(amount);
