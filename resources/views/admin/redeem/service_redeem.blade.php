@@ -513,6 +513,8 @@
 
         //  For Order View Code Start ********************************************************************
         function OrderView(id, order_id) {
+            $('#redeemed_error').html('');
+            $('#redeemed_success').html('');
             $('.deepak').attr('id', 'staticBackdrop_' + id);
             $('#staticBackdrop_' + id).modal('show');
 
