@@ -144,7 +144,7 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
             }
 
           // Return a JSON response indicating success
-          return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
+          return response()->json(['success' => true, 'message' => $request->number_of_session_use.' Session redeemed successfully.']);
       }
       
       

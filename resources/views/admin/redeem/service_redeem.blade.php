@@ -147,6 +147,8 @@
                 <div class="modal-body">
                     <div style="display: flex; flex-direction: column;">
                         <h3> Order Details</h3>
+                        <h4 class="text-success" id="redeemed_success"></h4>
+                        <h4 class="text-danger" id="redeemed_error"></h4>
                         <span class="text-danger" id="error"></span>
                         <span class="text-success" id="success"></span>
                         <h2 id="giftcardsshow" class="mt-4"></h2>
@@ -606,61 +608,67 @@
                         $('#giftcardsshow').append(form);
 
                         // Add event listener for submit button clicks
-                        $('.submit-btn').click(function() {
-                            var button = $(this);
-                            var spinner = button.find('.spinner-border');
+                        $('.submit-btn').click(function () {
+                        var button = $(this);
+                        var spinner = button.find('.spinner-border');
 
-                            // Show the spinner
-                            spinner.show();
-                            button.prop('disabled', true);
+                        // Show the spinner and disable the button
+                        spinner.show();
+                        button.prop('disabled', true);
 
-                            var currentRow = button.closest('tr');
-                            var number_of_session_use = currentRow.find(
-                                'input[name="number_of_session_use[]"]').val();
-                            var remaining_sessions = currentRow.find('td:nth-child(4)')
-                        .text(); // Get remaining sessions value from table cell
+                        var currentRow = button.closest('tr');
+                        var number_of_session_use = currentRow.find('input[name="number_of_session_use[]"]').val();
+                        var remaining_sessions = currentRow.find('td:nth-child(4)').text(); // Get remaining sessions value from table cell
 
-                            // Validate session usage
-                            if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
-                                alert('You cannot redeem more sessions than the remaining sessions.');
-                                spinner.hide();
-                                button.prop('disabled', false);
-                                return; // Stop the form submission
-                            }
+                        // Validate session usage
+                        if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
+                            alert('You cannot redeem more sessions than the remaining sessions.');
+                            spinner.hide();
+                            button.prop('disabled', false);
+                            return; // Stop the form submission
+                        }
 
-                            var rowData = {
-                                _token: '{{ csrf_token() }}', // Add CSRF token
-                                product_id: currentRow.find('input[name="service_id[]"]').val(),
-                                order_id: currentRow.find('input[name="order_id[]"]').val(),
-                                service_type: currentRow.find('input[name="service_type[]"]').val(),
-                                service_order_id: currentRow.find(
-                                    'input[name="service_order_id[]"]').val(),
-                                number_of_session_use: number_of_session_use,
-                                comments: currentRow.find('textarea[name="comments[]"]').val()
-                            };
+                        var rowData = {
+                            _token: '{{ csrf_token() }}', // Add CSRF token
+                            product_id: currentRow.find('input[name="service_id[]"]').val(),
+                            order_id: currentRow.find('input[name="order_id[]"]').val(),
+                            service_type: currentRow.find('input[name="service_type[]"]').val(),
+                            service_order_id: currentRow.find('input[name="service_order_id[]"]').val(),
+                            number_of_session_use: number_of_session_use,
+                            comments: currentRow.find('textarea[name="comments[]"]').val()
+                        };
 
-                            $.ajax({
-                                url: form.attr('action'),
-                                method: form.attr('method'),
-                                data: rowData, // Send only the current row data
-                                success: function(response) {
-                                    if (response.success) {
-                                        alert('Action completed successfully.');
-                                        currentRow.find('input, textarea, button').prop(
-                                            'disabled', true);
-                                    } else {
-                                        alert('Action failed. Please try again.');
-                                    }
-                                },
-                                error: function() {
-                                    alert('An error occurred. Please try again later.');
-                                },
-                                complete: function() {
+                        $.ajax({
+                            url: form.attr('action'),
+                            method: form.attr('method'),
+                            data: rowData, // Send only the current row data
+                            success: function (response) {
+                                if (response.success) {
+                                    // alert('Action completed successfully.');
+                                    $('#redeemed_success').html(response.message);
+                                    // Disable all inputs and the button in the current row
+                                    currentRow.find('input, textarea, button').prop('disabled', true);
+
+                                    // Add a class to visually indicate the row is completed (optional)
+                                    currentRow.addClass('completed-row');
+
+                                    // Hide the spinner
+                                    spinner.hide();
+                                } else {
+                                    $('#redeemed_error').html('Action failed. Please try again.');
+                                    // alert('Action failed. Please try again.');
                                     spinner.hide();
                                     button.prop('disabled', false);
                                 }
-                            });
+                            },
+                            error: function () {
+                                alert('An error occurred. Please try again later.');
+                                spinner.hide();
+                                button.prop('disabled', false);
+                            }
                         });
+                    });
+
 
                     } else {
                         $('#giftcardsshow').html('<p>No services found.</p>');
