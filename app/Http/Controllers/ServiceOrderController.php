@@ -168,6 +168,9 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 if ($request->filled('email')) {
                     $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($request->email) . '%']);
                 }
+                if ($request->filled('phone')) {
+                    $query->whereRaw('LOWER(phone) LIKE ?', ['%' . strtolower($request->phone) . '%']);
+                }
 
                 // Order and paginate results
                 $data = $query->orderBy('id', 'DESC')->paginate(10);

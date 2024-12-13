@@ -37,9 +37,13 @@
                             <div class="col-md-3">
                                 <input type="text" class="form-control" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147">
                             </div>
-                            <div class="col-md-3 d-flex align-items-end">
+                            <div class="col-md-2 d-flex align-items-end">
                                 <input type="hidden" class="form-control" name="user_token" value="{{ Auth::user()->user_token }}">
                                 <button type="submit"  class="btn btn-block btn-outline-success">Search</button>
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end">
+                                <input type="hidden" class="form-control" name="user_token" value="{{ Auth::user()->user_token }}">
+                                <a href="{{route('giftcardredeem-view')}}" class="btn btn-block btn-outline-warning"><i class="fa fa-refresh" aria-hidden="true"></i></a>
                             </div>
                         </div>
                     </div>

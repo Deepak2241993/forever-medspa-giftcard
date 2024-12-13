@@ -60,6 +60,11 @@
                                         placeholder="Last Name" onkeyup="SearchView()">
                                 </div>
                                 <div class="col-md-3">
+                                    <label for="phone" class="form-label">Phone:</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" 
+                                        placeholder="Phone" onkeyup="SearchView()">
+                                </div>
+                                <div class="col-md-3">
                                     <label for="email" class="form-label">Email:</label>
                                     <input type="text" class="form-control" id="email" name="email" 
                                         placeholder="Enter Email" onkeyup="SearchView()">
@@ -672,6 +677,7 @@ function SearchView() {
     var fname = $('#fname').val();
     var lname = $('#lname').val();
     var email = $('#email').val();
+    var phone = $('#phone').val();
 
     $.ajax({
         url: '{{ route('search-order-api') }}', // API endpoint
@@ -681,6 +687,7 @@ function SearchView() {
             fname: fname,
             lname: lname,
             email: email,
+            phone: phone,
         },
         success: function(response) {
             if (response.status === 'success') {
