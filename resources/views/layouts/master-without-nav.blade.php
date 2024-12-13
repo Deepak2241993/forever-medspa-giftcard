@@ -10,7 +10,7 @@
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="http://localhost/medspa-program-management/public/medspa.png" type="image/x-icon" />
+        <link rel="shortcut icon" href="{{url('/')}}/medspa.png" type="image/x-icon" />
         @include('layouts.head-css')
   </head>
 
