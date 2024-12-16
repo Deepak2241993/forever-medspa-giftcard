@@ -1,27 +1,36 @@
 @php
+use App\Models\ServiceOrder;
+use App\Models\ServiceRedeem;
 
-$servicePurchases = App\Models\ServiceOrder::select(
+// Fetch service purchases
+$orderId = $data->order_id;
+
+            // Fetch service purchases with product and unit details
+            $servicePurchases = ServiceOrder::select(
                 'service_orders.*', 
                 'products.product_name', 
                 'service_units.product_name as unit_name'
             )
-            ->join('products', 'service_orders.service_id', '=', 'products.id')
+            ->leftJoin('products', 'service_orders.service_id', '=', 'products.id')
             ->leftJoin('service_units', 'service_orders.service_id', '=', 'service_units.id')
-            ->where('service_orders.order_id', $data->order_id)
+            ->where('service_orders.order_id', $orderId)
             ->get();
 
-$serviceRedeem = App\Models\ServiceRedeem::select(
+            // Fetch service redeems with product and unit details
+            $serviceRedeem = ServiceRedeem::select(
                 'service_redeems.*',
                 'products.product_name',
-                'service_units.product_name as unit_name')
-                ->join('products', 'service_redeems.product_id', '=', 'products.id')
-                ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
-                ->where('service_redeems.order_id', $data->order_id)
-                ->get();
+                'service_units.product_name as unit_name'
+            )
+            ->leftJoin('products', 'service_redeems.product_id', '=', 'products.id')
+            ->leftJoin('service_units', 'service_redeems.product_id', '=', 'service_units.id')
+            ->where('service_redeems.order_id', $orderId)
+            ->get();
 
-    // Calculate total amount
-    $totalAmount = $servicePurchases->sum('number_of_session') - $serviceRedeem->sum('number_of_session_use');
+            // Calculate total remaining sessions
+            $totalAmount = $servicePurchases->sum('number_of_session') - $serviceRedeem->sum('number_of_session_use');
 @endphp
+
 
 
 <div id=":18p" class="a3s aiL msg-1377519352946152473">

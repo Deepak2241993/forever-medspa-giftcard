@@ -118,34 +118,55 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
       }
 
       public function ServiceRedeem(Request $request, ServiceRedeem $service_redeem)
-      {
-          // Validate the request data
-          $validatedData = $request->validate([
-              'order_id' => 'required|string|max:255',
-              'number_of_session_use' => 'required|integer|min:1',
-              'comments' => 'nullable|string|max:255',
-          ]);
-      
-          // Create a new record using the validated data
-        //   try {
-            $data = $request->all();
-            $data['user_token'] = 'FOREVER-MEDSPA';
-            $data['transaction_id'] = 'SER-RED' . time();
-            
-            // Create the record and get the inserted model instance
-            $result = $service_redeem->create($data);
-            
-            // Update the transaction ID with the concatenated latest inserted ID
-            if ($result) {
-                $result->transaction_id = 'SER-RED' . $result->id;
-                $result->save();
-                $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
-                Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
-            }
+        {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'order_id' => 'required|string|max:255',
+                'number_of_session_use' => 'required|integer|min:1',
+                'comments' => 'nullable|string|max:255',
+            ]);
 
-          // Return a JSON response indicating success
-          return response()->json(['success' => true, 'message' => $request->number_of_session_use.' Session redeemed successfully.']);
-      }
+            // Log the request data
+            Log::info('ServiceRedeem called', ['request_data' => $request->all()]);
+
+            try {
+                $data = $request->all();
+                $data['user_token'] = 'FOREVER-MEDSPA';
+                $data['transaction_id'] = 'SER-RED' . time();
+
+                // Create the record and get the inserted model instance
+                $result = $service_redeem->create($data);
+
+                // Log the result of the creation
+                Log::info('Service redeem record created', ['result' => $result]);
+
+                if ($result) {
+                    // Update the transaction ID with the concatenated latest inserted ID
+                    $result->transaction_id = 'SER-RED' . $result->id;
+                    $result->save();
+                    Log::info('Transaction ID updated', ['transaction_id' => $result->transaction_id]);
+
+                    // Fetch transaction history and send an email
+                    $transactionResult = TransactionHistory::where('order_id', $result->order_id)->first();
+
+                    if ($transactionResult) {
+                        Mail::to($transactionResult->email)->send(new ServiceRedeemReceipt($transactionResult));
+                        Log::info('ServiceRedeemReceipt email sent', ['email' => $transactionResult->email]);
+                    } else {
+                        Log::warning('Transaction history not found', ['order_id' => $result->order_id]);
+                    }
+                }
+
+                // Return a JSON response indicating success
+                return response()->json(['success' => true, 'message' => $request->number_of_session_use . ' session(s) redeemed successfully.']);
+            } catch (\Exception $e) {
+                // Log the exception
+                Log::error('Error in ServiceRedeem', ['error' => $e->getMessage(), 'stack' => $e->getTraceAsString()]);
+
+                // Return an error response
+                return response()->json(['success' => false, 'message' => 'Failed to redeem session(s). Please try again later.'], 500);
+            }
+        }
       
       
         
