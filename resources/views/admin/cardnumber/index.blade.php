@@ -125,9 +125,10 @@
                                                 </td>
                                                 <td>
                                                     @if ($value['payment_mode'] == 'Payment Gateway')
-                                                        {{ $value['recipient_name'] ? $value['your_name'] : 'Self' }}
+                                                    {!! $value['recipient_name'] ? $value['recipient_name'] : "<span class='badge bg-primary'>Self</span>" !!}
+
                                                     @else
-                                                        {{ Auth::user()->user_token }}
+                                                    <span class='badge bg-warning'>{!! Auth::user()->user_token !!}</span>
                                                     @endif
                                                 </td>
                                                 <!--<td>{{ $value['recipient_name'] ? $value['message'] : 'NULL' }}</td>-->
@@ -143,24 +144,24 @@
                                                 <td>
                                                     @if ($value['payment_status'] == 'succeeded')
                                                         <span
-                                                            class="badge text-bg-success">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-success">{{ ucFirst($value['payment_status']) }}</span>
                                                     @elseif($value['payment_status'] == 'processing')
                                                         <span
-                                                            class="badge text-bg-primary">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-primary">{{ ucFirst($value['payment_status']) }}</span>
                                                         <a href="#">
-                                                            <span class="badge text-bg-warning" data-bs-toggle="modal"
+                                                            <span class="badge bg-warning" data-bs-toggle="modal"
                                                                 data-bs-target="#paymentUpdate_{{ $value['id'] }}"
                                                                 onclick="modalopen({{ $value['id'] }}, '{{ $value['transaction_id'] }}')">Update
                                                                 Status</span>
                                                         </a>
                                                     @elseif($value['payment_status'] == 'amount_capturable_updated')
                                                         <span
-                                                            class="badge text-bg-warning">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-warning">{{ ucFirst($value['payment_status']) }}</span>
                                                     @elseif($value['payment_status'] == 'payment_failed')
                                                         <span
-                                                            class="badge text-bg-danger">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-danger">{{ ucFirst($value['payment_status']) }}</span>
                                                     @else
-                                                        <span class="badge text-bg-danger">Incompleted</span>
+                                                        <span class="badge bg-danger">Incompleted</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $value['transaction_id'] }}</td>
@@ -430,11 +431,11 @@
                     // Handle payment status
                     var paymentStatusBadge = '';
                     if (value.payment_status === 'succeeded') {
-                        paymentStatusBadge = '<span class="badge text-bg-success">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
+                        paymentStatusBadge = '<span class="badge bg-success">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
                     } else if (value.payment_status === 'processing') {
-                        paymentStatusBadge = '<span class="badge text-bg-primary">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
+                        paymentStatusBadge = '<span class="badge bg-primary">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
                     } else {
-                        paymentStatusBadge = '<span class="badge text-bg-danger">Incompleted</span>';
+                        paymentStatusBadge = '<span class="badge bg-danger">Incompleted</span>';
                     }
 
                     // Append rows

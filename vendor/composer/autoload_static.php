@@ -682,6 +682,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Http\\Controllers\\ProductCategoryImportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductCategoryImportController.php',
         'App\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductController.php',
         'App\\Http\\Controllers\\ProductImportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductImportController.php',
+        'App\\Http\\Controllers\\ProgramController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProgramController.php',
         'App\\Http\\Controllers\\ServiceOrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/ServiceOrderController.php',
         'App\\Http\\Controllers\\ServiceUnitController' => __DIR__ . '/../..' . '/app/Http/Controllers/ServiceUnitController.php',
         'App\\Http\\Controllers\\StripeController' => __DIR__ . '/../..' . '/app/Http/Controllers/StripeController.php',

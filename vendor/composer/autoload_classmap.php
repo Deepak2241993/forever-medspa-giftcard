@@ -36,6 +36,7 @@ return array(
     'App\\Http\\Controllers\\ProductCategoryImportController' => $baseDir . '/app/Http/Controllers/ProductCategoryImportController.php',
     'App\\Http\\Controllers\\ProductController' => $baseDir . '/app/Http/Controllers/ProductController.php',
     'App\\Http\\Controllers\\ProductImportController' => $baseDir . '/app/Http/Controllers/ProductImportController.php',
+    'App\\Http\\Controllers\\ProgramController' => $baseDir . '/app/Http/Controllers/ProgramController.php',
     'App\\Http\\Controllers\\ServiceOrderController' => $baseDir . '/app/Http/Controllers/ServiceOrderController.php',
     'App\\Http\\Controllers\\ServiceUnitController' => $baseDir . '/app/Http/Controllers/ServiceUnitController.php',
     'App\\Http\\Controllers\\StripeController' => $baseDir . '/app/Http/Controllers/StripeController.php',

@@ -106,14 +106,14 @@
                             </td>
                             <td>
                                 <span
-                                    class="badge text-bg-{{ $value->payment_status == 'paid' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($value->payment_status) }}
+                                    class="badge bg-{{ $value->payment_status == 'paid' ? 'success' : 'danger' }}">
+                                    {{ucfirst($value->payment_status) }}
                                 </span>
                             </td>
                             <td>
                                 <span
-                                    class="badge text-bg-{{ $value->transaction_status == 'complete' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($value->transaction_status) }}
+                                    class="badge bg-{{ $value->transaction_status == 'complete' ? 'success' : 'danger' }}">
+                                    {{ucfirst($value->transaction_status) }}
                                 </span>
                             </td>
                             <td>{{ date('m-d-Y h:i:s', strtotime($value->updated_at)) }}
@@ -274,12 +274,12 @@ function SearchView() {
                             <td>$${parseFloat(value.transaction_amount).toFixed(2)}</td>
                             <td>${value.gift_card_applyed ? 'Yes' : 'No'}</td>
                             <td>
-                                <span class="badge text-bg-${value.payment_status === 'paid' ? 'success' : 'danger'}">
+                                <span class="badge bg-${value.payment_status === 'paid' ? 'success' : 'danger'}">
                                     ${value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1)}
                                 </span>
                             </td>
                             <td>
-                                <span class="badge text-bg-${value.transaction_status === 'complete' ? 'success' : 'danger'}">
+                                <span class="badge bg-${value.transaction_status === 'complete' ? 'success' : 'danger'}">
                                     ${value.transaction_status.charAt(0).toUpperCase() + value.transaction_status.slice(1)}
                                 </span>
                             </td>

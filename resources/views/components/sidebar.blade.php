@@ -178,7 +178,7 @@
                           <p>
                             Program Management
                               <i class="fas fa-angle-left right"></i>
-                              <span class="badge badge-info right">3</span>
+                               <span class="badge badge-info right">2</span>
                           </p>
                       </a>
                       <ul class="nav nav-treeview">
@@ -190,6 +190,12 @@
                                     Program List
 
                                 </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('program.create') }}" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p> Add Program</p>
                             </a>
                         </li>
                         
@@ -204,7 +210,6 @@
                             <p>
                                 Terms & Conditions
                                 <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">1</span>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">

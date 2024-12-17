@@ -15,7 +15,12 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $data = Program::paginate(10);
+        $data = Program::select('programs.*', 'service_units.product_name')
+        ->join('service_units', 'service_units.id', '=', 'programs.unit_id')
+        ->where('programs.status', 1)
+        ->where('programs.is_deleted', 0)
+        ->paginate(10);
+    
         return view('admin.program.index', compact('data'));
 
     }
@@ -27,7 +32,9 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        return view('admin.program.create');
+        $units = ServiceUnit::where('status',1)->where('product_is_deleted',0)->get();
+        return view('admin.program.create',compact('units'));
+
     }
 
     /**
@@ -36,9 +43,16 @@ class ProgramController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,Program $program)
     {
-        //
+        
+        $data = $request->all();
+        if (isset($data['unit_id']) && is_array($data['unit_id'])) {
+            $data['unit_id'] = implode('|', $data['unit_id']);
+        }
+        $program->create($data);
+        return redirect(route('program.index'))->with('message', 'Program Created Successfully');
+
     }
 
     /**
@@ -60,7 +74,9 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        //
+        $units = ServiceUnit::where('status',1)->where('product_is_deleted',0)->get();
+        $selectedUnits = explode('|',$program->unit_id);
+        return view('admin.program.create',compact('units','program','selectedUnits'));
     }
 
     /**
@@ -72,7 +88,9 @@ class ProgramController extends Controller
      */
     public function update(Request $request, Program $program)
     {
-        //
+        $data = $request->all();
+        $program->update($data);
+        return redirect(route('program.index'))->with('message', 'Program Updated Successfully');
     }
 
     /**
@@ -83,6 +101,8 @@ class ProgramController extends Controller
      */
     public function destroy(Program $program)
     {
-        //
+        $program->update(['is_deleted'=>1]);
+        return redirect(route('program.index'))->with('message', 'Program Deleted Successfully');
+
     }
 }

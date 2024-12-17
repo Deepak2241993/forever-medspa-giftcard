@@ -30,8 +30,8 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="card-body p-4">
-                    @if (isset($banner))
-                        <form method="post" action="{{ route('program.update', $banner->id) }}"
+                    @if (isset($program))
+                        <form method="post" action="{{ route('program.update', $program->id) }}"
                             enctype="multipart/form-data">
                             @method('PUT')
                         @else
@@ -43,76 +43,69 @@
                         <div class="mb-3 col-lg-6">
                             <label for="title" class="form-label">Program Name</label>
                             <input class="form-control" type="text" name="program_name"
-                                value="{{ isset($banner) ? $banner->title : '' }}" placeholder="Program Name">
-                        </div>
-                        <div class="mb-3 col-lg-6">
-                            <label for="title" class="form-label">Program Description</label>
-                            <textarea class="form-control" name="description">  </textarea>
-                        </div>
-
-                        <div class="mb-3 col-lg-6">
-                            <label for="url" class="form-label">Selling Price</label>
-                            <input class="form-control" id="url" type="number" name="selling_price" min="0"
-                                value="{{ isset($banner) ? $banner->url : '' }}" placeholder="Selling Price" required>
+                                value="{{ isset($program) ? $program->program_name : '' }}" placeholder="Program Name">
                         </div>
                         <div class="mb-3 col-lg-12">
+                            <label for="title" class="form-label">Program Description</label>
+                            <textarea class="form-control summernote" name="description"> {{ isset($program) ? $program->description : '' }} </textarea>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Select Unit</label>
+                                <select class="select2bs4" multiple="multiple" name="unit_id[]" data-placeholder="Select Multiple Units"
+                                        style="width: 100%;" required>
+                                    @if($units)
+                                        @foreach($units as $value)
+                                            <option value="{{ $value->id }}"
+                                                
+                                                @if(isset($selectedUnits) && in_array($value->id, $selectedUnits)) selected @endif>
+                                                {{ $value->product_name }}
+                                            </option>
+                                        @endforeach
+                                    @else
+                                        <option>No Unit Found</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 col-lg-6">
+                            <label for="selling_price" class="form-label">Selling Price</label>
+                            <input class="form-control" id="selling_price" type="number" name="selling_price" min="0"
+                                value="{{ isset($program) ? $program->selling_price : '' }}" placeholder="Selling Price" required>
+                        </div>
+                        {{-- <div class="mb-3 col-lg-12">
                             <label for="title" class="form-label">Terms And Conditions</label>
                             <textarea class="form-control summernote" name="description">  </textarea>
-                        </div>
+                        </div> --}}
                         <!-- Status -->
                         <div class="mb-3 col-lg-6">
                             <label for="status" class="form-label">Status</label>
                             <select class="form-control" name="status" id="status">
                                 <option value="1"
-                                    {{ isset($banner->status) && $banner->status == 1 ? 'selected' : '' }}>Active</option>
+                                    {{ isset($program->status) && $program->status == 1 ? 'selected' : '' }}>Active</option>
                                 <option value="0"
-                                    {{ isset($banner->status) && $banner->status == 0 ? 'selected' : '' }}>Inactive</option>
+                                    {{ isset($program->status) && $program->status == 0 ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
-
-                        <!-- Radio Buttons for Deals/Services -->
-                        {{-- <div class="mb-3 col-lg-6">
-            <label class="form-label">Select Type</label><br>
-            <input type="radio" name="type" value="1" id="dealsRadio" onclick="toggleSelectOptions()" required> Unit
-            <input type="radio" name="type" value="2" id="servicesRadio" onclick="toggleSelectOptions()" required> Service
-        </div> --}}
-
-                        <!-- Deals Select Option (Initially Hidden) -->
-                        {{-- <div class="mb-3 col-lg-6" id="dealsSelect" style="display: none;">
-            <label for="deals" class="form-label">Select Unit</label>
-            <select class="form-control" name="deals_and_service" id="deals" onchange="seturl('unit')">
-                <option value="">Select Unit</option>
-                @foreach ($unit as $value)
-                <option value="{{$value->product_slug}}">{{$value->product_name}}</option>
-                @endforeach
-                <!-- Add more deals as needed -->
-            </select>
-        </div> --}}
-
-                        <!-- Services Select Option (Initially Hidden) -->
-                        {{-- <div class="mb-3 col-lg-6" id="servicesSelect" style="display: none;">
-            <label for="services" class="form-label">Select Services</label>
-            <select class="form-control" name="deals_and_service" id="services" onchange="seturl('services')">
-            <option value="">Select Service</option>
-            @foreach ($services as $value)
-                <option value="{{$value->product_slug}}">{{$value->product_name}}</option>
-                @endforeach
-                <!-- Add more services as needed -->
-            </select>
-        </div> --}}
-
-                        <!-- Submit Button -->
-                        
-                        <div class="mb-3 col-lg-12">
-                            <button  class="btn btn-block btn-outline-primary" type="submit" name="submit">Submit</button>
+                        <div class="mb-3 col-lg-6">
+                            <button class="btn btn-block btn-outline-primary form_submit" type="submit"
+                                name="submit">Submit</button>
                         </div>
+
+                        </select>
                     </div>
-                    </form>
+
+
+
                 </div>
-                <!--end::Row-->
-                <!-- /.Start col -->
+                </form>
             </div>
-            <!-- /.row (section row) -->
+            <!--end::Row-->
+            <!-- /.Start col -->
+        </div>
+        <!-- /.row (section row) -->
         </div>
         <!--end::Container-->
         </div>
@@ -121,35 +114,37 @@
 @endsection
 
 @push('script')
-<script>
-    $(document).ready(function() {
-        $('.summernote').summernote({
-            height: 300, // Set height of the editor
-            width: 860, // Set width of the editor
-            focus: true, // Focus the editor on load
-            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36', '48', '64', '82', '150'], // Font sizes
-            toolbar: [
-                ['undo', ['undo']],
-                ['redo', ['redo']],
-                ['style', ['bold', 'italic', 'underline']],
-                ['font', ['strikethrough']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ol', 'paragraph']],
-                ['insert', ['picture', 'link']] // Add picture button for image upload
-                // ['para', ['ul','ol', 'paragraph']],
-            ],
-            popover: {
-                image: [
-                    ['custom', ['examplePlugin']],
-                    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
-                    ['remove', ['removeMedia']]
-                ]
-            }
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                height: 300, // Set height of the editor
+                width: 860, // Set width of the editor
+                focus: true, // Focus the editor on load
+                fontSizes: ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36', '48', '64', '82',
+                    '150'
+                ], // Font sizes
+                toolbar: [
+                    ['undo', ['undo']],
+                    ['redo', ['redo']],
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['font', ['strikethrough']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ol', 'paragraph']],
+                    ['insert', ['picture', 'link']] // Add picture button for image upload
+                    // ['para', ['ul','ol', 'paragraph']],
+                ],
+                popover: {
+                    image: [
+                        ['custom', ['examplePlugin']],
+                        ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']]
+                    ]
+                }
+            });
         });
-    });
-</script>
+    </script>
     <script>
         function toggleSelectOptions() {
             var dealsRadio = document.getElementById('dealsRadio');
@@ -195,4 +190,5 @@
             }
         }
     </script>
+    
 @endpush
