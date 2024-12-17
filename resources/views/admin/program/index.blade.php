@@ -64,7 +64,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($data)
+                                
+                                @if(count($data)>0)
                                 @foreach($data as $value)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
@@ -95,7 +96,10 @@
                                 </tr>
                                 @endforeach
                                 @else
-                                <p>No Program Available</p>
+                                <tr>
+                                    <td colspan="6"><h3>No Program Available</h3></td>
+                                </tr>
+                                
                                 @endif
                                 
                                 <br>
