@@ -117,7 +117,6 @@ class PopularOfferController extends Controller
     
         // Retrieve cart from session or initialize an empty array
         $cart = session()->get('cart', []);
-       
         // Handle Unit Addition
         if (!empty($request->unit_id)) {
             // Generate a unique key for each unit
@@ -130,7 +129,7 @@ class PopularOfferController extends Controller
                 'quantity'  => $request->quantity,
             ];
         }
-        
+
         //  For Program Purchase
         if (!empty($request->program_id)) {
             // Find the program data
@@ -139,15 +138,19 @@ class PopularOfferController extends Controller
             if ($program_data) {
                 // Get the unit IDs associated with the program
                 $unit_in_program = explode('|', $program_data->unit_id);
+
                 foreach ($unit_in_program as $key=>$value) {
                     // Generate a unique key for each unit
                     $unitKey = 'unit_' . $value .$key. '_' . time();
-        
+
+            //  For fetch Unittable data for minqty
+            $program_data = ServiceUnit::find($value);
+    
                     // Add the unit to the cart
                     $cart[$unitKey] = [
                         'type'     => 'unit',
                         'id'       => $value,
-                        'quantity' => 1,
+                        'quantity' => $program_data->min_qty,
                     ];
                 }
             } else {

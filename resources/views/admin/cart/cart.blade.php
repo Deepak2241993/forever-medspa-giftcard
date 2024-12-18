@@ -90,13 +90,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-            <h3 class="mb-0"> Cart View</h3>
+            <h3 class="mb-0">Program Sale</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Cart View
+                           Program Sale
                         </li>
                 </ol>
             </div>
@@ -120,9 +120,10 @@
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product / Unit Name</th>
                                             {{-- <th class="product-price">Unit Price</th> --}}
+                                            <th class="product-subtotal">Price</th>
                                             <th class="product-quantity">No.of Session</th>
-                                            <th class="product-subtotal">Total</th>
-                                            <th class="product-remove">Remove</th>
+                                            <th class="product-quantity">Total</th>
+                                            <th class="product-remove">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -156,27 +157,26 @@
                                             <tr id="cart-item-{{ $cart_data->id }}">
                                                 <td class="product-thumbnail"><a href="product-details.html"><img src="{{ $image[0] }}" alt="img" style="height:100px;width:100px;"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a></td>
                                                 <td class="product-name"><a href="product-details.html">{{ $cart_data->product_name }}</a></td>
+                                                <td class="product-price"><span class="amount">{{ $cart_data->discounted_amount }}</span></td>
                                                 <td class="product-price"><span class="amount">
                                                     <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
-                                                        @if ($item['type'] === 'product')
-                                                            <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
-                                                                value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="1">
-                                                        @elseif ($item['type'] === 'unit')
+                                                        
                                                             <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
                                                                 value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}"
-                                                                min="{{ $unit->min_qty ?? 1 }}" max="{{ $unit->max_qty ?? 1 }}">
-                                                        @endif
+                                                                min="{{ $cart_data->min_qty ?? 1 }}" max="{{ $cart_data->max_qty ?? 1 }}">
+                                                       
                                                         
                                                     </form>
                                                 </td>
-                                                <td class="product-price"><span class="amount">$24.00</span></td>
+                                                <td>{{ "$" . $item['quantity'] * $cart_data->discounted_amount ?? "$" . $item['quantity'] * $cart_data->amount }}</td>
+                                                
                                                
-                                                <td class="product-remove">
-                                                    <a href="javascript:void(0)" onclick="removeFromCart({{ $item['id'] }})">
-                                                        <i class="fa fa-trash" style="
-                                                        font-size: 36px;
-                                                    "></i>
-                                                    </a>
+                                                <td>
+                                                    <a href="javascript:void(0)"
+                                                        onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
+                                                         class="btn btn-block btn-outline-success">Update</a>
+                                                    <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')"
+                                                         class="btn btn-block btn-outline-danger">Remove</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -245,7 +245,7 @@
                                         <h2>Cart totals</h2>
                                         <ul class="cart-totals-list mb-20">
                                             <li class="cart-totals-item">Subtotal <span class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
-                                            <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li>
+                                            {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
                                             <li class="cart-totals-item">Tax 0% <span class="cart-totals-value" id="tax_amount">
                                                     @php
                                                         $taxamount = ($amount * 0) / 100;
@@ -268,7 +268,7 @@
             </div>
             <!-- Cart area end  -->
         @else
-            <h3>Your Cart is Empty</h3>
+            <h3>No Program Added For Sale</h3>
         @endif
 
     </section>
@@ -278,6 +278,7 @@
     @push('script')
     <script>
         function removeFromCart(id) {
+            // alert(id);
             $.ajax({
                 url: '{{ route('cartremove') }}',
                 method: "POST",
@@ -321,13 +322,13 @@
             <div class="row mt-5" id="row_${key}">
                 <div class="col-md-5">
                     <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
-                        class="form-control" name="coupon_code" type="text" required>
+                        class="input-text" name="coupon_code" type="text" required>
                 </div>
                 <div class="col-md-3">
                     <input id="giftcard_amount_${key}" placeholder="$0.00"
-                        class="form-control" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" readonly style="padding-left: 22px;">
+                        class="input-text" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" onchange="validateGiftAmount(this)" readonly style="padding-left: 22px;">
                 </div>
-                <div class="col-md-3" style="display:flex;">
+                <div class="col-md-3 mt-4" style="display:flex;">
                     <button onclick="validategiftnumber(${key})"
                          class="btn btn-block btn-outline-success giftcartbutton" type="button">
                         <span class="fill-btn-inner">
@@ -344,11 +345,11 @@
                         </span>
                     </button>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 mt-4">
                 </div>
                 <div class="col-md-12">
-                    <span class="text-danger" id="error_${key}"></span>
-                    <span class="text-success" id="success_${key}"></span>
+                    <span class="text-danger mt-4" id="error_${key}"></span>
+                    <span class="text-success mt-4" id="success_${key}"></span>
                 </div>
             </div>
         `;
@@ -398,23 +399,34 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
+                            var totalValueText = $('#totalValue').text();
+                            // Remove the '$' symbol and parse it as a number
+                            var totalValue = parseFloat(totalValueText.replace('$', '').replace(',',
+                                '').trim());
+                            // alert(response.actual_paid_amount);
+                            // alert(totalValue);
+                            if (response.actual_paid_amount > totalValue) {
+                                alert(
+                                    "The giftcard amount can not be more than the cart total amount");
+                                return false; // Stop the execution if invalid
+                            }
+
                             // Add the gift card number to the array
                             giftCardNumbers.push(giftNumber);
-
                             console.log(response.success);
-                            console.log(response.result.total_amount);
+                            console.log(response.actual_paid_amount);
                             $('#success_' + key).html(
-                                'This Gift Card is valid. Your total available amount is $' +
-                                response.result.total_amount);
-                            $('#giftcard_amount_' + key).val(response.result.total_amount);
+                                response.message);
+                            $('#giftcard_amount_' + key).val(response.actual_paid_amount);
                             $('#giftcard_amount_' + key).removeAttr('readonly');
-                            $('#giftcard_amount_' + key).attr('max', response.result.total_amount);
+                            $('#giftcard_amount_' + key).attr('max', response.actual_paid_amount);
                             sumValues();
                             $('#error_' + key).html('');
                         } else {
                             alert('Invalid Giftcard. Please enter the correct number');
                             console.log(response.error);
-                            $('#error_' + key).html(response.error || 'Invalid Giftcard. Please enter the correct number');
+                            $('#error_' + key).html(response.error ||
+                                'Invalid Giftcard. Please enter the correct number');
                             $('#success_' + key).html('');
                         }
                     },
@@ -474,14 +486,15 @@
                     },
                     success: function(response) {
                         if (response.status === 200) {
-                            window.location = "{{ route('payment-process') }}";
+                            window.location = "{{ route('checkout_view') }}";
                         } else {
                             alert('Error submitting Gift Cards: ' + response.error);
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert(
-                            'An error occurred while submitting the Gift Cards. Please try again.');
+                            'An error occurred while submitting the Gift Cards. Please try again.'
+                            );
                     }
                 });
             });
@@ -492,51 +505,154 @@
 
         let alertShownCount = 0;
 
-function validateGiftAmount(inputElement) {
-    // Retrieve the maximum allowed value
-    var maxValue = parseFloat($(inputElement).attr('max'));
-    // Retrieve the current value from the input
-    var currentValue = parseFloat($(inputElement).val());
+        function validateGiftAmount(inputElement) {
+            // Retrieve the maximum allowed value
+            var maxValue = parseFloat($(inputElement).attr('max'));
+            // Retrieve the current value from the input
+            var currentValue = parseFloat($(inputElement).val());
 
-    // If currentValue exceeds maxValue, reset and handle alerts
-    if (currentValue > maxValue) {
-        if (alertShownCount === 0) {
-            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. Please enter a valid amount.');
-            alertShownCount++;
-        } else {
-            alert('The value entered exceeds the maximum allowed value of ' + maxValue + '. The value has been set to the maximum.');
+            // If currentValue exceeds maxValue, reset and handle alerts
+            if (currentValue > maxValue) {
+                if (alertShownCount === 0) {
+                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
+                        '. Please enter a valid amount.');
+                    alertShownCount++;
+                } else {
+                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
+                        '. The value has been set to the maximum.');
+                }
+                // Set the input value to the maximum allowed
+                $(inputElement).val(maxValue);
+            }
+
+            // Call the sum calculation function to update totals
+            sumValues();
         }
-        // Set the input value to the maximum allowed
-        $(inputElement).val(maxValue);
-    }
 
-    // Call the sum calculation function to update totals
-    sumValues();
-}
+        // Sum Calculation Function
+        function sumValues() {
+            let sum = 0;
 
-// Sum Calculation Function
-function sumValues() {
-    let sum = 0;
+            // Iterate through all gift card amount inputs and calculate the sum
+            $('input[id^="giftcard_amount_"]').each(function() {
+                let value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    sum += value;
+                }
+            });
 
-    // Iterate through all gift card amount inputs and calculate the sum
-    $('input[id^="giftcard_amount_"]').each(function() {
-        let value = parseFloat($(this).val());
-        if (!isNaN(value)) {
-            sum += value;
+            // Retrieve the total value from the cart
+            var total_value_from_cart = {{ $amount }};
+            var new_final_amount = total_value_from_cart - sum;
+
+            // Calculate the tax amount (10% of the new final amount)
+            var taxamount = (new_final_amount * 0) / 100;
+
+            // Update the display values on the page
+            $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
+            $('#giftcard_applied').text('-$' + sum.toFixed(2));
+            $('#tax_amount').text('+$' + taxamount.toFixed(2));
         }
-    });
-
-    // Retrieve the total value from the cart
-    var total_value_from_cart = {{ $amount }};
-    var new_final_amount = total_value_from_cart - sum;
-
-    // Calculate the tax amount (10% of the new final amount)
-    var taxamount = (new_final_amount * 0) / 100;
-
-    // Update the display values on the page
-    $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
-    $('#giftcard_applied').text('-$' + sum.toFixed(2));
-    $('#tax_amount').text('+$' + taxamount.toFixed(2));
-}
     </script>
-@endpush
+
+
+
+    {{-- For Cart Update --}}
+    <script>
+        // Update Cart
+        function updateCart(itemId, itemType, cart_id) {
+            var quantity = $('#cart_qty_' + cart_id).val();
+            var min = parseInt($('#cart_qty_' + cart_id).attr('min')); // Get the min value
+            var max = parseInt($('#cart_qty_' + cart_id).attr('max')); // Get the max value
+            // alert(quantity);
+
+            if (quantity <= 0) {
+                alert("Quantity must be at least 1");
+                return;
+            }
+            if (quantity < min || quantity > max) {
+                alert('Quantity must be between ' + min + ' and ' + max + '.');
+                location.reload();
+                return false;
+            }
+
+            // Send AJAX request to update the cart
+            $.ajax({
+                url: '{{ route('update-cart') }}', // Replace with your actual route
+                method: 'POST',
+                data: {
+                    id: itemId,
+                    type: itemType,
+                    quantity: quantity,
+                    key: cart_id,
+                    _token: '{{ csrf_token() }}' // CSRF token for security
+                },
+                success: function(response) {
+                    if (response.status === '200') {
+                        console.log("Cart updated successfully!");
+                        location.reload();
+                    } else {
+                        alert(response.error || "Failed to update the cart.");
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while updating the cart.");
+                }
+            });
+        }
+
+
+        // Event Listeners
+        // $(document).on('click', '.cart-minus', function() {
+        //     const input = $(this).closest('.update-cart-form').find('.cart-input');
+        //     const itemId = input.data('id');
+        //     let quantity = parseInt(input.val(), 10) - 1;
+        //     input.val(quantity);
+        //     updateCart(itemId, quantity);
+        // });
+
+        // $(document).on('click', '.cart-plus', function() {
+        //     const input = $(this).closest('.update-cart-form').find('.cart-input');
+        //     const itemId = input.data('id');
+        //     let quantity = parseInt(input.val(), 10) + 1;
+        //     input.val(quantity);
+        //     updateCart(itemId, quantity);
+        // });
+
+        // $(document).on('keyup change', '.cart-input', function() {
+        //     const itemId = $(this).data('id');
+        //     const quantity = parseInt($(this).val(), 10);
+        //     updateCart(itemId, quantity);
+        // });
+    </script>
+
+
+
+
+
+    {{-- <script>
+// Disable right-click context menu
+document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+});
+
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, and Ctrl+U (view source)
+document.addEventListener('keydown', function(event) {
+    // F12 key
+    if (event.keyCode === 123) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+I (Inspect)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+        event.preventDefault();
+    }
+    // Ctrl+Shift+J (Console)
+    if (event.ctrlKey && event.shiftKey && event.keyCode === 74) {
+        event.preventDefault();
+    }
+    // Ctrl+U (View Source)
+    if (event.ctrlKey && event.keyCode === 85) {
+        event.preventDefault();
+    }
+});
+</script>  --}}
