@@ -4,6 +4,7 @@
     @php
         $cart = session()->get('cart', []);
         $amount = 0;
+        // $cart = session()->pull('cart');
     @endphp
 @push('css')
 .cart-page-total {
@@ -117,7 +118,7 @@
                                     <thead>
                                         <tr>
                                             <th class="product-thumbnail">Images</th>
-                                            <th class="cart-product-name">Product</th>
+                                            <th class="cart-product-name">Product / Unit Name</th>
                                             {{-- <th class="product-price">Unit Price</th> --}}
                                             <th class="product-quantity">No.of Session</th>
                                             <th class="product-subtotal">Total</th>
@@ -128,32 +129,50 @@
                                         @php
                                             $redeem = 0;
                                         @endphp
-                            
                                         @foreach ($cart as $key => $item)
                                             @php
-                                                $cart_data = App\Models\Product::find($item['product_id']);
-                                                $amount += $cart_data->discounted_amount;
+                                            if($item['type']=='unit')
+                                            {
+                                                $cart_data = App\Models\ServiceUnit::find($item['id']);
+                                                // $amount += $cart_data->discounted_amount;
                                                 $image = explode('|', $cart_data->product_image);
                                                 if ($cart_data->giftcard_redemption == 1) {
                                                     $redeem += 1; // Corrected increment logic
                                                 }
+                                            }
+                                            if($item['type']=='product')
+                                            {
+                                                $cart_data = App\Models\Product::find($item['id']);
+                                                // $amount += $cart_data->discounted_amount;
+                                                $image = explode('|', $cart_data->product_image);
+                                                if ($cart_data->giftcard_redemption == 1) {
+                                                    $redeem += 1; // Corrected increment logic
+                                                }
+                                            }
+                                            
                                             @endphp
                             
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
                                                 <td class="product-thumbnail"><a href="product-details.html"><img src="{{ $image[0] }}" alt="img" style="height:100px;width:100px;"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a></td>
                                                 <td class="product-name"><a href="product-details.html">{{ $cart_data->product_name }}</a></td>
-                                                {{-- <td class="product-price"><span class="amount">$24.00</span></td> --}}
-                                                <td class="product-quantity text-center">
-                                                    <div class="product-quantity mt-10 mb-10">
-                                                        <div class="product-quantity-form">
-                                                            <input class="form-control" readonly type="text" value="{{ $cart_data->session_number }}">
-                                                        </div>
-                                                    </div>
+                                                <td class="product-price"><span class="amount">
+                                                    <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
+                                                        @if ($item['type'] === 'product')
+                                                            <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
+                                                                value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" min="1">
+                                                        @elseif ($item['type'] === 'unit')
+                                                            <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
+                                                                value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}"
+                                                                min="{{ $unit->min_qty ?? 1 }}" max="{{ $unit->max_qty ?? 1 }}">
+                                                        @endif
+                                                        
+                                                    </form>
                                                 </td>
-                                                <td class="product-subtotal"><span class="amount">{{ $cart_data->discounted_amount }}</span></td>
+                                                <td class="product-price"><span class="amount">$24.00</span></td>
+                                               
                                                 <td class="product-remove">
-                                                    <a href="javascript:void(0)" onclick="removeFromCart({{ $item['product_id'] }})">
+                                                    <a href="javascript:void(0)" onclick="removeFromCart({{ $item['id'] }})">
                                                         <i class="fa fa-trash" style="
                                                         font-size: 36px;
                                                     "></i>
@@ -165,7 +184,7 @@
                                 </table>
                             </div>
                             
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
                                         
@@ -217,7 +236,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
                             <div class="row">

@@ -56,11 +56,10 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Action</th>
                                     <th>Program Name</th>
                                     <th>Unit Name</th>
-                                    <th>Selling Price</th>
                                     <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,19 +68,10 @@
                                 @foreach($data as $value)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$value->program_name}}</td>
-                                    <td>{{$value->product_name}}</td>
-                                    <td>{{$value->selling_price}}</td>
                                     <td>
-                                        @if($value->status==1)
-                                        <span class="badge bg-success">Active</span>
-                                        @else
-                                        <span class="badge bg-danger">Inactive</span>
-                                        @endif
-                                      </td>
-                                    <td>
+                                        <a class="btn btn-block btn-outline-warning" onclick="addcart({{ $value['id'] }})">Buy</a>
                                         <a href="{{route('program.edit',$value->id)}}"
-                                             class="btn btn-block btn-outline-primary">Edit</a>
+                                             class="btn btn-block btn-outline-primary mb-2">Edit</a>
                                         <form
                                             action="{{route('program.destroy',$value->id)}}"
                                             method="POST">
@@ -91,6 +81,28 @@
                                             <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                         </form>
                                     </td>
+                                    <td>{{$value->program_name}}</td>
+                                    <td>
+                                        <ul>
+                                            @php
+                                                $unit_id = explode('|', $value->unit_id);
+                                                foreach ($unit_id as $unit) {
+                                                    $unit_data = \App\Models\ServiceUnit::find($unit);
+                                                    if ($unit_data) {
+                                                        echo "<li>" . ($unit_data->product_name) . "</li>";
+                                                    }
+                                                }
+                                            @endphp
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @if($value->status==1)
+                                        <span class="badge bg-success">Active</span>
+                                        @else
+                                        <span class="badge bg-danger">Inactive</span>
+                                        @endif
+                                      </td>
+                                 
                                 
                                     <!-- Button trigger modal -->
                                 </tr>
@@ -121,5 +133,30 @@
 @endsection
 
 @push('script')
-
+<script>
+    function addcart(id) {
+        $.ajax({
+            url: '{{ route('cart') }}',
+            method: "post",
+            dataType: "json",
+            data: {
+                _token: '{{ csrf_token() }}',
+                program_id: id,
+                quantity: 1,
+                type: "program"
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    $('.showbalance').html(response.error).show();
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Handle the error here
+                $('.showbalance').html('An error occurred. Please try again.').show();
+            }
+        });
+    }
+</script>
 @endpush

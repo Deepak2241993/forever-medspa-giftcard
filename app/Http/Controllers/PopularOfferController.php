@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PopularOffer;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Program;
+use App\Models\ServiceUnit;
 use App\Models\TransactionHistory;
 use Stripe\Stripe;
 use Stripe\Charge;
@@ -107,88 +109,15 @@ class PopularOfferController extends Controller
         return view('product.offers_details');
     }
   
-    // Old Cart Code 
-    // public function Cart(Request $request)
-    // {
-    //     // Validate common fields
-    //     $request->validate([
-    //         'product_id' => 'nullable|integer|exists:products,id',
-    //         'unit_id'    => 'nullable|integer|exists:service_units,id',
-    //         'quantity'   => 'required|integer|min:1'
-    //     ]);
-    
-    //     // Retrieve cart from session or initialize an empty array
-    //     $cart = session()->get('cart', []);
-    //     // Handle Product Addition
-    //     if (!empty($request->product_id)) {
-    //         $productId = 'product_' . $request->product_id; // Use a prefixed key for products
-    
-    //         if (isset($cart[$productId])) {
-    //             // Update quantity if product already exists
-    //             $cart[$productId]['quantity'] += $request->quantity;
-    //         } else {
-    //             // Add new product to cart
-    //             $cart[$productId] = [
-    //                 'type'      => 'product', // Distinguish between product and unit
-    //                 'id'        => $request->product_id,
-    //                 'quantity'  => $request->quantity
-    //             ];
-    //         }
-    //     }
-    
-    //     // Handle Unit Service Addition
-    //     if (!empty($request->unit_id)) {
-    //         $unitId = 'unit_' . $request->unit_id; // Use a prefixed key for units
-    
-    //         if (isset($cart[$unitId])) {
-    //             // Update quantity if unit already exists
-    //             $cart[$unitId]['quantity'] += $request->quantity;
-    //         } else {
-    //             // Add new unit to cart
-    //             $cart[$unitId] = [
-    //                 'type'      => 'unit', // Distinguish between product and unit
-    //                 'id'        => $request->unit_id,
-    //                 'quantity'  => $request->quantity
-    //             ];
-    //         }
-    //     }
-    
-    //     // Save the updated cart back to the session
-    //     session()->put('cart', $cart);
-    
-    //     return response()->json([
-    //         'status'  => '200',
-    //         'success' => 'Item added to cart successfully!',
-    //         'cart'    => $cart
-    //     ]);
-    // }
-    // Old Cart Code End
+   
 
     public function Cart(Request $request)
     {
-        // Validate common fields
-        $request->validate([
-            'product_id' => 'nullable|integer|exists:products,id',
-            'unit_id'    => 'nullable|integer|exists:service_units,id',
-            'quantity'   => 'required|integer|min:1',
-        ]);
+        
     
         // Retrieve cart from session or initialize an empty array
         $cart = session()->get('cart', []);
-    
-        // Handle Product Addition
-        if (!empty($request->product_id)) {
-            // Generate a unique key for each product
-            $productKey = 'product_' . $request->product_id . '_' . time();
-    
-            // Add the product to the cart
-            $cart[$productKey] = [
-                'type'      => 'product',
-                'id'        => $request->product_id,
-                'quantity'  => $request->quantity,
-            ];
-        }
-    
+       
         // Handle Unit Addition
         if (!empty($request->unit_id)) {
             // Generate a unique key for each unit
@@ -201,10 +130,35 @@ class PopularOfferController extends Controller
                 'quantity'  => $request->quantity,
             ];
         }
+        
+        //  For Program Purchase
+        if (!empty($request->program_id)) {
+            // Find the program data
+            $program_data = Program::find($request->program_id);
+        
+            if ($program_data) {
+                // Get the unit IDs associated with the program
+                $unit_in_program = explode('|', $program_data->unit_id);
+                foreach ($unit_in_program as $key=>$value) {
+                    // Generate a unique key for each unit
+                    $unitKey = 'unit_' . $value .$key. '_' . time();
+        
+                    // Add the unit to the cart
+                    $cart[$unitKey] = [
+                        'type'     => 'unit',
+                        'id'       => $value,
+                        'quantity' => 1,
+                    ];
+                }
+            } else {
+                // Handle the case where program data is not found
+                throw new \Exception("Program not found for ID: " . $request->program_id);
+            }
+        }
+        
     
         // Save the updated cart back to the session
         session()->put('cart', $cart);
-    
         return response()->json([
             'status'  => '200',
             'success' => 'Item added to cart successfully!',

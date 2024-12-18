@@ -70,15 +70,6 @@
                             </div>
                         </div>
                         
-                        <div class="mb-3 col-lg-6">
-                            <label for="selling_price" class="form-label">Selling Price</label>
-                            <input class="form-control" id="selling_price" type="number" name="selling_price" min="0"
-                                value="{{ isset($program) ? $program->selling_price : '' }}" placeholder="Selling Price" required>
-                        </div>
-                        {{-- <div class="mb-3 col-lg-12">
-                            <label for="title" class="form-label">Terms And Conditions</label>
-                            <textarea class="form-control summernote" name="description">  </textarea>
-                        </div> --}}
                         <!-- Status -->
                         <div class="mb-3 col-lg-6">
                             <label for="status" class="form-label">Status</label>

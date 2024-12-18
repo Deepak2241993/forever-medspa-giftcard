@@ -15,10 +15,9 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $data = Program::select('programs.*', 'service_units.product_name')
-        ->join('service_units', 'service_units.id', '=', 'programs.unit_id')
-        ->where('programs.status', 1)
-        ->where('programs.is_deleted', 0)
+        $data = Program::
+        where('status', 1)
+        ->where('is_deleted', 0)
         ->paginate(10);
     
         return view('admin.program.index', compact('data'));
@@ -89,6 +88,9 @@ class ProgramController extends Controller
     public function update(Request $request, Program $program)
     {
         $data = $request->all();
+        if (isset($data['unit_id']) && is_array($data['unit_id'])) {
+            $data['unit_id'] = implode('|', $data['unit_id']);
+        }
         $program->update($data);
         return redirect(route('program.index'))->with('message', 'Program Updated Successfully');
     }
