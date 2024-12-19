@@ -122,13 +122,13 @@
                                Create Unit
                             </button>
                             <button type="button" class="btn btn-primary" onclick="location.href='{{ route('program.index') }}';">
-                                Add More Programs
+                                Buy Programs
                             </button>
                             <button type="button" class="btn btn-warning" onclick="location.href='{{ route('unit.index') }}';">
-                                Add More Unit
+                                Buy Unit
                             </button>
                             <button type="button" class="btn btn-dark" onclick="location.href='{{ route('product.index') }}';">
-                                Add More Services
+                                Buy Services
                             </button>
                         </div>
                     </div>
