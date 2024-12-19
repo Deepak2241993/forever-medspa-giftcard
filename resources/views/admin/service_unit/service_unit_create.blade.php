@@ -164,12 +164,12 @@
             <div class="mb-3 col-lg-6">
                 <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
                 <select class="form-control" name="giftcard_redemption" id="from">
+                    <option value="0"
+                        {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
+                        No</option>
                     <option value="1"
                         {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
                         Yes</option>
-                    <option value="0"
-                        {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 || $data['giftcard_redemption'] == null? 'selected' : '' }}>
-                        No</option>
                 </select>
             </div>
             <div class="mb-3 col-lg-6 mt-4">
