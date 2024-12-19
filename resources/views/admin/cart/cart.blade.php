@@ -174,7 +174,7 @@
                 value="{{ isset($data) ? $data['id'] : '' }}">
         </div>
         <div class="mb-3 col-lg-6 self mt-2">
-            <label for="discounted_amount" class="form-label">Unit Discounted Price<span class="text-danger">*</span></label>
+            <label for="discounted_amount" class="form-label">Unit Discounted Price</label>
             <input 
                 class="form-control" 
                 type="number" 
@@ -182,7 +182,6 @@
                 name="discounted_amount" 
                 value="{{ isset($data) ? $data['discounted_amount'] : '' }}" 
                 placeholder="Discounted Price" 
-                required 
                 step="0.01">
 
         </div>
