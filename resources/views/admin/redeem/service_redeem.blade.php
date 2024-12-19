@@ -40,38 +40,38 @@
         <!--begin::App Content-->
         <div class="app-content">
             <!--begin::Container-->
-            
+
 
             <div class="container-fluid">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="mb-0">Search Data</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row mb-4">
-                                <div class="col-md-3">
-                                    <label for="fname" class="form-label">First Name:</label>
-                                    <input type="text" class="form-control" id="fname" name="fname"
-                                        placeholder="First Name" onkeyup="SearchView()">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="lname" class="form-label">Last Name:</label>
-                                    <input type="text" class="form-control" id="lname" name="lname"
-                                        placeholder="Last Name" onkeyup="SearchView()">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="phone" class="form-label">Phone:</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" 
-                                        placeholder="Phone" onkeyup="SearchView()">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="email" class="form-label">Email:</label>
-                                    <input type="text" class="form-control" id="email" name="email" 
-                                        placeholder="Enter Email" onkeyup="SearchView()">
-                                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Search Data</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <label for="fname" class="form-label">First Name:</label>
+                                <input type="text" class="form-control" id="fname" name="fname"
+                                    placeholder="First Name" onkeyup="SearchView()">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="lname" class="form-label">Last Name:</label>
+                                <input type="text" class="form-control" id="lname" name="lname"
+                                    placeholder="Last Name" onkeyup="SearchView()">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="phone" class="form-label">Phone:</label>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone"
+                                    onkeyup="SearchView()">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="text" class="form-control" id="email" name="email"
+                                    placeholder="Enter Email" onkeyup="SearchView()">
                             </div>
                         </div>
                     </div>
+                </div>
                 <!--begin::Row-->
                 {{ $data->onEachSide(5)->links() }}
                 <table id="datatable-buttons" class="table table-bordered table-striped">
@@ -95,6 +95,7 @@
                         @foreach ($data as $key => $value)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                @if(!empty($value->payment_intent))
                                 <td><a type="button" class="btn btn-block btn-outline-success" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                         onclick="OrderView({{ $key }},'{{ $value['order_id'] }}')">
@@ -110,6 +111,9 @@
                                         Statement
                                     </a>
                                 </td>
+                                @else
+                                <td> <span class="badge bg-danger">No Payment</span></td>
+                                @endif
                                 <td>{{ $value->order_id }}</td>
                                 <td>{{ $value->fname . ' ' . $value->lname }}</td>
                                 <td>{{ $value->email }}</td>
@@ -162,8 +166,8 @@
         </div>
     </div>
     {{-- For Statment View Modal --}}
-    <div class="modal fade statement" id="statement_view_" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade statement" id="statement_view_" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -530,10 +534,8 @@
                 success: function(response) {
                     if (response.success) {
                         var servicePurchases = response.servicePurchases;
-                        // Clear previous table content
                         $('#giftcardsshow').empty();
 
-                        // Create form and table structure
                         var form = $('<form>', {
                             action: '{{ route('redeem-services') }}',
                             method: 'POST'
@@ -554,14 +556,11 @@
                         table.append(thead);
                         var tbody = $('<tbody>');
 
-                        // Loop through the response result array
                         $.each(servicePurchases, function(index, element) {
-                            // Determine if the row should be disabled
                             var isDisabled = element.remaining_sessions === 0 ? 'disabled' : '';
                             var rowClass = element.remaining_sessions === 0 ? 'class="disabled-row"' :
                                 '';
 
-                            // Create a new row for each element
                             var row = $('<tr ' + rowClass + '>').html(
                                 `<td>${index + 1}</td>
                         <td>
@@ -586,92 +585,26 @@
                                    ${isDisabled}>
                         </td>
                         <td>
-                            <textarea class="form-control" name="comments[]" ${isDisabled}></textarea>
+                            <textarea class="form-control" name="comments[]" ${isDisabled ? 'disabled' : ''}>
+                                ${isDisabled ? 'All Redeemed' : 'Redeem'}
+                            </textarea>
                         </td>
                         <td>
-                            <button type="button"  class="btn btn-block btn-outline-primary mt-2 submit-btn" ${isDisabled}>
+                            <button type="button" class="btn btn-block btn-outline-primary mt-2 submit-btn" 
+                                onclick="handleRedeemClick(this)" 
+                                ${isDisabled ? 'disabled' : ''}>
                                 <span class="spinner-border spinner-border-sm" style="display: none;"></span>
                                 Redeem
                             </button>
                         </td>`
                             );
 
-                            // Append the row to the tbody
                             tbody.append(row);
                         });
 
-                        // Append tbody to the table
                         table.append(tbody);
-
-                        // Append table to form
                         form.append(table);
-
-                        // Append form to #giftcardsshow
                         $('#giftcardsshow').append(form);
-
-                        // Add event listener for submit button clicks
-                        $('.submit-btn').click(function () {
-                        var button = $(this);
-                        var spinner = button.find('.spinner-border');
-
-                        // Show the spinner and disable the button
-                        spinner.show();
-                        button.prop('disabled', true);
-
-                        var currentRow = button.closest('tr');
-                        var number_of_session_use = currentRow.find('input[name="number_of_session_use[]"]').val();
-                        var remaining_sessions = currentRow.find('td:nth-child(4)').text(); // Get remaining sessions value from table cell
-
-                        // Validate session usage
-                        if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
-                            alert('You cannot redeem more sessions than the remaining sessions.');
-                            spinner.hide();
-                            button.prop('disabled', false);
-                            return; // Stop the form submission
-                        }
-
-                        var rowData = {
-                            _token: '{{ csrf_token() }}', // Add CSRF token
-                            product_id: currentRow.find('input[name="service_id[]"]').val(),
-                            order_id: currentRow.find('input[name="order_id[]"]').val(),
-                            service_type: currentRow.find('input[name="service_type[]"]').val(),
-                            service_order_id: currentRow.find('input[name="service_order_id[]"]').val(),
-                            number_of_session_use: number_of_session_use,
-                            comments: currentRow.find('textarea[name="comments[]"]').val()
-                        };
-
-                        $.ajax({
-                            url: form.attr('action'),
-                            method: form.attr('method'),
-                            data: rowData, // Send only the current row data
-                            success: function (response) {
-                                if (response.success) {
-                                    // alert('Action completed successfully.');
-                                    $('#redeemed_success').html(response.message);
-                                    // Disable all inputs and the button in the current row
-                                    currentRow.find('input, textarea, button').prop('disabled', true);
-
-                                    // Add a class to visually indicate the row is completed (optional)
-                                    currentRow.addClass('completed-row');
-
-                                    // Hide the spinner
-                                    spinner.hide();
-                                } else {
-                                    $('#redeemed_error').html('Action failed. Please try again.');
-                                    // alert('Action failed. Please try again.');
-                                    spinner.hide();
-                                    button.prop('disabled', false);
-                                }
-                            },
-                            error: function () {
-                                alert('An error occurred. Please try again later.');
-                                spinner.hide();
-                                button.prop('disabled', false);
-                            }
-                        });
-                    });
-
-
                     } else {
                         $('#giftcardsshow').html('<p>No services found.</p>');
                     }
@@ -682,40 +615,93 @@
             });
         }
 
-//  For Seacrh Function 
-function SearchView() {
-    var fname = $('#fname').val();
-    var lname = $('#lname').val();
-    var email = $('#email').val();
-    var phone = $('#phone').val();
+        function handleRedeemClick(button) {
+            if (confirm('Are you sure you want to redeem this?')) {
+                var spinner = $(button).find('.spinner-border');
+                var currentRow = $(button).closest('tr');
+                var number_of_session_use = currentRow.find('input[name="number_of_session_use[]"]').val();
+                var remaining_sessions = currentRow.find('td:nth-child(4)')
+            .text(); // Get remaining sessions value from table cell
+                // Validate session usage
+                if (parseInt(number_of_session_use) > parseInt(remaining_sessions)) {
+                    alert('You cannot redeem more sessions than the remaining sessions.');
+                    spinner.hide();
+                    button.prop('disabled', false);
+                    return; // Stop the form submission
+                }
+                spinner.show();
+                $(button).prop('disabled', true);
 
-    $.ajax({
-        url: '{{ route('search-order-api') }}', // API endpoint
-        method: "GET",
-        dataType: "json",
-        data: {
-            fname: fname,
-            lname: lname,
-            email: email,
-            phone: phone,
-        },
-        success: function(response) {
-            if (response.status === 'success') {
-                var tableBody = $('#data-table-body'); // ID of your table body
-                tableBody.empty(); // Clear existing rows
+                var rowData = {
+                    _token: '{{ csrf_token() }}', // Add CSRF token
+                    product_id: currentRow.find('input[name="service_id[]"]').val(),
+                    order_id: currentRow.find('input[name="order_id[]"]').val(),
+                    service_type: currentRow.find('input[name="service_type[]"]').val(),
+                    service_order_id: currentRow.find('input[name="service_order_id[]"]').val(),
+                    number_of_session_use: number_of_session_use,
+                    comments: currentRow.find('textarea[name="comments[]"]').val()
+                };
 
-                // Loop through the response data and populate the table
-                $.each(response.data.data, function(key, value) {
-                    var updatedDate = new Date(value.updated_at).toLocaleString('en-US', {
-                        month: '2-digit',
-                        day: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
+                $.ajax({
+                    url: '{{ route('redeem-services') }}',
+                    method: 'POST',
+                    data: rowData,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#redeemed_success').html(response.message);
+                            currentRow.find('input, textarea, button').prop('disabled', true);
+                            currentRow.addClass('completed-row');
+                        } else {
+                            $('#redeemed_error').html('Action failed. Please try again.');
+                            $(button).prop('disabled', false);
+                        }
+                        spinner.hide();
+                    },
+                    error: function() {
+                        alert('An error occurred. Please try again later.');
+                        spinner.hide();
+                        $(button).prop('disabled', false);
+                    }
+                });
+            }
+        }
 
-                    tableBody.append(`
+
+
+        //  For Seacrh Function 
+        function SearchView() {
+            var fname = $('#fname').val();
+            var lname = $('#lname').val();
+            var email = $('#email').val();
+            var phone = $('#phone').val();
+
+            $.ajax({
+                url: '{{ route('search-order-api') }}', // API endpoint
+                method: "GET",
+                dataType: "json",
+                data: {
+                    fname: fname,
+                    lname: lname,
+                    email: email,
+                    phone: phone,
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        var tableBody = $('#data-table-body'); // ID of your table body
+                        tableBody.empty(); // Clear existing rows
+
+                        // Loop through the response data and populate the table
+                        $.each(response.data.data, function(key, value) {
+                            var updatedDate = new Date(value.updated_at).toLocaleString('en-US', {
+                                month: '2-digit',
+                                day: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            });
+
+                            tableBody.append(`
                         <tr>
                             <td>${key + 1}</td>
                             <td>
@@ -749,19 +735,19 @@ function SearchView() {
                             <td>${updatedDate}</td>
                         </tr>
                     `);
-                });
-            } else {
-                alert(response.message || 'No results found.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            alert('An error occurred while fetching data.');
+                        });
+                    } else {
+                        alert(response.message || 'No results found.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching data.');
+                }
+            });
         }
-    });
-}
 
-//  Search Function End 
+        //  Search Function End 
 
 
         // For Value Validate 

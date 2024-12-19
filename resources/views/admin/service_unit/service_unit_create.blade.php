@@ -168,7 +168,7 @@
                         {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
                         Yes</option>
                     <option value="0"
-                        {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
+                        {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 || $data['giftcard_redemption'] == null? 'selected' : '' }}>
                         No</option>
                 </select>
             </div>

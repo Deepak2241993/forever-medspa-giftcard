@@ -88,6 +88,7 @@
                                 <td>
                                     <a href="{{ route('unit.edit', $value['id']) }}"  class="btn btn-block btn-outline-primary">Edit</a>
                                     <a href="{{ route('unitdelete', $value['id']) }}"  class="btn btn-block btn-outline-danger">Delete</a>
+                                    <a class="btn btn-block btn-outline-primary" onclick="addcart({{ $value['id'] }})">Buy</a>
                                   
                                 </td>
 
@@ -152,9 +153,8 @@
                 dataType: "json",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    product_id: id,
-                    quantity: 1,
-                    type: "product"
+                    unit_id: id,
+                    type: "unit"
                 },
                 success: function(response) {
                     if (response.success) {

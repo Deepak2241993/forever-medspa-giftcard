@@ -4,108 +4,245 @@
     @php
         $cart = session()->get('cart', []);
         $amount = 0;
+        
         // $cart = session()->pull('cart');
     @endphp
-@push('css')
-.cart-page-total {
-    background-color: #f8f9fa; /* Light background to highlight the cart totals */
-    border: 1px solid #ddd; /* Border around the totals section */
-    padding: 20px;
-    border-radius: 5px; /* Rounded corners */
-}
+    {{-- {{dd($cart)}} --}}
+    @push('css')
+        .cart-page-total {
+        background-color: #f8f9fa; /* Light background to highlight the cart totals */
+        border: 1px solid #ddd; /* Border around the totals section */
+        padding: 20px;
+        border-radius: 5px; /* Rounded corners */
+        }
 
-.cart-page-total h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    border-bottom: 1px solid #ddd; /* Line under heading */
-    padding-bottom: 10px;
-}
+        .cart-page-total h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        border-bottom: 1px solid #ddd; /* Line under heading */
+        padding-bottom: 10px;
+        }
 
-.cart-totals-list {
-    list-style: none; /* Remove bullet points */
-    padding: 0;
-    margin: 0;
-}
+        .cart-totals-list {
+        list-style: none; /* Remove bullet points */
+        padding: 0;
+        margin: 0;
+        }
 
-.cart-totals-item {
-    display: flex; /* Flexbox to align items */
-    justify-content: space-between; /* Space between label and value */
-    padding: 10px 0; /* Spacing for each item */
-    border-bottom: 1px solid #ddd; /* Line between items */
-}
+        .cart-totals-item {
+        display: flex; /* Flexbox to align items */
+        justify-content: space-between; /* Space between label and value */
+        padding: 10px 0; /* Spacing for each item */
+        border-bottom: 1px solid #ddd; /* Line between items */
+        }
 
-.cart-totals-item:last-child {
-    border-bottom: none; /* Remove bottom line from last item */
-}
+        .cart-totals-item:last-child {
+        border-bottom: none; /* Remove bottom line from last item */
+        }
 
-.cart-totals-value {
-    font-weight: bold; /* Bold values for emphasis */
-    color: #333; /* Dark text color */
-}
+        .cart-totals-value {
+        font-weight: bold; /* Bold values for emphasis */
+        color: #333; /* Dark text color */
+        }
 
-.fill-btn {
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
-    padding: 15px 0;
-    background-color: #007bff; /* Primary button color */
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
+        .fill-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+        padding: 15px 0;
+        background-color: #007bff; /* Primary button color */
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        }
 
-.fill-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
+        .fill-btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+        }
 
-.fill-btn-inner {
-    display: inline-block;
-    position: relative;
-}
+        .fill-btn-inner {
+        display: inline-block;
+        position: relative;
+        }
 
-.fill-btn-hover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none; /* Hide hover text */
-}
+        .fill-btn-hover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none; /* Hide hover text */
+        }
 
-.fill-btn:hover .fill-btn-hover {
-    display: inline-block; /* Show hover text */
-}
+        .fill-btn:hover .fill-btn-hover {
+        display: inline-block; /* Show hover text */
+        }
 
-.fill-btn:hover .fill-btn-normal {
-    display: none; /* Hide normal text on hover */
-}
-@endpush
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
+        .fill-btn:hover .fill-btn-normal {
+        display: none; /* Hide normal text on hover */
+        }
+    @endpush
+    <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
             <div class="col-sm-6">
-            <h3 class="mb-0">Program Sale</h3>
+              <h1>
+                Program Sale
+                
+              </h1>
             </div>
             <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{url('admin-dashboard')}}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                           Program Sale
-                        </li>
-                </ol>
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Program Sale</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+      <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-edit"></i>
+                            Add Unit/Add Program/Services
+                        </h3>
+                        </div>
+                        <div class="card-body">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
+                               Create Unit
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="location.href='{{ route('program.index') }}';">
+                                Add More Programs
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="location.href='{{ route('unit.index') }}';">
+                                Add More Unit
+                            </button>
+                            <button type="button" class="btn btn-dark" onclick="location.href='{{ route('product.index') }}';">
+                                Add More Services
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
-</section>
-<section class="content-header">
-            <!--begin::App Content Header-->
-            
+        <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Create Unit Quickly</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ route('create-unit-quickly') }}"
+                    enctype="multipart/form-data">
+        @csrf
+        <div class="row">
+            <div class="mb-3 col-lg-6 self">
+                <label for="product_name" class="form-label">Unit Name<span
+                        class="text-danger">*</span></label>
+                <input class="form-control" id="product_name" required type="text" name="product_name"
+                    value="{{ isset($data) ? $data['product_name'] : '' }}"
+                    placeholder="Product Name" onkeyup="slugCreate()">
+            </div>
+            <div class="mb-3 col-lg-6 self">
+                <label for="product_slug" class="form-label">Unit Slug<span
+                        class="text-danger">*</span></label>
+                <input class="form-control" type="text" name="product_slug"
+                    value="{{ isset($data) ? $data['product_slug'] : '' }}"
+                    placeholder="Slug" id="product_slug">
+            </div>
+
+        <div class="mb-3 col-lg-6 self mt-2">
+            <label for="amount" class="form-label">Unit Original Price<span class="text-danger">*</span>
+            </label>
+            <input class="form-control" type="number" min="0" name="amount"
+                value="{{ isset($data) ? $data['amount'] : '' }}"
+                placeholder="Original Price" required step="0.01">
+            <input class="form-control" type="hidden" min="0" name="id"
+                value="{{ isset($data) ? $data['id'] : '' }}">
+        </div>
+        <div class="mb-3 col-lg-6 self mt-2">
+            <label for="discounted_amount" class="form-label">Unit Discounted Price<span class="text-danger">*</span></label>
+            <input 
+                class="form-control" 
+                type="number" 
+                min="0" 
+                name="discounted_amount" 
+                value="{{ isset($data) ? $data['discounted_amount'] : '' }}" 
+                placeholder="Discounted Price" 
+                required 
+                step="0.01">
+
+        </div>
+        <div class="mb-3 col-lg-6 self">
+            <label for="min_qty" class="form-label">Min Qty<span
+                    class="text-danger">*</span></label>
+            <input class="form-control" type="number" min="1" name="min_qty"
+                value="{{ isset($data) ? $data['min_qty'] : '1' }}"
+                placeholder="Number Of Session" required>
+        </div>
+        <div class="mb-3 col-lg-6 self">
+            <label for="max_qty" class="form-label">Max Qty<span
+                    class="text-danger">*</span></label>
+            <input class="form-control" type="number" min="1" name="max_qty"
+                value="{{ isset($data) ? $data['max_qty'] : '1' }}"
+                placeholder="Number Of Session" required>
+        </div>
+        <div class="mb-3 col-lg-6">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" name="status" id='status'>
+                <option
+                    value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }}>
+                    Active</option>
+                <option
+                    value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>
+                    Inactive</option>
+            </select>
+        </div>
+
+    {{-- <div class="mb-3 col-lg-6">
+        <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
+        <select class="form-control" name="giftcard_redemption" id="from">
+            <option value="1"
+                {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
+                Yes</option>
+            <option value="0"
+                {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
+                No</option>
+        </select>
+    </div> --}}
+    <div class="mb-3 col-lg-6">
+        <button  class="btn btn-block btn-outline-primary form_submit" type="submit" id="submitBtn">Submit</button>
+    </div>
+</div>
+</form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  {{-- <button type="button" class="btn btn-default">Close</button> --}}
+                  <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+    </section>
+    <section class="content-header">
+        <!--begin::App Content Header-->
+
         <!-- Breadcrumb area start  -->
         @if (isset($cart) && !empty($cart))
             <!-- Cart area start  -->
@@ -119,7 +256,6 @@
                                         <tr>
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product / Unit Name</th>
-                                            {{-- <th class="product-price">Unit Price</th> --}}
                                             <th class="product-subtotal">Price</th>
                                             <th class="product-quantity">No.of Session</th>
                                             <th class="product-quantity">Total</th>
@@ -132,58 +268,66 @@
                                         @endphp
                                         @foreach ($cart as $key => $item)
                                             @php
-                                            if($item['type']=='unit')
-                                            {
-                                                $cart_data = App\Models\ServiceUnit::find($item['id']);
-                                                // $amount += $cart_data->discounted_amount;
-                                                $image = explode('|', $cart_data->product_image);
-                                                if ($cart_data->giftcard_redemption == 1) {
-                                                    $redeem += 1; // Corrected increment logic
+                                                if ($item['type'] == 'unit') {
+                                                    $cart_data = App\Models\ServiceUnit::find($item['id']);
+                                                    $amount += $cart_data->amount;
+                                                    $image = explode('|', $cart_data->product_image);
+                                                    if ($cart_data->giftcard_redemption == 1) {
+                                                        $redeem += 1; // Corrected increment logic
+                                                    }
                                                 }
-                                            }
-                                            if($item['type']=='product')
-                                            {
-                                                $cart_data = App\Models\Product::find($item['id']);
-                                                // $amount += $cart_data->discounted_amount;
-                                                $image = explode('|', $cart_data->product_image);
-                                                if ($cart_data->giftcard_redemption == 1) {
-                                                    $redeem += 1; // Corrected increment logic
+                                                if ($item['type'] == 'product') {
+                                                    $cart_data = App\Models\Product::find($item['id']);
+                                                    $amount += $cart_data->amount;
+                                                    $image = explode('|', $cart_data->product_image);
+                                                    if ($cart_data->giftcard_redemption == 1) {
+                                                        $redeem += 1; // Corrected increment logic
+                                                    }
                                                 }
-                                            }
-                                            
+
                                             @endphp
-                            
+
                                             {{-- {{dd($cart_data)}} --}}
                                             <tr id="cart-item-{{ $cart_data->id }}">
-                                                <td class="product-thumbnail"><a href="product-details.html"><img src="{{ $image[0] }}" alt="img" style="height:100px;width:100px;"onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a></td>
-                                                <td class="product-name"><a href="product-details.html">{{ $cart_data->product_name }}</a></td>
-                                                <td class="product-price"><span class="amount">{{ $cart_data->discounted_amount }}</span></td>
-                                                <td class="product-price"><span class="amount">
-                                                    <form action="#" class="update-cart-form" data-id="{{ $item['id'] }}">
-                                                        
-                                                            <input class="cart-input" id="cart_qty_{{ $key }}" type="number"
-                                                                value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}"
-                                                                min="{{ $cart_data->min_qty ?? 1 }}" max="{{ $cart_data->max_qty ?? 1 }}">
-                                                       
-                                                        
-                                                    </form>
+                                                <td class="product-thumbnail"><a href="product-details.html"><img
+                                                            src="{{ $image[0] }}" alt="img"
+                                                            style="height:100px;width:100px;"onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';"></a>
                                                 </td>
-                                                <td>{{ "$" . $item['quantity'] * $cart_data->discounted_amount ?? "$" . $item['quantity'] * $cart_data->amount }}</td>
-                                                
-                                               
+                                                <td class="product-name"><a
+                                                        href="product-details.html">{{ $cart_data->product_name }}</a></td>
+                                                <td class="product-price"><span
+                                                        class="amount">{{ $cart_data->amount }}</span></td>
+                                                <td class="product-price"><span class="amount">
+                                                        <form action="#" class="update-cart-form"
+                                                            data-id="{{ $item['id'] }}">
+
+                                                            <input class="cart-input" id="cart_qty_{{ $key }}"
+                                                                type="number" value="{{ $item['quantity'] }}"
+                                                                data-id="{{ $item['id'] }}"
+                                                                min="{{ $cart_data->min_qty ?? 1 }}"
+                                                                max="{{ $cart_data->max_qty ?? 1 }}">
+
+
+                                                        </form>
+                                                </td>
+                                                <td>{{ "$" . $item['quantity'] * $cart_data->amount ?? "$" . $item['quantity'] * $cart_data->amount }}
+                                                </td>
+
+
                                                 <td>
                                                     <a href="javascript:void(0)"
                                                         onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
-                                                         class="btn btn-block btn-outline-success">Update</a>
-                                                    <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')"
-                                                         class="btn btn-block btn-outline-danger">Remove</a>
+                                                        class="btn btn-block btn-outline-success">Update</a>
+                                                    <a href="javascript:void(0)"
+                                                        onclick="removeFromCart('{{ $key }}')"
+                                                        class="btn btn-block btn-outline-danger">Remove</a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             {{-- <div class="row">
                                 <div class="col-12">
                                     <div class="coupon-all">
@@ -244,24 +388,28 @@
                                     <div class="cart-page-total">
                                         <h2>Cart totals</h2>
                                         <ul class="cart-totals-list mb-20">
-                                            <li class="cart-totals-item">Subtotal <span class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
+                                            <li class="cart-totals-item">Subtotal <span
+                                                    class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
                                             {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
-                                            <li class="cart-totals-item">Tax 0% <span class="cart-totals-value" id="tax_amount">
+                                            <li class="cart-totals-item">Tax 0% <span class="cart-totals-value"
+                                                    id="tax_amount">
                                                     @php
                                                         $taxamount = ($amount * 0) / 100;
                                                         echo "+$" . number_format($taxamount, 2);
                                                     @endphp
                                                 </span></li>
-                                            <li class="cart-totals-item">Total <span class="cart-totals-value" id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span></li>
+                                            <li class="cart-totals-item">Total <span class="cart-totals-value"
+                                                    id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span>
+                                            </li>
                                         </ul>
                                         <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
                                             Proceed to checkout
-                                           
+
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -274,9 +422,29 @@
     </section>
     <!-- Body main wrapper end -->
 
-    @endsection
-    @push('script')
+@endsection
+@push('script')
     <script>
+        //  Create Slug 
+        function slugCreate() {
+            $.ajax({
+                url: '{{ route('slugCreate') }}',
+                method: "post",
+                dataType: "json",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_name: $('#product_name').val(),
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#product_slug').val(response.slug);
+                    } else {
+                        $('.showbalance').html(response.error).show();
+                    }
+                }
+            });
+        }
+        // Create Slug End
         function removeFromCart(id) {
             // alert(id);
             $.ajax({
@@ -407,7 +575,8 @@
                             // alert(totalValue);
                             if (response.actual_paid_amount > totalValue) {
                                 alert(
-                                    "The giftcard amount can not be more than the cart total amount");
+                                    "The giftcard amount can not be more than the cart total amount"
+                                    );
                                 return false; // Stop the execution if invalid
                             }
 
@@ -494,7 +663,7 @@
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert(
                             'An error occurred while submitting the Gift Cards. Please try again.'
-                            );
+                        );
                     }
                 });
             });

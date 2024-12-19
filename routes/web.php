@@ -99,6 +99,7 @@ Route::get('productdetails/{slug}','ProductController@productdetails')->name('pr
 // Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
 
 Route::get('services','ServiceUnitController@ServicePage')->name('services');
+Route::post('create-unit-quickly','ServiceUnitController@CreateUnitQuickly')->name('create-unit-quickly');
 Route::get('services/{slug}','ServiceUnitController@UnitPageShow')->name('serviceunit');// This is  For Service Frontend and Backend Banner Service
 Route::get('services/{product_slug}/{unitslug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
 // Route::get('services/{slug}','ProductController@productpage')->name('product');

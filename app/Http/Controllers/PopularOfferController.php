@@ -117,8 +117,25 @@ class PopularOfferController extends Controller
     
         // Retrieve cart from session or initialize an empty array
         $cart = session()->get('cart', []);
-        // Handle Unit Addition
+
+    //  For Services Purchase
+        if (!empty($request->product_id)) {
+
+            $product_data = Product::find($request->product_id);
+            // Generate a unique key for each unit
+            $unitKey = 'unit_' . $request->product_id . '_' . time();
+    
+            // Add the unit to the cart
+            $cart[$unitKey] = [
+                'type'      => 'product',
+                'id'        => $request->product_id,
+                'quantity'  => 1,
+            ];
+        }
+
+        // For unit Unit Purchase
         if (!empty($request->unit_id)) {
+            $unit_data = ServiceUnit::find($request->unit_id);
             // Generate a unique key for each unit
             $unitKey = 'unit_' . $request->unit_id . '_' . time();
     
@@ -126,7 +143,7 @@ class PopularOfferController extends Controller
             $cart[$unitKey] = [
                 'type'      => 'unit',
                 'id'        => $request->unit_id,
-                'quantity'  => $request->quantity,
+                'quantity'  => $unit_data->min_qty,
             ];
         }
 
