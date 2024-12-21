@@ -115,12 +115,11 @@
                                 @endif
                                 
                                 <br>
-
+                                {{ $data->links() }}
                             </tbody>
                         </table>
+                        {{ $data->links() }}
 
-
-                        <hr>
 
                     </div>
                 </div>

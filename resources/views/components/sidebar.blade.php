@@ -185,23 +185,42 @@
 
                         <li class="nav-item">
                             <a href="{{ route('program.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <i class="nav-icon fas fa-book-medical"></i>
                                 <p>
                                     Program List
+                                </p>
+                            </a>
+                        </li>
+                       
+                        
+                      </ul>
+                    </li>
+                    
+
+                    {{-- Patient Management  --}}
+                    <li class="nav-header">Patient Management</li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                          <i class="nav-icon fas fa-heartbeat"></i>
+                          <p>
+                            Patient Management
+                              <i class="fas fa-angle-left right"></i>
+                               {{-- <span class="badge badge-info right">2</span> --}}
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('patient.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-book-medical"></i>
+                                <p>
+                                    Patient List
 
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('program.create') }}" class="nav-link">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                <p> Add Program</p>
-                            </a>
-                        </li>
-                        
                       </ul>
                     </li>
-                    {{-- Program Management Code end  --}}
+                    {{--  Patient mangament end --}}
                     
                     <li class="nav-header">MISCELLANEOUS</li>
                     <li class="nav-item">
