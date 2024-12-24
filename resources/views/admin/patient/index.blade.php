@@ -132,7 +132,7 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="6"><h3>No Program Available</h3></td>
+                                    <td colspan="8"><h3>No Program Available</h3></td>
                                 </tr>
                                 
                                 @endif
@@ -193,8 +193,8 @@ function SearchView() {
                         <tr>
                             <td>${key + 1}</td>
                             <td>
-                                <a href="/patient/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
-                                <form action="/patient/${value.id}" method="POST" style="display:inline;">
+                                <a href="{{url('/')}}/admin/patient/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
+                                <form action="{{url('/')}}/admin/patient/${value.id}" method="POST" style="display:inline;">
                                     @method('DELETE')
                                     @csrf
                                     <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
@@ -214,6 +214,7 @@ function SearchView() {
                     `);
                 });
             } else {
+                <tr><td colspane="8">No results found.</td></tr>
                 alert(response.message || 'No results found.');
             }
         },

@@ -512,8 +512,8 @@ function SearchView() {
                             <td>${value.short_description ? value.short_description.substring(0, 100) + '...' : 'N/A'}</td>
                             <td>${value.unit_id !== null ? 'Unit Service' : 'Normal Deals & Service'}</td>
                             <td>
-                                <a href="/product/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
-                                <form action="/product/${value.id}" method="POST" style="display:inline;">
+                                <a href="{{url('/')}}/admin/product/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
+                                <form action="{{url('/')}}/admin/product/${value.id}" method="POST" style="display:inline;">
                                     @method('DELETE')
                                     @csrf
                                     <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
