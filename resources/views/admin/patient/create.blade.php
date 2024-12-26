@@ -80,9 +80,9 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Giftcard Timeline</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Services Timeline</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Profile Settings</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -347,14 +347,14 @@
                         </div>
                         <label for="Password" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-4">
-                          <input type="password" class="form-control" id="password" placeholder="Password">
+                          <input type="password" name="password" class="form-control" id="password" placeholder="Password">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Profile Image</label>
                         <div class="col-sm-10">
                           <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="image">
+                            <input type="file" class="custom-file-input" id="image" name="image">
                             <label class="custom-file-label" for="image">Choose file</label>
                           </div>
                         </div>

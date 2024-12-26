@@ -191,6 +191,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('program.create') }}" class="nav-link">
+                                <i class="nav-icon fas fa-book-medical"></i>
+                                <p>
+                                    Program Add
+                                </p>
+                            </a>
+                        </li>
                        
                         
                       </ul>
