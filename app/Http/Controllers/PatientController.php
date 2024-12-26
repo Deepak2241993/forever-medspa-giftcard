@@ -74,14 +74,6 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
-        $request->validate([
-            'fname' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:patients,email,' . $patient->id,
-            'phone' => 'required|string|max:15',
-            'password' => 'nullable|string|min:8|confirmed', // Optional password update
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Optional image upload
-        ]);
-
         try {
             // Update patient fields
             $patient->fname = $request->fname;
@@ -101,13 +93,13 @@ class PatientController extends Controller
             // Handle image upload
             if ($request->hasFile('image')) {
                 // Delete the old image if exists
-                if ($patient->profile_image && Storage::exists('public/patient_images/' . $patient->profile_image)) {
-                    Storage::delete('public/patient_images/' . $patient->profile_image);
+                if ($patient->image && Storage::exists('public/patient_images/' . $patient->image)) {
+                    Storage::delete('public/patient_images/' . $patient->image);
                 }
 
                 // Store the new image
                 $imagePath = $request->file('image')->store('public/patient_images');
-                $patient->profile_image = basename($imagePath);
+                $patient->image = url('/').Storage::url($imagePath);
             }
 
             // Save the updated patient record

@@ -14,6 +14,16 @@
               <li class="breadcrumb-item active">Patient Profile</li>
             </ol>
           </div>
+          @if(session()->has('error'))
+          <span class="alert alert-danger">
+              {{ session()->get('error') }}
+          </span>
+      @endif
+      @if(session()->has('success'))
+      <span class="alert alert-success">
+          {{ session()->get('success') }}
+      </span>
+  @endif
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -28,7 +38,7 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle" src="{{ $patient->iamge}}" style="height:100px; width:100px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
+                    <img class="profile-user-img img-fluid img-circle" src="{{ $patient->image}}" style="height:100px; width:100px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                 </div>
 
                 <h3 class="profile-username text-center">{{ $patient->fname." ".$patient->lname}}</h3>
@@ -298,7 +308,7 @@
                   <!-- /.tab-pane -->
 
                   <div class="tab-pane" id="settings">
-
+       
                     <form class="form-horizontal" method="post" action="{{route('patient.update',$patient->id)}}" novalidate="novalidate"  enctype="multipart/form-data">
                       @method('PUT')
                       @csrf
@@ -353,10 +363,7 @@
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Profile Image</label>
                         <div class="col-sm-10">
-                          <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="image" name="image">
-                            <label class="custom-file-label" for="image">Choose file</label>
-                          </div>
+                            <input type="file" class="form-control" id="image" name="image">
                         </div>
                       </div>
                       
