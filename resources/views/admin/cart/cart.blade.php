@@ -4,8 +4,9 @@
     @php
         $cart = session()->get('cart', []);
         $amount = 0;
-        
+
         // $cart = session()->pull('cart');
+
     @endphp
     {{-- {{dd($cart)}} --}}
     @push('css')
@@ -90,154 +91,161 @@
     @endpush
     <section class="content-header">
         <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1>
-                Program Sale
-                
-              </h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>
+                        Program Sale
+
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Program Sale</li>
+                    </ol>
+                </div>
             </div>
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Program Sale</li>
-              </ol>
-            </div>
-          </div>
         </div><!-- /.container-fluid -->
-      </section>
-      <section class="content">
+    </section>
+    <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i>
-                            Add Unit/Add Program/Services
-                        </h3>
+                            <h3 class="card-title">
+                                <i class="fas fa-edit"></i>
+                                Add Unit/Add Program/Services
+                            </h3>
                         </div>
                         <div class="card-body">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
-                               Create Unit
-                            </button>
-                            <button type="button" class="btn btn-primary" onclick="location.href='{{ route('program.index') }}';">
-                                Buy Programs
-                            </button>
-                            <button type="button" class="btn btn-warning" onclick="location.href='{{ route('unit.index') }}';">
-                                Buy Unit
-                            </button>
-                            <button type="button" class="btn btn-dark" onclick="location.href='{{ route('product.index') }}';">
-                                Buy Services
-                            </button>
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
+                                    Create Unit
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="location.href='{{ route('program.index') }}';">
+                                    Buy Programs
+                                </button>
+                                <button type="button" class="btn btn-warning"
+                                    onclick="location.href='{{ route('unit.index') }}';">
+                                    Buy Unit
+                                </button>
+                                <button type="button" class="btn btn-dark"
+                                    onclick="location.href='{{ route('product.index') }}';">
+                                    Buy Services
+                                </button>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" value="" name="fname" Placeholder="Search Patient by Phone/Email">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <Button type="button" class="btn btn-block btn-outline-success">Search</Button>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{--  For Unit Create Modal --}}
         <div class="modal fade" id="modal-default">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Create Unit Quickly</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{{ route('create-unit-quickly') }}"
-                    enctype="multipart/form-data">
-        @csrf
-        <div class="row">
-            <div class="mb-3 col-lg-6 self">
-                <label for="product_name" class="form-label">Unit Name<span
-                        class="text-danger">*</span></label>
-                <input class="form-control" id="product_name" required type="text" name="product_name"
-                    value="{{ isset($data) ? $data['product_name'] : '' }}"
-                    placeholder="Product Name" onkeyup="slugCreate()">
-            </div>
-            <div class="mb-3 col-lg-6 self">
-                <label for="product_slug" class="form-label">Unit Slug<span
-                        class="text-danger">*</span></label>
-                <input class="form-control" type="text" name="product_slug"
-                    value="{{ isset($data) ? $data['product_slug'] : '' }}"
-                    placeholder="Slug" id="product_slug">
-            </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Unit Quickly</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{{ route('create-unit-quickly') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="mb-3 col-lg-6 self">
+                                    <label for="product_name" class="form-label">Unit Name<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" id="product_name" required type="text"
+                                        name="product_name" value="{{ isset($data) ? $data['product_name'] : '' }}"
+                                        placeholder="Product Name" onkeyup="slugCreate()">
+                                </div>
+                                <div class="mb-3 col-lg-6 self">
+                                    <label for="product_slug" class="form-label">Unit Slug<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="product_slug"
+                                        value="{{ isset($data) ? $data['product_slug'] : '' }}" placeholder="Slug"
+                                        id="product_slug">
+                                </div>
 
-        <div class="mb-3 col-lg-6 self mt-2">
-            <label for="amount" class="form-label">Unit Original Price<span class="text-danger">*</span>
-            </label>
-            <input class="form-control" type="number" min="0" name="amount"
-                value="{{ isset($data) ? $data['amount'] : '' }}"
-                placeholder="Original Price" required step="0.01">
-            <input class="form-control" type="hidden" min="0" name="id"
-                value="{{ isset($data) ? $data['id'] : '' }}">
-        </div>
-        <div class="mb-3 col-lg-6 self mt-2">
-            <label for="discounted_amount" class="form-label">Unit Discounted Price</label>
-            <input 
-                class="form-control" 
-                type="number" 
-                min="0" 
-                name="discounted_amount" 
-                value="{{ isset($data) ? $data['discounted_amount'] : '' }}" 
-                placeholder="Discounted Price" 
-                step="0.01">
+                                <div class="mb-3 col-lg-6 self mt-2">
+                                    <label for="amount" class="form-label">Unit Original Price<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                    <input class="form-control" type="number" min="0" name="amount"
+                                        value="{{ isset($data) ? $data['amount'] : '' }}" placeholder="Original Price"
+                                        required step="0.01">
+                                    <input class="form-control" type="hidden" min="0" name="id"
+                                        value="{{ isset($data) ? $data['id'] : '' }}">
+                                </div>
+                                <div class="mb-3 col-lg-6 self mt-2">
+                                    <label for="discounted_amount" class="form-label">Unit Discounted Price</label>
+                                    <input class="form-control" type="number" min="0" name="discounted_amount"
+                                        value="{{ isset($data) ? $data['discounted_amount'] : '' }}"
+                                        placeholder="Discounted Price" step="0.01">
 
-        </div>
-        <div class="mb-3 col-lg-6 self">
-            <label for="min_qty" class="form-label">Min Qty<span
-                    class="text-danger">*</span></label>
-            <input class="form-control" type="number" min="1" name="min_qty"
-                value="{{ isset($data) ? $data['min_qty'] : '1' }}"
-                placeholder="Number Of Session" required>
-        </div>
-        <div class="mb-3 col-lg-6 self">
-            <label for="max_qty" class="form-label">Max Qty<span
-                    class="text-danger">*</span></label>
-            <input class="form-control" type="number" min="1" name="max_qty"
-                value="{{ isset($data) ? $data['max_qty'] : '1' }}"
-                placeholder="Number Of Session" required>
-        </div>
-        <div class="mb-3 col-lg-6">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-control" name="status" id='status'>
-                <option
-                    value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }}>
-                    Active</option>
-                <option
-                    value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>
-                    Inactive</option>
-            </select>
-        </div>
+                                </div>
+                                <div class="mb-3 col-lg-6 self">
+                                    <label for="min_qty" class="form-label">Min Qty<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="number" min="1" name="min_qty"
+                                        value="{{ isset($data) ? $data['min_qty'] : '1' }}"
+                                        placeholder="Number Of Session" required>
+                                </div>
+                                <div class="mb-3 col-lg-6 self">
+                                    <label for="max_qty" class="form-label">Max Qty<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="number" min="1" name="max_qty"
+                                        value="{{ isset($data) ? $data['max_qty'] : '1' }}"
+                                        placeholder="Number Of Session" required>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" name="status" id='status'>
+                                        <option
+                                            value="1"{{ isset($data['status']) && $data['status'] == 1 ? 'selected' : '' }}>
+                                            Active</option>
+                                        <option
+                                            value="0"{{ isset($data['status']) && $data['status'] == 0 ? 'selected' : '' }}>
+                                            Inactive</option>
+                                    </select>
+                                </div>
 
-    {{-- <div class="mb-3 col-lg-6">
-        <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
-        <select class="form-control" name="giftcard_redemption" id="from">
-            <option value="1"
-                {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
-                Yes</option>
-            <option value="0"
-                {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
-                No</option>
-        </select>
-    </div> --}}
-    <div class="mb-3 col-lg-6">
-        <button  class="btn btn-block btn-outline-primary form_submit" type="submit" id="submitBtn">Submit</button>
-    </div>
-</div>
-</form>
+                                <div class="mb-3 col-lg-6">
+                            <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
+                            <select class="form-control" name="giftcard_redemption" id="from">
+                                <option value="1"
+                                    {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
+                                    Yes</option>
+                                <option value="0"
+                                    {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
+                                    No</option>
+                            </select>
+                        </div>
+                                <div class="mb-3 col-lg-6">
+                                    <button class="btn btn-block btn-outline-primary form_submit" type="submit"
+                                        id="submitBtn">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
                 </div>
-                <div class="modal-footer justify-content-between">
-                  {{-- <button type="button" class="btn btn-default">Close</button> --}}
-                  <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
-                </div>
-              </div>
-              <!-- /.modal-content -->
+                <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
-          </div>
-          <!-- /.modal -->
+        </div>
+         {{--  For Unit Create Modal End --}}
     </section>
     <section class="content-header">
         <!--begin::App Content Header-->
@@ -245,170 +253,234 @@
         <!-- Breadcrumb area start  -->
         @if (isset($cart) && !empty($cart))
             <!-- Cart area start  -->
-            <div class="cart-area section-space">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="product-thumbnail">Images</th>
-                                            <th class="cart-product-name">Product / Unit Name</th>
-                                            <th class="product-subtotal">Price</th>
-                                            <th class="product-quantity">No.of Session</th>
-                                            <th class="product-quantity">Total</th>
-                                            <th class="product-remove">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $redeem = 0;
-                                        @endphp
-                                        @foreach ($cart as $key => $item)
-                                            @php
-                                                if ($item['type'] == 'unit') {
-                                                    $cart_data = App\Models\ServiceUnit::find($item['id']);
-                                                    $amount += $cart_data->amount;
-                                                    $image = explode('|', $cart_data->product_image);
-                                                    if ($cart_data->giftcard_redemption == 1) {
-                                                        $redeem += 1; // Corrected increment logic
-                                                    }
-                                                }
-                                                if ($item['type'] == 'product') {
-                                                    $cart_data = App\Models\Product::find($item['id']);
-                                                    $amount += $cart_data->amount;
-                                                    $image = explode('|', $cart_data->product_image);
-                                                    if ($cart_data->giftcard_redemption == 1) {
-                                                        $redeem += 1; // Corrected increment logic
-                                                    }
-                                                }
-
-                                            @endphp
-
-                                            {{-- {{dd($cart_data)}} --}}
-                                            <tr id="cart-item-{{ $cart_data->id }}">
-                                                <td class="product-thumbnail"><a href="product-details.html"><img
-                                                            src="{{ $image[0] }}" alt="img"
-                                                            style="height:100px;width:100px;"onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';"></a>
-                                                </td>
-                                                <td class="product-name"><a
-                                                        href="product-details.html">{{ $cart_data->product_name }}</a></td>
-                                                <td class="product-price"><span
-                                                        class="amount">{{ $cart_data->amount }}</span></td>
-                                                <td class="product-price"><span class="amount">
-                                                        <form action="#" class="update-cart-form"
-                                                            data-id="{{ $item['id'] }}">
-
-                                                            <input class="cart-input" id="cart_qty_{{ $key }}"
-                                                                type="number" value="{{ $item['quantity'] }}"
-                                                                data-id="{{ $item['id'] }}"
-                                                                min="{{ $cart_data->min_qty ?? 1 }}"
-                                                                max="{{ $cart_data->max_qty ?? 1 }}">
-
-
-                                                        </form>
-                                                </td>
-                                                <td>{{ "$" . $item['quantity'] * $cart_data->amount ?? "$" . $item['quantity'] * $cart_data->amount }}
-                                                </td>
-
-
-                                                <td>
-                                                    <a href="javascript:void(0)"
-                                                        onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
-                                                        class="btn btn-block btn-outline-success">Update</a>
-                                                    <a href="javascript:void(0)"
-                                                        onclick="removeFromCart('{{ $key }}')"
-                                                        class="btn btn-block btn-outline-danger">Remove</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"> Program Cart</h4>
+                </div>
+                <div class="card-body">
+                    <div class="cart-area section-space">
+                        <div class="container">
+                            <h5>Patient Details</h5>
+                            <div class="row">
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" value="" name="fname" Placeholder="First Name">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" value="" name="lname" Placeholder="Last Name">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="email" class="form-control" value="" name="email" Placeholder="Email">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" value="" name="phone" Placeholder="Phone">
+                                    </div>
+                                </div>
                             </div>
-
+                            <h5 class="mb-4">Patient Giftcards</h5>
+                            <table clss="table table-bordered table-striped"border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Transaction Number</th>
+                                        <th>Card Number</th>
+                                        <th>Date</th>
+                                        <th>Message</th>
+                                        <th>Value Amount</th>
+                                        <th>Actual Paid Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Transaction Number</td>
+                                        <td>Card Number</td>
+                                        <td>Date</td>
+                                        <td>Message</td>
+                                        <td>Value Amount</td>
+                                        <td>Actual Paid Amount</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
                             {{-- <div class="row">
-                                <div class="col-12">
-                                    <div class="coupon-all">
-                                        
-                                        <div class="coupon d-flex align-items-center">
-                                            <div class="row">
-
-                                                @if ($redeem != 0)
-                                                    <div class="col-9 mt-4">
-                                                        <h5>Apply Giftcard</h5>
-                                                        <div class="row">
-                                                            <div class="col-md-5">
-                                                                <input id="gift_number_0"
-                                                                    placeholder="Enter Gift Card Number" class="form-control"
-                                                                    name="coupon_code" type="text" required>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input id="giftcard_amount_0" placeholder="$0.00"
-                                                                    class="form-control" name="coupon_code" type="number"
-                                                                    min="0" onkeyup="validateGiftAmount(this)"
-                                                                    readonly style="padding-left: 22px;">
-
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <button onclick="validategiftnumber({{ 0 }})"
-                                                                     class="btn btn-block btn-outline-success giftcartbutton" type="button">
-                                                                    <i class="fa fa-check"
-                                                                                aria-hidden="true"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <span class="text-danger mt-4" id="error_0"></span>
-                                                                <span class="text-success mt-4" id="success_0"></span>
-                                                            </div>
-                                                            <div id="parentElement"></div>
-                                                            <div class="col-md-5  mt-4 mb-4">
-                                                                <button  class="btn btn-block btn-outline-primary" id="addGiftCardButton"
-                                                                    type="button">Apply More
-                                                                    Giftcard
-                                                                    
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                            </div>
-                                        </div>
-
-
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" value="" name="fname" Placeholder="First Name">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" value="" name="lname" Placeholder="Last Name">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="email" class="form-control" value="" name="email" Placeholder="Email">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" value="" name="phone" Placeholder="Phone">
                                     </div>
                                 </div>
                             </div> --}}
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
 
-
-                            <div class="row">
-                                <div class="col-lg-6 ml-auto">
-                                    <div class="cart-page-total">
-                                        <h2>Cart totals</h2>
-                                        <ul class="cart-totals-list mb-20">
-                                            <li class="cart-totals-item">Subtotal <span
-                                                    class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
-                                            {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
-                                            <li class="cart-totals-item">Tax 0% <span class="cart-totals-value"
-                                                    id="tax_amount">
+                                                    <th class="cart-product-name">Product / Unit Name</th>
+                                                    <th class="product-subtotal">Price</th>
+                                                    <th class="product-subtotal">Discounted Price</th>
+                                                    <th class="product-quantity">No.of Session</th>
+                                                    <th class="product-quantity">Total</th>
+                                                    <th class="product-remove">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $redeem = 0;
+                                                @endphp
+                                                @foreach ($cart as $key => $item)
                                                     @php
-                                                        $taxamount = ($amount * 0) / 100;
-                                                        echo "+$" . number_format($taxamount, 2);
-                                                    @endphp
-                                                </span></li>
-                                            <li class="cart-totals-item">Total <span class="cart-totals-value"
-                                                    id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span>
-                                            </li>
-                                        </ul>
-                                        <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
-                                            Proceed to checkout
+                                                        if ($item['type'] == 'unit') {
+                                                            $cart_data = App\Models\ServiceUnit::find($item['id']);
+                                                            $amount += $cart_data->amount;
+                                                            $image = explode('|', $cart_data->product_image);
+                                                            if ($cart_data->giftcard_redemption == 1) {
+                                                                $redeem += 1; // Corrected increment logic
+                                                            }
+                                                        }
+                                                        if ($item['type'] == 'product') {
+                                                            $cart_data = App\Models\Product::find($item['id']);
+                                                            $amount += $cart_data->amount;
+                                                            $image = explode('|', $cart_data->product_image);
+                                                            if ($cart_data->giftcard_redemption == 1) {
+                                                                $redeem += 1; // Corrected increment logic
+                                                            }
+                                                        }
 
-                                        </a>
+                                                    @endphp
+
+                                                    {{-- {{dd($cart_data)}} --}}
+                                                    <tr id="cart-item-{{ $cart_data->id }}">
+
+                                                        <td class="product-name">{{ $cart_data->product_name }}</td>
+                                                        <td class="product-price"><span
+                                                                class="amount">{{ $cart_data->amount }}</span></td>
+                                                        <td class="product-price"><span
+                                                                class="amount">{{ $cart_data->discounted_amount }}</span></td>
+                                                        <td class="product-price"><span class="amount">
+                                                                <form action="#" class="update-cart-form"
+                                                                    data-id="{{ $item['id'] }}">
+
+                                                                    <input class="cart-input form-control" id="cart_qty_{{ $key }}"
+                                                                        type="number" value="{{ $item['quantity'] }}"
+                                                                        data-id="{{ $item['id'] }}"
+                                                                        min="{{ $cart_data->min_qty ?? 1 }}"
+                                                                        max="{{ $cart_data->max_qty ?? 1 }}">
+
+
+                                                                </form>
+                                                        </td>
+                                                        <td>{{ "$" . $item['quantity'] * $cart_data->amount ?? "$" . $item['quantity'] * $cart_data->amount }}
+                                                        </td>
+
+
+                                                        <td>
+                                                            <a href="javascript:void(0)"
+                                                                onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
+                                                                class="btn btn-block btn-outline-success">Update</a>
+                                                            <a href="javascript:void(0)"
+                                                                onclick="removeFromCart('{{ $key }}')"
+                                                                class="btn btn-block btn-outline-danger">Remove</a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
+
+                                    {{-- <div class="row">
+                                        <div class="col-12">
+                                            <div class="coupon-all">
+                                                
+                                                <div class="coupon d-flex align-items-center">
+                                                    <div class="row">
+
+                                                        @if ($redeem != 0)
+                                                            <div class="col-9 mt-4">
+                                                                <h5>Apply Giftcard</h5>
+                                                                <div class="row">
+                                                                    <div class="col-md-5">
+                                                                        <input id="gift_number_0"
+                                                                            placeholder="Enter Gift Card Number" class="form-control"
+                                                                            name="coupon_code" type="text" required>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <input id="giftcard_amount_0" placeholder="$0.00"
+                                                                            class="form-control" name="coupon_code" type="number"
+                                                                            min="0" onkeyup="validateGiftAmount(this)"
+                                                                            readonly style="padding-left: 22px;">
+
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <button onclick="validategiftnumber({{ 0 }})"
+                                                                            class="btn btn-block btn-outline-success giftcartbutton" type="button">
+                                                                            <i class="fa fa-check"
+                                                                                        aria-hidden="true"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <span class="text-danger mt-4" id="error_0"></span>
+                                                                        <span class="text-success mt-4" id="success_0"></span>
+                                                                    </div>
+                                                                    <div id="parentElement"></div>
+                                                                    <div class="col-md-5  mt-4 mb-4">
+                                                                        <button  class="btn btn-block btn-outline-primary" id="addGiftCardButton"
+                                                                            type="button">Apply More
+                                                                            Giftcard
+                                                                            
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div> --}}
+
+
+                                    <div class="row">
+                                        <div class="col-lg-6 ml-auto">
+                                            <div class="cart-page-total">
+                                                <h2>Cart totals</h2>
+                                                <ul class="cart-totals-list mb-20">
+                                                    <li class="cart-totals-item">Subtotal <span
+                                                            class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
+                                                    {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
+                                                    <li class="cart-totals-item">Tax 0% <span class="cart-totals-value"
+                                                            id="tax_amount">
+                                                            @php
+                                                                $taxamount = ($amount * 0) / 100;
+                                                                echo "+$" . number_format($taxamount, 2);
+                                                            @endphp
+                                                        </span></li>
+                                                    <li class="cart-totals-item">Total <span class="cart-totals-value"
+                                                            id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span>
+                                                    </li>
+                                                </ul>
+                                                <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
+                                                    Proceed to checkout
+
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -434,7 +506,7 @@
                     _token: '{{ csrf_token() }}',
                     product_name: $('#product_name').val(),
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         $('#product_slug').val(response.slug);
                     } else {
@@ -575,7 +647,7 @@
                             if (response.actual_paid_amount > totalValue) {
                                 alert(
                                     "The giftcard amount can not be more than the cart total amount"
-                                    );
+                                );
                                 return false; // Stop the execution if invalid
                             }
 
