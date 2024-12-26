@@ -72,7 +72,49 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
-        //
+        $request->validate([
+            'fname' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:patients,email,' . $request->patient_id,
+            'phone' => 'required|string|max:15',
+        ]);
+    
+        try {
+            // Fetch the patient record
+           
+            $patient = Patient::findOrFail($request->patient_id);
+            // Update fields
+            $patient->fname = $request->fname;
+            $patient->lname = $request->lname;
+            $patient->email = $request->email;
+            $patient->phone = $request->phone;
+            $patient->address = $request->input('address', $patient->address);
+            $patient->city = $request->input('city', $patient->city);
+            $patient->country = $request->input('country', $patient->country);
+            $patient->zip_code = $request->input('zip_code', $patient->zip_code);
+    
+            // Update password if provided
+            if ($request->filled('password')) {
+                $patient->password = Hash::make($request->password);
+            }
+    
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                // Delete the old image if exists
+                if ($patient->profile_image && Storage::exists('public/patient_images/' . $patient->profile_image)) {
+                    Storage::delete('public/patient_images/' . $patient->profile_image);
+                }
+    
+                // Store the new image
+                $imagePath = $request->file('image')->store('public/patient_images');
+                $patient->profile_image = basename($imagePath);
+            }
+            // Save the patient record
+            $patient->save();
+    
+            return redirect()->back()->with('success', 'Patient details updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
     }
 
     /**

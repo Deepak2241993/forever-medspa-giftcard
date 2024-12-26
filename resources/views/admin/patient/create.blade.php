@@ -298,49 +298,71 @@
                   <!-- /.tab-pane -->
 
                   <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
+
+                    <form class="form-horizontal" method="post" action="{{route('patient.update',$patient->id)}}" novalidate="novalidate"  enctype="multipart/form-data">
+                      @method('PUT')
+                      @csrf
                       <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                        <label for="fanme" class="col-sm-2 col-form-label">First Name<span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                          <input type="text" name="fname" class="form-control" id="fanme" placeholder="First Name" value="{{$patient->fname}}" required>
+                        </div>
+                        <label for="lname" class="col-sm-2 col-form-label">Last Name</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="lname" class="form-control" id="lname" placeholder="Last Name" value="{{$patient->lname}}">
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                        <label for="inputEmail" class="col-sm-2 col-form-label">Email<span class="text-danger">*</span></label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                          <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="{{$patient->email}}" required>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
+                        <label for="phone" class="col-sm-2 col-form-label">Phone<span class="text-danger">*</span></label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
+                          <input type="text" class="form-control" id="phone" placeholder="Phone" value="{{$patient->phone}}" required>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
+                        <label for="inputExperience" class="col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                          <textarea class="form-control" id="inputExperience" placeholder="Experience">{{$patient->address}}</textarea>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                        <label for="City" class="col-sm-2 col-form-label">City</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="City" placeholder="City" value="{{$patient->city}}">
+                        </div>
+                        <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="country" placeholder="Country" value="{{$patient->country}}">
                         </div>
                       </div>
                       <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
+                        <label for="State" class="col-sm-2 col-form-label">Zip Code</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="State" placeholder="Zip Code" value="{{$patient->zip_code}}">
+                        </div>
+                        <label for="Password" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-4">
+                          <input type="password" class="form-control" id="password" placeholder="Password">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-2 col-form-label">Profile Image</label>
+                        <div class="col-sm-10">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image">
+                            <label class="custom-file-label" for="image">Choose file</label>
                           </div>
                         </div>
                       </div>
+                      
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button type="submit" class="btn btn-info">Submit</button>
                         </div>
                       </div>
                     </form>
