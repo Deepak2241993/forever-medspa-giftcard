@@ -8,7 +8,7 @@
         // $cart = session()->pull('cart');
 
     @endphp
-    {{-- {{dd($cart)}} --}}
+    
     @push('css')
         .cart-page-total {
         background-color: #f8f9fa; /* Light background to highlight the cart totals */
@@ -107,6 +107,7 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -247,6 +248,231 @@
         </div>
          {{--  For Unit Create Modal End --}}
     </section>
+
+ 
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card card-default">
+                <div class="card-header">
+                  <h3 class="card-title">bs-stepper</h3>
+                </div>
+                <div class="card-body p-0">
+                  <div class="bs-stepper linear">
+                    <div class="bs-stepper-header" role="tablist">
+                      <!-- your steps here -->
+                      <div class="step active" data-target="#logins-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger" aria-selected="true">
+                          <span class="bs-stepper-circle">1</span>
+                          <span class="bs-stepper-label">Logins</span>
+                        </button>
+                      </div>
+                      <div class="line"></div>
+                      <div class="step" data-target="#information-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
+                          <span class="bs-stepper-circle">2</span>
+                          <span class="bs-stepper-label">Various information</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="bs-stepper-content">
+                      <!-- your steps content here -->
+                      <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                        
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+
+                                            <th class="cart-product-name">Product / Unit Name</th>
+                                            <th class="product-subtotal">Price</th>
+                                            <th class="product-subtotal">Discounted Price</th>
+                                            <th class="product-quantity">No.of Session</th>
+                                            <th class="product-quantity">Total</th>
+                                            <th class="product-remove">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $redeem = 0;
+                                        @endphp
+                                        @foreach ($cart as $key => $item)
+                                            @php
+                                                if ($item['type'] == 'unit') {
+                                                    $cart_data = App\Models\ServiceUnit::find($item['id']);
+                                                    $amount += $cart_data->amount;
+                                                    $image = explode('|', $cart_data->product_image);
+                                                    if ($cart_data->giftcard_redemption == 1) {
+                                                        $redeem += 1; // Corrected increment logic
+                                                    }
+                                                }
+                                                if ($item['type'] == 'product') {
+                                                    $cart_data = App\Models\Product::find($item['id']);
+                                                    $amount += $cart_data->amount;
+                                                    $image = explode('|', $cart_data->product_image);
+                                                    if ($cart_data->giftcard_redemption == 1) {
+                                                        $redeem += 1; // Corrected increment logic
+                                                    }
+                                                }
+
+                                            @endphp
+
+                                            {{-- {{dd($cart_data)}} --}}
+                                            <tr id="cart-item-{{ $cart_data->id }}">
+
+                                                <td class="product-name">{{ $cart_data->product_name }}</td>
+                                                <td class="product-price"><span
+                                                        class="amount">{{ $cart_data->amount }}</span></td>
+                                                <td class="product-price"><span
+                                                        class="amount">{{ $cart_data->discounted_amount }}</span></td>
+                                                <td class="product-price"><span class="amount">
+                                                        <form action="#" class="update-cart-form"
+                                                            data-id="{{ $item['id'] }}">
+
+                                                            <input class="cart-input form-control" id="cart_qty_{{ $key }}"
+                                                                type="number" value="{{ $item['quantity'] }}"
+                                                                data-id="{{ $item['id'] }}"
+                                                                min="{{ $cart_data->min_qty ?? 1 }}"
+                                                                max="{{ $cart_data->max_qty ?? 1 }}">
+
+
+                                                        </form>
+                                                </td>
+                                                <td>{{ "$" . $item['quantity'] * $cart_data->amount ?? "$" . $item['quantity'] * $cart_data->amount }}
+                                                </td>
+
+
+                                                <td>
+                                                    <a href="javascript:void(0)"
+                                                        onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
+                                                        class="btn btn-block btn-outline-success">Update</a>
+                                                    <a href="javascript:void(0)"
+                                                        onclick="removeFromCart('{{ $key }}')"
+                                                        class="btn btn-block btn-outline-danger">Remove</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- <div class="row">
+                                <div class="col-12">
+                                    <div class="coupon-all">
+                                        
+                                        <div class="coupon d-flex align-items-center">
+                                            <div class="row">
+
+                                                @if ($redeem != 0)
+                                                    <div class="col-9 mt-4">
+                                                        <h5>Apply Giftcard</h5>
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <input id="gift_number_0"
+                                                                    placeholder="Enter Gift Card Number" class="form-control"
+                                                                    name="coupon_code" type="text" required>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input id="giftcard_amount_0" placeholder="$0.00"
+                                                                    class="form-control" name="coupon_code" type="number"
+                                                                    min="0" onkeyup="validateGiftAmount(this)"
+                                                                    readonly style="padding-left: 22px;">
+
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <button onclick="validategiftnumber({{ 0 }})"
+                                                                    class="btn btn-block btn-outline-success giftcartbutton" type="button">
+                                                                    <i class="fa fa-check"
+                                                                                aria-hidden="true"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <span class="text-danger mt-4" id="error_0"></span>
+                                                                <span class="text-success mt-4" id="success_0"></span>
+                                                            </div>
+                                                            <div id="parentElement"></div>
+                                                            <div class="col-md-5  mt-4 mb-4">
+                                                                <button  class="btn btn-block btn-outline-primary" id="addGiftCardButton"
+                                                                    type="button">Apply More
+                                                                    Giftcard
+                                                                    
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div> --}}
+
+
+                            <div class="row">
+                                <div class="col-lg-6 ml-auto">
+                                    <div class="cart-page-total">
+                                        <h2>Cart totals</h2>
+                                        <ul class="cart-totals-list mb-20">
+                                            <li class="cart-totals-item">Subtotal <span
+                                                    class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
+                                            {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
+                                            <li class="cart-totals-item">Tax 0% <span class="cart-totals-value"
+                                                    id="tax_amount">
+                                                    @php
+                                                        $taxamount = ($amount * 0) / 100;
+                                                        echo "+$" . number_format($taxamount, 2);
+                                                    @endphp
+                                                </span></li>
+                                            <li class="cart-totals-item">Total <span class="cart-totals-value"
+                                                    id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span>
+                                            </li>
+                                        </ul>
+                                        <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
+                                            Proceed to checkout
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                      </div>
+
+                      <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
+                        <div class="form-group">
+                          <label for="exampleInputFile">File input</label>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="exampleInputFile">
+                              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                              <span class="input-group-text">Upload</span>
+                            </div>
+                          </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
+                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+    </section>
+
     <section class="content-header">
         <!--begin::App Content Header-->
 
@@ -319,167 +545,7 @@
                                     </div>
                                 </div>
                             </div> --}}
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-
-                                                    <th class="cart-product-name">Product / Unit Name</th>
-                                                    <th class="product-subtotal">Price</th>
-                                                    <th class="product-subtotal">Discounted Price</th>
-                                                    <th class="product-quantity">No.of Session</th>
-                                                    <th class="product-quantity">Total</th>
-                                                    <th class="product-remove">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php
-                                                    $redeem = 0;
-                                                @endphp
-                                                @foreach ($cart as $key => $item)
-                                                    @php
-                                                        if ($item['type'] == 'unit') {
-                                                            $cart_data = App\Models\ServiceUnit::find($item['id']);
-                                                            $amount += $cart_data->amount;
-                                                            $image = explode('|', $cart_data->product_image);
-                                                            if ($cart_data->giftcard_redemption == 1) {
-                                                                $redeem += 1; // Corrected increment logic
-                                                            }
-                                                        }
-                                                        if ($item['type'] == 'product') {
-                                                            $cart_data = App\Models\Product::find($item['id']);
-                                                            $amount += $cart_data->amount;
-                                                            $image = explode('|', $cart_data->product_image);
-                                                            if ($cart_data->giftcard_redemption == 1) {
-                                                                $redeem += 1; // Corrected increment logic
-                                                            }
-                                                        }
-
-                                                    @endphp
-
-                                                    {{-- {{dd($cart_data)}} --}}
-                                                    <tr id="cart-item-{{ $cart_data->id }}">
-
-                                                        <td class="product-name">{{ $cart_data->product_name }}</td>
-                                                        <td class="product-price"><span
-                                                                class="amount">{{ $cart_data->amount }}</span></td>
-                                                        <td class="product-price"><span
-                                                                class="amount">{{ $cart_data->discounted_amount }}</span></td>
-                                                        <td class="product-price"><span class="amount">
-                                                                <form action="#" class="update-cart-form"
-                                                                    data-id="{{ $item['id'] }}">
-
-                                                                    <input class="cart-input form-control" id="cart_qty_{{ $key }}"
-                                                                        type="number" value="{{ $item['quantity'] }}"
-                                                                        data-id="{{ $item['id'] }}"
-                                                                        min="{{ $cart_data->min_qty ?? 1 }}"
-                                                                        max="{{ $cart_data->max_qty ?? 1 }}">
-
-
-                                                                </form>
-                                                        </td>
-                                                        <td>{{ "$" . $item['quantity'] * $cart_data->amount ?? "$" . $item['quantity'] * $cart_data->amount }}
-                                                        </td>
-
-
-                                                        <td>
-                                                            <a href="javascript:void(0)"
-                                                                onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
-                                                                class="btn btn-block btn-outline-success">Update</a>
-                                                            <a href="javascript:void(0)"
-                                                                onclick="removeFromCart('{{ $key }}')"
-                                                                class="btn btn-block btn-outline-danger">Remove</a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    {{-- <div class="row">
-                                        <div class="col-12">
-                                            <div class="coupon-all">
-                                                
-                                                <div class="coupon d-flex align-items-center">
-                                                    <div class="row">
-
-                                                        @if ($redeem != 0)
-                                                            <div class="col-9 mt-4">
-                                                                <h5>Apply Giftcard</h5>
-                                                                <div class="row">
-                                                                    <div class="col-md-5">
-                                                                        <input id="gift_number_0"
-                                                                            placeholder="Enter Gift Card Number" class="form-control"
-                                                                            name="coupon_code" type="text" required>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <input id="giftcard_amount_0" placeholder="$0.00"
-                                                                            class="form-control" name="coupon_code" type="number"
-                                                                            min="0" onkeyup="validateGiftAmount(this)"
-                                                                            readonly style="padding-left: 22px;">
-
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <button onclick="validategiftnumber({{ 0 }})"
-                                                                            class="btn btn-block btn-outline-success giftcartbutton" type="button">
-                                                                            <i class="fa fa-check"
-                                                                                        aria-hidden="true"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="col-md-12">
-                                                                        <span class="text-danger mt-4" id="error_0"></span>
-                                                                        <span class="text-success mt-4" id="success_0"></span>
-                                                                    </div>
-                                                                    <div id="parentElement"></div>
-                                                                    <div class="col-md-5  mt-4 mb-4">
-                                                                        <button  class="btn btn-block btn-outline-primary" id="addGiftCardButton"
-                                                                            type="button">Apply More
-                                                                            Giftcard
-                                                                            
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @endif
-
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div> --}}
-
-
-                                    <div class="row">
-                                        <div class="col-lg-6 ml-auto">
-                                            <div class="cart-page-total">
-                                                <h2>Cart totals</h2>
-                                                <ul class="cart-totals-list mb-20">
-                                                    <li class="cart-totals-item">Subtotal <span
-                                                            class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
-                                                    {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
-                                                    <li class="cart-totals-item">Tax 0% <span class="cart-totals-value"
-                                                            id="tax_amount">
-                                                            @php
-                                                                $taxamount = ($amount * 0) / 100;
-                                                                echo "+$" . number_format($taxamount, 2);
-                                                            @endphp
-                                                        </span></li>
-                                                    <li class="cart-totals-item">Total <span class="cart-totals-value"
-                                                            id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span>
-                                                    </li>
-                                                </ul>
-                                                <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
-                                                    Proceed to checkout
-
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
