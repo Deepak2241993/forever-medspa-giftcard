@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 use Redirect;
@@ -22,18 +21,31 @@ class AdminController extends Controller
             return view('auth.login');
         }
     }
+
+
+    //  for patient login
+    public function Patientlogin(){
+        if(Auth::check())
+        {
+    
+            return redirect(route('home'));
+        }
+        else
+        {
+            return view('auth.patient_login');
+        }
+    }
+
+    //  for User Login
     public function login_post(Request $request){
         $this->validate($request, [
             'email'   => 'required|email',
             'password'  => 'required|alphaNum|min:8'
            ]);
       
-           $user_data = array(
-            'email'  => $request->get('email'),
-            'password' => $request->get('password')
-           );
+           $credentials = $request->only('email', 'password');
       
-           if(Auth::attempt($user_data))
+           if(Auth::attempt($credentials))
            {
                 $request->session()->put('result',Auth::user()->name);
                 $response = array('success' => true, 'error' => false, 'message' => 'Login successfully..');
@@ -45,6 +57,36 @@ class AdminController extends Controller
              }
     }
 
+
+    //  for Patienet Login Process
+    public function PatientLoginPost(Request $request){
+        $this->validate($request, [
+            'email'   => 'required|email',
+            'password'  => 'required|alphaNum|min:8'
+        ]);
+    
+            // Extract email and password
+            $credentials = $request->only('email', 'password');
+            if (Auth::guard('patient')->attempt($credentials)) {
+                $request->session()->put('result.name', Auth::guard('patient')->user()->fname . ' ' . Auth::guard('patient')->user()->lname); // Store full name in session
+
+                $response = ['success' => true, 'error' => false, 'message' => 'Logged in as a Patient'];
+                return redirect(route('patient-dashboard'))->with($response);
+            }
+            // If attempts fail
+            $response = ['success' => false, 'error' => true, 'message' => 'Invalid login details.'];
+            return redirect(route('patient-login'))->with($response);
+    }
+
+    //  for PatientLogout
+
+    public function Patientlogout(Request $request) {
+        Auth::logout();
+        $request->session()->pull('result');
+        return redirect('/login');
+    }
+
+    //    for User Logout
     public function logout(Request $request) {
         Auth::logout();
         $request->session()->pull('result');

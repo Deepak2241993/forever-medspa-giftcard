@@ -72,16 +72,7 @@ class HomeController extends Controller
         }
     }
 
-    public function dashboard(Giftsend $gift,GiftcardRedeem $redeem,User $user)
-    {
-        if(Auth::user()->user_type==0)
-        {
-            $user_email=Auth::user()->email;
-            $user_data=User::where('email',$user_email)->first();
-            $gift_buy=Giftsend::where('user_id',$user_data->id)->count();
-            return view('admin.admin_dashboad',compact('gift_buy'));
-        }
-    }
+
    
     /*Language Translation*/
     public function lang($locale)

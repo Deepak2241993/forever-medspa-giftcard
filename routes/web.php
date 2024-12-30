@@ -20,8 +20,11 @@ use App\Http\Controllers\PDFController;
 
 // Auth::routes();
 Route::get('/login',[AdminController::class,'login'])->name('login');
+Route::get('/patient-login',[AdminController::class,'Patientlogin'])->name('patient-login');
 Route::get('/logout',[AdminController::class,'logout'])->name('logout');
+Route::get('/patient-logout',[AdminController::class,'Patientlogout'])->name('patient-logout');
 Route::post('/login',[AdminController::class,'login_post'])->name('login-post');
+Route::post('/patient-login',[AdminController::class,'PatientLoginPost'])->name('patient-login');
 Route::view('email','email.giftcard');
 
 
@@ -140,12 +143,17 @@ Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('pay
 
 
 
-// For All User Route
-Route::prefix('users')->middleware('login')->group(function () {
-    Route::get('/user-dashboard', 'HomeController@dashboard')->name('dashboard');
+// For All Patient Route
+    Route::prefix('My-patient')->middleware('login')->group(function () {
+    Route::get('/dashboard', 'PatientController@PatientDashboard')->name('patient-dashboard');
     // Route::resource('/gift', GiftController::class);
     Route::resource('/order-history', TransactionHistoryController::class);
     });
+
+
+
+
+
 
 //  For Payment Route
 Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card'])->name('home');

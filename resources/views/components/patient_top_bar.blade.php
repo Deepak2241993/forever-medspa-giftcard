@@ -6,7 +6,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ url('/users/user-dashboard') }}" class="nav-link">Home</a>
+        <a href="{{ route('patient-dashboard') }}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ url('/') }}" target="_blank" class="nav-link">View Website</a>
@@ -141,39 +141,29 @@
 
     </ul>
     <ul class="navbar-nav ms-auto">
-           <!--end::Notifications Dropdown Menu-->
-           <!--begin::User Menu Dropdown-->
-           <li class="nav-item dropdown user-menu">
-               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                   <img src="
-                   @if (Auth::user()->avatar != '') 
-                   @if (Auth::user()->avatar != '') 
-                   {{ URL::asset(Auth::user()->avatar) }}
-                    @else{{ URL::asset('medspa.png') }} @endif"
-                       class="user-image rounded-circle shadow" alt="User Image">
-                   <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
-               </a>
-               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                   <!--begin::User Image-->
-                   <li class="user-header text-bg-primary">
-                       <img src="@if (Auth::user()->avatar != '') {{ URL::asset(Auth::user()->avatar) }}@else{{ URL::asset('medspa.png') }} @endif"
-                           class="rounded-circle shadow" alt="User Image">
-
-                       <p>
-                           {{ Auth::user()->name }}
-                          
-                       </p>
-                   </li>
-                   <!--end::User Image-->
-
-                   <!--begin::Menu Footer-->
-                   <li class="user-footer">
-                       <a href="#"  class="btn btn-block btn-default btn-flat">Profile</a>
-                       <a href="{{ url('/logout') }}"  class="btn btn-block btn-default btn-flat float-end">Sign out</a>
-                   </li>
-                   <!--end::Menu Footer-->
-               </ul>
-           </li>
-           <!--end::User Menu Dropdown-->
-       </ul>
+      <!-- User Menu Dropdown -->
+      <li class="nav-item dropdown user-menu">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+              <img src="{{ Auth::guard('patient')->user()->image ? URL::asset(Auth::guard('patient')->user()->image) : URL::asset('medspa.png') }}" 
+                   class="user-image rounded-circle shadow" alt="User Image">
+              <span class="d-none d-md-inline">{{ Auth::guard('patient')->user()->fname }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+              <!-- User Image -->
+              <li class="user-header text-bg-primary">
+                  <img src="{{ Auth::guard('patient')->user()->image ? URL::asset(Auth::guard('patient')->user()->image) : URL::asset('medspa.png') }}" 
+                       class="rounded-circle shadow" alt="User Image">
+                  <p>
+                      {{ Auth::guard('patient')->user()->fname }}
+                  </p>
+              </li>
+              <!-- Menu Footer -->
+              <li class="user-footer">
+                  <a href="#" class="btn btn-block btn-default btn-flat">Profile</a>
+                  <a href="{{ url('/logout') }}" class="btn btn-block btn-default btn-flat float-end">Sign out</a>
+              </li>
+          </ul>
+      </li>
+  </ul>
+  
   </nav>

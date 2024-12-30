@@ -79,6 +79,7 @@
                             </a>
                         </li> --}}
                          <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
+                         <li><a class="nav-link" href="{{url('/patient-login')}}">Login</a></li> 
                         {{-- Cart Code --}}
                         @php
                         $cart = session()->get('cart', []);

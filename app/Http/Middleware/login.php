@@ -21,6 +21,10 @@ class login
         {
             return redirect('/login');
         }
+        //  For Patient Login
+        if (empty(Session::get('result.name'))) {
+            return redirect('/patient-login');
+        }
         return $next($request);
     }
 }

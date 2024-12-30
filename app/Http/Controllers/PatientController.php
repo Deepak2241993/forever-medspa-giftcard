@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Giftsend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -153,4 +154,26 @@ class PatientController extends Controller
                     'data' => $data,
                 ], 200);
             }
+
+        //  For Dashboard
+        public function PatientDashboard(Patient $patient)
+        {
+            // Retrieve the currently authenticated patient's email
+            // $patientEmail = Auth::guard('patient')->user()->email;
+        
+            // Find the patient data based on the email
+            // $PatientData = Patient::where('email', $patientEmail)->first();
+        
+            // if (!$PatientData) {
+            //     // Handle the case where the patient is not found
+            //     abort(404, 'Patient not found.');
+            // }
+        
+            // Count the number of gifts sent by the patient
+            // $gift_buy = Giftsend::where('user_id', $PatientData->id)->count();
+        
+            // Return the dashboard view with the data
+            return view('patient.patient_dashboad');
+        }
+        
 }
