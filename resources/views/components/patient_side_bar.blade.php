@@ -15,7 +15,7 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     <img src="@if (Auth::guard('patient')->user()->image != '') {{ URL::asset(Auth::guard('patient')->user()->image) }}@else{{ URL::asset('medspa.png') }} @endif"
-                        class="img-circle elevation-2" alt="User Image" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
+                        class="img-circle elevation-2" height="50" width="50" alt="User Image" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block"> {{ Auth::guard('patient')->user()->fname  }}</a>
@@ -49,55 +49,38 @@
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('root') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard</p>
-                                </a>
-                            </li>
-                           
-                        </ul>
+                       
                     </li>
-                    <li class="nav-header">Giftcards Orders</li>
+                    <li class="nav-header">Orders</li>
+
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a 
+                            href="{{route('purchased-giftcards') }}" 
+                            class="nav-link">
                             <i class="nav-icon fas fa-solid fa-gift"></i>
                             <p>
                                 Giftcards
-                                <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">3</span>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('cardgenerated-list') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Giftcard Orders</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('giftcardredeem-view') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Giftcard Redeem</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('giftcards-sale') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Sale Gift Card</p>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="nav-header">Services Orders</li>
+                    <li class="nav-item">
+                        <a 
+                            href="{{route('patient-giftcards-redeem') }}" 
+                            class="nav-link">
+                            <i class="nav-icon fas fa-solid fa-gift"></i>
+                            <p>
+                                Giftcards Redeem
+                            </p>
+                        </a>
+                    </li>
+                    
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-user-md"></i>
                             <p>
-                                Services
+                                My Services
                                 <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">3</span>
+                                <span class="badge badge-info right">2</span>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
@@ -105,55 +88,37 @@
                             <li class="nav-item">
                                 <a href="{{ route('service-order-history.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Service Orders</p>
+                                    <p>Service Buy</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('service-redeem-view') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p> Service Redeem</p>
+                                    <p> Service Redeem History</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('product.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Service & Deals Sale</p>
-                                </a>
-                            </li>
+                           
                         </ul>
                     </li>
 
-                    
-                    
-                    
-
                     {{-- Patient Management  --}}
-                    <li class="nav-header">Patient Management</li>
+                    
+                    <li class="nav-header">Profile Settings</li>
                     <li class="nav-item">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-heartbeat"></i>
-                          <p>
-                            Patient Management
-                              <i class="fas fa-angle-left right"></i>
-                               {{-- <span class="badge badge-info right">2</span> --}}
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('patient.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-book-medical"></i>
-                                <p>
-                                    Patient List
-
-                                </p>
-                            </a>
-                        </li>
-                      </ul>
+                        <a 
+                            href="{{route('patient-profile') }}" 
+                            class="nav-link">
+                            <i class="nav-icon far fa-user"></i>
+                            <p>
+                                Profile
+                            </p>
+                        </a>
                     </li>
+                    
                    
                     <li class="nav-item">
                         <a href="{{ route('logout') }}" class="nav-link">
-                            <i class="nav-icon far fa-user"></i>
+                            <i class="nav-icon fa fa-power-off"></i>
                             <p>
                                 Logout
                             </p>

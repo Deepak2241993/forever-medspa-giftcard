@@ -50,6 +50,24 @@
                                 <div class="row g-5">
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
+                                            <label>Email Address <span class="required">*</span></label>
+                                            <input type="email" placeholder="" name="email" value="{{ old('email') }}">
+                                            @error('email')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Phone <span class="required">*</span></label>
+                                            <input type="number" placeholder="Phone" name="phone" value="{{ old('phone') }}">
+                                            @error('phone')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
                                             <label>First Name <span class="required">*</span></label>
                                             <input type="text" placeholder="" name="fname" value="{{ old('fname') }}">
                                             @error('fname')
@@ -59,11 +77,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
-                                            <label>Last Name <span class="required">*</span></label>
+                                            <label>Last Name </label>
                                             <input type="text" placeholder="" name="lname" value="{{ old('lname') }}">
-                                            @error('lname')
-                                                <span class="text-danger">{{ 'Last name is required.' }}</span>
-                                            @enderror
+                                           
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -99,24 +115,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Email Address <span class="required">*</span></label>
-                                            <input type="email" placeholder="" name="email" value="{{ old('email') }}">
-                                            @error('email')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Phone <span class="required">*</span></label>
-                                            <input type="number" placeholder="Phone" name="phone" value="{{ old('phone') }}">
-                                            @error('phone')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

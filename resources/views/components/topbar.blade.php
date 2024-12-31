@@ -147,7 +147,6 @@
                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                    <img src="
                    @if (Auth::user()->avatar != '') 
-                   @if (Auth::user()->avatar != '') 
                    {{ URL::asset(Auth::user()->avatar) }}
                     @else{{ URL::asset('medspa.png') }} @endif"
                        class="user-image rounded-circle shadow" alt="User Image">

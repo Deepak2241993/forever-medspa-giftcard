@@ -27,6 +27,58 @@ Route::post('/login',[AdminController::class,'login_post'])->name('login-post');
 Route::post('/patient-login',[AdminController::class,'PatientLoginPost'])->name('patient-login');
 Route::view('email','email.giftcard');
 
+// All Frontend Route Start
+Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card'])->name('home');
+Route::get('product-page/{token?}/{slug}', 'ProductController@productpage')->name('product_list');
+Route::get('productdetails/{slug}','ProductController@productdetails')->name('productdetails');
+Route::get('services','ServiceUnitController@ServicePage')->name('services');
+Route::post('create-unit-quickly','ServiceUnitController@CreateUnitQuickly')->name('create-unit-quickly');
+Route::get('services/{slug}','ServiceUnitController@UnitPageShow')->name('serviceunit');// This is  For Service Frontend and Backend Banner Service
+Route::get('services/{product_slug}/{unitslug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
+Route::get('service/{slug}','ProductController@productdetails')->name('productdetails');
+Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
+Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
+Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
+Route::post('cart','PopularOfferController@Cart')->name('cart');
+Route::get('cartview','PopularOfferController@Cartview')->name('cartview');
+Route::post('/cart/remove','PopularOfferController@CartRemove')->name('cartremove');
+Route::post('/update-cart', 'PopularOfferController@updateCart')->name('update-cart');
+Route::post('checkout','PopularOfferController@Checkout')->name('checkout');
+Route::get('checkout-view','PopularOfferController@checkoutView')->name('checkout_view');
+Route::post('/giftcards-validate', 'GiftsendController@giftcardValidate')->name('giftcards-validate');
+Route::post('checkout-process','StripeController@CheckoutProcess')->name('checkout_process');
+Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->name('strip_checkout_success');
+Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
+Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
+Route::get('invoice','StripeController@invoice')->name('invoice');
+
+Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF']);
+//  New Code For API URL Call
+Route::post('/sendgift','GiftsendController@sendgift')->name('sendgift');
+Route::post('/selfgift','GiftsendController@selfgift')->name('selfgift');
+Route::post('/coupon-verify','GiftsendController@giftvalidate')->name('coupon-verify');
+Route::post('/giftcardpayment',[App\Http\Controllers\StripeController::class,'giftcardpayment'])->name('giftcardpayment');
+Route::post('/balance-check','GiftsendController@knowbalance')->name('balance-check');
+Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('payment_cnf');
+// Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
+// Route::get('services/{slug}','ProductController@productpage')->name('product');
+
+//  For Payment Route
+
+Route::post('/send-gift-cards','GiftController@store')->name('send-gift-cards');
+Route::get('/strip_form',[App\Http\Controllers\StripeController::class,'formview']);
+Route::post('/payment',[App\Http\Controllers\StripeController::class,'makepayment']);
+Route::get('/success', function () {
+    return view('stripe.thanks');
+});
+Route::get('/failed', function () {
+    return view('stripe.failed');
+});
+//  For Payment Route End 
+// Frond End Route End 
+
+
+
 
 //For All Backend Route
 Route::prefix('admin')->middleware('login')->group(function () {
@@ -70,10 +122,8 @@ Route::get('/export-categories-with-full-data', [CategoryExportController::class
 Route::get('/export-services', [CategoryExportController::class, 'exportServices']);
 Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('service-redeem-view');
 Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('redeem-services');
-
 Route::get('/search-order-api','ServiceOrderController@SearchOrderApi')->name('search-order-api');
 Route::get('/patient-search','PatientController@PatientSearch')->name('patient-search');
-
 Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')->name('service-statement');
 Route::post('/redeemcalculation', 'ServiceOrderController@redeemcalculation')->name('redeemcalculation');
 Route::post('/do-cancel', 'ServiceOrderController@DoCancel')->name('do-cancel');
@@ -92,85 +142,23 @@ Route::post('servic-checkout-process','PopularOfferController@CheckoutProcess')-
 Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
 Route::resource('/terms', TermController::class);
 Route::resource('/program', ProgramController::class);
-
-});
-
-
-
-
-// All Frontend Route Start
-Route::get('product-page/{token?}/{slug}', 'ProductController@productpage')->name('product_list');
-Route::get('productdetails/{slug}','ProductController@productdetails')->name('productdetails');
-// Route::get('category/{token?}','ProductCategoryController@categorytpage')->name('category');
-
-Route::get('services','ServiceUnitController@ServicePage')->name('services');
-Route::post('create-unit-quickly','ServiceUnitController@CreateUnitQuickly')->name('create-unit-quickly');
-Route::get('services/{slug}','ServiceUnitController@UnitPageShow')->name('serviceunit');// This is  For Service Frontend and Backend Banner Service
-Route::get('services/{product_slug}/{unitslug}','ServiceUnitController@UnitPageDetails')->name('unit-details');
-// Route::get('services/{slug}','ProductController@productpage')->name('product');
-Route::get('service/{slug}','ProductController@productdetails')->name('productdetails');
-Route::post('services-search','ProductController@ServicesSearch')->name('ServicesSearch');
-Route::get('popular-service/{id}','ProductController@PopularService')->name('PopularService');
-Route::get('popular-deals','PopularOfferController@popularDeals')->name('popularDeals');
-Route::post('cart','PopularOfferController@Cart')->name('cart');
-Route::get('cartview','PopularOfferController@Cartview')->name('cartview');
-Route::post('/cart/remove','PopularOfferController@CartRemove')->name('cartremove');
-Route::post('/update-cart', 'PopularOfferController@updateCart')->name('update-cart');
-Route::post('checkout','PopularOfferController@Checkout')->name('checkout');
-Route::get('checkout-view','PopularOfferController@checkoutView')->name('checkout_view');
-Route::post('/giftcards-validate', 'GiftsendController@giftcardValidate')->name('giftcards-validate');
-Route::post('checkout-process','StripeController@CheckoutProcess')->name('checkout_process');
-Route::get('stripe/checkout/success','StripeController@stripcheckoutSuccess')->name('strip_checkout_success');
-Route::post('createslug','ProductCategoryController@slugCreate')->name('slugCreate');
-Route::get('find-deals','ProductCategoryController@FindDeals')->name('find-deals');
-Route::get('invoice','StripeController@invoice')->name('invoice');
 Route::resource('/product', ProductController::class);
 Route::resource('/patient', PatientController::class);
-Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF']);
-// Frond End Route End 
 
-
-
-//  New Code For API URL Call
-Route::post('/sendgift','GiftsendController@sendgift')->name('sendgift');
-Route::post('/selfgift','GiftsendController@selfgift')->name('selfgift');
-Route::post('/coupon-verify','GiftsendController@giftvalidate')->name('coupon-verify');
-Route::post('/giftcardpayment',[App\Http\Controllers\StripeController::class,'giftcardpayment'])->name('giftcardpayment');
-Route::post('/balance-check','GiftsendController@knowbalance')->name('balance-check');
-Route::post('/payment_cnf','GiftsendController@payment_confirmation')->name('payment_cnf');
-
-
+});
 
 
 
 // For All Patient Route
-    Route::prefix('My-patient')->middleware('login')->group(function () {
+    Route::prefix('My-patient')->middleware('patientlogin')->group(function () {
     Route::get('/dashboard', 'PatientController@PatientDashboard')->name('patient-dashboard');
-    // Route::resource('/gift', GiftController::class);
+    Route::resource('/patient', PatientController::class);
+    Route::get('/patient-profile', 'PatientController@PatientProfile')->name('patient-profile');
+    Route::get('/purchased-giftcards', 'PatientController@PurchasedGiftcards')->name('purchased-giftcards');
+    Route::get('/patient-giftcards-redeem', 'PatientController@PatientGiftcardsRedeem')->name('patient-giftcards-redeem');
+    
     Route::resource('/order-history', TransactionHistoryController::class);
     });
-
-
-
-
-
-
-//  For Payment Route
-Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card'])->name('home');
-Route::post('/send-gift-cards','GiftController@store')->name('send-gift-cards');
-Route::get('/strip_form',[App\Http\Controllers\StripeController::class,'formview']);
-Route::post('/payment',[App\Http\Controllers\StripeController::class,'makepayment']);
-Route::get('/success', function () {
-    return view('stripe.thanks');
-});
-Route::get('/failed', function () {
-    return view('stripe.failed');
-});
-   //  For Payment Route End 
-
-
-
-
 
 
 // For Cache Clear

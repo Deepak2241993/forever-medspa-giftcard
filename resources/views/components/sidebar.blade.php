@@ -286,7 +286,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('logout') }}" class="nav-link">
-                            <i class="nav-icon far fa-user"></i>
+                            <i class="nav-icon fa fa-power-off"></i>
                             <p>
                                 Logout
                             </p>

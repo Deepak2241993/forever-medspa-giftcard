@@ -8,8 +8,6 @@ use App\Models\Product;
 use App\Models\Program;
 use App\Models\ServiceUnit;
 use App\Models\TransactionHistory;
-use Stripe\Stripe;
-use Stripe\Charge;
 use Session;
 use Mail;
 use Illuminate\Support\Facades\DB;
@@ -471,11 +469,11 @@ public function updateCart(Request $request)
                             }
                         }
                     }
-                    session::pull('giftcards');
-                    session::pull('total_gift_applyed');
-                    session::pull('tax_amount');
-                    session::pull('totalValue');
-                    session::pull('cart');
+                    Session::pull('giftcards');
+                    Session::pull('total_gift_applyed');
+                    Session::pull('tax_amount');
+                    Session::pull('totalValue');
+                    Session::pull('cart');
                 }
 
         Mail::to($transaction_data->email)->send(new ServicePurchaseConfirmation($transaction_data));

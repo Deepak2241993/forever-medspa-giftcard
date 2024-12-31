@@ -6,7 +6,7 @@ use Closure;
 use Session;
 use Illuminate\Http\Request;
 
-class login
+class PatientLogin
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,10 @@ class login
      */
     public function handle(Request $request, Closure $next)
     {
-        if(empty(Session::get('result')))
-        {
-            return redirect('/login');
+         //  For Patient Login
+         if (empty(Session::get('result.name'))) {
+            return redirect('/patient-login');
         }
-       
         return $next($request);
     }
 }

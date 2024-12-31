@@ -7,6 +7,8 @@ use App\Models\Giftsend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Auth;
+use DB;
 
 class PatientController extends Controller
 {
@@ -174,6 +176,55 @@ class PatientController extends Controller
         
             // Return the dashboard view with the data
             return view('patient.patient_dashboad');
+        }
+       
+        // PAtient Profile
+        public function PatientProfile(Patient $patient)
+        {
+            $id = Auth::guard('patient')->user()->id;
+            $patient = Patient::find($id);
+            return view('patient.patient_profile.profile',compact('patient'));
+        }
+
+        //  For purchased Gift cards Show
+         public function PurchasedGiftcards(Patient $patient)
+         {
+            $email = Auth::guard('patient')->user()->email;
+            $giftcards = Giftsend::where('receipt_email',$email)->orderBy('id','DESC')->paginate(10);
+            return view('patient.giftcards.purchased_giftcards',compact('giftcards'));
+         }
+
+        //   Fro GiftcardRedeem View Page
+        public function PatientGiftcardsRedeem(Patient $patient)
+        {
+            $token = Auth::guard('patient')->user()->user_token;
+            $email = Auth::guard('patient')->user()->email;
+
+            $query = DB::table('giftsends')
+            ->join('giftcards_numbers', 'giftcards_numbers.user_id', '=', 'giftsends.id')
+            ->select(
+                'giftsends.recipient_name',
+                'giftsends.your_name',
+                'giftsends.gift_send_to',
+                'giftsends.user_token',
+                'giftcards_numbers.giftnumber',
+                'giftcards_numbers.user_id',
+                'giftcards_numbers.status',
+                DB::raw('SUM(giftcards_numbers.amount) as total_amount')
+                
+            );
+            $query->where('giftcards_numbers.user_token', $token)
+            ->groupBy(
+                'giftsends.recipient_name',
+                'giftsends.your_name',
+                'giftsends.gift_send_to',
+                'giftsends.user_token',
+                'giftcards_numbers.giftnumber',
+                'giftcards_numbers.user_id',
+                'giftcards_numbers.status',
+            );
+            $result = $query->get(10);
+            return view('patient.giftcards.redeem_giftcard',compact('result'));
         }
         
 }
