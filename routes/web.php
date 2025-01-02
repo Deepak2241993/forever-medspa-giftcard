@@ -152,7 +152,6 @@ Route::resource('/patient', PatientController::class);
 // For All Patient Route
     Route::prefix('My-patient')->middleware('patientlogin')->group(function () {
     Route::get('/dashboard', 'PatientController@PatientDashboard')->name('patient-dashboard');
-    Route::resource('/patient', PatientController::class);
     Route::get('/patient-profile', 'PatientController@PatientProfile')->name('patient-profile');
     Route::get('/purchased-giftcards', 'PatientController@PurchasedGiftcards')->name('purchased-giftcards');
     Route::get('/patient-giftcards-redeem', 'PatientController@PatientGiftcardsRedeem')->name('patient-giftcards-redeem');

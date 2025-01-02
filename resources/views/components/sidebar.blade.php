@@ -203,8 +203,7 @@
                         
                       </ul>
                     </li>
-                    
-
+                
                     {{-- Patient Management  --}}
                     <li class="nav-header">Patient Management</li>
                     <li class="nav-item">
