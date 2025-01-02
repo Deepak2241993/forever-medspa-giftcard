@@ -59,20 +59,11 @@
                             class="nav-link">
                             <i class="nav-icon fas fa-solid fa-gift"></i>
                             <p>
-                                Giftcards
+                                Giftcards List
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a 
-                            href="{{route('patient-giftcards-redeem') }}" 
-                            class="nav-link">
-                            <i class="nav-icon fas fa-solid fa-gift"></i>
-                            <p>
-                                Giftcards Redeem
-                            </p>
-                        </a>
-                    </li>
+                   
                     
                     <li class="nav-item">
                         <a href="#" class="nav-link">

@@ -154,7 +154,7 @@ Route::resource('/patient', PatientController::class);
     Route::get('/dashboard', 'PatientController@PatientDashboard')->name('patient-dashboard');
     Route::get('/patient-profile', 'PatientController@PatientProfile')->name('patient-profile');
     Route::get('/purchased-giftcards', 'PatientController@PurchasedGiftcards')->name('purchased-giftcards');
-    Route::get('/patient-giftcards-redeem', 'PatientController@PatientGiftcardsRedeem')->name('patient-giftcards-redeem');
+    Route::get('/giftcards-statement/{transaction_id}', 'PatientController@GiftcardsStatement')->name('giftcards-statement');
     
     Route::resource('/order-history', TransactionHistoryController::class);
     });

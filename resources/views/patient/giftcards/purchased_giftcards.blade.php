@@ -84,6 +84,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Giftcard Number</th>
+                                            <th>Giftcard History</th>
                                             <th>Generated Date & Time</th>
                                             <th>Receiver Name</th>
                                             <th>Received From</th>
@@ -108,6 +109,12 @@
                                                         data-bs-target="#staticBackdrop_{{ $value['id'] }}"
                                                         onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
                                                         View
+                                                    </a>
+                                                   
+                                                </td>
+                                                <td>
+                                                    <a type="button" class="btn btn-block btn-outline-warning" href="{{route('giftcards-statement',$value['transaction_id'])}}">
+                                                        History
                                                     </a>
                                                    
                                                 </td>

@@ -18,46 +18,33 @@
     </div><!-- /.container-fluid -->
 </section>
 <section class="content-header">
-    
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"> History By Card number</h4>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-end">
+                <!-- Service Search Form -->
+                <div class="col-md-8">
+                        <div class="mb-0">
+                            <label for="service_name" class="form-label">Search by Service Name:</label>
+                            <select name="giftnumber" id="giftnumber" class="form-control" required onchange="Statment(this.value)">
+                                <option value="">Select Giftcard Number</option>
+                                @foreach($giftcards as $key => $value)
+                                    <option value="{{ $value->giftnumber }}">{{ $value->giftnumber }}</option>
+                                @endforeach
+                            </select>
+                                                 
+                        </div>
+                </div>               
+            </div>
+        </div>
+    </div>
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            @if($result->count())
-            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Gift Card Holder Name</th>
-                        <th>Gift Card Holder Email </th>
-                        <th>Gift Card Number</th>
-                        <th>Gift Card Amount</th>
-                        <th>Gift Card Status</th>
-                        {{-- <th>Created Time</th> --}}
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($result as $key=>$value)
-                    @if($value->gift_send_to == Auth::guard('patient')->user()->email)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $value->recipient_name ? $value->recipient_name:$value->your_name }}</td>
-                        <td>{{ $value->gift_send_to }}</td>
-                        <td>{{ $value->giftnumber }}</td>
-                        <td>{{ '$'.$value->total_amount }}</td>
-                        <td>{!! $value->status!=0?'<span class="badge text-bg-success">Active</span>':'<span class="badge text-bg-danger">Inactive</span>' !!}</td>
-                        <td>
-                        <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Statment_{{$value->user_id}}" onclick="Statment({{$value->user_id}},'{{$value->giftnumber}}')">
-                            View Statement</a>
-                        
-                        </td>
-                        <!-- Button trigger modal -->
-                    </tr>
-                   @endif
-                    @endforeach
-                </tbody>
-               
-            </table>
+            @if($giftcards->count())
+            <table class="statment_view table table-striped"></table>
            
             @else
             <hr>
@@ -93,10 +80,8 @@
   @push('script')
       
 <script>
-    function Statment(id,giftcardnumber){
-    $('.Statment').attr('id', 'Statment_' + id);
-
-    $.ajax({
+    function Statment(giftcardnumber){
+       $.ajax({
         url: '{{ route('giftcardstatment') }}',
         method: "post",
         dataType: "json",
@@ -108,11 +93,7 @@
         success: function(response) {
     console.log(response);
     if(response.status == 200) {
-        $('#Statment_' + id).modal('show');
-
-        // Clear the content of the statment_view element
         $('.statment_view').empty();
-
         // Create the table header
         var tableHeader = `
             <tr>
