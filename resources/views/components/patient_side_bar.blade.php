@@ -59,38 +59,23 @@
                             class="nav-link">
                             <i class="nav-icon fas fa-solid fa-gift"></i>
                             <p>
-                                Giftcards List
+                                My Giftcards
                             </p>
                         </a>
                     </li>
                    
-                    
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a 
+                            href="{{route('purchased-giftcards') }}" 
+                            class="nav-link">
                             <i class="nav-icon fa fa-user-md"></i>
                             <p>
                                 My Services
-                                <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">2</span>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-
-                            <li class="nav-item">
-                                <a href="{{ route('service-order-history.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Service Buy</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('service-redeem-view') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> Service Redeem History</p>
-                                </a>
-                            </li>
-                           
-                        </ul>
                     </li>
+                    
+                   
 
                     {{-- Patient Management  --}}
                     
