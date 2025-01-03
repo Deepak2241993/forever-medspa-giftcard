@@ -181,7 +181,7 @@
 
 
     <center class="mb-2">
-        <a href="{{ url('/') }}"  class="btn btn-block btn-outline-primary mr-2">Home</a>
+        <a href="{{ url('/') }}"  class="btn btn-primary mr-2">Home</a>
         {{-- <button  class="btn btn-block btn-outline-success" id="printButton" onclick="printDiv()">Print</button> --}}
     </center>
 	

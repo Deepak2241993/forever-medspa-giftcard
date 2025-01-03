@@ -196,9 +196,9 @@ class PatientController extends Controller
          }
 
         //   Fro GiftcardRedeem View Page
-        public function GiftcardsStatement(Request $request,Patient $patient,$transaction_id)
+        public function GiftcardsStatement(Request $request,Patient $patient,$id)
         {
-            $giftcards = GiftcardsNumbers::where('transaction_id', $transaction_id)
+            $giftcards = GiftcardsNumbers::where('user_id', $id)
             ->orderBy('id', 'DESC')
             ->get();
 

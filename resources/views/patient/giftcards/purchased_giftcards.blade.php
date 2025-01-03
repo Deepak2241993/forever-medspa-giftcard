@@ -113,7 +113,7 @@
                                                    
                                                 </td>
                                                 <td>
-                                                    <a type="button" class="btn btn-block btn-outline-warning" href="{{route('giftcards-statement',$value['transaction_id'])}}">
+                                                    <a type="button" class="btn btn-block btn-outline-warning" href="{{route('giftcards-statement',$value['id'])}}">
                                                         History
                                                     </a>
                                                    
