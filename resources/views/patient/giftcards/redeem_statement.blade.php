@@ -44,12 +44,49 @@
         <div class="container-fluid">
             <!--begin::Row-->
             @if($giftcards->count())
-            <table class="statment_view table table-striped"></table>
-           
-            @else
+            <div class="table-responsive">
+                <table class="statment_view table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Sl No.</th>
+                            <th scope="col">Transaction Number</th>
+                            <th scope="col">Card Number</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Message</th>
+                            <th scope="col">Value Amount</th>
+                            <th scope="col">Actual Paid Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data as $value)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$value->transaction_id}}</td>
+                            <td>{{$value->giftnumber}}</td>
+                            <td>{{date('m-d-Y',strtotime($value->updated_at))}}</td>
+                            <td>{{$value->comments ? $value->comments : 'Self'}}</td>
+                            <td>${{$value->amount}}</td>
+                            <td>${{$value->actual_paid_amount}}</td>
+                        </tr>
+                        @endforeach
+                        <tr class="table-secondary">
+                            <td colspan="5"></td>
+                            <td><b><u>Available Amount</u></b></td>
+                            <td><b><u>Refund</u></b></td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td colspan="5"></td>
+                            <td><b>{{ "$".$totalAmount }}</b></td>
+                            <td><b>{{ "$".$actual_paid_amount }}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        @else
             <hr>
-            <p> No Data found </p>
-            @endif
+            <p class="text-danger">No Data Found</p>
+        @endif
+        
             <!--end::Row-->               
                 <!-- /.Start col -->
         </div>
@@ -96,7 +133,7 @@
         $('.statment_view').empty();
         // Create the table header
         var tableHeader = `
-            <tr>
+            <tr style="background-color:#212529;color:#ffff">
                 <th>Sl No.</th>
                 <th>Transaction Number</th>
                 <th>Card Number</th>
@@ -144,7 +181,7 @@
             <td><b><u>Available Amount</u></b></td>
             <td><b><u>Refund</u></b></td>
         </tr>
-                <tr>
+                <tr style="border-color:#7abaff; background-color:#b8daff;">
                     <td></td>
                     <td></td>
                     <td></td>

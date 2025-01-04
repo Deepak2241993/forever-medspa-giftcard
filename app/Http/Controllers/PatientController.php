@@ -196,13 +196,26 @@ class PatientController extends Controller
          }
 
         //   Fro GiftcardRedeem View Page
-        public function GiftcardsStatement(Request $request,Patient $patient,$id)
+        public function GiftcardsStatement(Request $request,Patient $patient,$id,GiftcardsNumbers $numbers)
         {
             $giftcards = GiftcardsNumbers::where('user_id', $id)
             ->orderBy('id', 'DESC')
             ->get();
-
-            return view('patient.giftcards.redeem_statement',compact('giftcards'));
+            $token ='FOREVER-MEDSPA';
+        //  For Statement of Giftcard
+            $data=$numbers->select('giftcards_numbers.transaction_id','giftcards_numbers.user_token','giftcards_numbers.giftnumber','giftcards_numbers.amount','giftcards_numbers.comments','giftcards_numbers.actual_paid_amount','giftcards_numbers.updated_at')->Where('giftnumber',$giftcards[0]['giftnumber'])->where('user_token',$token)->get();
+            $totalAmount = 0;
+            $actual_paid_amount = 0;
+        
+            // Iterate over each record in the collection and sum up the 'amount' values
+            foreach ($data as $record) {
+                $totalAmount += $record->amount;
+                $actual_paid_amount += $record->actual_paid_amount;
+            }
+        
+            return view('patient.giftcards.redeem_statement',compact('giftcards','data','totalAmount','actual_paid_amount'));
         }
+
+        
         
 }
