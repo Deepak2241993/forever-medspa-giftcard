@@ -58,7 +58,7 @@
                     <tr>
                         <th>#</th>
                         <th>Order Number</th>
-                        <th>View Order</th>
+                        <th>Invoice</th>
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Phone</th>

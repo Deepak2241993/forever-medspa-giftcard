@@ -55,7 +55,7 @@
 
                     <li class="nav-item">
                         <a 
-                            href="{{route('purchased-giftcards') }}" 
+                            href="{{route('my-giftcards') }}" 
                             class="nav-link">
                             <i class="nav-icon fas fa-solid fa-gift"></i>
                             <p>
@@ -66,7 +66,7 @@
                    
                     <li class="nav-item">
                         <a 
-                            href="{{route('purchased-giftcards') }}" 
+                            href="{{route('my-services') }}" 
                             class="nav-link">
                             <i class="nav-icon fa fa-user-md"></i>
                             <p>
@@ -78,7 +78,7 @@
                     <li class="nav-header">Appointments/Store</li>
                     <li class="nav-item">
                         <a 
-                            href="{{route('purchased-giftcards') }}" 
+                            href="{{route('my-giftcards') }}" 
                             class="nav-link">
                             <i class="nav-icon fa fa-cart-plus"></i>
                             <p>
@@ -88,7 +88,7 @@
                     </li>
                     <li class="nav-item">
                         <a 
-                            href="{{route('purchased-giftcards') }}" 
+                            href="{{route('my-giftcards') }}" 
                             class="nav-link">
                             <i class="nav-icon fa fa-calendar-check"></i>
                             <p>

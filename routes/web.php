@@ -153,10 +153,10 @@ Route::resource('/patient', PatientController::class);
     Route::prefix('My-patient')->middleware('patientlogin')->group(function () {
     Route::get('/dashboard', 'PatientController@PatientDashboard')->name('patient-dashboard');
     Route::get('/patient-profile', 'PatientController@PatientProfile')->name('patient-profile');
-    Route::get('/purchased-giftcards', 'PatientController@PurchasedGiftcards')->name('purchased-giftcards');
+    Route::get('/my-giftcards', 'PatientController@Mygiftcards')->name('my-giftcards');
     Route::get('/giftcards-statement/{id}', 'PatientController@GiftcardsStatement')->name('giftcards-statement');
-    
-    Route::resource('/order-history', TransactionHistoryController::class);
+    Route::get('/my-services', 'PatientController@Myservices')->name('my-services');
+    Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
     });
 
 

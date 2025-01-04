@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\TransactionHistory;
 use App\Models\Giftsend;
 use App\Models\GiftcardsNumbers;
 use Illuminate\Http\Request;
@@ -188,11 +189,11 @@ class PatientController extends Controller
         }
 
         //  For purchased Gift cards Show
-         public function PurchasedGiftcards(Patient $patient)
+         public function Mygiftcards(Patient $patient)
          {
             $email = Auth::guard('patient')->user()->email;
             $giftcards = Giftsend::where('gift_send_to',$email)->orderBy('id','DESC')->paginate(10);
-            return view('patient.giftcards.purchased_giftcards',compact('giftcards'));
+            return view('patient.giftcards.my-giftcards',compact('giftcards'));
          }
 
         //   Fro GiftcardRedeem View Page
@@ -216,6 +217,11 @@ class PatientController extends Controller
             return view('patient.giftcards.redeem_statement',compact('giftcards','data','totalAmount','actual_paid_amount'));
         }
 
-        
+        // My Services
+       public function Myservices(TransactionHistory $transaction){
+        $email = Auth::guard('patient')->user()->email;
+        $data = $transaction->where('email',$email)->orderBy('id','DESC')->paginate(10);
+        return view('patient.services.my-services',compact('data'));
+       }
         
 }
