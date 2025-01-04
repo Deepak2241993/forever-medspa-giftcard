@@ -83,7 +83,7 @@ class AdminController extends Controller
     public function Patientlogout(Request $request) {
         Auth::logout();
         $request->session()->pull('result');
-        return redirect('/login');
+        return redirect(route('patient-login'));
     }
 
     //    for User Logout
