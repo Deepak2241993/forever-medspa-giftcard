@@ -65,7 +65,7 @@ $orderId = $data->order_id;
                                                                                 style="color:#467fcf;text-decoration:none"
                                                                                 target="_blank"
                                                                                 data-saferedirecturl="https://myforevermedspa.com/"><img
-                                                                                    src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                    src="{{url('/images/gifts/logo.png')}}"
                                                                                     width="150" height="60"
                                                                                     alt="Forever Medspa"
                                                                                     style="line-height:100%;outline:none;text-decoration:none;vertical-align:baseline;font-size:0;border:0 none"
@@ -216,7 +216,7 @@ $orderId = $data->order_id;
                                                                                     <tr>
                                                                                         <td style="width:1%;padding-right:16px"
                                                                                             valign="top">
-                                                                                            <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                            <img src="{{url('/images/gifts/logo.png')}}"
                                                                                                 width="150"
                                                                                                 height="60"
                                                                                                 alt=""
@@ -328,7 +328,7 @@ $orderId = $data->order_id;
                 </table>
             </center>
         </div>
-        <img alt="" src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+        <img alt="" src="{{url('/images/gifts/logo.png')}}"
             style="display:none;width:1px;height:1px" class="CToWUd" data-bit="iit">
         <div class="yj6qo"></div>
         <div class="adL"></div>

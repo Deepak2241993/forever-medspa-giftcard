@@ -54,7 +54,7 @@
                                                                                                             style="text-decoration:none"
                                                                                                             target="_blank"
                                                                                                             data-saferedirecturl="https://myforevermedspa.com/">
-                                                                                                            <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                                            <img src="{{url('/images/gifts/logo.png')}}"
                                                                                                                 width="150"
                                                                                                                 height=""
                                                                                                                 alt="Forever Medspa"
@@ -390,7 +390,7 @@
                                                                                                 <tr>
                                                                                                     <td valign="middle"
                                                                                                         style="padding:0 10px">
-                                                                                                        <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                                        <img src="{{url('/images/gifts/logo.png')}}"
                                                                                                             width="80"
                                                                                                             height="40"
                                                                                                             alt="Gift Up!"

@@ -95,7 +95,7 @@ margin-right: -60px;
     <div id="myDiv" class="about-box" style="padding-bottom: 0;">
         <fieldset id="finishbox">
             <div class="form-card">
-                <img id="logosuccess" src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" style="width:200px; height:100px; display:none">
+                <img id="logosuccess" src="{{url('/images/gifts/logo.png')}}" style="width:200px; height:100px; display:none">
                 <div class="row justify-content-center">
                     <div class="col-7 ">
                     <h4 class="tran">Payment Successful. Thank you for the payment</h4>

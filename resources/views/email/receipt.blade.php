@@ -72,7 +72,7 @@ $newString = str_replace($search, $replace, $string);
                                                                                                     align="left">
                                                                                                     <a
                                                                                                         style="text-decoration:none">
-                                                                                                        <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                                        <img src="{{url('/images/gifts/logo.png')}}"
                                                                                                             width="150"
                                                                                                             height=""
                                                                                                             alt="Forever Medspa"
@@ -172,7 +172,7 @@ $newString = str_replace($search, $replace, $string);
                                                                                 We really appreciate you buying this
                                                                                 gift card and hope that the recipient
                                                                                 loves our giftcard!<br><br><img
-                                                                                    src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                    src="{{url('/images/gifts/logo.png')}}"
                                                                                     width="100" height="50"
                                                                                     class="CToWUd"
                                                                                     data-bit="iit"><br><br>From:
@@ -665,7 +665,7 @@ $newString = str_replace($search, $replace, $string);
                                                                                                             <tr>
                                                                                                                 <td valign="middle"
                                                                                                                     style="padding:0 10px">
-                                                                                                                    <img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                                                    <img src="{{url('/images/gifts/logo.png')}}"
                                                                                                                         width="80"
                                                                                                                         height="40"
                                                                                                                         alt="Gift Up!"
