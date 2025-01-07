@@ -76,8 +76,14 @@
                                 Black Friday Deals
                             </a>
                         </li> --}}
-                         <li><a class="nav-link active" href="{{url('/')}}">Giftcards</a></li> 
+                        <li><a class="nav-link active" href="{{url('/')}}">Giftcards</a></li> 
+                        
+                        
+                        @if(Session::get('result'))
+                         <li><a class="nav-link" href="{{route('patient-dashboard')}}">{{ Auth::guard('patient')->user()->fname }}</a></li> 
+                        @else
                          <li><a class="nav-link" href="{{url('/patient-login')}}">Login</a></li> 
+                         @endif
                         {{-- Cart Code --}}
                         @php
                         $cart = session()->get('cart', []);
