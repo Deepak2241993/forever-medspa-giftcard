@@ -263,15 +263,22 @@
                       <!-- your steps here -->
                       <div class="step active" data-target="#logins-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger" aria-selected="true">
-                          <span class="bs-stepper-circle">1</span>
-                          <span class="bs-stepper-label">Logins</span>
+                          <span class="bs-stepper-circle"><i class="fa fa-shopping-cart"></i></span>
+                          <span class="bs-stepper-label">Carts</span>
+                        </button>
+                      </div>
+                      <div class="line"></div>
+                      <div class="step" data-target="#patient-information">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="patient-information" id="patient-information-trigger" aria-selected="false" disabled="disabled">
+                          <span class="bs-stepper-circle"><i class="nav-icon fas fa-heartbeat"></i></span>
+                          <span class="bs-stepper-label">Patient Information</span>
                         </button>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#information-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
-                          <span class="bs-stepper-circle">2</span>
-                          <span class="bs-stepper-label">Various information</span>
+                          <span class="bs-stepper-circle"><i class="fa fa-credit-card"></i></span>
+                          <span class="bs-stepper-label">Payment</span>
                         </button>
                       </div>
                     </div>
@@ -443,49 +450,58 @@
 
                         <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                       </div>
-
+{{-- Patient Inforamtion --}}
+                        <div id="patient-information" class="content" role="tabpanel" aria-labelledby="patient-information-trigger">
+                            <div class="form-group">
+                                <h5>Patient Details</h5>
+                                <div class="row">
+                                    <div class="row mb-4">
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" value="" name="fname" Placeholder="First Name">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" value="" name="lname" Placeholder="Last Name">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="email" class="form-control" value="" name="email" Placeholder="Email">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" value="" name="phone" Placeholder="Phone">
+                                        </div>
+                                    </div>
+                                </div>
+                                {{--  Table Data --}}
+                                <h5 class="mb-4">Patient Giftcards</h5>
+                                <table clss="table table-bordered table-striped"border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>Sl No.</th>
+                                            <th>Transaction Number</th>
+                                            <th>Card Number</th>
+                                            <th>Date</th>
+                                            <th>Message</th>
+                                            <th>Value Amount</th>
+                                            <th>Actual Paid Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Transaction Number</td>
+                                            <td>Card Number</td>
+                                            <td>Date</td>
+                                            <td>Message</td>
+                                            <td>Value Amount</td>
+                                            <td>Actual Paid Amount</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                            <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                        </div>
                       <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
                         <div class="form-group">
-                          <label for="exampleInputFile">File input</label>
-                          <div class="input-group">
-                            <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="exampleInputFile">
-                              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                            </div>
-                            <div class="input-group-append">
-                              <span class="input-group-text">Upload</span>
-                            </div>
-                          </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
-                </div>
-              </div>
-              <!-- /.card -->
-            </div>
-          </div>
-    </section>
-
-    <section class="content-header">
-        <!--begin::App Content Header-->
-
-        <!-- Breadcrumb area start  -->
-        @if (isset($cart) && !empty($cart))
-            <!-- Cart area start  -->
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0"> Program Cart</h4>
-                </div>
-                <div class="card-body">
-                    <div class="cart-area section-space">
-                        <div class="container">
                             <h5>Patient Details</h5>
                             <div class="row">
                                 <div class="row mb-4">
@@ -503,6 +519,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {{--  Table Data --}}
                             <h5 class="mb-4">Patient Giftcards</h5>
                             <table clss="table table-bordered table-striped"border="1">
                                 <thead>
@@ -528,36 +545,21 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            
-                            {{-- <div class="row">
-                                <div class="row mb-4">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" value="" name="fname" Placeholder="First Name">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" value="" name="lname" Placeholder="Last Name">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="email" class="form-control" value="" name="email" Placeholder="Email">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" value="" name="phone" Placeholder="Phone">
-                                    </div>
-                                </div>
-                            </div> --}}
-                                
-                            </div>
                         </div>
+                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
                     </div>
+                  </div>
                 </div>
+                <!-- /.card-body -->
+                
+              </div>
+              <!-- /.card -->
             </div>
-            <!-- Cart area end  -->
-        @else
-            <h3>No Program Added For Sale</h3>
-        @endif
-
+          </div>
     </section>
-    <!-- Body main wrapper end -->
+
 
 @endsection
 @push('script')
