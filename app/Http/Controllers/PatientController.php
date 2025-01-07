@@ -223,5 +223,16 @@ class PatientController extends Controller
         $data = $transaction->where('email',$email)->orderBy('id','DESC')->paginate(10);
         return view('patient.services.my-services',compact('data'));
        }
+
+    //     For Showing Invoice
+    public function Patientinvoice($transaction_data) {
+        try {
+            $id = decrypt($transaction_data);           
+            $transaction_data = TransactionHistory::findOrFail($id);
+            return view('patient.patient-invoice', compact('transaction_data'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Invalid Invoice Link');
+        }
+    }
         
 }

@@ -156,7 +156,7 @@ Route::resource('/patient', PatientController::class);
     Route::get('/my-giftcards', 'PatientController@Mygiftcards')->name('my-giftcards');
     Route::get('/giftcards-statement/{id}', 'PatientController@GiftcardsStatement')->name('giftcards-statement');
     Route::get('/my-services', 'PatientController@Myservices')->name('my-services');
-    Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
+    Route::get('/patient-invoice/{transaction_data}', 'PatientController@Patientinvoice')->name('patient-invoice');
     });
 
 

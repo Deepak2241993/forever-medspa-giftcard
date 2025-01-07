@@ -96,10 +96,10 @@
                         @foreach ($data as $key => $value)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>  <a  class="btn btn-block btn-outline-dark"
-                                    href="{{ route('service-invoice', ['transaction_data' => $value->id]) }}">
-                                    Invoice
-                                </a></td>
+                                <td>  <a  class="btn btn-block btn-outline-primary"
+                                    href="{{ route('patient-invoice', ['transaction_data' => encrypt($value->id)]) }}" class="btn btn-primary">Invoice Download</a>
+                                    
+                               </td>
                                 
                                 @if(!empty($value->payment_intent))
                                 <td>
