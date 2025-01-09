@@ -22,7 +22,7 @@ class PatientController extends Controller
     public function index()
     {
         $data = Patient::
-        paginate(10);
+        paginate(50);
     
         return view('admin.patient.index', compact('data'));
     }

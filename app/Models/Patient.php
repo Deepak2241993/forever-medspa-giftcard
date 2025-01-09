@@ -18,7 +18,7 @@ class Patient extends Authenticatable
         'fname', 'lname', 'city', 'country', 'zip_code', 
         'phone', 'address', 'email', 'status', 'user_token', 
         'created_at', 'updated_at', 'password', 'image', 
-        'is_deleted', 'updated_by'
+        'is_deleted', 'updated_by','patient_login_id'
     ];
 
     // Hide sensitive fields
