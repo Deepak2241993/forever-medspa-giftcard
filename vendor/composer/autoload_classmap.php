@@ -6,7 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\BackupDatabase' => $baseDir . '/app/Console/Commands/BackupDatabase.php',
     'App\\Console\\Commands\\FutureCron' => $baseDir . '/app/Console/Commands/FutureCron.php',
+    'App\\Console\\Commands\\create_patient_login_id' => $baseDir . '/app/Console/Commands/create_patient_login_id.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\APIController' => $baseDir . '/app/Http/Controllers/APIController.php',

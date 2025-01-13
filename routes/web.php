@@ -26,7 +26,8 @@ Route::get('/patient-logout',[AdminController::class,'Patientlogout'])->name('pa
 Route::post('/login',[AdminController::class,'login_post'])->name('login-post');
 Route::post('/patient-login',[AdminController::class,'PatientLoginPost'])->name('patient-login');
 Route::view('email','email.giftcard');
-
+Route::post('/checkusername',[AdminController::class,'CheckUserName'])->name('checkusername');
+Route::post('/patient-signup',[AdminController::class,'PatientSignup'])->name('patient-signup');
 // All Frontend Route Start
 Route::get('/',[App\Http\Controllers\GiftController::class,'christmas_gift_card'])->name('home');
 Route::get('product-page/{token?}/{slug}', 'ProductController@productpage')->name('product_list');

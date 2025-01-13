@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Patient;
 use Redirect;
 use Auth;
 use Session;
 use Validator;
+use Hash;
 
 class AdminController extends Controller
 {
@@ -93,5 +95,83 @@ class AdminController extends Controller
         return redirect('/login');
       }
 
+    public function CheckUserName(Request $request){
+        $request->validate([
+            'username' => 'required|string',
+        ]);
     
+        // Check if a patient exists with the given username
+        $result = Patient::where('patient_login_id', $request->username)->exists();
+    
+        if ($result) {
+            return response()->json([
+                'success' => false,
+                'error' => true,
+                'message' => 'This username is not available.',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => true,
+                'error' => false,
+                'message' => 'This username is available.',
+            ]);
+        }
+    }
+
+    
+    public function PatientSignup(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'fname' => 'required|string|max:255',
+        'email' => 'required|email',
+        'patient_login_id' => 'required|string|unique:patients,patient_login_id|max:255',
+        'password' => 'required|string|min:8',
+        'cpassword' => 'required|same:password',
+    ], [], [
+        // Custom attribute names
+        'fname' => 'First Name',
+        'lname' => 'Last Name',
+        'email' => 'Email',
+        'phone' => 'Phone Number',
+        'patient_login_id' => 'User Name',
+        'password' => 'Password',
+        'cpassword' => 'Confirm Password',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    // Check if the email already exists
+    $patient = Patient::where('email', $request->email)->first();
+    if ($patient) {
+        // Update existing patient
+        $patient->fname = $request->fname;
+        $patient->lname = $request->lname;
+        $patient->phone = $request->phone;
+        $patient->patient_login_id = $request->patient_login_id;
+        $patient->password = Hash::make($request->password);
+        $patient->save();
+
+        return response()->json(['success' => true, 'message' => 'Patient details updated successfully!']);
+    } else {
+        // Create new patient
+        $patient = new Patient();
+        $patient->fname = $request->fname;
+        $patient->lname = $request->lname;
+        $patient->email = $request->email;
+        $patient->phone = $request->phone;
+        $patient->patient_login_id = $request->patient_login_id;
+        $patient->password = Hash::make($request->password);
+        $patient->save();
+
+        return response()->json(['success' => true, 'message' => 'Signup successful!']);
+    }
 }
+
+
+}
+

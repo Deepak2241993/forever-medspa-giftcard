@@ -652,7 +652,9 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\BackupDatabase' => __DIR__ . '/../..' . '/app/Console/Commands/BackupDatabase.php',
         'App\\Console\\Commands\\FutureCron' => __DIR__ . '/../..' . '/app/Console/Commands/FutureCron.php',
+        'App\\Console\\Commands\\create_patient_login_id' => __DIR__ . '/../..' . '/app/Console/Commands/create_patient_login_id.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\APIController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIController.php',
