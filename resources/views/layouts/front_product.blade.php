@@ -45,14 +45,6 @@
     <div id="preloader">
        <div class="bd-loader-inner">
           <div class="bd-loader">
-             {{-- <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span> --}}
              <img src="{{url('/uploads/FOREVER-MEDSPA/medspa_logo.gif')}}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
           </div>
        </div>
@@ -79,7 +71,11 @@
                             </a>
                         </li> --}}
                          <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
+                         @if(Session::get('result'))
+                         <li><a class="nav-link" href="{{route('patient-dashboard')}}">{{ Auth::guard('patient')->user()->fname }}</a></li> 
+                        @else
                          <li><a class="nav-link" href="{{url('/patient-login')}}">Login</a></li> 
+                         @endif
                         {{-- Cart Code --}}
                         @php
                         $cart = session()->get('cart', []);
