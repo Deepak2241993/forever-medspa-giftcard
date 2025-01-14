@@ -33,6 +33,7 @@ class AdminController extends Controller
         }
         else
         {
+            
             return view('auth.patient_login');
         }
     }
