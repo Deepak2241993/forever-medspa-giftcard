@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->dropUnique(['email']);
+            $table->dropUnique('email');
             $table->unique('patient_login_id');
         });
     }
