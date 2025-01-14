@@ -65,7 +65,7 @@ class AdminController extends Controller
 {
     $request->validate([
         'patient_login_id'=>'required',
-        'password'=>'required|alphaNum|min:8'
+        'password'=>'required|min:8'
     ],[
         'patient_login_id.required' => 'The username field is required.',
     ]);
