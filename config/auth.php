@@ -72,6 +72,7 @@ return [
         'patients' => [
         'driver' => 'eloquent',
         'model' => App\Models\Patient::class,
+        'patient_login_id' => 'patient_login_id',
         ],
     ],
 

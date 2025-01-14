@@ -84,7 +84,7 @@
                         <div class="row justify-content-center mt-0">
                            <div class="col-11 col-sm-9 col-md-7 col-lg-11 text-center p-0 mt-3 mb-2">
                               <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                 <h2><strong>Send Gift Cards </strong></h2>
+                                 <h2><strong>Send Gift Cards {{Session::get('amount')}}</strong></h2>
                                  <p>Fill all form field to go to next step</p>
                                  <div class="row">
                                     <div class="col-md-12 mx-0">
@@ -446,6 +446,18 @@
       </div>
    </div>
 </div>
+
+ <!-- Check if Session has 'amount' if patient sign in then goto next page -->
+ @if(Session::has('amount'))
+ <script>
+     document.addEventListener('DOMContentLoaded', function () {
+         // Call the function with the stored session value when page loads
+         fixamount({{ Session::get('amount') }});
+     });
+ </script>
+@endif
+ <!-- Check if Session has 'amount' -->
+
 <!-- best deals -->
 @endsection
 @push('footerscript')
@@ -891,5 +903,28 @@
        })
    
    });
+
+
+   //  for amount move to next window
+   function fixamount(amount) {
+    if (amount != "" && amount != 0) {
+        @if(Session::get('result') && Auth::guard('patient')->user()->fname)
+            $('#secondbox').show();
+        @else
+            <?php Session::put('amount', "'+amount+'"); ?>
+            window.location.href = "{{ route('patient-login') }}";
+        @endif
+        $('#firstbox').hide(); 
+        $('#personal').addClass('active');
+        $("#amountdisplay").html('1 X $' + amount + ' gift card');
+        $("#amountdisplay").attr('amount', amount);
+        $("#amountdisplay").attr('finalAmount', amount);
+    } else {
+        alert('Amount is Not Selected');
+        $('#secondbox').hide();
+    }
+}
+
+
 </script>
 @endpush

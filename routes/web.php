@@ -20,11 +20,13 @@ use App\Http\Controllers\PDFController;
 
 // Auth::routes();
 Route::get('/login',[AdminController::class,'login'])->name('login');
-Route::get('/patient-login',[AdminController::class,'Patientlogin'])->name('patient-login');
-Route::get('/logout',[AdminController::class,'logout'])->name('logout');
-Route::get('/patient-logout',[AdminController::class,'Patientlogout'])->name('patient-logout');
 Route::post('/login',[AdminController::class,'login_post'])->name('login-post');
-Route::post('/patient-login',[AdminController::class,'PatientLoginPost'])->name('patient-login');
+Route::post('/logout',[AdminController::class,'logout'])->name('logout');
+
+Route::get('/patient-login',[AdminController::class,'Patientlogin'])->name('patient-login');
+Route::post('/patient-login', [AdminController::class, 'PatientLoginPost'])->name('patient-login');
+Route::post('/patient-logout', [AdminController::class, 'Patientlogout'])->name('patient-logout');
+
 Route::view('email','email.giftcard');
 Route::post('/checkusername',[AdminController::class,'CheckUserName'])->name('checkusername');
 Route::post('/patient-signup',[AdminController::class,'PatientSignup'])->name('patient-signup');

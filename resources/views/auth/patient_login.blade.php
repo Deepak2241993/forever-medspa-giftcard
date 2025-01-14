@@ -25,12 +25,13 @@
                                             </div>
                                             <form class="mt-4 mb-4 pt-2 card-body" action="{{ route('patient-login') }}" method="POST">
                                                 @csrf
+                                                <!-- Email Input -->
                                                 <div class="form-floating form-floating-custom mb-4">
                                                     <input type="text"
-                                                        class="form-control @error('email') is-invalid @enderror"
-                                                        value="{{ old('email', 'admin@themesdesign.com') }}" id="input-username"
-                                                        placeholder="Enter User Name" name="email">
-                                                    @error('email')
+                                                        class="form-control @error('patient_login_id') is-invalid @enderror"
+                                                        value="{{ old('patient_login_id', request()->cookie('username')) }}" id="input-username"
+                                                        placeholder="Enter User Name" name="patient_login_id">
+                                                    @error('patient_login_id')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
@@ -40,12 +41,12 @@
                                                         <i data-feather="users"></i>
                                                     </div>
                                                 </div>
-
+                                            
+                                                <!-- Password Input -->
                                                 <div class="form-floating form-floating-custom mb-4 auth-pass-inputgroup">
                                                     <input type="password"
                                                         class="form-control pe-5 @error('password') is-invalid @enderror"
-                                                        name="password" id="password-input" placeholder="Enter Password"
-                                                        value="Password">
+                                                        name="password" value="{{ request()->cookie('password') }}" id="password-input" placeholder="Enter Password">
                                                     @error('password')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -56,20 +57,25 @@
                                                         id="password-addon">
                                                         <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                                     </button>
-                                                    <label for="input-password">Password</label>
+                                                    <label for="password-input">Password</label>
                                                     <div class="form-floating-icon">
                                                         <i data-feather="lock"></i>
                                                     </div>
                                                 </div>
-
-
+                                            
+                                                <!-- Remember Me Checkbox -->
+                                                <div class="form-check mb-3">
+                                                    <input type="checkbox" class="form-check-input" name="remember" id="remember" {{ request()->cookie('remember') ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="remember">Remember Me</label>
+                                                </div>
+                                            
+                                                <!-- Submit and Signup Buttons -->
                                                 <div class="mb-3">
-                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Sign
-                                                        In</button>
-                                                    <button class="btn btn-primary waves-effect waves-light" type="button"
-                                                        type="button" onclick="SignUp()">Signup</button>
+                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Sign In</button>
+                                                    <button class="btn btn-primary waves-effect waves-light" type="button" onclick="SignUp()">Signup</button>
                                                 </div>
                                             </form>
+                                            
                                         </div>
                                     </div>
 

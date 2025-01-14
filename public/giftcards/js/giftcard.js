@@ -1,21 +1,4 @@
-//  for amount move to next window
 
-function fixamount(amount){
-if(amount!="" && amount!=0)
-    {
-        $('#secondbox').show();
-        $('#firstbox').hide(); 
-        $('#personal').addClass('active');
-       $("#amountdisplay").html('1 X '+'$'+amount + ' gift card');
-       $("#amountdisplay").attr('amount', amount);
-       $("#amountdisplay").attr('finalAmount', amount);
-
-    }
-    else{
-        alert('Amount is Not Selected');
-        $('#secondbox').hide(); 
-    }
-}
 
 function firstboxshow(){
     location.reload();

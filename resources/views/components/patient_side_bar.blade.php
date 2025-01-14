@@ -112,7 +112,11 @@
                     
                    
                     <li class="nav-item">
-                        <a href="{{ route('patient-logout') }}" class="nav-link">
+                        <form id="logout-form" action="{{ route('patient-logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                     
+                        <a href="#"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                             <i class="nav-icon fa fa-power-off"></i>
                             <p>
                                 Logout

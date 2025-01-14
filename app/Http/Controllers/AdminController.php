@@ -27,10 +27,9 @@ class AdminController extends Controller
 
     //  for patient login
     public function Patientlogin(){
-        if(Auth::check())
+        if(Session::has('result'))
         {
-    
-            return redirect(route('home'));
+            return redirect(route('patient-dashboard'));
         }
         else
         {
@@ -61,37 +60,61 @@ class AdminController extends Controller
 
 
     //  for Patienet Login Process
-    public function PatientLoginPost(Request $request){
-        $this->validate($request, [
-            'email'   => 'required|email',
-            'password'  => 'required|alphaNum|min:8'
-        ]);
-    
-            // Extract email and password
-            $credentials = $request->only('email', 'password');
-            if (Auth::guard('patient')->attempt($credentials)) {
-                $request->session()->put('result.name', Auth::guard('patient')->user()->fname . ' ' . Auth::guard('patient')->user()->lname); // Store full name in session
 
-                $response = ['success' => true, 'error' => false, 'message' => 'Logged in as a Patient'];
-                return redirect(route('patient-dashboard'))->with($response);
-            }
-            // If attempts fail
-            $response = ['success' => false, 'error' => true, 'message' => 'Invalid login details.'];
-            return redirect(route('patient-login'))->with($response);
-    }
+    public function PatientLoginPost(Request $request)
+{
+    $request->validate([
+        'patient_login_id'=>'required',
+        'password'=>'required|alphaNum|min:8'
+    ],[
+        'patient_login_id.required' => 'The username field is required.',
+    ]);
+
+    $credentials = $request->only('patient_login_id', 'password');
+    $remember = $request->filled('remember'); 
+   
+    if (Auth::guard('patient')->attempt($credentials)) {
+        if ($remember) {
+            cookie()->queue('username', $request->patient_login_id, 43200); // 30 days
+            cookie()->queue('password', $request->password, 43200); // 30 days
+            cookie()->queue('remember', $request->remember, 43200); // 30 days
+        } else {
+            //  Clear cookies if 'Remember Me' is unchecked
+            cookie()->queue(cookie()->forget('username'));
+            cookie()->queue(cookie()->forget('password'));
+            cookie()->queue(cookie()->forget('remember'));
+        }
+        $request->session()->put('result.name', Auth::guard('patient')->user()->fname . ' ' . Auth::guard('patient')->user()->lname); // Store full name in session
+        if (Session::has('amount')) {
+            $amount = Session::get('amount');
+            return view('pages_for_occasion.christmas', compact('amount'));
+        } else {
+        return redirect()->route('patient-dashboard')->with('success', 'Login successful!');
+        }
+}
+  // Return errors properly
+  return back()->withErrors(['username' => 'Invalid credentials.'])->withInput();
+}
+
 
     //  for PatientLogout
 
     public function Patientlogout(Request $request) {
-        Auth::logout();
-        $request->session()->pull('result');
+        Auth::guard('patient')->logout();
+
+    // Clear session data
+        $request->session()->forget('result');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect(route('patient-login'));
     }
 
     //    for User Logout
     public function logout(Request $request) {
         Auth::logout();
-        $request->session()->pull('result');
+        $request->session()->forget('result');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/login');
       }
 

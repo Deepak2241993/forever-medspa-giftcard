@@ -160,26 +160,13 @@ class PatientController extends Controller
             }
 
         //  For Dashboard
-        public function PatientDashboard(Patient $patient)
+        public function PatientDashboard()
         {
-            // Retrieve the currently authenticated patient's email
-            // $patientEmail = Auth::guard('patient')->user()->email;
-        
-            // Find the patient data based on the email
-            // $PatientData = Patient::where('email', $patientEmail)->first();
-        
-            // if (!$PatientData) {
-            //     // Handle the case where the patient is not found
-            //     abort(404, 'Patient not found.');
-            // }
-        
-            // Count the number of gifts sent by the patient
-            // $gift_buy = Giftsend::where('user_id', $PatientData->id)->count();
-        
-            // Return the dashboard view with the data
-            return view('patient.patient_dashboad');
+            if (Auth::guard('patient')->check()) {
+                return view('patient.patient_dashboad');
+            }
+            return redirect()->route('patient-login')->withErrors(['patient_login_id' => 'Please log in first.']);
         }
-       
         // PAtient Profile
         public function PatientProfile(Patient $patient)
         {
