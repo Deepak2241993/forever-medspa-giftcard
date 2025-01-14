@@ -340,7 +340,7 @@
                     // Show success message
                     alert(response.message);
                     // Optionally, redirect to login or home page:
-                    // window.location.href = '/login';
+                    window.location.href = '{{route('patient-login')}}';
                 } else {
                     alert('Something went wrong!');
                 }
