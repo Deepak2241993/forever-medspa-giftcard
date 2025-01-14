@@ -163,6 +163,11 @@ Route::resource('/patient', PatientController::class);
     });
 
 
+
+    //  Usefull Route
+    Route::post('/store-amount', 'PatientController@storeAmount')->name('store-amount');
+    Route::get('/remove-amount', 'PatientController@removeAmount')->name('remove-amount');
+
 // For Cache Clear
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear ');

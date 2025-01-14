@@ -87,7 +87,7 @@ class AdminController extends Controller
         $request->session()->put('result.name', Auth::guard('patient')->user()->fname . ' ' . Auth::guard('patient')->user()->lname); // Store full name in session
         if (Session::has('amount')) {
             $amount = Session::get('amount');
-            return view('pages_for_occasion.christmas', compact('amount'));
+            return redirect()->route('home')->with('amount', $amount);
         } else {
         return redirect()->route('patient-dashboard')->with('success', 'Login successful!');
         }

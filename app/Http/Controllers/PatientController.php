@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use DB;
+use Session;
 
 class PatientController extends Controller
 {
@@ -221,5 +222,27 @@ class PatientController extends Controller
             return redirect()->back()->with('error', 'Invalid Invoice Link');
         }
     }
-        
+    
+    public function storeAmount(Request $request)
+    {
+        $request->validate(['amount' => 'required|numeric']);
+        Session::put('amount', $request->amount);
+
+        // Check if the patient is logged in
+        if (Auth::guard('patient')->check()) {
+            return response()->json(['logged_in' => true]);
+        } else {
+            return response()->json(['logged_in' => false]);
+        }
+    }
+
+    public function removeAmount(Request $request)
+    {
+        // Remove 'amount' from session
+        $request->session()->forget('amount');
+
+        // Optionally, redirect to a page (e.g., dashboard or home) after removal
+        return redirect()->route('home')->with('success', 'Amount has been removed.');
+    }
+
 }

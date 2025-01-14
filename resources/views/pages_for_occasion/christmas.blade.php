@@ -84,7 +84,7 @@
                         <div class="row justify-content-center mt-0">
                            <div class="col-11 col-sm-9 col-md-7 col-lg-11 text-center p-0 mt-3 mb-2">
                               <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                 <h2><strong>Send Gift Cards {{Session::get('amount')}}</strong></h2>
+                                 <h2><strong>Send Gift Cards</strong></h2>
                                  <p>Fill all form field to go to next step</p>
                                  <div class="row">
                                     <div class="col-md-12 mx-0">
@@ -908,23 +908,82 @@
    //  for amount move to next window
    function fixamount(amount) {
     if (amount != "" && amount != 0) {
-        @if(Session::get('result') && Auth::guard('patient')->user()->fname)
-            $('#secondbox').show();
-        @else
-            <?php Session::put('amount', "'+amount+'"); ?>
-            window.location.href = "{{ route('patient-login') }}";
-        @endif
-        $('#firstbox').hide(); 
-        $('#personal').addClass('active');
-        $("#amountdisplay").html('1 X $' + amount + ' gift card');
-        $("#amountdisplay").attr('amount', amount);
-        $("#amountdisplay").attr('finalAmount', amount);
+        // Use AJAX to store the amount in the session
+        $.ajax({
+            url: "{{ route('store-amount') }}", // Create this route
+            method: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                amount: amount
+            },
+            success: function(response) {
+                if (response.logged_in) {
+                    $('#secondbox').show();
+                    $('#firstbox').hide();
+                    $('#personal').addClass('active');
+                    $("#amountdisplay").html('1 X $' + amount + ' gift card');
+                    $("#amountdisplay").attr('amount', amount);
+                    $("#amountdisplay").attr('finalAmount', amount);
+                } else {
+                    window.location.href = "{{ route('patient-login') }}";
+                }
+            }
+        });
     } else {
         alert('Amount is Not Selected');
         $('#secondbox').hide();
     }
 }
 
+function firstboxshow() {
+    // Redirect to the remove-amount route
+    location.href = '{{ route('remove-amount') }}';
+}
 
+//  for custome amount giftcard
+function customeamount(amount){
+    var amount = $('#customeamount').val();
+
+    if(amount!="")
+    {
+        if(amount<25)
+        {
+            alert('The Amount should be more than or equal to $25');
+            return false;	
+        }
+        if(amount>2000)
+        {
+            alert('Your is more the $2000 please enter less then $2000 or equal to $2000');
+            return false;	
+        }
+        $.ajax({
+            url: "{{ route('store-amount') }}", // Create this route
+            method: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}",
+                amount: amount
+            },
+            success: function(response) {
+                if (response.logged_in) {
+                    $('#secondbox').show();
+                    $('#firstbox').hide();
+                    $('#personal').addClass('active');
+                    $("#amountdisplay").html('1 X $' + amount + ' gift card');
+                    $("#amountdisplay").attr('amount', amount);
+                    $("#amountdisplay").attr('finalAmount', amount);
+                } else {
+                    window.location.href = "{{ route('patient-login') }}";
+                }
+            }
+        });
+
+
+    }
+    else{
+        alert('Enter Amount');
+        $('#secondbox').hide(); 
+    }
+    
+    }
 </script>
 @endpush
