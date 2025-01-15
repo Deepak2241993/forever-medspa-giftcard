@@ -180,8 +180,24 @@ class PatientController extends Controller
          public function Mygiftcards(Patient $patient)
          {
             $email = Auth::guard('patient')->user()->email;
-            $giftcards = Giftsend::where('gift_send_to',$email)->orderBy('id','DESC')->paginate(10);
-            return view('patient.giftcards.my-giftcards',compact('giftcards'));
+            
+            $mygiftcards = Giftsend::where(function($query) use ($email) {
+                $query->whereColumn('gift_send_to', 'receipt_email')
+                      ->where('recipient_name', null)
+                      ->where('gift_send_to', $email);
+            })
+            ->orWhere(function($query) use ($email) {
+                $query->whereColumn('gift_send_to', '!=', 'receipt_email')
+                      ->whereNotNull('recipient_name')
+                      ->where('gift_send_to', $email);
+            })
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+
+
+            $sendgiftcards = Giftsend::where('recipient_name','!=',null)->where('receipt_email',$email)->orderBy('id','DESC')->paginate(10);
+
+            return view('patient.giftcards.my-giftcards',compact('mygiftcards','sendgiftcards'));
          }
 
         //   Fro GiftcardRedeem View Page

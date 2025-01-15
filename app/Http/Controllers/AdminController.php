@@ -85,6 +85,9 @@ class AdminController extends Controller
             cookie()->queue(cookie()->forget('password'));
             cookie()->queue(cookie()->forget('remember'));
         }
+        // Store PAtient Details in Session
+        $request->session()->put('patient_details', Auth::guard('patient')->user());
+        // dd(Auth::guard('patient')->user());
         $request->session()->put('result.name', Auth::guard('patient')->user()->fname . ' ' . Auth::guard('patient')->user()->lname); // Store full name in session
         if (Session::has('amount')) {
             $amount = Session::get('amount');

@@ -98,6 +98,7 @@ public function giftvalidate(Request $request, GiftCoupon $giftCoupon){
  *                 @OA\Property(property="in_future", type="date", example="12-05-2025"),
  *                 @OA\Property(property="coupon_code", type="string", example="CCODE12"),
  *                 @OA\Property(property="event_id", type="integer", example="5"),
+ *                 @OA\Property(property="patient_login_id", type="string", example="xyz@123"),
  *             )
  *         )
  *     ),
@@ -116,7 +117,6 @@ public function gift_send_store_other (Request $request,Giftsend $giftsend)
 {
     $data=$request->all();
    $result= $giftsend->create($data);
-
    if ($result) {
        $lastId = $result->id;
        $result=$giftsend->find($lastId);
@@ -147,6 +147,7 @@ public function gift_send_store_other (Request $request,Giftsend $giftsend)
  *                 @OA\Property(property="gift_card_send_type", type="string", example="Email"),
  *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
  *                 @OA\Property(property="coupon_code", type="string", example="CCODE12"),
+ *                 @OA\Property(property="patient_login_id", type="string", example="xyz@123"),
  *             )
  *         )
  *     ),

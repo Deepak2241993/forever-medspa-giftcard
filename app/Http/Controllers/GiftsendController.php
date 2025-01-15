@@ -121,7 +121,6 @@ class GiftsendController extends Controller
     public function sendgift(Request $request){
         $data_arr = $request->except('_token');
         $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
-        // print_r($data_arr); die();
         $data = json_encode($data_arr);
         //  First API
         $resultData =$this->postAPI('gift-for-other',$data);

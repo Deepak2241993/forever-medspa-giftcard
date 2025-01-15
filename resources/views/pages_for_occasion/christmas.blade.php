@@ -36,7 +36,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                <div class="row align-items-center about-main-info">
                   <div class="col-lg-6 col-md-6 col-sm-12">
-                     <h2><b>Giftcards made simple</b>
+                     <h2><b>Giftcards made simple </b>
                      </h2>
                      <p style="text-align: justify;">We're thrilled to express our gratitude to the loyal
                         customers of MedSpa Wellness centre, with our ! Whether it's a token of appreciation, a
@@ -532,6 +532,7 @@
                        gift_send_to: receipt_email,
                        user_token: $('#user_token').val(),
                        coupon_code: coupon_code,
+                       patient_login_id: "{{ session('patient_details')['patient_login_id'] ?? '' }}",
                    },
                    success: function(response) {
                        console.log(response.success);
@@ -684,6 +685,8 @@
                        discount: discount,
                        gift_send_to: gift_send_to,
                        event_id: event,
+                       patient_login_id: "{{ session('patient_details')['patient_login_id'] ?? '' }}",
+
                    },
                    success: function(response) {
                        console.log(response.success);
