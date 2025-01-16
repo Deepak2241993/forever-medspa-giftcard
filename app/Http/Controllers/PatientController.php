@@ -179,23 +179,22 @@ class PatientController extends Controller
         //  For purchased Gift cards Show
          public function Mygiftcards(Patient $patient)
          {
-            $email = Auth::guard('patient')->user()->email;
+            $patient_login_id = Auth::guard('patient')->user()->patient_login_id ;
             
-            $mygiftcards = Giftsend::where(function($query) use ($email) {
+            $mygiftcards = Giftsend::where(function($query) use ($patient_login_id) {
                 $query->whereColumn('gift_send_to', 'receipt_email')
                       ->where('recipient_name', null)
-                      ->where('gift_send_to', $email);
+                      ->where('gift_send_to', $patient_login_id);
             })
-            ->orWhere(function($query) use ($email) {
+            ->orWhere(function($query) use ($patient_login_id) {
                 $query->whereColumn('gift_send_to', '!=', 'receipt_email')
                       ->whereNotNull('recipient_name')
-                      ->where('gift_send_to', $email);
+                      ->where('gift_send_to', $patient_login_id);
             })
             ->orderBy('id', 'DESC')
             ->paginate(10);
 
-
-            $sendgiftcards = Giftsend::where('recipient_name','!=',null)->where('receipt_email',$email)->orderBy('id','DESC')->paginate(10);
+            $sendgiftcards = Giftsend::where('recipient_name','!=',null)->where('receipt_email',$patient_login_id)->orderBy('id','DESC')->paginate(10);
 
             return view('patient.giftcards.my-giftcards',compact('mygiftcards','sendgiftcards'));
          }

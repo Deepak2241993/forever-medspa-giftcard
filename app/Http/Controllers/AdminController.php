@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Giftsend;
 use App\Models\Patient;
 use Redirect;
 use Auth;
@@ -183,7 +184,8 @@ class AdminController extends Controller
                     'patient_login_id' => $request->patient_login_id,
                     'password' => Hash::make($request->password),
                 ]);
-    
+                Giftsend::where('gift_send_to', $patient->email)->update(['gift_send_to' => $patient->patient_login_id]);
+                Giftsend::where('receipt_email', $patient->email)->update(['receipt_email' => $patient->patient_login_id]);
                 return response()->json(['success' => true, 'message' => 'Patient details updated successfully!']);
             }
             return response()->json(['success' => false, 'errors' => ['email' => 'Email already exists. Please login.']], 422);
