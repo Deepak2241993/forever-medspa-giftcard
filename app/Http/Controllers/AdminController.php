@@ -147,58 +147,61 @@ class AdminController extends Controller
 
     
     public function PatientSignup(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'fname' => 'required|string|max:255',
-        'email' => 'required|email',
-        'patient_login_id' => 'required|string|unique:patients,patient_login_id|max:255',
-        'password' => 'required|string|min:8',
-        'cpassword' => 'required|same:password',
-    ], [], [
-        // Custom attribute names
-        'fname' => 'First Name',
-        'lname' => 'Last Name',
-        'email' => 'Email',
-        'phone' => 'Phone Number',
-        'patient_login_id' => 'User Name',
-        'password' => 'Password',
-        'cpassword' => 'Confirm Password',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json([
-            'success' => false,
-            'errors' => $validator->errors(),
-        ], 422);
-    }
-
-    // Check if the email already exists
-    $patient = Patient::where('email', $request->email)->first();
-    if ($patient) {
-        // Update existing patient
-        $patient->fname = $request->fname;
-        $patient->lname = $request->lname;
-        $patient->phone = $request->phone;
-        $patient->patient_login_id = $request->patient_login_id;
-        $patient->password = Hash::make($request->password);
-        $patient->save();
-
-        return response()->json(['success' => true, 'message' => 'Patient details updated successfully!']);
-    } else {
-        // Create new patient
-        $patient = new Patient();
-        $patient->fname = $request->fname;
-        $patient->lname = $request->lname;
-        $patient->email = $request->email;
-        $patient->phone = $request->phone;
-        $patient->patient_login_id = $request->patient_login_id;
-        $patient->password = Hash::make($request->password);
-        $patient->save();
-
+    {
+        $validator = Validator::make($request->all(), [
+            'fname' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'patient_login_id' => 'required|string|unique:patients,patient_login_id|max:255',
+            'password' => 'required|string|min:8',
+            'cpassword' => 'required|same:password',
+        ], [], [
+            'fname' => 'First Name',
+            'lname' => 'Last Name',
+            'email' => 'Email',
+            'phone' => 'Phone Number',
+            'patient_login_id' => 'User Name',
+            'password' => 'Password',
+            'cpassword' => 'Confirm Password',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+        $patient = Patient::where('email', $request->email)->first();
+    
+        if ($patient) {
+            if (!$patient->patient_login_id && !$patient->password) {
+                // Update existing patient with missing login details
+                $patient->update([
+                    'fname' => $request->fname,
+                    'lname' => $request->lname,
+                    'phone' => $request->phone,
+                    'patient_login_id' => $request->patient_login_id,
+                    'password' => Hash::make($request->password),
+                ]);
+    
+                return response()->json(['success' => true, 'message' => 'Patient details updated successfully!']);
+            }
+            return response()->json(['success' => false, 'errors' => ['email' => 'Email already exists. Please login.']], 422);
+        }
+    
+        // Create a new patient
+        Patient::create([
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'patient_login_id' => $request->patient_login_id,
+            'password' => Hash::make($request->password),
+        ]);
+    
         return response()->json(['success' => true, 'message' => 'Signup successful!']);
     }
-}
-
+    
 
 }
 

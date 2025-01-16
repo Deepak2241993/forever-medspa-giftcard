@@ -350,6 +350,7 @@
                     var errors = xhr.responseJSON.errors;
                     if (errors.fname) $('#error-fname').text(errors.fname[0]).show();
                     if (errors.email) $('#error-email').text(errors.email[0]).show();
+                    if (errors.email) $('#error-email').text(errors.email).show();
                     if (errors.patient_login_id) $('#error-username').text(errors.patient_login_id[0]).show();
                     if (errors.password) $('#error-password').text(errors.password[0]).show();
                     if (errors.cpassword) $('#error-cpassword').text(errors.cpassword[0]).show();
