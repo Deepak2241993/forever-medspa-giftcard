@@ -15,7 +15,7 @@ class Patient extends Authenticatable
 
     // Define the fillable attributes for mass assignment
     protected $fillable = [
-        'fname', 'lname', 'city', 'country', 'zip_code', 'phone', 'address', 'email', 'status', 'user_token', 'created_at', 'updated_at', 'patient_login_id', 'password', 'tokenverfy', 'image', 'is_deleted', 'updated_by'
+        'fname', 'lname', 'city', 'country', 'zip_code', 'phone', 'address', 'email', 'status', 'user_token', 'created_at', 'updated_at', 'patient_login_id', 'password', 'tokenverify', 'image', 'is_deleted', 'updated_by'
     ];
 
     // Hide sensitive fields

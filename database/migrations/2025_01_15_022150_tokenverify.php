@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->string('tokenverfy')->after('password')->nullable();
+            $table->string('tokenverify')->after('password')->nullable();
             $table->unique('email');
         });
     }

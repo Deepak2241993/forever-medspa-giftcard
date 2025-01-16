@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Giftsend;
 use App\Models\Patient;
+use App\Mail\PatientEmailVerify;
 use Redirect;
+use Mail;
 use Auth;
 use Session;
 use Validator;
@@ -66,40 +68,55 @@ class AdminController extends Controller
     public function PatientLoginPost(Request $request)
 {
     $request->validate([
-        'patient_login_id'=>'required',
-        'password'=>'required|min:8'
-    ],[
+        'patient_login_id' => 'required',
+        'password' => 'required|min:8'
+    ], [
         'patient_login_id.required' => 'The username field is required.',
     ]);
 
     $credentials = $request->only('patient_login_id', 'password');
     $remember = $request->filled('remember'); 
-   
+
+    // Attempt login
     if (Auth::guard('patient')->attempt($credentials)) {
+        $patient = Auth::guard('patient')->user();
+        
+        // Check if patient status is 1 (active)
+        if ($patient->status != 1) {
+            Auth::guard('patient')->logout();
+            return back()->withErrors(['patient_login_id' => 'Your account is inactive. Please verify your Email'])->withInput();
+        }
+
+        // Handle "Remember Me" functionality
         if ($remember) {
             cookie()->queue('username', $request->patient_login_id, 43200); // 30 days
             cookie()->queue('password', $request->password, 43200); // 30 days
             cookie()->queue('remember', $request->remember, 43200); // 30 days
         } else {
-            //  Clear cookies if 'Remember Me' is unchecked
+            // Clear cookies if 'Remember Me' is unchecked
             cookie()->queue(cookie()->forget('username'));
             cookie()->queue(cookie()->forget('password'));
             cookie()->queue(cookie()->forget('remember'));
         }
-        // Store PAtient Details in Session
-        $request->session()->put('patient_details', Auth::guard('patient')->user());
-        // dd(Auth::guard('patient')->user());
-        $request->session()->put('result.name', Auth::guard('patient')->user()->fname . ' ' . Auth::guard('patient')->user()->lname); // Store full name in session
+
+        // Store Patient Details in Session
+        $request->session()->put('patient_details', $patient);
+        $request->session()->put('result.name', $patient->fname . ' ' . $patient->lname); // Store full name in session
+
+        // Check for amount in session and redirect accordingly
         if (Session::has('amount')) {
             $amount = Session::get('amount');
             return redirect()->route('home')->with('amount', $amount);
         } else {
-        return redirect()->route('patient-dashboard')->with('success', 'Login successful!');
+            return redirect()->route('patient-dashboard')->with('success', 'Login successful!');
         }
+    }
+
+    // Return errors properly if login fails
+    return back()->withErrors(['patient_login_id' => 'Invalid credentials.'])->withInput();
 }
-  // Return errors properly
-  return back()->withErrors(['username' => 'Invalid credentials.'])->withInput();
-}
+
+
 
 
     //  for PatientLogout
@@ -183,9 +200,11 @@ class AdminController extends Controller
                     'phone' => $request->phone,
                     'patient_login_id' => $request->patient_login_id,
                     'password' => Hash::make($request->password),
+                    'tokenverify' => bin2hex(random_bytes(32)),
                 ]);
                 Giftsend::where('gift_send_to', $patient->email)->update(['gift_send_to' => $patient->patient_login_id]);
                 Giftsend::where('receipt_email', $patient->email)->update(['receipt_email' => $patient->patient_login_id]);
+                Mail::to($patient->email)->send(new PatientEmailVerify($patient));
                 return response()->json(['success' => true, 'message' => 'Patient details updated successfully!']);
             }
             return response()->json(['success' => false, 'errors' => ['email' => 'Email already exists. Please login.']], 422);
@@ -199,9 +218,23 @@ class AdminController extends Controller
             'phone' => $request->phone,
             'patient_login_id' => $request->patient_login_id,
             'password' => Hash::make($request->password),
+            'tokenverify' => bin2hex(random_bytes(32)),
         ]);
     
         return response()->json(['success' => true, 'message' => 'Signup successful!']);
+    }
+  
+    //  For Email Verification 
+    public function PatientEmailVerify(Request $request, $token)
+    {
+        $result = Patient::where('tokenverify', $token)->first();
+    
+        if ($result) {
+            $result->update(['status' => 1, 'tokenverify' => null]);
+            return redirect()->route('patient-login')->with('message', 'Your email has been verified successfully.');
+        }
+    
+        return back()->with('message', 'Something went wrong. Maybe your token has expired.');
     }
     
 

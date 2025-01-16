@@ -167,6 +167,7 @@ Route::resource('/patient', PatientController::class);
     //  Usefull Route
     Route::post('/store-amount', 'PatientController@storeAmount')->name('store-amount');
     Route::get('/remove-amount', 'PatientController@removeAmount')->name('remove-amount');
+    Route::get('/patient-email-verify/{token}',[AdminController::class,'PatientEmailVerify'])->name('patient_email_verify');
 
 // For Cache Clear
 Route::get('/clear-cache', function() {
