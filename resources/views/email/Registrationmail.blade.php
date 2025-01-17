@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,19 +62,16 @@
         </div>
 
         <!-- Email Body -->
-        <div class="container">
-            <h1>Email Verification</h1>
-            <p>Thank you for registering with us. Please verify your email address by clicking the button below:</p>
+        <div class="email-body">
+            <h2>Welcome to Forever Medspa Wellness Centre</h2>
+            <p>Hi {{ $data->fname ." ".$data->lname }},</p>
+            <p>Credentials for your Dashboard are mentioned below:</p>
+           
+            <p>Username: {{$data->patient_login_id }}</p>
+            <br>
+            <p>For more information contact the Admin admin@forevermedspanj.com</p>
 
-            <p>
-                <a href="{{ route('patient_email_verify', ['token' => $data['tokenverify']]) }}" target="_blank">Verify Email</a>
-            </p>
-   
-            <p>If you did not create this account, you can ignore this email.</p>
-            <div class="footer">
-                {{-- <p>&copy; {{date('Y')}} Your Company. All rights reserved.</p> --}}
-            </div>
-        </div>Thank you, <br> The {{ config('app.name') }} Team</p>
+            <p>Thank you, <br> The {{ config('app.name') }} Team</p>
         </div>
 
         <!-- Footer -->

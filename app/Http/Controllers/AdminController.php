@@ -7,6 +7,7 @@ use App\Models\Giftsend;
 use App\Models\Patient;
 use App\Mail\PatientEmailVerify;
 use App\Mail\ForgotPasswordMail;
+use App\Mail\RegistrationMail;
 use Redirect;
 use Mail;
 use Auth;
@@ -232,6 +233,7 @@ class AdminController extends Controller
     
         if ($result) {
             $result->update(['status' => 1, 'tokenverify' => null]);
+            Mail::to($result->email)->send(new RegistrationMail($result));
             return redirect()->route('patient-login')->with('message', 'Your email has been verified successfully.');
         }
     
