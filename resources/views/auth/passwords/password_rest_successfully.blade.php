@@ -29,9 +29,9 @@
                                                     </div>
                                                     <div class="p-2 mt-4">
                                                         <h4>Success !</h4>
-                                                        <p class="text-muted">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et</p>
+                                                        <p class="text-muted">Your Password has been successfully updated !</p>
                                                         <div class="mt-4">
-                                                            <a href="{{ URL::asset('index') }}"  class="btn btn-block btn-outline-primary w-100">Back to Home</a>
+                                                            <a href="{{ route('patient-login') }}"  class="btn btn-block btn-outline-primary w-100">Back to Login</a>
                                                         </div>
                                                     </div>
                                                 </div>

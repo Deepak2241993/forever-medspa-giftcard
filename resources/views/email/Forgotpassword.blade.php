@@ -65,10 +65,11 @@
         <div class="email-body">
             <h2>Reset Your Password</h2>
             <p>Hi {{ $data->fname ." ".$data->lname }},</p>
-            <p>You are requested to reset your  password. Click the button below to reset your password:</p>
+            <p>Click the button below to reset your password:</p>
             <p>
                 <a href="{{ route('ResetPasswordView', ['token' => $data['tokenverify']]) }}" target="_blank">Reset Password</a>
             </p>
+            <p>User Name:{{$data->patient_login_id }}</p>
             <p>If you did not request a password reset, please ignore this email.</p>
             <p>Thank you, <br> The {{ config('app.name') }} Team</p>
         </div>

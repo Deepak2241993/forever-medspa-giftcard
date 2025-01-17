@@ -298,10 +298,8 @@ class AdminController extends Controller
             
             return view('auth.passwords.password_rest_successfully');
         }
-        else{
-            return back()->with('error', 'Something went wrong plese connect with Forever Medspa Admin');
-        }
     }
+       
     
   
     
