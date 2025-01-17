@@ -74,6 +74,7 @@
                                                     <button class="btn btn-success waves-effect waves-light" type="submit">Sign In</button>
                                                     <button class="btn btn-primary waves-effect waves-light" type="button" onclick="SignUp()">Signup</button>
                                                 </div>
+                                                <a href="{{route('forgot-password')}}">Forgot Password?</a>
                                             </form>
                                             
                                         </div>
@@ -153,8 +154,8 @@
                                                     <button class="btn btn-success btn-lg w-50" type="button" onclick="PatientSignIn(event)">Submit</button>
                                                     <button class="btn btn-primary btn-lg w-50" onclick="Login()" type="button">Login</button>
                                                 </div>
+                                                
                                             </form>
-                                            
                                             
 
                                         </div>
@@ -360,8 +361,5 @@
             }
         });
     }
-
-
-
     </script>
 @endsection

@@ -23,9 +23,7 @@ Route::get('/login',[AdminController::class,'login'])->name('login');
 Route::post('/login',[AdminController::class,'login_post'])->name('login-post');
 Route::post('/logout',[AdminController::class,'logout'])->name('logout');
 
-Route::get('/patient-login',[AdminController::class,'Patientlogin'])->name('patient-login');
-Route::post('/patient-login', [AdminController::class, 'PatientLoginPost'])->name('patient-login');
-Route::post('/patient-logout', [AdminController::class, 'Patientlogout'])->name('patient-logout');
+
 
 Route::view('email','email.giftcard');
 Route::post('/checkusername',[AdminController::class,'CheckUserName'])->name('checkusername');
@@ -163,11 +161,21 @@ Route::resource('/patient', PatientController::class);
     });
 
 
+    // Patient Login Form
+    Route::get('/patient-login',[AdminController::class,'Patientlogin'])->name('patient-login');
+    Route::post('/patient-login', [AdminController::class, 'PatientLoginPost'])->name('patient-login');
+    Route::post('/patient-logout', [AdminController::class, 'Patientlogout'])->name('patient-logout');
 
     //  Usefull Route
     Route::post('/store-amount', 'PatientController@storeAmount')->name('store-amount');
     Route::get('/remove-amount', 'PatientController@removeAmount')->name('remove-amount');
     Route::get('/patient-email-verify/{token}',[AdminController::class,'PatientEmailVerify'])->name('patient_email_verify');
+    Route::get('/forgot-password',[AdminController::class,'ForgotPasswordView'])->name('forgot-password');
+    Route::post('/password-reset',[AdminController::class,'ForgotPassword'])->name('password-reset');
+    Route::get('/reset-password/{token}',[AdminController::class,'ResetPassword'])->name('ResetPasswordView');
+    Route::post('/reset-password',[AdminController::class,'ResetPasswordPost'])->name('ResetPassword');
+    
+
 
 // For Cache Clear
 Route::get('/clear-cache', function() {

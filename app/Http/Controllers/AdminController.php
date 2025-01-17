@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Giftsend;
 use App\Models\Patient;
 use App\Mail\PatientEmailVerify;
+use App\Mail\ForgotPasswordMail;
 use Redirect;
 use Mail;
 use Auth;
@@ -237,6 +238,72 @@ class AdminController extends Controller
         return back()->with('message', 'Something went wrong. Maybe your token has expired.');
     }
     
+    //  Forgot password
+    public function ForgotPasswordView(Request $request){
+      
+       return view('auth.passwords.email');
+    }
 
+    public function forgotPassword(Request $request)
+    {
+        // Validate the email field
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+    
+        $email = $request->input('email');
+        $user = Patient::where('email', $email)->first();
+    
+        if ($user) {
+            // Send the forgot password email
+            $user->update(['tokenverify' => bin2hex(random_bytes(32))]);
+            Mail::to($user->email)->send(new ForgotPasswordMail($user));
+            return view('auth.passwords.forget_email_success')
+                ->with('success', 'A password reset email has been sent to the registered email address.');
+        } else {
+            return back()->with('error', 'This user does not exist.');
+        }
+    }
+    //  Passwor reset View
+    public function ResetPassword($token){
+        return view('auth.passwords.reset', ['token' => $token]);
+    }
+
+    //  Update Password 
+    public function ResetPasswordPost(Request $request){
+        $validator = Validator::make($request->all(), [
+            'tokenverify' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+            'cpassword' => 'required|same:password',
+        ], [], [
+            'tokenverify' => 'Token is Not Verify',
+            'password' => 'Password',
+            'cpassword' => 'Confirm Password',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+        $patient = Patient::where('tokenverify', $request->tokenverify)->first();
+        if($patient)
+        {
+            $patient->update([
+                'password' => Hash::make($request->password),
+                'tokenverify' => null
+            ]);
+            
+            return view('auth.passwords.password_rest_successfully');
+        }
+        else{
+            return back()->with('error', 'Something went wrong plese connect with Forever Medspa Admin');
+        }
+    }
+    
+  
+    
 }
 

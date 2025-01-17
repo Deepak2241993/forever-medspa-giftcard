@@ -20,40 +20,21 @@
                                     </div>
                                     <div class="card mt-4">
                                         <div class="card-body" id="login_id">
-                                            <div class="text-center">
-                                                <h5 class="mb-0">Reset Password</h5>
-                                                <p class="text-muted mt-2">Reset Password with Forever Medspa.</p>
-                                            </div>
-                                            <div class="alert alert-success text-center my-4" role="alert">
-                                                Enter your Registered Email and instructions will be sent to you!
-                                            </div>
-                                            @if (session('status'))
-                                                <div class="alert alert-success" role="alert">
-                                                    {{ session('status') }}
-                                                </div>
-                                            @endif
-                                            <form class="mt-4" action="{{route('password-reset')}}" method="POST">
-                                            @csrf
-                                                <div class="form-floating form-floating-custom mb-4">
-                                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" id="input-email" placeholder="Enter Email">
-                                                    @error('email')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                    <label for="input-email">Email</label>
-                                                    <div class="form-floating-icon">
-                                                        <i data-feather="mail"></i>
+                                            <div class="auth-content my-auto">
+                                                <div class="text-center">
+                                                    <div class="avatar-lg mx-auto">
+                                                        <div class="avatar-title rounded-circle bg-light">
+                                                            <i class="bx bx-mail-send h2 mb-0 text-primary"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-2 mt-4">
+                                                        <h4>Success !</h4>
+                                                        <p class="text-muted">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et</p>
+                                                        <div class="mt-4">
+                                                            <a href="{{ URL::asset('index') }}"  class="btn btn-block btn-outline-primary w-100">Back to Home</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3 mt-4">
-                                                    <button  class="btn btn-block btn-outline-primary w-100 waves-effect waves-light" type="submit">Request new password</button>
-                                                </div>
-                                            </form>
-            
-                                            <div class="mt-5 text-center">
-                                                <p class="text-muted mb-0">Remember It ?  <a href="{{route('patient-login')}}"
-                                                        class="text-primary fw-semibold"> Sign In </a> </p>
                                             </div>
                                             
                                         </div>
@@ -161,13 +142,6 @@
     <script src="{{ URL::asset('assets/js/pages/feather-icon.init.js') }}"></script>
 
 @endsection
-
-
-
-
-
-
-
 
 
 

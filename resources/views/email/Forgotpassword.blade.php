@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,15 +62,15 @@
         </div>
 
         <!-- Email Body -->
-        <div class="container">
-            <h1>Email Verification</h1>
-            <p>Thank you for registering with us. Please verify your email address by clicking the button below:</p>
-            <p><a href="{{ route('patient_email_verify', ['token' => $data['tokenverify']]) }}" class="button">Verify Email</a></p>
-            <p>If you did not create this account, you can ignore this email.</p>
-            <div class="footer">
-                {{-- <p>&copy; {{date('Y')}} Your Company. All rights reserved.</p> --}}
-            </div>
-        </div>nk you, <br> The {{ config('app.name') }} Team</p>
+        <div class="email-body">
+            <h2>Reset Your Password</h2>
+            <p>Hi {{ $data->fname ." ".$data->lname }},</p>
+            <p>You are requested to reset your  password. Click the button below to reset your password:</p>
+            <p>
+                <a href="{{ route('ResetPasswordView', ['token' => $data['tokenverify']]) }}" target="_blank">Reset Password</a>
+            </p>
+            <p>If you did not request a password reset, please ignore this email.</p>
+            <p>Thank you, <br> The {{ config('app.name') }} Team</p>
         </div>
 
         <!-- Footer -->
