@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::table('patients', function (Blueprint $table) {
             $table->string('tokenverify')->after('password')->nullable();
-            $table->unique('email');
         });
     }
 
