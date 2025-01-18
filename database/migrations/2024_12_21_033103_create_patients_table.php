@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('zip_code', 5)->nullable();
             $table->string('phone', 20)->nullable();
             $table->text('address')->nullable();
-            $table->unique('email');
+            $table->string('email')->unique()->nullable(); // Add the email column
             $table->boolean('status')->default(1);
             $table->string('user_token', 255)->nullable();
             $table->timestamps();
