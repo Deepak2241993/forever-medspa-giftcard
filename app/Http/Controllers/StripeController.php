@@ -195,7 +195,7 @@ public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsN
             }
            
             //  For Sender Mail id Get
-                $patient_data = Patient::where('patient_login_id',$giftsend->receipt_email)->first();
+                $patient_data = Patient::where('patient_login_id',$giftsend->gift_send_to)->first();
                 if($patient_data)
                 {
                     $gift_send_to = $patient_data->email;
@@ -204,7 +204,7 @@ public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsN
                     $gift_send_to = $giftsend->gift_send_to;
                 }
             //  For Receiver Mail id Get
-                $patient_data = Patient::where('patient_login_id',$giftsend->gift_send_to)->first();
+                $patient_data = Patient::where('patient_login_id',$giftsend->receipt_email)->first();
                 if($patient_data)
                 {
                     $tomail = $patient_data->email;
