@@ -376,6 +376,7 @@
                                           <fieldset id="paymentdbox" class="p-4">
                                           <h2 class="fs-title">Order summary</h2>
                                           <div id="paymentresult"></div>
+                                          {{-- Go To Main Payment  --}}
                                           <form action="{{ url('/giftcardpayment') }}"
                                              method="POST" class="mb-4">
                                           @csrf

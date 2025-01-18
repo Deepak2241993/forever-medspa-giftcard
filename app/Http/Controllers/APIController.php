@@ -116,8 +116,8 @@ public function giftvalidate(Request $request, GiftCoupon $giftCoupon){
 public function gift_send_store_other (Request $request,Giftsend $giftsend)
 {
     $data=$request->all();
-   $result= $giftsend->create($data);
-   if ($result) {
+    $result= $giftsend->create($data);
+    if ($result) {
        $lastId = $result->id;
        $result=$giftsend->find($lastId);
         $result=  json_encode($result);

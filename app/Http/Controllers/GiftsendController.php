@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Giftsend;
 use App\Models\User;
 use App\Models\GiftcardsNumbers;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Auth;
@@ -120,6 +121,14 @@ class GiftsendController extends Controller
 
     public function sendgift(Request $request){
         $data_arr = $request->except('_token');
+        $data_arr['receipt_email'] = $request->patient_login_id;
+        // find User exist or not
+        $patient = Patient::where('email',$request->gift_send_to)->first();
+        if($patient)
+        {
+            $data_arr['gift_send_to'] = $patient->patient_login_id;
+        }
+       
         $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
         $data = json_encode($data_arr);
         //  First API
@@ -152,8 +161,8 @@ class GiftsendController extends Controller
                                          <tr><th>Your name:</th><th>'.$result->your_name.'</th></tr>
                                          <tr><th>Recipient name:</th><th>'.$result->recipient_name.'</th></tr>
                                          <tr><th>Message:</th><th>'.$result->message.'</th></tr>
-                                         <tr><th>Ship To:</th><th>'.$result->gift_send_to.'</th></tr>
-                                         <tr><th>Receipt To:</th><th>'.$result->receipt_email.'</th></tr>'.$discount_dispaly.'
+                                         <tr><th>Ship To:</th><th>'.$request->gift_send_to.'</th></tr>
+                                         <tr><th>Receipt To:</th><th>'.$request->receipt_email.'</th></tr>'.$discount_dispaly.'
                                          <tr><th>Total:</th><th>'.'$'.($result->amount * $result->qty) - ($result->discount ? $result->discount : 0).'</th></tr>
                                        </tbody>
                                      </table>',
