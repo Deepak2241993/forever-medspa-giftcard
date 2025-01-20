@@ -124,9 +124,12 @@ class GiftsendController extends Controller
         $data_arr['receipt_email'] = $request->patient_login_id;
         // find User exist or not
         $patient = Patient::where('email',$request->gift_send_to)->first();
-        if($patient)
+        if($patient->patient_login_id != null)
         {
             $data_arr['gift_send_to'] = $patient->patient_login_id;
+        }
+        else{
+            $data_arr['gift_send_to'] = $request->gift_send_to;
         }
        
         $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
