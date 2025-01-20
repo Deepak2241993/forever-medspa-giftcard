@@ -222,7 +222,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'tokenverify' => bin2hex(random_bytes(32)),
         ]);
-    
+        Mail::to($patient->email)->send(new PatientEmailVerify($patient));
         return response()->json(['success' => true, 'message' => 'Signup successful. Verify your email to login !']);
     }
   
