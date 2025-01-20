@@ -572,13 +572,21 @@
                                                     <tr>
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:30px 0px 0px;font-family:arial,helvetica,sans-serif;"
                                                             align="left">
-
                                                             <h1 class="v-line-height v-font-size"
                                                                 style="margin: 0px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word; font-family: Epilogue; font-size: 40px; font-weight: 700;">
-                                                                Giftcard Details:</h1>
-
+                                                                Giftcard Details:
+                                                            </h1>
+                                                            <div style="text-align: center; margin-top: 20px;">
+                                                                <a href="https://example.com" target="_blank" 
+                                                                    style="display: inline-block; background-color: #007bff; color: white; text-decoration: none; 
+                                                                           padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 5px; 
+                                                                           font-family: Arial, sans-serif;">
+                                                                    Sign Up to Track Your Giftcards
+                                                                </a>
+                                                            </div>
                                                         </td>
                                                     </tr>
+                                                    
                                                 </tbody>
                                             </table>
                                             {{-- for Gift card Hedding --}}
