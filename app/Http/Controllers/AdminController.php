@@ -207,7 +207,7 @@ class AdminController extends Controller
                 Giftsend::where('gift_send_to', $patient->email)->update(['gift_send_to' => $patient->patient_login_id]);
                 Giftsend::where('receipt_email', $patient->email)->update(['receipt_email' => $patient->patient_login_id]);
                 Mail::to($patient->email)->send(new PatientEmailVerify($patient));
-                return response()->json(['success' => true, 'message' => 'Patient details updated successfully!']);
+                return response()->json(['success' => true, 'message' => 'Details updated successfully. Verify your email to login !']);
             }
             return response()->json(['success' => false, 'errors' => ['email' => 'Email already exists. Please login.']], 422);
         }
