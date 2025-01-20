@@ -223,7 +223,7 @@ class AdminController extends Controller
             'tokenverify' => bin2hex(random_bytes(32)),
         ]);
     
-        return response()->json(['success' => true, 'message' => 'Signup successful!']);
+        return response()->json(['success' => true, 'message' => 'Signup successful. Verify your email to login !']);
     }
   
     //  For Email Verification 
