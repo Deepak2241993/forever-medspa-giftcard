@@ -189,6 +189,15 @@ class GiftsendController extends Controller
     // For Self Giftcards
     public function selfgift(Request $request){
         $data_arr = $request->except('_token');
+
+        $patient = Patient::where('email',$request->gift_send_to)->first();
+        if($patient->patient_login_id != null)
+        {
+            $data_arr['gift_send_to'] =  $patient->patient_login_id;
+            $data_arr['receipt_email'] = $patient->patient_login_id;
+        }
+       
+
         $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
         $data = json_encode($data_arr);
         //  First API
@@ -213,7 +222,7 @@ else{
                                <tbody>
                                  <tr><th id="giftqty"></th><th>$'.$result->amount*$result->qty.'</th></tr>
                                  <tr><th>Your name:</th><th>'.$result->your_name.'</th></tr>
-                                 <tr><th>Shipping By Email:</th><th>'.$result->receipt_email.'</th></tr>'.$discount_dispaly.'
+                                 <tr><th>Shipping By Email:</th><th>'.$request->gift_send_to.'</th></tr>'.$discount_dispaly.'
                                  <tr><th>Total:</th><th>'.'$'.($result->amount * $result->qty) - ($result->discount ? $result->discount : 0).'</th></tr>
                                </tbody>
                              </table>',
