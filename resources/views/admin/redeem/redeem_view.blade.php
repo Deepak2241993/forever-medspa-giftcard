@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-md-3">
                             
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Gift Card Holder Email">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter User Name">
                             </div>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147">
@@ -60,7 +60,7 @@
                     <tr>
                         <th>#</th>
                         <th>Gift Card Holder Name</th>
-                        <th>Gift Card Holder Email </th>
+                        <th>User Name </th>
                         <th>Gift Card Number</th>
                         <th>Gift Card Amount</th>
                         <th>Gift Card Status</th>

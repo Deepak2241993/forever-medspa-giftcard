@@ -277,7 +277,6 @@ else{
     
             // Set the pagination path
             $paginatedItems->setPath($request->url());
-    
             return view('admin.redeem.redeem_view', compact('paginatedItems'));
         } else {
             $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
@@ -327,8 +326,26 @@ else{
             $data = json_encode($data_arr);
             $statement = $this->postAPI('gift-card-statment', $data);
             $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
+
+            $patient_data = Patient::where('patient_login_id', $result['giftCardHolderDetails']['gift_send_to'])->first();
+            if($patient_data)
+            {
+                //  For Getting Email form Patient Table as Per Recever Username
+                $statement['giftCardHolderDetails']['gift_send_to'] = $patient_data->email;
+
+                $fullname = $patient_data->fname." ".$patient_data->lname;
+                // Assign recipient name if it's empty, otherwise keep existing value
+                if($statement['giftCardHolderDetails']['recipient_name'] = !null)
+                {
+                    $statement['giftCardHolderDetails']['recipient_name'] = $fullname ;
+                }
+                else{
+                    $statement['giftCardHolderDetails']['your_name'] = $fullname ;
+                }
+            }
             
-            Mail::to($result['giftCardHolderDetails']['gift_send_to'])->send(new GiftCardStatement($statement));
+           
+            Mail::to($statement['giftCardHolderDetails']['gift_send_to'])->send(new GiftCardStatement($statement));
         }
 
         return $result;
@@ -484,8 +501,22 @@ public function giftcancel(Request $request,){
 
         if ($statement['receiverAndSenderDetails']['receipt_email'] != '') {
             $tomail = $statement['receiverAndSenderDetails']['receipt_email'];
+            $senderdata = Patient::where('patient_login_id',$tomail)->first();
+            if($senderdata)
+            {
+                $tomail = $senderdata->email;
+                $statement['receiverAndSenderDetails']['your_name'] = $senderdata->fname." ".$senderdata->lname;
+            }
+           
         } else {
             $tomail = $statement['receiverAndSenderDetails']['gift_send_to'];
+            $receiverdata = Patient::where('patient_login_id',$tomail)->first();
+            if($receiverdata)
+            {
+                $tomail = $receiverdata->email;
+                $statement['receiverAndSenderDetails']['your_name'] = $receiverdata->fname." ".$receiverdata->lname;
+            }
+           
         }
         
         // Convert $tomail to string if it's an array
@@ -493,6 +524,7 @@ public function giftcancel(Request $request,){
         
         Mail::to($tomail)->send(new GiftcardCancelMail($statement));
      } 
+
     return $result;
  
 }
