@@ -101,43 +101,64 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Giftcard Number</th>
+                                            <th>Send Mail</th>
+                                            <th>Sender Name</th>
                                             <th>Receiver Name</th>
-                                            <th>Received From</th>
                                             <!--<th>Message</th>-->
-                                            <th>Sender's Email</th>
-                                            <th>Coupon Code</th>
                                             <th>Number of Giftcards</th>
                                             <th>Giftcard Value</th>
                                             <th>Discount</th>
+                                            <th>Coupon Code</th>
                                             <th>Paid Amount</th>
                                             <th>Payment Status</th>
                                             <th>Transaction Id</th>
                                             <th>Generated Date & Time</th>
-                                            <th>Giftcard Number</th>
-                                            <th>Send Mail</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data-table-body">
                                         @foreach($paginatedItems as $key=>$value)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $value['recipient_name'] ? $value['recipient_name'] : $value['your_name'] }}
+                                                <td>
+                                                    @if($value['payment_status'] == 'succeeded')
+                                                    <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop_{{ $value['id'] }}"
+                                                        onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
+                                                        View Card
+                                                    </a>
+                                                    @else
+                                                    <a type="button"  class="btn btn-block btn-outline-danger">
+                                                    No Payment
+                                                </a>
+                                                @endif
+                                                   
+                                                </td>
+                                                <td>
+                                                    @if ($value['payment_status'] == 'succeeded')
+                                                        <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
+                                                             class="btn btn-block btn-outline-warning" id="mailsend_{{ $value['id'] }}">Mail
+                                                            Resend</a>
+                                                        {{-- <button  class="btn btn-block btn-outline-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if ($value['payment_mode'] == 'Payment Gateway')
-                                                    {!! $value['recipient_name'] ? $value['recipient_name'] : "<span class='badge bg-primary'>Self</span>" !!}
+                                                    {!! $value['recipient_name'] ? $value['your_name'] : "<span class='badge bg-primary'>Self</span>" !!}
 
                                                     @else
                                                     <span class='badge bg-warning'>{!! Auth::user()->user_token !!}</span>
                                                     @endif
                                                 </td>
+                                                <td>{{ $value['recipient_name'] ? $value['recipient_name'] : $value['your_name'] }}
+                                                </td>
                                                 <!--<td>{{ $value['recipient_name'] ? $value['message'] : 'NULL' }}</td>-->
-                                                <td>{{ $value['recipient_name'] ? $value['receipt_email'] : 'Medspa' }}</td>
-                                                <td class="text-uppercase">
-                                                    {{ $value['coupon_code'] ? $value['coupon_code'] : '----' }}</td>
+
                                                 <td>{{ $value['qty'] ? $value['qty'] : '----' }}</td>
                                                 <td>{{ $value['amount'] ? '$' . $value['amount'] : '$ 0' }}</td>
                                                 <td>{{ $value['discount'] ? '$' . $value['discount'] : '$ 0' }}</td>
+                                                <td class="text-uppercase">
+                                                    {{ $value['coupon_code'] ? $value['coupon_code'] : '----' }}</td>
                                                 <td>{{ $value['transaction_amount'] ? '$' . $value['transaction_amount'] : '$ 0' }}
                                                 </td>
 
@@ -167,22 +188,7 @@
                                                 <td>{{ $value['transaction_id'] }}</td>
 
                                                 <td><?php echo date('m-d-Y h:i:A', strtotime($value['created_at'])); ?></td>
-                                                <td>
-                                                    <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop_{{ $value['id'] }}"
-                                                        onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
-                                                        View Card
-                                                    </a>
-                                                   
-                                                </td>
-                                                <td>
-                                                    @if ($value['payment_status'] == 'succeeded')
-                                                        <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
-                                                             class="btn btn-block btn-outline-warning" id="mailsend_{{ $value['id'] }}">Mail
-                                                            Resend</a>
-                                                        {{-- <button  class="btn btn-block btn-outline-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
-                                                    @endif
-                                                </td>
+                                                
 
                                                 <!-- Button trigger modal -->
                                             </tr>

@@ -499,6 +499,17 @@ public function giftcancel(Request $request,){
 
 public function Resendmail_view(Request $request){
     $mail_data = Giftsend::findOrFail($request->id);
+
+     $receiver= Patient::where('patient_login_id',$mail_data->gift_send_to)->first();
+     $sender= Patient::where('patient_login_id',$mail_data->receipt_email)->first();
+     if($receiver)
+     {
+        $mail_data['gift_send_to'] = $receiver->email;
+     }
+     if($sender)
+     {
+        $mail_data['receipt_email'] = $sender->email;
+     }
     return view('email.email_template_view',compact('mail_data'));
 
 }

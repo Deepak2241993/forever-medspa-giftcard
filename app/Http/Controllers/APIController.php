@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\GiftcardRedeem;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\Patient;
 use App\Mail\GeftcardMail;
 use App\Mail\GiftReceipt;
 use Auth;
