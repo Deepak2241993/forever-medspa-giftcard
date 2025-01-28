@@ -133,6 +133,7 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 $data = $request->all();
                 $data['user_token'] = 'FOREVER-MEDSPA';
                 $data['transaction_id'] = 'SER-RED' . time();
+                $data['updated_by'] = Auth::user()->id;
 
                 // Create the record and get the inserted model instance
                 $result = $service_redeem->create($data);
@@ -278,7 +279,8 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 'service_orders.actual_amount',
                 'service_orders.discounted_amount',
                 'service_orders.payment_mode',
-                'service_orders.user_token'
+                'service_orders.user_token',
+                'service_orders.patient_login_id'
             )
             ->get();
 
@@ -307,12 +309,14 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
 
     try {
         $data = $request->all();
+       
         $data['user_token'] = 'FOREVER-MEDSPA';
         
         $result = $service_redeem->create($data);
 
         if ($result) {
             $result->transaction_id = 'SER-CAN-' . $result->id;
+            $result->updated_by = Auth::user()->id;
             $result->save();
 
             $transactionresult = TransactionHistory::where('order_id', $result->order_id)->first();

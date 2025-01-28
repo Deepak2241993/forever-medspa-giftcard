@@ -385,6 +385,7 @@
                             <input type="hidden" name="product_id" value="${element.service_id}">
                             <input type="hidden" name="service_type" value="${element.service_type}">
                             <input type="hidden" name="service_order_id" value="${element.service_order_id}">
+                            <input type="hidden" name="patient_login_id" value="${element.patient_login_id}">
                          
                             <input type="hidden" name="order_id" value="${element.order_id}">
                             <input  onkeyup="valueValidate(this, ${element.remaining_sessions})" 
@@ -464,7 +465,9 @@
                                     'input[name="refund_amount"]').val(),
                                 order_id: currentRow.find('input[name="order_id"]').val(),
                                 number_of_session_use: number_of_session_use,
-                                comments: currentRow.find('textarea[name="comments"]').val()
+                                comments: currentRow.find('textarea[name="comments"]').val(),
+                                patient_login_id: currentRow.find(
+                                    'input[name="patient_login_id"]').val(),
                             };
 
                             $.ajax({
@@ -574,6 +577,7 @@
                             <input type="hidden" name="order_id[]" value="${element.order_id}">
                             <input type="hidden" name="service_type[]" value="${element.service_type}">
                             <input type="hidden" name="service_order_id[]" value="${element.id}">
+                            <input type="hidden" name="patient_login_id[]" value="${element.patient_login_id}">
                             <input onkeyup="valueValidate(this, ${element.remaining_sessions})" 
                                    onchange="valueValidate(this, ${element.remaining_sessions})" 
                                    type="number" 
@@ -639,7 +643,8 @@
                     service_type: currentRow.find('input[name="service_type[]"]').val(),
                     service_order_id: currentRow.find('input[name="service_order_id[]"]').val(),
                     number_of_session_use: number_of_session_use,
-                    comments: currentRow.find('textarea[name="comments[]"]').val()
+                    comments: currentRow.find('textarea[name="comments[]"]').val(),
+                    patient_login_id: currentRow.find('input[name="patient_login_id[]"]').val()
                 };
 
                 $.ajax({

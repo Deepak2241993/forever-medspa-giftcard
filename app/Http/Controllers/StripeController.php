@@ -14,6 +14,7 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
 use Mail;
+use Auth;
 use App\Mail\GeftcardMail;
 use App\Mail\GiftReceipt;
 use Illuminate\Support\Facades\DB;
@@ -322,6 +323,7 @@ public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsN
             'tax_amount' => $taxamount,
             'user_token' => 'FOREVER-MEDSPA',
             'payment_mode' => 'online',
+            'patient_login_id' => Auth::guard('patient')->user()->patient_login_id
         ];
 
         
@@ -365,23 +367,12 @@ public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsN
                 'payment_mode' => 'online',
                 'qty' => $item['quantity'],
                 'service_type' => $item['type'],
+                'patient_login_id' => Auth::guard('patient')->user()->patient_login_id
             ];
 
             // ServiceOrderController::create($order_data);
             $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
         }
-
-        // API Code for Storing Data in Lead Capture
-        $api_data = [
-            "first_name" => $request->fname,
-            "last_name" => $request->lname,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "message" => "This is Comes From Giftcart Payment Page",
-            "source" => "Giftcart Website"
-        ];
-
-        $this->sendLeadCaptureRequest($api_data);
 
         DB::commit();  // Commit transaction
 
@@ -427,20 +418,7 @@ public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsN
     }
 }
 
-private function sendLeadCaptureRequest(array $api_data)
-{
-    try {
-        $api_data = json_encode($api_data);
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json'
-        ])->post(env('LEAD_API_URL') . "capture", $api_data);
-
-        return $response->json();
-    } catch (\Exception $e) {
-        Log::error('Lead Capture API Error: ' . $e->getMessage());
-    }
-}
 
 
     public function stripcheckoutSuccess(Request $request)
