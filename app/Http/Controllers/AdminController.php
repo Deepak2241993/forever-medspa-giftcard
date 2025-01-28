@@ -109,7 +109,12 @@ class AdminController extends Controller
         if (Session::has('amount')) {
             $amount = Session::get('amount');
             return redirect()->route('home')->with('amount', $amount);
-        } else {
+        }
+                // Check for session value and redirect accordingly
+               else if (session()->has('cart')) {
+                    return redirect()->route('checkout_view');
+                }
+        else {
             return redirect()->route('patient-dashboard')->with('success', 'Login successful!');
         }
     }

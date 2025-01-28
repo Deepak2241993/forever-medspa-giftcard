@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Program;
 use App\Models\ServiceUnit;
 use App\Models\TransactionHistory;
+use Illuminate\Support\Facades\Auth;
 use Session;
 use Mail;
 use Illuminate\Support\Facades\DB;
@@ -258,40 +259,56 @@ public function updateCart(Request $request)
         }
     }
 
-    public function Checkout(Request $request) {
-        $cart = session()->get('cart', []);
+
+    public function Checkout(Request $request)
+    {
+        try {
+            if (Auth::guard('patient')->check()) {
+                $cart = session()->get('cart', []);
     
-        if ($request->giftcards != null) {
-            // Initialize the giftcards array
-            $giftcards = session()->get('giftcards', []);
+                if (!empty($request->giftcards)) {
+                    // Initialize or retrieve giftcards array from the session
+                    $giftcards = session()->get('giftcards', []);
     
-            // Iterate over the giftcards array from the request
-            foreach ($request->giftcards as $giftcard) {
-                // Add each gift card to the session array
-                $giftcards[] = [
-                    'number' => $giftcard['number'],
-                    'amount' => $giftcard['amount'],
-                ];
+                    // Iterate and add gift card details from the request
+                    foreach ($request->giftcards as $giftcard) {
+                        if (!isset($giftcard['number']) || !isset($giftcard['amount'])) {
+                            continue;
+                        }
+                        $giftcards[] = [
+                            'number' => $giftcard['number'],
+                            'amount' => $giftcard['amount'],
+                        ];
+                    }
+    
+                    // Store updated session data
+                    session()->put([
+                        'giftcards' => $giftcards,
+                        'total_gift_applyed' => $request->total_gift_applyed,
+                        'tax_amount' => $request->tax_amount,
+                        'totalValue' => $request->totalValue,
+                    ]);
+    
+                    return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.', 'error' => false]);
+                } else {
+                    return response()->json(['status' => 200, 'message' => 'No Giftcard Applied', 'error' => false]);
+                }
+            } else {
+                Log::warning('Unauthorized checkout attempt', ['ip' => $request->ip()]);
+                return response()->json(['status' => 401, 'message' => 'User not authenticated', 'error' => true]);
             }
-    
-            // Store the updated giftcards array and other values back into the session
-            session()->put([
-                'giftcards' => $giftcards,
-                'total_gift_applyed' => $request->total_gift_applyed,
-                'tax_amount' => $request->tax_amount,
-                'totalValue' => $request->totalValue,
+        } catch (\Exception $e) {
+            Log::error('Error during checkout process', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
-            return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.']);
-        } else {
-            return response()->json(['status' => 200, 'message' => 'No Giftcard Apply']);
+    
+            return response()->json(['status' => 500, 'message' => 'Internal server error', 'error' => true]);
         }
     }
+
     
-
-
-
-
-
+    
 
 //  For checkout page call
         public function checkoutView(Request $request){

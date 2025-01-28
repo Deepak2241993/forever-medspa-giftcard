@@ -471,7 +471,7 @@
                                     </div>
                                 </div>
                                 {{--  Table Data --}}
-                                <h5 class="mb-4">Patient Giftcards</h5>
+                                <h5 class="mb-4">Patient Giftcards </h5>
                                 <table clss="table table-bordered table-striped"border="1">
                                     <thead>
                                         <tr>
@@ -793,16 +793,17 @@
 
                     },
                     success: function(response) {
-                        if (response.status === 200) {
-                            window.location = "{{ route('checkout_view') }}";
+                        if (response.status === 200 && !response.error) {
+                            window.location.href = "{{ route('checkout_view') }}";
+                        } else if (response.status === 401 && response.error) {
+                            // window.location.href = "http://localhost/medspa-program-management/public/patient-login";
+                            $(location).prop('href', 'http://localhost/medspa-program-management/public/patient-login')
                         } else {
-                            alert('Error submitting Gift Cards: ' + response.error);
+                            alert(response.message || 'Unexpected response.');
                         }
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert(
-                            'An error occurred while submitting the Gift Cards. Please try again.'
-                        );
+                    error: function(jqXHR) {
+                        alert('An error occurred. Please try again.');
                     }
                 });
             });
