@@ -165,8 +165,22 @@ class PatientController extends Controller
         public function PatientDashboard()
         {
             if (Auth::guard('patient')->check()) {
-                $order = TransactionHistory::where('patient_login_id', Auth::guard('patient')->user()->patient_login_id)->count();
-                return view('patient.patient_dashboad', compact('order'));                
+                $patient_login_id = Auth::guard('patient')->user()->patient_login_id;
+                $order = TransactionHistory::where('patient_login_id',  $patient_login_id)->count();
+
+                $giftcards = Giftsend::where(function($query) use ($patient_login_id) {
+                    $query->whereColumn('gift_send_to', 'receipt_email')
+                          ->where('recipient_name', null)
+                          ->where('gift_send_to', $patient_login_id);
+                })
+                ->orWhere(function($query) use ($patient_login_id) {
+                    $query->whereColumn('gift_send_to', '!=', 'receipt_email')
+                          ->whereNotNull('recipient_name')
+                          ->where('gift_send_to', $patient_login_id);
+                })
+                ->orderBy('id', 'DESC')
+                ->count();
+                return view('patient.patient_dashboad', compact('order','giftcards'));                
             }
             return redirect()->route('patient-login')->withErrors(['patient_login_id' => 'Please log in first.']);
         }

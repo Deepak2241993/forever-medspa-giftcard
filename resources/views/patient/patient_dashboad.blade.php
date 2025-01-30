@@ -29,7 +29,7 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">My Giftcards</span>
                                 <span class="info-box-number">
-                                {{ '00' }}
+                                {{ $giftcards }}
                                 
                                 </span>
                             </div>
@@ -46,7 +46,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">My Services</span>
-                        <span class="info-box-number">{{ '00' }}</span>
+                        <span class="info-box-number">{{ $order }}</span>
                     </div>
                     <!-- /.info-box-content -->
                     </div>
