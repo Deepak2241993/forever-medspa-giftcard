@@ -24,7 +24,15 @@
                                                 <h5 class="mb-0">Reset Password</h5>
                                                 <p class="text-muted mt-2">Reset Password with Forever Medspa.</p>
                                             </div>
-                                          
+                                            @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                             @if (session('status'))
                                                 <div class="alert alert-success" role="alert">
                                                     {{ session('status') }}

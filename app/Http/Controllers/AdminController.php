@@ -289,11 +289,8 @@ class AdminController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
-        }
+            return back()->withErrors($validator)->withInput();
+        }        
     
         $patient = Patient::where('tokenverify', $request->tokenverify)->first();
         if($patient)
