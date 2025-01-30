@@ -43,35 +43,7 @@
 
 
             <div class="container-fluid">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0">Search Data</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-md-3">
-                                <label for="fname" class="form-label">First Name:</label>
-                                <input type="text" class="form-control" id="fname" name="fname"
-                                    placeholder="First Name" onkeyup="SearchView()">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="lname" class="form-label">Last Name:</label>
-                                <input type="text" class="form-control" id="lname" name="lname"
-                                    placeholder="Last Name" onkeyup="SearchView()">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="phone" class="form-label">Phone:</label>
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone"
-                                    onkeyup="SearchView()">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="email" class="form-label">Email:</label>
-                                <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Enter Email" onkeyup="SearchView()">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
                 <!--begin::Row-->
                 {{ $data->onEachSide(5)->links() }}
                 <table id="datatable-buttons" class="table table-bordered table-striped">
@@ -263,87 +235,6 @@
                 }
             });
         }
-        //  For Seacrh Function 
-        function SearchView() {
-            var fname = $('#fname').val();
-            var lname = $('#lname').val();
-            var email = $('#email').val();
-            var phone = $('#phone').val();
-
-            $.ajax({
-                url: '{{ route('search-order-api') }}', // API endpoint
-                method: "GET",
-                dataType: "json",
-                data: {
-                    fname: fname,
-                    lname: lname,
-                    email: email,
-                    phone: phone,
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        var tableBody = $('#data-table-body'); // ID of your table body
-                        tableBody.empty(); // Clear existing rows
-
-                        // Loop through the response data and populate the table
-                        $.each(response.data.data, function(key, value) {
-                            var updatedDate = new Date(value.updated_at).toLocaleString('en-US', {
-                                month: '2-digit',
-                                day: '2-digit',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit'
-                            });
-
-                            tableBody.append(`
-                        <tr>
-                            <td>${key + 1}</td>
-                            <td>
-                                <a type="button" class="btn btn-block btn-outline-success" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#staticBackdrop_${value.id}" 
-                                    onclick="OrderView(${key}, '${value.order_id}')">
-                                    Redeem Service
-                                </a> 
-                                | 
-                                <a type="button" class="btn btn-block btn-outline-danger" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#staticBackdrop_${value.id}" 
-                                    onclick="CancelView(${key}, '${value.order_id}')">
-                                    Do Cancel
-                                </a> 
-                                | 
-                                <a type="button" class="btn btn-block btn-outline-warning" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#statement_view_${value.id}" 
-                                    onclick="StatementView(${key}, '${value.order_id}')">
-                                    Statement
-                                </a>
-                            </td>
-                            <td>${value.order_id}</td>
-                            <td>${value.fname} ${value.lname}</td>
-                            <td>${value.email}</td>
-                            <td>${value.phone}</td>
-                            <td>${value.final_amount}</td>
-                            <td>${value.payment_intent}</td>
-                            <td>${updatedDate}</td>
-                        </tr>
-                    `);
-                        });
-                    } else {
-                        alert(response.message || 'No results found.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while fetching data.');
-                }
-            });
-        }
-
-        //  Search Function End 
-
 
         // For Value Validate 
         function valueValidate(inputElement, maxValue) {

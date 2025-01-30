@@ -18,15 +18,22 @@
                                                 height="80"onerror="this.onerror=null; this.src='{{ url('/No_Image_Available.jpg') }}';">
                                         </a>
                                     </div>
+                                    
                                     <div class="card mt-4">
                                         <div class="card-body" id="login_id">
                                             <div class="text-center">
-                                                <h5 class="mb-0">Reset Password</h5>
+                                                <h5 class="mb-0">Reset Password {{ session('status') }}</h5>
                                                 <p class="text-muted mt-2">Reset Password with Forever Medspa.</p>
                                             </div>
+                                            @if(session('error'))
+                                                <div class="alert alert-danger">
+                                                    {{ session('error') }}
+                                                </div>
+                                            @else
                                             <div class="alert alert-success text-center my-4" role="alert">
                                                 Enter your Registered Email and instructions will be sent to you!
                                             </div>
+                                            @endif
                                             @if (session('status'))
                                                 <div class="alert alert-success" role="alert">
                                                     {{ session('status') }}

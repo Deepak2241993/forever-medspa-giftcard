@@ -40,8 +40,8 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-open">
-                        <a href="{{route('patient-dashboard')}}" class="nav-link active">
+                    <li class="nav-item">
+                        <a href="{{route('patient-dashboard')}}" class="nav-link {{ Request::segment(count(request()->segments())) === 'dashboard' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
@@ -49,12 +49,12 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-header">Orders</li>
+                    <li class="nav-header">Orders {{Request::segment(count(request()->segments()))}}</li>
 
                     <li class="nav-item">
                         <a 
                             href="{{route('my-giftcards') }}" 
-                            class="nav-link">
+                            class="nav-link {{ Request::segment(count(request()->segments())) === 'my-giftcards' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-solid fa-gift"></i>
                             <p>
                                 My Giftcards
@@ -65,7 +65,7 @@
                     <li class="nav-item">
                         <a 
                             href="{{route('my-services') }}" 
-                            class="nav-link">
+                            class="nav-link {{ Request::segment(count(request()->segments())) === 'my-services' ? 'active' : '' }}">
                             <i class="nav-icon fa fa-user-md"></i>
                             <p>
                                 My Services
@@ -77,7 +77,7 @@
                     <li class="nav-item">
                         <a 
                             href="{{route('my-giftcards') }}" 
-                            class="nav-link">
+                            class="nav-link ">
                             <i class="nav-icon fa fa-cart-plus"></i>
                             <p>
                                 Cart
@@ -102,7 +102,7 @@
                     <li class="nav-item">
                         <a 
                             href="{{route('patient-profile') }}" 
-                            class="nav-link">
+                            class="nav-link {{ Request::segment(count(request()->segments())) === 'patient-profile' ? 'active' : '' }}">
                             <i class="nav-icon far fa-user"></i>
                             <p>
                                 Profile
