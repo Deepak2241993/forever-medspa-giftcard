@@ -165,7 +165,8 @@ class PatientController extends Controller
         public function PatientDashboard()
         {
             if (Auth::guard('patient')->check()) {
-                return view('patient.patient_dashboad');
+                $order = TransactionHistory::where('patient_login_id', Auth::guard('patient')->user()->patient_login_id)->count();
+                return view('patient.patient_dashboad', compact('order'));                
             }
             return redirect()->route('patient-login')->withErrors(['patient_login_id' => 'Please log in first.']);
         }

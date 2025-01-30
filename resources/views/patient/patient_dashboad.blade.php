@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box">
-                        <span class="info-box-icon bg-info elevation-1"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-solid fa-gift" aria-hidden="true"></i></span>
                         <a href="{{ route('my-giftcards') }}">
                             <div class="info-box-content">
                                 <span class="info-box-text">My Giftcards</span>
@@ -42,7 +42,7 @@
                 <div class="col-12 col-sm-6 col-md-3">
                     <a href="{{ route('my-services') }}">
                     <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                    <span class="info-box-icon bg-success elevation-1"><i class="fa fa-user-md"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">My Services</span>
