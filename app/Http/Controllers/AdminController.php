@@ -261,7 +261,7 @@ class AdminController extends Controller
         $email = $request->input('email');
         $user = Patient::where('email', $email)->first();
     
-        if ($user->patient_login_id !=null && $user->password !=null) {
+        if ($user && $user->patient_login_id !=null && $user->password !=null) {
             // Send the forgot password email
             $user->update(['tokenverify' => bin2hex(random_bytes(32))]);
             Mail::to($user->email)->send(new ForgotPasswordMail($user));

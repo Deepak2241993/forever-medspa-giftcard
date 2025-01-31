@@ -49,7 +49,7 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-header">Orders {{Request::segment(count(request()->segments()))}}</li>
+                    <li class="nav-header">Orders</li>
 
                     <li class="nav-item">
                         <a 
