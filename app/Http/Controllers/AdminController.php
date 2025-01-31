@@ -216,19 +216,22 @@ class AdminController extends Controller
             }
             return response()->json(['success' => false, 'errors' => ['email' => 'Email already exists. Please login.']], 422);
         }
+        else{
     
         // Create a new patient
-        Patient::create([
+       $patient = Patient::create([
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
             'phone' => $request->phone,
             'patient_login_id' => $request->patient_login_id,
             'password' => Hash::make($request->password),
+            'user_token' => 'FOREVER-MEDSPA',
             'tokenverify' => bin2hex(random_bytes(32)),
         ]);
-        Mail::to($patient->email)->send(new PatientEmailVerify($patient));
+        Mail::to($request->email)->send(new PatientEmailVerify($patient));
         return response()->json(['success' => true, 'message' => 'Signup successful. Verify your email to login !']);
+        }
     }
   
     //  For Email Verification 
