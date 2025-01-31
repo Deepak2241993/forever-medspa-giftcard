@@ -224,6 +224,7 @@ class AdminController extends Controller
             'lname' => $request->lname,
             'email' => $request->email,
             'phone' => $request->phone,
+            'status' => '0',
             'patient_login_id' => $request->patient_login_id,
             'password' => Hash::make($request->password),
             'user_token' => 'FOREVER-MEDSPA',
