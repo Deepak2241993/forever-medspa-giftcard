@@ -9,6 +9,7 @@ use App\Models\GiftcardsNumbers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\TimelineEvent;
 use Auth;
 
 use DB;
@@ -189,7 +190,9 @@ class PatientController extends Controller
         {
             $id = Auth::guard('patient')->user()->id;
             $patient = Patient::find($id);
-            return view('patient.patient_profile.profile',compact('patient'));
+            // dd($patient->patient_login_id);
+           $timeline = TimelineEvent::where('patient_id',$patient->patient_login_id)->orderBy('created_at','DESC')->get();
+            return view('patient.patient_profile.profile',compact('patient','timeline'));
         }
 
         //  For purchased Gift cards Show
