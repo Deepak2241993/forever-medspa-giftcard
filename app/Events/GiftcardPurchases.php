@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Giftsend;
+
 
 
 class GiftcardPurchases
@@ -21,11 +21,13 @@ class GiftcardPurchases
      *
      * @return void
      */
-
-        public function __construct(
-            public Giftsend $giftcard,
-            public int $buyerId
-        ) {
+    
+    // public $GeneratedGiftcards;
+    public $transaction_entry;
+        public function __construct(array $transaction_entry)
+        {
+            // $this->$GeneratedGiftcards = $GeneratedGiftcards;
+            $this->transaction_entry = $transaction_entry;
         }
 
     /**

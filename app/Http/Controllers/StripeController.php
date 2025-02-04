@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Mail\ServicePurchaseConfirmation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Events\GiftcardPurchases;
 
 class StripeController extends Controller
 {
@@ -124,47 +125,42 @@ class StripeController extends Controller
 
     //  Giftcardspayment
 
-public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsNumbers $cardnumber)
-{
-    $id = Session::get('gift_id');
-    $giftsend = Giftsend::find($id);
-
-    Stripe::setApiKey(env('STRIPE_SECRET'));
-
-    try {
-        // Create a charge
-        $data = Charge::create([
-            'amount' => (($giftsend['amount'] * $giftsend['qty']) - $giftsend['discount']) * 100, // Amount in cents
-            'currency' => 'usd',
-            'source' => $request->stripeToken,
-            'description' => 'Forever Medspa Giftcards UserId=' . $giftsend['id'] . ' Amount $ =' . $giftsend['amount'] * $giftsend['qty'],
-        ]);
-
-        // Log payment details
-        Log::info('Payment attempted', [
-            'user_id' => $giftsend->id,
-            'amount' => $data->amount / 100,
-            'status' => $data->status,
-        ]);
-
-        if ($data) {
-            $transaction_entry = [
-                'transaction_id' => $data->source->id,
-                'transaction_amount' => $data->amount / 100,
-                'payment_status' => $data->status,
-                'payment_time' => $data->created,
-                'payment_mode' => 'Payment Gateway',
-            ];
-
-            // Log transaction update
-            Log::info('Transaction entry update', $transaction_entry);
-
-            $mail_data = $giftsend->update($transaction_entry);
-
-            // Generate gift card numbers
+    public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsNumbers $cardnumber)
+    {
+        $id = Session::get('gift_id');
+        $giftsend = Giftsend::find($id);
+    
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+        try {
+            $data = Charge::create([
+                'amount' => (($giftsend['amount'] * $giftsend['qty']) - $giftsend['discount']) * 100,
+                'currency' => 'usd',
+                'source' => $request->stripeToken,
+                'description' => 'Forever Medspa Giftcards UserId=' . $giftsend['id'] . ' Amount $ =' . $giftsend['amount'] * $giftsend['qty'],
+            ]);
+    
+            Log::info('Payment attempted', [
+                'user_id' => $giftsend->id,
+                'amount' => $data->amount / 100,
+                'status' => $data->status,
+            ]);
+    
             if ($data->status == 'succeeded') {
-                $qty = $giftsend->qty;
-                for ($i = 1; $i <= $qty; $i++) {
+                $transaction_entry = [
+                    'transaction_id' => $data->source->id,
+                    'transaction_amount' => $data->amount / 100,
+                    'payment_status' => $data->status,
+                    'payment_time' => $data->created,
+                    'payment_mode' => 'Payment Gateway',
+                ];
+    
+                Log::info('Transaction entry update', $transaction_entry);
+                $giftsend->update($transaction_entry);
+    
+                $GeneratedGiftcards = [];
+    
+                for ($i = 1; $i <= $giftsend->qty; $i++) {
                     $cardgenerate = [
                         'user_id' => $giftsend->id,
                         'transaction_id' => $data->source->id,
@@ -172,69 +168,53 @@ public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsN
                         'amount' => $giftsend->amount,
                         'status' => 1,
                         'comments' => $giftsend->message,
+                        'actual_paid_amount' => $giftsend->discount != 0 
+                            ? ($giftsend->amount * $giftsend->qty - $giftsend->discount) / $giftsend->qty 
+                            : $giftsend->amount,
                     ];
-
-                    if ($giftsend->discount != 0) {
-                        $cardgenerate['actual_paid_amount'] = ($giftsend->amount * $giftsend->qty - $giftsend->discount) / $giftsend->qty;
-                    } else {
-                        $cardgenerate['actual_paid_amount'] = $giftsend->amount;
-                    }
-
+    
                     $cardresult = $cardnumber->create($cardgenerate);
-
+    
                     if ($cardresult) {
                         $gift_card_code = 'FEMS-' . time() . $cardresult->id;
                         $cardresult->update(['giftnumber' => $gift_card_code]);
-
-                        // Log gift card generation
+    
                         Log::info('Gift card generated', [
                             'gift_card_code' => $gift_card_code,
                             'user_id' => $giftsend->id,
                         ]);
+    
+                        $GeneratedGiftcards[] = $gift_card_code;
                     }
                 }
-            }
-           
-            //  For Sender Mail id Get
-                $patient_data = Patient::where('patient_login_id',$giftsend->gift_send_to)->first();
-                if($patient_data)
-                {
-                    $gift_send_to = $patient_data->email;
+    
+                $gift_send_to = Patient::where('patient_login_id', $giftsend->gift_send_to)
+                    ->value('email') ?? $giftsend->gift_send_to;
+    
+                $tomail = Patient::where('patient_login_id', $giftsend->receipt_email)
+                    ->value('email') ?? $giftsend->receipt_email;
+    
+                if (empty($giftsend->in_future)) {
+                    Mail::to($gift_send_to)->send(new GeftcardMail($giftsend));
+                    Log::info('Gift card email sent', ['to' => $gift_send_to]);
                 }
-                else{
-                    $gift_send_to = $giftsend->gift_send_to;
+    
+                if (!empty($giftsend->recipient_name)) {
+                    Mail::to($tomail)->send(new GiftReceipt($giftsend));
+                    Log::info('Gift receipt email sent', ['to' => $tomail]);
                 }
-            //  For Receiver Mail id Get
-                $patient_data = Patient::where('patient_login_id',$giftsend->receipt_email)->first();
-                if($patient_data)
-                {
-                    $tomail = $patient_data->email;
-                }
-                else{
-                    $tomail = $giftsend->receipt_email;
-                }  
-            
-
-            if (empty($giftsend->in_future)) {
-                Mail::to($gift_send_to)->send(new GeftcardMail($giftsend));
-                Log::info('Gift card email sent', ['to' => $gift_send_to]);
+                
+                event(new GiftcardPurchases($transaction_entry));
+    
+                Session::pull('amount');
+                return view('stripe.thanks', compact('data'))->with('success', 'Payment successful.');
             }
-
-            if (!empty($giftsend->recipient_name)) {
-                Mail::to($tomail)->send(new GiftReceipt($giftsend));
-                Log::info('Gift receipt email sent', ['to' => $tomail]);
-            }
-
-            Session::pull('amount');
-            return view('stripe.thanks', compact('data'))->with('success', 'Payment successful.');
+        } catch (\Exception $e) {
+            Log::error('Payment failed', ['error' => $e->getMessage()]);
+            return view('stripe.failed')->with('error', $e->getMessage());
         }
-    } catch (\Exception $e) {
-        // Log the error
-        Log::error('Payment failed', ['error' => $e->getMessage()]);
-
-        return view('stripe.failed')->with('error', $e->getMessage());
     }
-}
+    
 
 
    public function CheckoutProcess(Request $request)
