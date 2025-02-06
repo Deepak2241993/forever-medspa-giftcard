@@ -106,8 +106,8 @@
                         <span class="bg-{{ 
                           $value->event_type == 'Giftcard Purchase' ? 'success' : 
                           ($value->event_type == 'Giftcard Redeem' ? 'primary' : 
-                          ($value->event_type == 'Order Placed' ? 'primary' : 
-                          ($value->event_type == 'Transaction Completed' ? 'primary' : 'danger'))) 
+                          ($value->event_type == 'Order Placed' ? 'warning' : 
+                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger'))) 
                       }}">
                       
                       
@@ -123,7 +123,7 @@
                         @elseif($value->event_type == 'Giftcard Redeem')
                         <i class="fas fa-solid fa fa-barcode bg-primary"></i>
                         @elseif($value->event_type == 'Order Placed')
-                        <i class="fas fa fa-check-square bg-success"></i>
+                        <i class="fas fa fa-check-square bg-warning"></i>
                         @elseif($value->event_type == 'Transaction Completed')
                         <i class="fas fa-credit-card-alt bg-success"></i>
                         @else
