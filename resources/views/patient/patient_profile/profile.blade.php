@@ -104,14 +104,25 @@
                       @foreach($timeline as $key=>$value)
                       <!-- timeline time label -->
                       <div class="time-label">
-                        <span class="bg-danger">
+                        <span class="bg-{{ 
+                          $value->event_type == 'Giftcard Purchase' ? 'success' : 
+                          ($value->event_type == 'Giftcard Redeem' ? 'primary' : 'danger') 
+                      }}">
+                      
+                    
                         {{date('d-m-Y',strtotime($value->created_at))}}
                         </span>
                       </div>
                       <!-- /.timeline-label -->
                       <!-- timeline item -->
                       <div>
-                        <i class="fas fa-solid fa-gift bg-primary"></i>
+                        @if($value->event_type == 'Giftcard Purchase')
+                        <i class="fas fa-solid fa-gift bg-success"></i>
+                        @elseif($value->event_type == 'Giftcard Redeem')
+                        <i class="fas fa-solid fa fa-barcode bg-primary"></i>
+                        @else
+                        <i class="fas fa fa-ban bg-danger"></i>
+                        @endif
 
                         <div class="timeline-item">
                           <span class="time"><i class="far fa-clock"></i> {{date('h:i:s',strtotime($value->created_at))}}</span>
