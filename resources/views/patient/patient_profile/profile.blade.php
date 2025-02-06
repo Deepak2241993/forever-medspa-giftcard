@@ -105,10 +105,11 @@
                       <div class="time-label">
                         <span class="bg-{{ 
                           $value->event_type == 'Giftcard Purchase' ? 'success' : 
-                          ($value->event_type == 'Giftcard Redeem' ? 'primary' : 'danger') 
-                          ($value->event_type == 'Order Placed' ? 'primary' : 'success') 
-                          ($value->event_type == 'Transaction Completed' ? 'primary' : 'success') 
+                          ($value->event_type == 'Giftcard Redeem' ? 'primary' : 
+                          ($value->event_type == 'Order Placed' ? 'primary' : 
+                          ($value->event_type == 'Transaction Completed' ? 'primary' : 'danger'))) 
                       }}">
+                      
                       
                     
                         {{date('d-m-Y',strtotime($value->created_at))}}
