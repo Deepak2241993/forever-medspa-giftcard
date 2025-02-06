@@ -187,6 +187,7 @@ class PatientController extends Controller
         }
         // PAtient Profile
         public function PatientProfile(Patient $patient)
+        {
             $id = Auth::guard('patient')->user()->id;
             $patient = Patient::find($id);
             // dd($patient->patient_login_id);
