@@ -22,6 +22,8 @@ use App\Mail\ServicePurchaseConfirmation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Events\GiftcardPurchases;
+use App\Events\ServicePurchases;
+use App\Events\ServicePurchasesPayment;
 
 class StripeController extends Controller
 {
@@ -352,6 +354,7 @@ class StripeController extends Controller
 
             // ServiceOrderController::create($order_data);
             $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
+            event(new ServicePurchases($order_data));
         }
 
         DB::commit();  // Commit transaction
@@ -390,6 +393,15 @@ class StripeController extends Controller
         // Update payment_session_id in TransactionHistory
         TransactionHistory::where('order_id', $orderId)->update(['payment_session_id' => $response->id]);
 
+        // Trigger the payment event with relevant data
+        event(new ServicePurchasesPayment([
+        'session_id' => $response->id,
+        'payment_intent' => $response->payment_intent,
+        'email' => $request->email,
+        'order_id' => $orderId,
+        'amount' => session()->get('totalValue') ?? $final_amount,
+        'patient_id'=>Auth::guard('patient')->user()->patient_login_id
+        ]));
         return redirect($response['url']);
 
     } catch (\Exception $e) {

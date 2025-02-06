@@ -9,9 +9,15 @@ use Illuminate\Support\Facades\Event;
 use App\Events\GiftcardPurchases;
 use App\Events\TimelineGiftcardRedeem;
 use App\Events\TimelineGiftcardCancel;
+use App\Events\ServicePurchases;
+use App\Events\ServicePurchasesPayment;
+
+
 use App\Listeners\ListenerGiftcardPurchases;
 use App\Listeners\TimelineLinstnerGiftcardRedee;
 use App\Listeners\TimelineLinstnerGiftcardCancel;
+use App\Listeners\ListenerServicePurchases;
+use App\Listeners\ListenerServicePurchasesPayment;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -30,6 +36,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         TimelineGiftcardCancel::class => [
             TimelineLinstnerGiftcardCancel::class,
+        ],
+        ServicePurchases::class => [
+            ListenerServicePurchases::class,
+        ],
+        ServicePurchasesPayment::class => [
+            ListenerServicePurchasesPayment::class,
         ],
     ];
 
