@@ -35,6 +35,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        GiftcardPurchases::class => [
+            ListenerGiftcardPurchases::class,
+        ],
         TimelineGiftcardRedeem::class => [
             TimelineLinstnerGiftcardRedee::class,
         ],
