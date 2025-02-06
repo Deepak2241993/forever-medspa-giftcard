@@ -7,9 +7,11 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Events\GiftcardPurchases;
-use App\Events\GiftcardRedeem;
+use App\Events\TimelineGiftcardRedeem;
+use App\Events\TimelineGiftcardCancel;
 use App\Listeners\ListenerGiftcardPurchases;
-use App\Listeners\ListenerGiftcardRedeem;
+use App\Listeners\TimelineLinstnerGiftcardRedee;
+use App\Listeners\TimelineLinstnerGiftcardCancel;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -23,8 +25,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        GiftcardPurchases::class => [
-            ListenerGiftcardPurchases::class,
+        TimelineGiftcardRedeem::class => [
+            TimelineLinstnerGiftcardRedee::class,
+        ],
+        TimelineGiftcardCancel::class => [
+            TimelineLinstnerGiftcardCancel::class,
         ],
     ];
 

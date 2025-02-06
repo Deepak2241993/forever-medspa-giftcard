@@ -10,9 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-
-
-class GiftcardPurchases
+use App\Models\GiftcardsNumbers;
+class TimelineGiftcardCancel
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,14 +20,12 @@ class GiftcardPurchases
      *
      * @return void
      */
-    
-    // public $GeneratedGiftcards;
-    public $transaction_entry;
-        public function __construct(array $transaction_entry)
-        {
-            // $this->$GeneratedGiftcards = $GeneratedGiftcards;
-            $this->transaction_entry = $transaction_entry;
-        }
+    public $result;
+
+    public function __construct(GiftcardsNumbers $result)
+    {
+        $this->result = $result;
+    }
 
     /**
      * Get the channels the event should broadcast on.

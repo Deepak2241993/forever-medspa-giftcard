@@ -15,6 +15,7 @@ use App\Mail\GiftCardStatement;
 use App\Mail\GiftcardCancelMail;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
+use App\Events\TimelineGiftcardRedeem;
 class GiftsendController extends Controller
 {
     /**
@@ -300,7 +301,7 @@ else{
 
         if (isset($result['status']) && $result['status'] == 200) {
             $getdata = $result['result'];
-
+           
             // Convert the data array into a Collection
             $collection = collect($getdata);
 
@@ -330,9 +331,12 @@ else{
         $data_arr = $request->except('_token');
         $data = json_encode($data_arr);
         $result = $this->postAPI('gift-card-redeem', $data);
+     
         if($result['status']==200){
+
             $data_arr = $request->except('_token','amount','comments','user_id');
             $data = json_encode($data_arr);
+            
             $statement = $this->postAPI('gift-card-statment', $data);
             $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
 

@@ -5,10 +5,10 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use app\Events\GiftcardPurchases;
-use App\Models\TimelineEvent;
-use App\Models\Giftsend;
 use App\Models\GiftcardsNumbers;
 use App\Models\Patient;
+use App\Models\TimelineEvent;
+use App\Models\Giftsend;
 use Illuminate\Support\Facades\Log;
 use Auth;
 class ListenerGiftcardPurchases
@@ -56,7 +56,7 @@ class ListenerGiftcardPurchases
                         'patient_id' => $transaction_result['gift_send_to'], 
                         'event_type' => 'Giftcard Purchase',
                         'subject' => 'Giftcards Transaction',
-                        'metadata' => "Giftcard purchased for ".$patient->fname." ".$patient->lname."<br> Giftcards:".$giftcardnumber
+                        'metadata' => "Giftcard purchased for ".$patient->fname." ".$patient->lname
 
                     ]);
                     Log::info('Timeline event stored', ['transaction_id' => $event->transaction_entry['transaction_id']]);
@@ -86,7 +86,7 @@ class ListenerGiftcardPurchases
                         'patient_id' => $transaction_result['receipt_email'], 
                         'event_type' => 'Giftcard Purchase',
                         'subject' => 'Giftcards Transaction',
-                        'metadata' => "Giftcard Sent to ".$patient->fname." ".$patient->lname."<br> Giftcards:".$giftcardnumber
+                        'metadata' => "Giftcard Sent to ".$patient->fname." ".$patient->lname
 
                     ]);
                     //  Message Show for Receiver

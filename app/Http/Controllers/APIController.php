@@ -19,6 +19,8 @@ use Mail;
 use Session;
 use Validator;
 use Illuminate\Support\Facades\Log;
+use App\Events\TimelineGiftcardRedeem;
+use App\Events\TimelineGiftcardCancel;
 use DB;
 
 class APIController extends Controller
@@ -746,6 +748,12 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     if ($result) {
         $updatedTransactionId = 'REDEEM' . time() . $result->id;
         $result->update(['transaction_id' => $updatedTransactionId]);
+         //  For Store Data in Time line
+         $transactionData = [
+            'user_id' => $request->user_id,
+            'transaction_id' => $updatedTransactionId
+        ];
+         event(new TimelineGiftcardRedeem($transactionData));
     }
     //    Adding Gift Sender And Receive Details Add
         $id=$request->user_id;
@@ -2107,19 +2115,26 @@ public function product_view(Request $request, $id)
         'status'=>0,
         'transaction_id' => 'CANCEL' . date('YmdHis'),
         ];
-      $result = $numbers->create($canceldata);
-      $updateResult=$numbers->where('giftnumber', $request->gift_card_number)
-      ->where('user_id', $request->user_id)
-      ->update(['status' => 0]);
-           
-      $receiverAndSenderDetails = Giftsend::where('id', $request->user_id)->get();
-      $receiverAndSenderDetails['gift_card_number']=$request->gift_card_number;
+        $result = $numbers->create($canceldata);
+        $updateResult = $numbers->where('giftnumber', $request->gift_card_number)
+                                ->where('user_id', $request->user_id)
+                                ->update(['status' => 0]);
+        
+        $receiverAndSenderDetails = Giftsend::where('id', $request->user_id)->get();
+        $receiverAndSenderDetails['gift_card_number'] = $request->gift_card_number;
+        
         if ($result && $updateResult && $receiverAndSenderDetails) {
-
-            return response()->json(['status' => 200,'receiverAndSenderDetails'=>$receiverAndSenderDetails,'success' => $request->gift_card_number.' Gift Cards Canceled successfully'], 200);
+            // Dispatch the event with the GiftcardsNumbers model instance
+            event(new TimelineGiftcardCancel($result));
+        
+            return response()->json([
+                'status' => 200,
+                'receiverAndSenderDetails' => $receiverAndSenderDetails,
+                'success' => $request->gift_card_number . ' Gift Cards Canceled successfully'
+            ], 200);
         } else {
             return response()->json(['error' => 'Something Went Wrong Plese Contact to Admin', 'status' => 404]);
-        }
+        }        
 
  }
 

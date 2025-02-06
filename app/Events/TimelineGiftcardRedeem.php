@@ -9,8 +9,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class GiftcardRedeem
+class TimelineGiftcardRedeem
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +20,10 @@ class GiftcardRedeem
      *
      * @return void
      */
-    public function __construct()
+    public $result;
+    public function __construct(array $result)
     {
-        //
+        $this->result = $result;
     }
 
     /**
