@@ -19,6 +19,8 @@ use App\Mail\RefundReceiptMail;
 use Illuminate\Support\Facades\Log;
 use Stripe\Stripe;
 use Stripe\Refund;
+use App\Events\TimelineServiceRedeem;
+use App\Events\TimelineServiceCancel;
 
 class ServiceOrderController extends Controller
 {
@@ -145,6 +147,11 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                     // Update the transaction ID with the concatenated latest inserted ID
                     $result->transaction_id = 'SER-RED' . $result->id;
                     $result->save();
+                    event(new TimelineServiceRedeem([
+                        'session_id' => $result->id,
+                        'transaction_id' => $result->transaction_id,
+                        'patient_id'=> $result->patient_login_id,
+                    ]));
                     Log::info('Transaction ID updated', ['transaction_id' => $result->transaction_id]);
 
                     // Fetch transaction history and send an email
@@ -320,7 +327,11 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
             $result->save();
 
             $transactionresult = TransactionHistory::where('order_id', $result->order_id)->first();
-
+            //  For Timeline store data
+            event(new TimelineServiceCancel([
+                'transaction_id' => $result->transaction_id,
+                'patient_id' => $result->patient_login_id,
+            ]));
             try {
                 // Send cancellation email
                 Mail::to($transactionresult->email)->send(new DealsCancle($transactionresult));

@@ -107,7 +107,9 @@
                           $value->event_type == 'Giftcard Purchase' ? 'success' : 
                           ($value->event_type == 'Giftcard Redeem' ? 'primary' : 
                           ($value->event_type == 'Order Placed' ? 'warning' : 
-                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger'))) 
+                          ($value->event_type == 'Service Redeem' ? 'primary' : 
+                          ($value->event_type == 'Service Cancel' ? 'danger' : 
+                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger'))))) 
                       }}">
                       
                       
@@ -126,6 +128,11 @@
                         <i class="fas fa fa-check-square bg-warning"></i>
                         @elseif($value->event_type == 'Transaction Completed')
                         <i class="fas fa-credit-card-alt bg-success"></i>
+                        @elseif($value->event_type == 'Service Redeem')
+                        <i class="fas  fa fa-user-md bg-primary"></i>
+                        @elseif($value->event_type == 'Service Cancel')
+                        <i class="fas  fa fa-ban bg-danger"></i>
+
                         @else
                         <i class="fas fa fa-ban bg-danger"></i>
                         @endif

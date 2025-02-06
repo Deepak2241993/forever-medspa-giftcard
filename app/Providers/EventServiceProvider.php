@@ -11,6 +11,8 @@ use App\Events\TimelineGiftcardRedeem;
 use App\Events\TimelineGiftcardCancel;
 use App\Events\ServicePurchases;
 use App\Events\ServicePurchasesPayment;
+use App\Events\TimelineServiceRedeem;
+use App\Events\TimelineServiceCancel;
 
 
 use App\Listeners\ListenerGiftcardPurchases;
@@ -18,6 +20,8 @@ use App\Listeners\TimelineLinstnerGiftcardRedee;
 use App\Listeners\TimelineLinstnerGiftcardCancel;
 use App\Listeners\ListenerServicePurchases;
 use App\Listeners\ListenerServicePurchasesPayment;
+use App\Listeners\TimelineLinstnerServicecardRedeem;
+use App\Listeners\TimelineLinstnerServicecardCancel;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -42,6 +46,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         ServicePurchasesPayment::class => [
             ListenerServicePurchasesPayment::class,
+        ],
+        TimelineServiceRedeem::class => [
+            TimelineLinstnerServicecardRedeem::class,
+        ],
+        TimelineServiceCancel::class => [
+            TimelineLinstnerServicecardCancel::class,
         ],
     ];
 
