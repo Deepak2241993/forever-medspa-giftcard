@@ -21,6 +21,7 @@ use Stripe\Stripe;
 use Stripe\Refund;
 use App\Events\TimelineServiceRedeem;
 use App\Events\TimelineServiceCancel;
+use App\Events\TimelineServiceRefund;
 
 class ServiceOrderController extends Controller
 {
@@ -351,19 +352,29 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                         'amount' => $request->refund_amount * 100,  // Amount is in cents
                         'reason' => 'requested_by_customer',  // Reason for refund
                     ]);
-
+                
                     $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
-
+                
                     // After a successful refund, send a receipt
                     $this->sendRefundReceipt($transactionresult->email, $refund);
-                    // for update status 
+                
+                    // Update status
                     $result->update(['status' => 0]);
-
+                
+                    // Trigger event with stripped details (no sensitive data)
+                    event(new TimelineServiceRefund([
+                        'refund_id' => $refund->id,               // Only refund ID
+                        'status' => $refund->status,              // Refund status
+                        'amount' => $refund->amount / 100,        // Amount in standard currency format
+                        'created_at' => $refund->created,         // Timestamp of refund
+                        'patient_id' =>$result->patient_login_id,         // Timestamp of refund
+                    ]));
                 } catch (\Exception $e) {
                     // Log if refund process fails
                     Log::error('Stripe Refund failed: ' . $e->getMessage());
                     return response()->json(['success' => false, 'message' => 'Failed to process refund.']);
                 }
+                
             }
             else{
                 $result->update(['status' => 0]);
