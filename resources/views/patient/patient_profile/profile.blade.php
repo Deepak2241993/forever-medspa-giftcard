@@ -109,7 +109,8 @@
                           ($value->event_type == 'Order Placed' ? 'warning' : 
                           ($value->event_type == 'Service Redeem' ? 'primary' : 
                           ($value->event_type == 'Service Cancel' ? 'danger' : 
-                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger'))))) 
+                          ($value->event_type == 'Service Refund' ? 'primary' : 
+                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger')))))) 
                       }}">
                       
                       
@@ -132,6 +133,8 @@
                         <i class="fas  fa fa-user-md bg-primary"></i>
                         @elseif($value->event_type == 'Service Cancel')
                         <i class="fas  fa fa-ban bg-danger"></i>
+                        @elseif($value->event_type == 'Service Refund')
+                        <i class="fas fa fa-undo bg-primary"></i>
 
                         @else
                         <i class="fas fa fa-ban bg-danger"></i>
