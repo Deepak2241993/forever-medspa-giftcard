@@ -71,7 +71,7 @@
                                             
                                                 <!-- Submit and Signup Buttons -->
                                                 <div class="mb-3">
-                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Sign In</button>
+                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Log In</button>
                                                     <button class="btn btn-primary waves-effect waves-light" type="button" onclick="SignUp()">Signup</button>
                                                 </div>
                                                 <a href="{{route('forgot-password')}}">Forgot Password? / User Name</a>

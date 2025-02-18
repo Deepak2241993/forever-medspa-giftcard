@@ -14,6 +14,8 @@ use Auth;
 use Session;
 use Validator;
 use Hash;
+use App\Events\GiftcardsBuyFromCenter;
+use App\Events\EventPatientLogout;
 
 class AdminController extends Controller
 {
@@ -105,6 +107,11 @@ class AdminController extends Controller
         $request->session()->put('patient_details', $patient);
         $request->session()->put('result.name', $patient->fname . ' ' . $patient->lname); // Store full name in session
 
+
+        // Event Hit for Giftcard table update
+        
+        event(new GiftcardsBuyFromCenter($patient));
+
         // Check for amount in session and redirect accordingly
         if (Session::has('amount')) {
             $amount = Session::get('amount');
@@ -129,14 +136,23 @@ class AdminController extends Controller
     //  for PatientLogout
 
     public function Patientlogout(Request $request) {
+        // Retrieve the logged-in patient
+        $patient = Auth::guard('patient')->user();
+    
+        // Log out the patient
         Auth::guard('patient')->logout();
-
-    // Clear session data
+    
+        // Clear session data
         $request->session()->forget('result');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+    
+        // Fire the event with the patient's data (e.g., username)
+        event(new EventPatientLogout($patient->patient_login_id)); // or $patient depending on the event requirements
+    
         return redirect(route('patient-login'));
     }
+    
 
     //    for User Logout
     public function logout(Request $request) {

@@ -110,11 +110,11 @@
                           ($value->event_type == 'Service Redeem' ? 'primary' : 
                           ($value->event_type == 'Service Cancel' ? 'danger' : 
                           ($value->event_type == 'Service Refund' ? 'primary' : 
-                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger')))))) 
+                          ($value->event_type == 'Login' ? 'success' : 
+                          ($value->event_type == 'Logout' ? 'danger' : 
+                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger')))))))) 
                       }}">
                       
-                      
-                    
                         {{date('d-m-Y',strtotime($value->created_at))}}
                         </span>
                       </div>
@@ -135,6 +135,10 @@
                         <i class="fas  fa fa-ban bg-danger"></i>
                         @elseif($value->event_type == 'Service Refund')
                         <i class="fas fa fa-undo bg-primary"></i>
+                        @elseif($value->event_type == 'Login')
+                        <i class="fas fa-power-off bg-success"></i>
+                        @elseif($value->event_type == 'Logout')
+                        <i class="fas fa-power-off bg-danger"></i>
 
                         @else
                         <i class="fas fa fa-ban bg-danger"></i>

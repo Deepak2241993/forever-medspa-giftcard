@@ -146,6 +146,11 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
             'Laravel\\Sail\\' => 13,
             'L5Swagger\\' => 10,
         ),
+        'J' => 
+        array (
+            'Jenssegers\\Agent\\' => 17,
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -500,6 +505,14 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         array (
             0 => __DIR__ . '/..' . '/darkaonline/l5-swagger/src',
         ),
+        'Jenssegers\\Agent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/agent/src',
+        ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -649,6 +662,13 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
     );
 
     public static $classMap = array (
@@ -656,6 +676,15 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Console\\Commands\\FutureCron' => __DIR__ . '/../..' . '/app/Console/Commands/FutureCron.php',
         'App\\Console\\Commands\\create_patient_login_id' => __DIR__ . '/../..' . '/app/Console/Commands/create_patient_login_id.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Events\\GiftcardPurchases' => __DIR__ . '/../..' . '/app/Events/GiftcardPurchases.php',
+        'App\\Events\\GiftcardsBuyFromCenter' => __DIR__ . '/../..' . '/app/Events/GiftcardsBuyFromCenter.php',
+        'App\\Events\\ServicePurchases' => __DIR__ . '/../..' . '/app/Events/ServicePurchases.php',
+        'App\\Events\\ServicePurchasesPayment' => __DIR__ . '/../..' . '/app/Events/ServicePurchasesPayment.php',
+        'App\\Events\\TimelineGiftcardCancel' => __DIR__ . '/../..' . '/app/Events/TimelineGiftcardCancel.php',
+        'App\\Events\\TimelineGiftcardRedeem' => __DIR__ . '/../..' . '/app/Events/TimelineGiftcardRedeem.php',
+        'App\\Events\\TimelineServiceCancel' => __DIR__ . '/../..' . '/app/Events/TimelineServiceCancel.php',
+        'App\\Events\\TimelineServiceRedeem' => __DIR__ . '/../..' . '/app/Events/TimelineServiceRedeem.php',
+        'App\\Events\\TimelineServiceRefund' => __DIR__ . '/../..' . '/app/Events/TimelineServiceRefund.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\APIController' => __DIR__ . '/../..' . '/app/Http/Controllers/APIController.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
@@ -673,7 +702,6 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Http\\Controllers\\GiftController' => __DIR__ . '/../..' . '/app/Http/Controllers/GiftController.php',
         'App\\Http\\Controllers\\GiftCouponController' => __DIR__ . '/../..' . '/app/Http/Controllers/GiftCouponController.php',
         'App\\Http\\Controllers\\GiftcardRedeemController' => __DIR__ . '/../..' . '/app/Http/Controllers/GiftcardRedeemController.php',
-        'App\\Http\\Controllers\\GiftcardSenderTimeLineController' => __DIR__ . '/../..' . '/app/Http/Controllers/GiftcardSenderTimeLineController.php',
         'App\\Http\\Controllers\\GiftcardsNumbersController' => __DIR__ . '/../..' . '/app/Http/Controllers/GiftcardsNumbersController.php',
         'App\\Http\\Controllers\\GiftsendController' => __DIR__ . '/../..' . '/app/Http/Controllers/GiftsendController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
@@ -691,6 +719,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Http\\Controllers\\ServiceUnitController' => __DIR__ . '/../..' . '/app/Http/Controllers/ServiceUnitController.php',
         'App\\Http\\Controllers\\StripeController' => __DIR__ . '/../..' . '/app/Http/Controllers/StripeController.php',
         'App\\Http\\Controllers\\TermController' => __DIR__ . '/../..' . '/app/Http/Controllers/TermController.php',
+        'App\\Http\\Controllers\\TimelineEventController' => __DIR__ . '/../..' . '/app/Http/Controllers/TimelineEventController.php',
         'App\\Http\\Controllers\\TransactionHistoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransactionHistoryController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -706,6 +735,15 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Http\\Middleware\\login' => __DIR__ . '/../..' . '/app/Http/Middleware/login.php',
         'App\\Imports\\CategoryImport' => __DIR__ . '/../..' . '/app/Imports/CategoryImport.php',
         'App\\Imports\\ProductImporter' => __DIR__ . '/../..' . '/app/Imports/ProductImporter.php',
+        'App\\Listeners\\ListenerGiftcardPurchases' => __DIR__ . '/../..' . '/app/Listeners/ListenerGiftcardPurchases.php',
+        'App\\Listeners\\ListenerGiftcardsBuyFromCenter' => __DIR__ . '/../..' . '/app/Listeners/ListenerGiftcardsBuyFromCenter.php',
+        'App\\Listeners\\ListenerServicePurchases' => __DIR__ . '/../..' . '/app/Listeners/ListenerServicePurchases.php',
+        'App\\Listeners\\ListenerServicePurchasesPayment' => __DIR__ . '/../..' . '/app/Listeners/ListenerServicePurchasesPayment.php',
+        'App\\Listeners\\TimelineLinstnerGiftcardCancel' => __DIR__ . '/../..' . '/app/Listeners/TimelineLinstnerGiftcardCancel.php',
+        'App\\Listeners\\TimelineLinstnerGiftcardRedee' => __DIR__ . '/../..' . '/app/Listeners/TimelineLinstnerGiftcardRedee.php',
+        'App\\Listeners\\TimelineLinstnerServicecardCancel' => __DIR__ . '/../..' . '/app/Listeners/TimelineLinstnerServicecardCancel.php',
+        'App\\Listeners\\TimelineLinstnerServicecardRedeem' => __DIR__ . '/../..' . '/app/Listeners/TimelineLinstnerServicecardRedeem.php',
+        'App\\Listeners\\TimelineLinstnerServicecardRefund' => __DIR__ . '/../..' . '/app/Listeners/TimelineLinstnerServicecardRefund.php',
         'App\\Mail\\DealsCancle' => __DIR__ . '/../..' . '/app/Mail/DealsCancle.php',
         'App\\Mail\\ForgotPasswordMail' => __DIR__ . '/../..' . '/app/Mail/ForgotPasswordMail.php',
         'App\\Mail\\GeftcardMail' => __DIR__ . '/../..' . '/app/Mail/GeftcardMail.php',
@@ -713,6 +751,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Mail\\GiftReceipt' => __DIR__ . '/../..' . '/app/Mail/GiftReceipt.php',
         'App\\Mail\\GiftcardCancelMail' => __DIR__ . '/../..' . '/app/Mail/GiftcardCancelMail.php',
         'App\\Mail\\LoginDetails' => __DIR__ . '/../..' . '/app/Mail/LoginDetails.php',
+        'App\\Mail\\MailLoginNotification' => __DIR__ . '/../..' . '/app/Mail/MailLoginNotification.php',
         'App\\Mail\\PatientEmailVerify' => __DIR__ . '/../..' . '/app/Mail/PatientEmailVerify.php',
         'App\\Mail\\RefundReceiptMail' => __DIR__ . '/../..' . '/app/Mail/RefundReceiptMail.php',
         'App\\Mail\\RegistrationMail' => __DIR__ . '/../..' . '/app/Mail/RegistrationMail.php',
@@ -724,9 +763,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Models\\EmailTemplate' => __DIR__ . '/../..' . '/app/Models/EmailTemplate.php',
         'App\\Models\\Gift' => __DIR__ . '/../..' . '/app/Models/Gift.php',
         'App\\Models\\GiftCoupon' => __DIR__ . '/../..' . '/app/Models/GiftCoupon.php',
-        'App\\Models\\GiftcardReceiverTimeLine' => __DIR__ . '/../..' . '/app/Models/GiftcardReceiverTimeLine.php',
         'App\\Models\\GiftcardRedeem' => __DIR__ . '/../..' . '/app/Models/GiftcardRedeem.php',
-        'App\\Models\\GiftcardSenderTimeLine' => __DIR__ . '/../..' . '/app/Models/GiftcardSenderTimeLine.php',
         'App\\Models\\GiftcardsNumbers' => __DIR__ . '/../..' . '/app/Models/GiftcardsNumbers.php',
         'App\\Models\\Giftsend' => __DIR__ . '/../..' . '/app/Models/Giftsend.php',
         'App\\Models\\Patient' => __DIR__ . '/../..' . '/app/Models/Patient.php',
@@ -739,6 +776,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'App\\Models\\ServiceRedeem' => __DIR__ . '/../..' . '/app/Models/ServiceRedeem.php',
         'App\\Models\\ServiceUnit' => __DIR__ . '/../..' . '/app/Models/ServiceUnit.php',
         'App\\Models\\Term' => __DIR__ . '/../..' . '/app/Models/Term.php',
+        'App\\Models\\TimelineEvent' => __DIR__ . '/../..' . '/app/Models/TimelineEvent.php',
         'App\\Models\\TransactionHistory' => __DIR__ . '/../..' . '/app/Models/TransactionHistory.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -1002,6 +1040,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'DeepCopy\\TypeFilter\\Spl\\SplDoublyLinkedListFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/Spl/SplDoublyLinkedListFilter.php',
         'DeepCopy\\TypeFilter\\TypeFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/TypeFilter.php',
         'DeepCopy\\TypeMatcher\\TypeMatcher' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeMatcher/TypeMatcher.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Dflydev\\DotAccessData\\Data' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Data.php',
         'Dflydev\\DotAccessData\\DataInterface' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/DataInterface.php',
         'Dflydev\\DotAccessData\\Exception\\DataException' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Exception/DataException.php',
@@ -3394,6 +3433,14 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Exclusions' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Exclusions.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Headers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Headers.php',
+        'Jenssegers\\Agent\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Agent.php',
+        'Jenssegers\\Agent\\AgentServiceProvider' => __DIR__ . '/..' . '/jenssegers/agent/src/AgentServiceProvider.php',
+        'Jenssegers\\Agent\\Facades\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Facades/Agent.php',
         'L5Swagger\\ConfigFactory' => __DIR__ . '/..' . '/darkaonline/l5-swagger/src/ConfigFactory.php',
         'L5Swagger\\Console\\GenerateDocsCommand' => __DIR__ . '/..' . '/darkaonline/l5-swagger/src/Console/GenerateDocsCommand.php',
         'L5Swagger\\Exceptions\\L5SwaggerException' => __DIR__ . '/..' . '/darkaonline/l5-swagger/src/Exceptions/L5SwaggerException.php',
@@ -4016,6 +4063,7 @@ class ComposerStaticInite520fb8044aa5c8ebbc1acb35abafe85
         'Matrix\\Operators\\Multiplication' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operators/Multiplication.php',
         'Matrix\\Operators\\Operator' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operators/Operator.php',
         'Matrix\\Operators\\Subtraction' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operators/Subtraction.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',
         'Mockery\\Adapter\\Phpunit\\MockeryTestCase' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryTestCase.php',

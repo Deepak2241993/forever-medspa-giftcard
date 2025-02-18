@@ -15,7 +15,6 @@ use App\Mail\GiftCardStatement;
 use App\Mail\GiftcardCancelMail;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
-use App\Events\TimelineGiftcardRedeem;
 class GiftsendController extends Controller
 {
     /**
