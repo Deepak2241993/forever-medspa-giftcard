@@ -896,17 +896,37 @@ public function gift_purchase(Request $request, Giftsend $giftsend, GiftCoupon $
 
         // Fetch the gift card number(s) based on the transaction ID from $result
         $giftcardNumber = GiftcardsNumbers::where('transaction_id', $result->transaction_id)->get();
+        
         $result['card_number'] = $giftcardNumber;
         $gift_send_to = $result->gift_send_to;
         $result['amount'] = $result->amount;
 
         try {
             if (!empty($result->recipient_name)) {
-                Mail::to($result->receipt_email)->send(new GiftReceipt($result));
-                Log::info('GiftReceipt email sent successfully to: ' . $result->receipt_email);
+                $patient_data = Patient::where('patient_login_id',$result->receipt_email)->first();
+                if($patient_data)
+                {
+                    Mail::to($patient_data->email)->send(new GiftReceipt($result));
+                    Log::info('GiftReceipt email sent successfully to: ' . $patient_data->email);
+                }
+                else{
+                    Mail::to($result->receipt_email)->send(new GiftReceipt($result));
+                    Log::info('GiftReceipt email sent successfully to: ' . $result->receipt_email);
+                }
+               
             }
-            Mail::to($gift_send_to)->send(new GeftcardMail($result));
-            Log::info('GeftcardMail email sent successfully to: ' . $gift_send_to);
+
+            $patient_data = Patient::where('patient_login_id',$gift_send_to)->first();
+            if($patient_data)
+            {
+                Mail::to($patient_data->email)->send(new GeftcardMail($result));
+                Log::info('GeftcardMail email sent successfully to: ' . $patient_data->email);
+            }
+            else{
+                Mail::to($gift_send_to)->send(new GeftcardMail($result));
+                Log::info('GeftcardMail email sent successfully to: ' . $gift_send_to);
+            }
+          
         } catch (\Exception $e) {
             Log::error('Mail sending failed: ' . $e->getMessage());
         }
