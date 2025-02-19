@@ -1315,6 +1315,45 @@ $(document).ready(function () {
     setupAutocomplete("#receipt_email"); // Sender Email
     setupAutocomplete("#gift_send_to"); // Receiver Email
 });
+// For Name Search
+
+$(document).ready(function () {
+    function setupAutocomplete(inputField) {
+        $(inputField).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{ route('name-suggestions') }}", // Laravel route
+                    type: "GET",
+                    data: {
+                        query: request.term
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("Autocomplete Data:", data); // Debugging
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.full_name, // Display full name
+                                value: item.full_name // Fill input with selected name
+                            };
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching name suggestions:", error);
+                    }
+                });
+            },
+            minLength: 2, // Start suggesting after 2 characters
+            select: function (event, ui) {
+                $(inputField).val(ui.item.value); // Set the input value
+                return false;
+            }
+        });
+    }
+
+    setupAutocomplete("#your_name"); // Sender Name
+    setupAutocomplete("#recipient_name"); // Receiver Name
+});
+
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

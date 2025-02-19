@@ -288,4 +288,19 @@ class PatientController extends Controller
         return response()->json($emails);
     }
 
+    public function nameSuggestions(Request $request)
+    {
+        $query = $request->input('query');
+        $patients = Patient::where('fname', 'LIKE', "%{$query}%")
+        ->orWhere('lname', 'LIKE', "%{$query}%")
+        ->selectRaw("CASE 
+                        WHEN lname IS NULL OR lname = '' THEN fname
+                        ELSE CONCAT(fname, ' ', lname) 
+                     END as full_name")
+        ->get();
+    
+        return response()->json($patients);
+    
+    }
+
 }

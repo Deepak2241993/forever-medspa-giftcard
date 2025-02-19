@@ -176,6 +176,7 @@ Route::resource('/patient', PatientController::class);
     Route::get('/reset-password/{token}',[AdminController::class,'ResetPassword'])->name('ResetPasswordView');
     Route::post('/reset-password',[AdminController::class,'ResetPasswordPost'])->name('ResetPassword');
     Route::get('/email-suggestions', 'PatientController@emailSuggestions')->name('email-suggestions');
+    Route::get('/name-suggestions', 'PatientController@nameSuggestions')->name('name-suggestions');
 
 
 // For Cache Clear
