@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\CategoryExportController;
 use App\Http\Controllers\PDFController;
+use App\Models\Patient;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -174,7 +175,7 @@ Route::resource('/patient', PatientController::class);
     Route::post('/password-reset',[AdminController::class,'ForgotPassword'])->name('password-reset');
     Route::get('/reset-password/{token}',[AdminController::class,'ResetPassword'])->name('ResetPasswordView');
     Route::post('/reset-password',[AdminController::class,'ResetPasswordPost'])->name('ResetPassword');
-    
+    Route::get('/email-suggestions', 'PatientController@emailSuggestions')->name('email-suggestions');
 
 
 // For Cache Clear

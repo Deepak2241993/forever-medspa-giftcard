@@ -454,20 +454,37 @@
                                                     <input type="hidden" name="user_token" value="FOREVER-MEDSPA"
                                                         class="user_token">
                                                 </div>
-                                                <div class="mb-3 col-lg-12 self">
-                                                    <label for="your_name" class="form-label">Your name<span
+                                                <div class="mb-3 col-lg-6 self">
+                                                    <label for="your_name" class="form-label">Sender Name<span
                                                             class="text-danger">*</span></label>
                                                     <input class="form-control" type="text" name="your_name" value=""
                                                         placeholder="From Name" id="your_name" autocomplete="off">
                                                     <span id="your_name_error" class="text-danger"></span>
                                                 </div>
-                                                <div class="mb-3 col-lg-12">
-                                                    <label for="recipient_name" class="form-label">Recipient name<span
+                                                <div class="mb-3 col-lg-6" id="giftSendByEmail">
+                                                    <label for="receipt_email" class="form-label"><b>Sender Email<span
+                                                                class="text-danger">*</span></b></label>
+                                                    <input class="form-control" type="email" name="receipt_email"
+                                                        value=""
+                                                        placeholder="Sender's Email address (for the receipt)"
+                                                        id="receipt_email" autocomplete="off">
+                                                    <span id="receipt_email_error" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3 col-lg-6">
+                                                    <label for="recipient_name" class="form-label">Receiver Name<span
                                                             class="text-danger">*</span></label>
                                                     <input class="form-control" type="text" name="recipient_name"
                                                         value="" placeholder="To Name" id="recipient_name"
                                                         autocomplete="off">
                                                     <span id="recipient_name_error" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3 col-lg-6" id="giftSendByEmail">
+                                                    <label for="gift_send_to" class="form-label"><b>Receiver Email<span
+                                                                class="text-danger">*</span></b></label>
+                                                    <input class="form-control" type="email" name="gift_send_to"
+                                                        value="" placeholder="Recipient Email Address"
+                                                        id="gift_send_to" autocomplete="off">
+                                                    <span id="gift_send_to_error" class="text-danger"></span>
                                                 </div>
                                                 <div class="mb-3 col-lg-12">
                                                     <label for="message" class="form-label">Message</label>
@@ -475,25 +492,8 @@
                                                         class="form-control"></textarea>
                                                 </div>
                                                 <div id="emailfields">
-                                                    <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
-                                                        <label for="gift_send_to" class="form-label"><b>What email
-                                                                address should we send the gift card to?<span
-                                                                    class="text-danger">*</span></b></label>
-                                                        <input class="form-control" type="email" name="gift_send_to"
-                                                            value="" placeholder="Recipient Email Address"
-                                                            id="gift_send_to" autocomplete="off">
-                                                        <span id="gift_send_to_error" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
-                                                        <label for="receipt_email" class="form-label"><b>Your email
-                                                                address (for the receipt)<span
-                                                                    class="text-danger">*</span></b></label>
-                                                        <input class="form-control" type="email" name="receipt_email"
-                                                            value=""
-                                                            placeholder="Sender's Email address (for the receipt)"
-                                                            id="receipt_email" autocomplete="off">
-                                                        <span id="receipt_email_error" class="text-danger"></span>
-                                                    </div>
+                                                    
+                                                    
                                                     <div class="mb-3 col-lg-12">
                                                         <label for="future_yes">
                                                             <input type="radio" id="future_yes" value="yes"
@@ -1282,4 +1282,40 @@
         }
 
     </script>
+
+<script>
+$(document).ready(function () {
+    function setupAutocomplete(inputField) {
+        $(inputField).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{route('email-suggestions')}}", // Laravel route to fetch emails
+                    type: "GET",
+                    data: {
+                        query: request.term
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        response(data);
+                    },
+                    error: function () {
+                        console.error("Error fetching email suggestions.");
+                    }
+                });
+            },
+            minLength: 2, // Start suggesting after 2 characters
+            select: function (event, ui) {
+                $(inputField).val(ui.item.value);
+                return false;
+            }
+        });
+    }
+
+    // Apply autocomplete to both email fields
+    setupAutocomplete("#receipt_email"); // Sender Email
+    setupAutocomplete("#gift_send_to"); // Receiver Email
+});
+</script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 @endpush

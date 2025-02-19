@@ -278,5 +278,14 @@ class PatientController extends Controller
         // Optionally, redirect to a page (e.g., dashboard or home) after removal
         return redirect()->route('home')->with('success', 'Amount has been removed.');
     }
+    public function emailSuggestions(Request $request)
+    {
+        $query = $request->input('query');
+
+        $emails = Patient::where('email', 'LIKE', "%{$query}%")
+                    ->pluck('email'); // Get only emails
+
+        return response()->json($emails);
+    }
 
 }
