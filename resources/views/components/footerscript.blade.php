@@ -24,8 +24,12 @@
 <!-- AdminLTE App -->
 <script src="{{url('/')}}/dist/js/adminlte.min.js"></script>
 {{-- Editor JS --}}
-<script src="{{url('/')}}/dist/sweetalert2/sweetalert2.min.js"></script>
 <script src="{{url('/')}}/dist/summernote/summernote-bs4.min.js"></script>
+{{--  Show Steert Alert --}}
+<script src="{{url('/')}}/dist/sweetalert2/sweetalert2.min.js"></script>
+
+{{--  For Auto Search Js --}}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
     $(function () {
       //Initialize Select2 Elements

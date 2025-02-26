@@ -303,4 +303,58 @@ class PatientController extends Controller
     
     }
 
+    //  For Collect Patient Data
+    // PatientData method in your controller
+public function PatientData(Request $request)
+{
+    // Find patient by email
+    $patientData = Patient::where('email', $request->email_id)->first();
+
+    if (!$patientData) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Patient not found.',
+        ], 404);
+    }
+
+    // Retrieve gift cards based on patient_login_id
+    $mygiftcards = Giftsend::where(function($query) use ($patientData) {
+            $query->whereColumn('gift_send_to', 'receipt_email')
+                  ->whereNull('recipient_name')
+                  ->where('gift_send_to', $patientData->patient_login_id);
+        })
+        ->orWhere(function($query) use ($patientData) {
+            $query->whereColumn('gift_send_to', '!=', 'receipt_email')
+                  ->whereNotNull('recipient_name')
+                  ->where('gift_send_to', $patientData->patient_login_id);
+        })
+        ->orderBy('id', 'DESC')
+        ->get();
+    $formattedGiftcards = [];
+    foreach($mygiftcards as $value)
+    {
+        $giftcards = GiftcardsNumbers::where('transaction_id',$value->transaction_id)->first();
+        $formattedGiftcards[] = [
+            'card_number' => $giftcards ? $giftcards->giftnumber : 'N/A',
+            'date' => $value->created_at->format('Y-m-d'),
+            'value_amount' => $value->amount,
+            'actual_paid_amount' => $value->actual_paid_amount ?? 'N/A',
+        ];
+    }
+    // Prepare JSON response
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Patient data and gift cards retrieved successfully.',
+        'patient_data' => [
+            'fname' => $patientData->fname,
+            'lname' => $patientData->lname,
+            'email' => $patientData->email,
+            'phone' => $patientData->phone,
+        ],
+        'giftcards' => $formattedGiftcards,
+    ]);
+}
+
+    
+
 }

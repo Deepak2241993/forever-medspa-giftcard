@@ -147,6 +147,8 @@ Route::resource('/program', ProgramController::class);
 Route::resource('/product', ProductController::class);
 Route::resource('/patient', PatientController::class);
 
+Route::post('/patient-data','PatientController@PatientData')->name('patient-data');
+
 });
 
 

@@ -4,90 +4,107 @@
     @php
         $cart = session()->get('cart', []);
         $amount = 0;
-
         // $cart = session()->pull('cart');
-
     @endphp
-    
+
     @push('css')
-        .cart-page-total {
-        background-color: #f8f9fa; /* Light background to highlight the cart totals */
-        border: 1px solid #ddd; /* Border around the totals section */
-        padding: 20px;
-        border-radius: 5px; /* Rounded corners */
-        }
+        <style>
+            .cart-page-total {
+                background-color: #f8f9fa;
+                /* Light background to highlight the cart totals */
+                border: 1px solid #ddd;
+                /* Border around the totals section */
+                padding: 20px;
+                border-radius: 5px;
+                /* Rounded corners */
+            }
 
-        .cart-page-total h2 {
-        margin-bottom: 20px;
-        font-size: 24px;
-        font-weight: bold;
-        border-bottom: 1px solid #ddd; /* Line under heading */
-        padding-bottom: 10px;
-        }
+            .cart-page-total h2 {
+                margin-bottom: 20px;
+                font-size: 24px;
+                font-weight: bold;
+                border-bottom: 1px solid #ddd;
+                /* Line under heading */
+                padding-bottom: 10px;
+            }
 
-        .cart-totals-list {
-        list-style: none; /* Remove bullet points */
-        padding: 0;
-        margin: 0;
-        }
+            .cart-totals-list {
+                list-style: none;
+                /* Remove bullet points */
+                padding: 0;
+                margin: 0;
+            }
 
-        .cart-totals-item {
-        display: flex; /* Flexbox to align items */
-        justify-content: space-between; /* Space between label and value */
-        padding: 10px 0; /* Spacing for each item */
-        border-bottom: 1px solid #ddd; /* Line between items */
-        }
+            .cart-totals-item {
+                display: flex;
+                /* Flexbox to align items */
+                justify-content: space-between;
+                /* Space between label and value */
+                padding: 10px 0;
+                /* Spacing for each item */
+                border-bottom: 1px solid #ddd;
+                /* Line between items */
+            }
 
-        .cart-totals-item:last-child {
-        border-bottom: none; /* Remove bottom line from last item */
-        }
+            .cart-totals-item:last-child {
+                border-bottom: none;
+                /* Remove bottom line from last item */
+            }
 
-        .cart-totals-value {
-        font-weight: bold; /* Bold values for emphasis */
-        color: #333; /* Dark text color */
-        }
+            .cart-totals-value {
+                font-weight: bold;
+                /* Bold values for emphasis */
+                color: #333;
+                /* Dark text color */
+            }
 
-        .fill-btn {
-        display: block;
-        width: 100%;
-        text-align: center;
-        margin-top: 20px;
-        padding: 15px 0;
-        background-color: #007bff; /* Primary button color */
-        color: #fff;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-        }
+            .fill-btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin-top: 20px;
+                padding: 15px 0;
+                background-color: #007bff;
+                /* Primary button color */
+                color: #fff;
+                font-size: 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 5px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
 
-        .fill-btn:hover {
-        background-color: #0056b3; /* Darker blue on hover */
-        }
+            .fill-btn:hover {
+                background-color: #0056b3;
+                /* Darker blue on hover */
+            }
 
-        .fill-btn-inner {
-        display: inline-block;
-        position: relative;
-        }
+            .fill-btn-inner {
+                display: inline-block;
+                position: relative;
+            }
 
-        .fill-btn-hover {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: none; /* Hide hover text */
-        }
+            .fill-btn-hover {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: none;
+                /* Hide hover text */
+            }
 
-        .fill-btn:hover .fill-btn-hover {
-        display: inline-block; /* Show hover text */
-        }
+            .fill-btn:hover .fill-btn-hover {
+                display: inline-block;
+                /* Show hover text */
+            }
 
-        .fill-btn:hover .fill-btn-normal {
-        display: none; /* Hide normal text on hover */
-        }
+            .fill-btn:hover .fill-btn-normal {
+                display: none;
+                /* Hide normal text on hover */
+            }
+        </style>
     @endpush
     <section class="content-header">
         <div class="container-fluid">
@@ -107,7 +124,7 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
+    {{--  Action Button Section --}}
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -120,36 +137,28 @@
                             </h3>
                         </div>
                         <div class="card-body">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
-                                    Create Unit
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="location.href='{{ route('program.index') }}';">
-                                    Buy Programs
-                                </button>
-                                <button type="button" class="btn btn-warning"
-                                    onclick="location.href='{{ route('unit.index') }}';">
-                                    Buy Unit
-                                </button>
-                                <button type="button" class="btn btn-dark"
-                                    onclick="location.href='{{ route('product.index') }}';">
-                                    Buy Services
-                                </button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
+                                Create Unit
+                            </button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="location.href='{{ route('program.index') }}';">
+                                Buy Programs
+                            </button>
+                            <button type="button" class="btn btn-warning"
+                                onclick="location.href='{{ route('unit.index') }}';">
+                                Buy Unit
+                            </button>
+                            <button type="button" class="btn btn-dark"
+                                onclick="location.href='{{ route('product.index') }}';">
+                                Buy Services
+                            </button>
 
-                                <div class="row mt-4">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" value="" name="fname" Placeholder="Search Patient by Phone/Email">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <Button type="button" class="btn btn-block btn-outline-success">Search</Button>
-                                    </div>
-                                </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         {{--  For Unit Create Modal --}}
         <div class="modal fade" id="modal-default">
             <div class="modal-dialog">
@@ -223,16 +232,16 @@
                                 </div>
 
                                 <div class="mb-3 col-lg-6">
-                            <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
-                            <select class="form-control" name="giftcard_redemption" id="from">
-                                <option value="1"
-                                    {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
-                                    Yes</option>
-                                <option value="0"
-                                    {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
-                                    No</option>
-                            </select>
-                        </div>
+                                    <label for="giftcard_redemption" class="form-label">Giftcard Redeem</label>
+                                    <select class="form-control" name="giftcard_redemption" id="from">
+                                        <option value="1"
+                                            {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 1 ? 'selected' : '' }}>
+                                            Yes</option>
+                                        <option value="0"
+                                            {{ isset($data['giftcard_redemption']) && $data['giftcard_redemption'] == 0 ? 'selected' : '' }}>
+                                            No</option>
+                                    </select>
+                                </div>
                                 <div class="mb-3 col-lg-6">
                                     <button class="btn btn-block btn-outline-primary form_submit" type="submit"
                                         id="submitBtn">Submit</button>
@@ -240,329 +249,260 @@
                             </div>
                         </form>
                     </div>
-                    
+
                 </div>
                 <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
         </div>
-         {{--  For Unit Create Modal End --}}
+        {{--  For Unit Create Modal End --}}
     </section>
+    {{--  Action Button Section End --}}
 
- 
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-              <div class="card card-default">
-                <div class="card-header">
-                  <h3 class="card-title">bs-stepper</h3>
-                </div>
-                <div class="card-body p-0">
-                  <div class="bs-stepper linear">
-                    <div class="bs-stepper-header" role="tablist">
-                      <!-- your steps here -->
-                      <div class="step active" data-target="#logins-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger" aria-selected="true">
-                          <span class="bs-stepper-circle"><i class="fa fa-shopping-cart"></i></span>
-                          <span class="bs-stepper-label">Carts</span>
-                        </button>
-                      </div>
-                      <div class="line"></div>
-                      <div class="step" data-target="#patient-information">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="patient-information" id="patient-information-trigger" aria-selected="false" disabled="disabled">
-                          <span class="bs-stepper-circle"><i class="nav-icon fas fa-heartbeat"></i></span>
-                          <span class="bs-stepper-label">Patient Information</span>
-                        </button>
-                      </div>
-                      <div class="line"></div>
-                      <div class="step" data-target="#information-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger" aria-selected="false" disabled="disabled">
-                          <span class="bs-stepper-circle"><i class="fa fa-credit-card"></i></span>
-                          <span class="bs-stepper-label">Payment</span>
-                        </button>
-                      </div>
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Program Purchase</h3>
                     </div>
-                    <div class="bs-stepper-content">
-                      <!-- your steps content here -->
-                      <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
-                        
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-
-                                            <th class="cart-product-name">Product / Unit Name</th>
-                                            <th class="product-subtotal">Price</th>
-                                            <th class="product-subtotal">Discounted Price</th>
-                                            <th class="product-quantity">No.of Session</th>
-                                            <th class="product-quantity">Total</th>
-                                            <th class="product-remove">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $redeem = 0;
-                                        @endphp
-                                        @foreach ($cart as $key => $item)
-                                            @php
-                                                if ($item['type'] == 'unit') {
-                                                    $cart_data = App\Models\ServiceUnit::find($item['id']);
-                                                    $amount += $cart_data->amount;
-                                                    $image = explode('|', $cart_data->product_image);
-                                                    if ($cart_data->giftcard_redemption == 1) {
-                                                        $redeem += 1; // Corrected increment logic
-                                                    }
-                                                }
-                                                if ($item['type'] == 'product') {
-                                                    $cart_data = App\Models\Product::find($item['id']);
-                                                    $amount += $cart_data->amount;
-                                                    $image = explode('|', $cart_data->product_image);
-                                                    if ($cart_data->giftcard_redemption == 1) {
-                                                        $redeem += 1; // Corrected increment logic
-                                                    }
-                                                }
-
-                                            @endphp
-
-                                            {{-- {{dd($cart_data)}} --}}
-                                            <tr id="cart-item-{{ $cart_data->id }}">
-
-                                                <td class="product-name">{{ $cart_data->product_name }}</td>
-                                                <td class="product-price"><span
-                                                        class="amount">{{ $cart_data->amount }}</span></td>
-                                                <td class="product-price"><span
-                                                        class="amount">{{ $cart_data->discounted_amount }}</span></td>
-                                                <td class="product-price"><span class="amount">
-                                                        <form action="#" class="update-cart-form"
-                                                            data-id="{{ $item['id'] }}">
-
-                                                            <input class="cart-input form-control" id="cart_qty_{{ $key }}"
-                                                                type="number" value="{{ $item['quantity'] }}"
-                                                                data-id="{{ $item['id'] }}"
-                                                                min="{{ $cart_data->min_qty ?? 1 }}"
-                                                                max="{{ $cart_data->max_qty ?? 1 }}">
-
-
-                                                        </form>
-                                                </td>
-                                                <td>{{ "$" . $item['quantity'] * $cart_data->amount ?? "$" . $item['quantity'] * $cart_data->amount }}
-                                                </td>
-
-
-                                                <td>
-                                                    <a href="javascript:void(0)"
-                                                        onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
-                                                        class="btn btn-block btn-outline-success">Update</a>
-                                                    <a href="javascript:void(0)"
-                                                        onclick="removeFromCart('{{ $key }}')"
-                                                        class="btn btn-block btn-outline-danger">Remove</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                    <div class="card-body p-0">
+                        <div class="bs-stepper linear">
+                            <div class="bs-stepper-header" role="tablist">
+                                <!-- your steps here -->
+                                <div class="step active" data-target="#logins-part">
+                                    <button type="button" class="step-trigger" role="tab"
+                                        aria-controls="logins-part" id="logins-part-trigger" aria-selected="true">
+                                        <span class="bs-stepper-circle"><i class="fa fa-shopping-cart"></i></span>
+                                        <span class="bs-stepper-label">Carts</span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#patient-information">
+                                    <button type="button" class="step-trigger" role="tab"
+                                        aria-controls="patient-information" id="patient-information-trigger"
+                                        aria-selected="false" disabled="disabled">
+                                        <span class="bs-stepper-circle"><i class="nav-icon fas fa-heartbeat"></i></span>
+                                        <span class="bs-stepper-label">Patient Information</span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#payment_part">
+                                    <button type="button" class="step-trigger" role="tab"
+                                        aria-controls="payment_part" id="payment_part-trigger"
+                                        aria-selected="false" disabled="disabled">
+                                        <span class="bs-stepper-circle"><i class="fa fa-credit-card"></i></span>
+                                        <span class="bs-stepper-label">Payment</span>
+                                    </button>
+                                </div>
                             </div>
+                            <div class="bs-stepper-content">
+                                <!-- Cart Page -->
+                                <div id="logins-part" class="content active dstepper-block" role="tabpanel"
+                                    aria-labelledby="logins-part-trigger">
 
-                            {{-- <div class="row">
-                                <div class="col-12">
-                                    <div class="coupon-all">
-                                        
-                                        <div class="coupon d-flex align-items-center">
-                                            <div class="row">
+                                    <div class="col-12">
 
-                                                @if ($redeem != 0)
-                                                    <div class="col-9 mt-4">
-                                                        <h5>Apply Giftcard</h5>
-                                                        <div class="row">
-                                                            <div class="col-md-5">
-                                                                <input id="gift_number_0"
-                                                                    placeholder="Enter Gift Card Number" class="form-control"
-                                                                    name="coupon_code" type="text" required>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <input id="giftcard_amount_0" placeholder="$0.00"
-                                                                    class="form-control" name="coupon_code" type="number"
-                                                                    min="0" onkeyup="validateGiftAmount(this)"
-                                                                    readonly style="padding-left: 22px;">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
 
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <button onclick="validategiftnumber({{ 0 }})"
-                                                                    class="btn btn-block btn-outline-success giftcartbutton" type="button">
-                                                                    <i class="fa fa-check"
-                                                                                aria-hidden="true"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <span class="text-danger mt-4" id="error_0"></span>
-                                                                <span class="text-success mt-4" id="success_0"></span>
-                                                            </div>
-                                                            <div id="parentElement"></div>
-                                                            <div class="col-md-5  mt-4 mb-4">
-                                                                <button  class="btn btn-block btn-outline-primary" id="addGiftCardButton"
-                                                                    type="button">Apply More
-                                                                    Giftcard
-                                                                    
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endif
+                                                        <th class="cart-product-name">Product / Unit Name</th>
+                                                        <th class="product-subtotal">Price</th>
+                                                        <th class="product-subtotal">Discounted Price</th>
+                                                        <th class="product-quantity">No.of Session</th>
+                                                        <th class="product-quantity">Total</th>
+                                                        <th class="product-remove">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $redeem = 0;
+                                                        $total = 0; // Initialize total amount
+                                                    @endphp
+                                                    @foreach ($cart as $key => $item)
+                                                        @php
+                                                            if ($item['type'] == 'unit') {
+                                                                $cart_data = App\Models\ServiceUnit::find($item['id']);
+                                                            } elseif ($item['type'] == 'product') {
+                                                                $cart_data = App\Models\Product::find($item['id']);
+                                                            }
 
+                                                            $subtotal = $item['quantity'] * $cart_data->amount;
+                                                            $total += $subtotal; // Add subtotal to total
+                                                        @endphp
+
+                                                        <tr id="cart-item-{{ $cart_data->id }}">
+                                                            <td class="product-name">{{ $cart_data->product_name }}</td>
+                                                            <td class="product-price"><span
+                                                                    class="amount">{{ "$" . number_format($cart_data->amount, 2) }}</span>
+                                                            </td>
+                                                            <td class="product-price"><span
+                                                                    class="amount">{{ "$" . number_format($cart_data->discounted_amount ?? 0, 2) }}</span>
+                                                            </td>
+                                                            <td class="product-price">
+                                                                <form action="#" class="update-cart-form"
+                                                                    data-id="{{ $item['id'] }}">
+                                                                    <input class="cart-input form-control"
+                                                                        id="cart_qty_{{ $key }}" type="number"
+                                                                        value="{{ $item['quantity'] }}"
+                                                                        data-id="{{ $item['id'] }}"
+                                                                        min="{{ $cart_data->min_qty ?? 1 }}"
+                                                                        max="{{ $cart_data->max_qty ?? 1 }}">
+                                                                </form>
+                                                            </td>
+                                                            <td>{{ "$" . number_format($subtotal, 2) }}</td>
+                                                            <!-- Subtotal -->
+                                                            <td>
+                                                                <a href="javascript:void(0)"
+                                                                    onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
+                                                                    class="btn btn-block btn-outline-success">Update</a>
+                                                                <a href="javascript:void(0)"
+                                                                    onclick="removeFromCart('{{ $key }}')"
+                                                                    class="btn btn-block btn-outline-danger">Remove</a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                    <tr style="background-color:#333;color:aliceblue">
+                                                        <td colspan="4"><strong>Cart Total</strong></td>
+                                                        <td colspan="2">{{ "$" . number_format($total, 2) }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                                </div>
+                                {{-- Patient Inforamtion --}}
+                                <div id="patient-information" class="content" role="tabpanel"
+                                    aria-labelledby="patient-information-trigger">
+                                    <div class="form-group">
+                                        <h5>Search Patient by Email</h5>
+                                        <div class="row mt-4 mb-4">
+                                            <div class="col-md-6">
+                                                <input class="form-control" type="email" name="receipt_email"
+                                                    placeholder="Enter email..." id="search_email" autocomplete="off">
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <Button type="button" onclick="findPatientData()"
+                                                    class="btn btn-block btn-outline-success">Search</Button>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="mt-4 col-md-3">
+                                                <input type="text" class="form-control" value="" id="fname" name="fname"
+                                                    Placeholder="First Name">
+                                            </div>
+                                            <div class="mt-4 col-md-3">
+                                                <input type="text" class="form-control" value="" id="lname" name="lname"
+                                                    Placeholder="Last Name">
+                                            </div>
+                                            <div class="mt-4 col-md-3">
+                                                <input type="email" class="form-control" value="" id="email" name="email"
+                                                    Placeholder="Email">
+                                            </div>
+                                            <div class="mt-4 col-md-3">
+                                                <input type="text" class="form-control" value="" id="phone" name="phone"
+                                                    Placeholder="Phone">
                                             </div>
                                         </div>
 
-
+                                        {{--  Table Data --}}
+                                        <h5 class="mb-4 mt-4">Patient Giftcards </h5>
+                                        <table class="table table-bordered dt-responsive nowrap w-100"border="1">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl No.</th>
+                                                    <th>Card Number</th>
+                                                    <th>Date</th>
+                                                    <th>Value Amount</th>
+                                                    <th>Actual Paid Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Card Number</td>
+                                                    <td>Date</td>
+                                                    <td>Value Amount</td>
+                                                    <td>Actual Paid Amount</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+                                    <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                                 </div>
-                            </div> --}}
-
-
-                            <div class="row">
-                                <div class="col-lg-6 ml-auto">
-                                    <div class="cart-page-total">
-                                        <h2>Cart totals</h2>
-                                        <ul class="cart-totals-list mb-20">
-                                            <li class="cart-totals-item">Subtotal <span
-                                                    class="cart-totals-value">${{ number_format($amount, 2) }}</span></li>
-                                            {{-- <li class="cart-totals-item">Total Giftcard Applied <span class="cart-totals-value" id="giftcard_applied">$0</span></li> --}}
-                                            <li class="cart-totals-item">Tax 0% <span class="cart-totals-value"
-                                                    id="tax_amount">
-                                                    @php
-                                                        $taxamount = ($amount * 0) / 100;
-                                                        echo "+$" . number_format($taxamount, 2);
-                                                    @endphp
-                                                </span></li>
-                                            <li class="cart-totals-item">Total <span class="cart-totals-value"
-                                                    id="totalValue">${{ number_format($amount + $taxamount, 2) }}</span>
-                                            </li>
-                                        </ul>
-                                        <a class="fill-btn" href="javascript:void(0)" id="submitGiftCards">
-                                            Proceed to checkout
-
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
-                      </div>
-{{-- Patient Inforamtion --}}
-                        <div id="patient-information" class="content" role="tabpanel" aria-labelledby="patient-information-trigger">
-                            <div class="form-group">
-                                <h5>Patient Details</h5>
-                                <div class="row">
-                                    <div class="row mb-4">
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" value="" name="fname" Placeholder="First Name">
+                                {{-- Payment Section  --}}
+                                <div id="payment_part" class="content" role="tabpanel"
+                                    aria-labelledby="payment_part-trigger">
+                                    <div class="form-group">
+                                        <h5>Payment Details</h5>
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-6">
+                                                <div class="cart-page-total shadow-lg p-4 rounded-3 bg-white">
+                                                    <h2 class="text-center mb-4 text-uppercase fw-bold"
+                                                        style="color: #333;">Cart Totals</h2>
+                                                    <ul class="list-unstyled border-top pt-3">
+                                                        <li class="d-flex justify-content-between py-2">
+                                                            <span>Cart Total:</span>
+                                                            <span class="fw-bold">${{ number_format($amount, 2) }}</span>
+                                                        </li>
+                                                        <li class="d-flex justify-content-between py-2">
+                                                            <span>Giftcards apply:</span>
+                                                            <span class="fw-bold text-success" id="tax_amount">
+                                                                @php
+                                                                    $taxamount = ($amount * 0) / 100;
+                                                                    echo "-$" . number_format($taxamount, 2);
+                                                                @endphp
+                                                            </span>
+                                                        </li>
+                                                        <li class="d-flex justify-content-between py-2">
+                                                            <span>Tax 0%:</span>
+                                                            l <span class="fw-bold text-warning" id="tax_amount">
+                                                                @php
+                                                                    $taxamount = ($amount * 0) / 100;
+                                                                    echo "+$" . number_format($taxamount, 2);
+                                                                @endphp
+                                                            </span>
+                                                        </li>
+                                                        <li class="d-flex justify-content-between py-3 border-top">
+                                                            <strong>Total:</strong>
+                                                            <strong id="totalValue"
+                                                                class="text-primary fs-5">${{ number_format($amount + $taxamount, 2) }}</strong>
+                                                        </li>
+                                                    </ul>
+                                                    <a href="javascript:void(0)" id="submitGiftCards"
+                                                        class="btn btn-primary w-100 mt-3 py-2 text-uppercase fw-bold rounded-pill">
+                                                        Proceed to Checkout
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" value="" name="lname" Placeholder="Last Name">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="email" class="form-control" value="" name="email" Placeholder="Email">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" value="" name="phone" Placeholder="Phone">
-                                        </div>
+
                                     </div>
-                                </div>
-                                {{--  Table Data --}}
-                                <h5 class="mb-4">Patient Giftcards </h5>
-                                <table clss="table table-bordered table-striped"border="1">
-                                    <thead>
-                                        <tr>
-                                            <th>Sl No.</th>
-                                            <th>Transaction Number</th>
-                                            <th>Card Number</th>
-                                            <th>Date</th>
-                                            <th>Message</th>
-                                            <th>Value Amount</th>
-                                            <th>Actual Paid Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Transaction Number</td>
-                                            <td>Card Number</td>
-                                            <td>Date</td>
-                                            <td>Message</td>
-                                            <td>Value Amount</td>
-                                            <td>Actual Paid Amount</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                            <button class="btn btn-primary" onclick="stepper.next()">Next</button>
-                        </div>
-                      <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
-                        <div class="form-group">
-                            <h5>Patient Details</h5>
-                            <div class="row">
-                                <div class="row mb-4">
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" value="" name="fname" Placeholder="First Name">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" value="" name="lname" Placeholder="Last Name">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="email" class="form-control" value="" name="email" Placeholder="Email">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" value="" name="phone" Placeholder="Phone">
-                                    </div>
+                                    <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
-                            {{--  Table Data --}}
-                            <h5 class="mb-4">Patient Giftcards</h5>
-                            <table clss="table table-bordered table-striped"border="1">
-                                <thead>
-                                    <tr>
-                                        <th>Sl No.</th>
-                                        <th>Transaction Number</th>
-                                        <th>Card Number</th>
-                                        <th>Date</th>
-                                        <th>Message</th>
-                                        <th>Value Amount</th>
-                                        <th>Actual Paid Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Transaction Number</td>
-                                        <td>Card Number</td>
-                                        <td>Date</td>
-                                        <td>Message</td>
-                                        <td>Value Amount</td>
-                                        <td>Actual Paid Amount</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
-                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
                     </div>
-                  </div>
+                    <!-- /.card-body -->
+
                 </div>
-                <!-- /.card-body -->
-                
-              </div>
-              <!-- /.card -->
+                <!-- /.card -->
             </div>
-          </div>
+        </div>
     </section>
-
-
+    
 @endsection
 @push('script')
+    <!-- jQuery and jQuery UI -->
+
     <script>
         //  Create Slug 
         function slugCreate() {
@@ -610,10 +550,66 @@
             });
         }
 
+    //  For Data Featch From Patient Table
+    function findPatientData() {
+    $.ajax({
+        url: '{{ route('patient-data') }}', // Laravel route
+        method: "POST",
+        dataType: "json",
+        data: {
+            _token: '{{ csrf_token() }}',
+            email_id: $('#search_email').val() // Get email input value
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                let patient_data = response.patient_data;
+                let giftcards = response.giftcards;
+
+                // Populate form fields with patient data
+                $('#fname').val(patient_data['fname']);
+                $('#lname').val(patient_data['lname']);
+                $('#email').val(patient_data['email']);
+                $('#phone').val(patient_data['phone']);
+
+                // Display gift cards in the table
+                let giftcardsContainer = $('#giftcards-container');
+                giftcardsContainer.empty(); // Clear previous entries
+
+                if (giftcards.length > 0) {
+                    giftcards.forEach(function(card, index) {
+                        let giftcardRow = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${card.card_number}</td>
+                                <td>${card.date}</td>
+                                <td>$${card.value_amount}</td>
+                                <td>$${card.actual_paid_amount}</td>
+                            </tr>
+                        `;
+                        giftcardsContainer.append(giftcardRow);
+                    });
+                } else {
+                    giftcardsContainer.append('<tr><td colspan="5">No gift cards found.</td></tr>');
+                }
+            } else {
+                alert(response.message || 'No patient data found.');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('AJAX error:', textStatus, errorThrown);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+
+
+
+
+
 
 
         //  Gift card validation code start
-
         $(document).ready(function() {
             // Initialize key to a starting value
             var key = 0;
@@ -797,7 +793,9 @@
                             window.location.href = "{{ route('checkout_view') }}";
                         } else if (response.status === 401 && response.error) {
                             // window.location.href = "http://localhost/medspa-program-management/public/patient-login";
-                            $(location).prop('href', 'http://localhost/medspa-program-management/public/patient-login')
+                            $(location).prop('href',
+                                'http://localhost/medspa-program-management/public/patient-login'
+                                )
                         } else {
                             alert(response.message || 'Unexpected response.');
                         }
@@ -910,29 +908,6 @@
             });
         }
 
-
-        // Event Listeners
-        // $(document).on('click', '.cart-minus', function() {
-        //     const input = $(this).closest('.update-cart-form').find('.cart-input');
-        //     const itemId = input.data('id');
-        //     let quantity = parseInt(input.val(), 10) - 1;
-        //     input.val(quantity);
-        //     updateCart(itemId, quantity);
-        // });
-
-        // $(document).on('click', '.cart-plus', function() {
-        //     const input = $(this).closest('.update-cart-form').find('.cart-input');
-        //     const itemId = input.data('id');
-        //     let quantity = parseInt(input.val(), 10) + 1;
-        //     input.val(quantity);
-        //     updateCart(itemId, quantity);
-        // });
-
-        // $(document).on('keyup change', '.cart-input', function() {
-        //     const itemId = $(this).data('id');
-        //     const quantity = parseInt($(this).val(), 10);
-        //     updateCart(itemId, quantity);
-        // });
     </script>
 
 
