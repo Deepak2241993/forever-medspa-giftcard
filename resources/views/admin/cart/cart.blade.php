@@ -384,7 +384,7 @@
                                         <div class="row mt-4 mb-4">
                                             <div class="col-md-6">
                                                 <input class="form-control" type="email" name="receipt_email"
-                                                    placeholder="Enter email..." id="search_email" autocomplete="off">
+                                                    placeholder="Enter email..." id="search_email" value="deepakprasad224@gmail.com">
                                             </div>
 
                                             <div class="col-md-2">
@@ -420,12 +420,23 @@
                                                     <th>Card Number</th>
                                                     <th>Balance Value Amount</th>
                                                     <th>Balance Actual Amount</th>
+                                                    <th>Use Giftcard</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="giftcards-container">
                                                 <!-- Dynamic Data Will be Appended Here -->
                                             </tbody>
                                         </table>
+                                        {{-- Giftcard Add Section --}}
+                                        <div class="row justify-content-left">
+                                                <div class="col-md-8 mt-4 p-4 border rounded shadow bg-white">
+                                                    <h4 class="text-center mb-3 text-primary">Apply Gift Card</h4>
+                                                    <div class="row" id="giftCardContainer">
+                                                        <p>No Giftcard Apply</p>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        
                                     </div>
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
@@ -576,6 +587,7 @@
                                 <td>${card.card_number}</td>
                                 <td>$${card.value_amount}</td>
                                 <td>$${card.actual_paid_amount}</td>
+                               <td>${card.value_amount != 0 ? `<button class="btn btn-warning" onclick="addGiftCardRow('${card.card_number}', '${card.value_amount}')">Use</button>` : ''}</td>
                             </tr>
                         `;
                         giftcardsContainer.append(giftcardRow);
@@ -593,6 +605,45 @@
         }
     });
 }
+
+</script>
+{{--  For Use Giftcards Append Giftcard Section --}}
+<script>
+
+    function addGiftCardRow(card_number, gift_card_amount) {
+        let container = document.getElementById('giftCardContainer');
+
+        // Create a new div row
+        let newRow = document.createElement('div');
+        newRow.classList.add('row', 'mb-2'); // Bootstrap row class
+        newRow.innerHTML = `
+            <div class="col-md-5">
+                <input type="text" class="form-control" name="card_number[]" value="${card_number}" readonly>
+            </div>
+            <div class="col-md-5">
+                <input type="number" class="form-control" name="gift_card_amount[]" value="${gift_card_amount}" max="${gift_card_amount}">
+            </div>
+            
+            <div class="col-md-2">
+                <button class="btn btn-danger" onclick="removeGiftCardRow(this)">Remove</button>
+            </div>
+        `;
+        $('#giftCardContainer p').hide();
+        // Append to container
+        container.appendChild(newRow);
+    }
+
+    function removeGiftCardRow(button) {
+        button.parentElement.parentElement.remove(); // Removes the row
+    }
+</script>
+
+
+<script>
+
+
+
+
 
 
 

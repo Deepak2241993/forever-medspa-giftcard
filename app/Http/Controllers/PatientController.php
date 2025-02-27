@@ -345,6 +345,7 @@ public function PatientData(Request $request)
                 )
                 ->whereIn('giftnumber', $giftcards) 
                 ->where('user_token', 'FOREVER-MEDSPA')
+                ->where('status', 1)
                 ->groupBy('giftnumber')
                 ->get();
         
@@ -371,6 +372,7 @@ public function PatientData(Request $request)
             'lname' => $patientData->lname,
             'email' => $patientData->email,
             'phone' => $patientData->phone,
+            'id' => $patientData->id,
         ],
         'giftcards' => $formattedGiftcards,
     ]);
