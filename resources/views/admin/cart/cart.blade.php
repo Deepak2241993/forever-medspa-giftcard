@@ -418,8 +418,8 @@
                                                 <tr>
                                                     <th>Sl No.</th>
                                                     <th>Card Number</th>
-                                                    <th>Value Amount</th>
-                                                    <th>Actual Paid Amount</th>
+                                                    <th>Balance Value Amount</th>
+                                                    <th>Balance Actual Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="giftcards-container">
