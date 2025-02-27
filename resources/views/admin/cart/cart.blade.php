@@ -418,19 +418,12 @@
                                                 <tr>
                                                     <th>Sl No.</th>
                                                     <th>Card Number</th>
-                                                    <th>Date</th>
                                                     <th>Value Amount</th>
                                                     <th>Actual Paid Amount</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Card Number</td>
-                                                    <td>Date</td>
-                                                    <td>Value Amount</td>
-                                                    <td>Actual Paid Amount</td>
-                                                </tr>
+                                            <tbody id="giftcards-container">
+                                                <!-- Dynamic Data Will be Appended Here -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -581,7 +574,6 @@
                             <tr>
                                 <td>${index + 1}</td>
                                 <td>${card.card_number}</td>
-                                <td>${card.date}</td>
                                 <td>$${card.value_amount}</td>
                                 <td>$${card.actual_paid_amount}</td>
                             </tr>
@@ -589,7 +581,7 @@
                         giftcardsContainer.append(giftcardRow);
                     });
                 } else {
-                    giftcardsContainer.append('<tr><td colspan="5">No gift cards found.</td></tr>');
+                    giftcardsContainer.append('<tr><td colspan="5" class="text-center">No gift cards found.</td></tr>');
                 }
             } else {
                 alert(response.message || 'No patient data found.');
@@ -601,6 +593,7 @@
         }
     });
 }
+
 
 
 

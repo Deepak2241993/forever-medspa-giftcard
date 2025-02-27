@@ -317,7 +317,7 @@ public function PatientData(Request $request)
         ], 404);
     }
 
-    // Retrieve gift cards based on patient_login_id
+    // Retrieve user giftcard Transaction Id for user
     $mygiftcards = Giftsend::where(function($query) use ($patientData) {
             $query->whereColumn('gift_send_to', 'receipt_email')
                   ->whereNull('recipient_name')
@@ -330,17 +330,38 @@ public function PatientData(Request $request)
         })
         ->orderBy('id', 'DESC')
         ->get();
-    $formattedGiftcards = [];
-    foreach($mygiftcards as $value)
-    {
-        $giftcards = GiftcardsNumbers::where('transaction_id',$value->transaction_id)->first();
-        $formattedGiftcards[] = [
-            'card_number' => $giftcards ? $giftcards->giftnumber : 'N/A',
-            'date' => $value->created_at->format('Y-m-d'),
-            'value_amount' => $value->amount,
-            'actual_paid_amount' => $value->actual_paid_amount ?? 'N/A',
-        ];
-    }
+        $formattedGiftcards = [];
+
+        foreach ($mygiftcards as $value) {
+            // Get all gift card numbers for this transaction
+            $giftcards = GiftcardsNumbers::where('transaction_id', $value->transaction_id)->pluck('giftnumber')->toArray();
+        
+            if (!empty($giftcards)) {
+                // Get unique final results based on gift card numbers
+                $final_results = GiftcardsNumbers::select(
+                    'giftnumber as card_number',
+                    DB::raw('SUM(actual_paid_amount) as total_paid_amount'),
+                    DB::raw('SUM(amount) as total_value_amount')
+                )
+                ->whereIn('giftnumber', $giftcards) 
+                ->where('user_token', 'FOREVER-MEDSPA')
+                ->groupBy('giftnumber')
+                ->get();
+        
+                // Store unique gift cards
+                foreach ($final_results as $result) {
+                    $formattedGiftcards[$result->card_number] = [
+                        'card_number' => $result->card_number,
+                        'value_amount' => $result->total_value_amount,
+                        'actual_paid_amount' => $result->total_paid_amount ?? 'N/A',
+                    ];
+                }
+            }
+        }
+        
+        // Convert associative array to indexed array
+        $formattedGiftcards = array_values($formattedGiftcards);
+        
     // Prepare JSON response
     return response()->json([
         'status' => 'success',
