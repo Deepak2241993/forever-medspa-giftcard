@@ -384,7 +384,7 @@
                                         <div class="row mt-4 mb-4">
                                             <div class="col-md-6">
                                                 <input class="form-control" type="email" name="receipt_email"
-                                                    placeholder="Enter email..." id="search_email" value="deepakprasad224@gmail.com">
+                                                    placeholder="Enter email..." id="search_email" value="">
                                             </div>
 
                                             <div class="col-md-2">
@@ -428,14 +428,47 @@
                                             </tbody>
                                         </table>
                                         {{-- Giftcard Add Section --}}
-                                        <div class="row justify-content-left">
-                                                <div class="col-md-8 mt-4 p-4 border rounded shadow bg-white">
-                                                    <h4 class="text-center mb-3 text-primary">Apply Gift Card</h4>
-                                                    <div class="row" id="giftCardContainer">
-                                                        <p>No Giftcard Apply</p>
-                                                    </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-8 mt-4 p-4 border rounded shadow-lg bg-white">
+                                                <h4 class="text-center mb-4 text-primary fw-bold">Apply Gift Card</h4>
+                                        
+                                                <!-- Gift Card Section -->
+                                                <div class="row p-3 bg-light border rounded" id="giftCardContainer">
+                                                    <p class="text-muted text-center w-100">No Gift Card Applied</p>
                                                 </div>
+                                        
+                                                <!-- Payment Information -->
+                                                <h4 class="mt-4 text-dark fw-bold border-bottom pb-2">Payment Information</h4>
+                                        
+                                                <ul class="list-unstyled mt-3">
+                                                    <li class="d-flex justify-content-between py-2">
+                                                        <span class="fw-semibold">Cart Total:</span>
+                                                        <span class="fw-bold text-dark">${{ number_format($amount, 2) }}</span>
+                                                    </li>
+                                                    <li class="d-flex justify-content-between py-2">
+                                                        <span class="fw-semibold">Gift Cards Applied:</span>
+                                                        <span class="fw-bold text-success" id="giftcard_amount">
+                                                            @php
+                                                                $giftCardAmount = 0; // Replace with the actual applied gift card value
+                                                                echo "-$" . number_format($giftCardAmount, 2);
+                                                            @endphp
+                                                        </span>
+                                                    </li>
+                                                   
+                                                    <li class="d-flex justify-content-between py-3 border-top">
+                                                        <strong class="fs-5">Total:</strong>
+                                                        <strong id="totalValue" class="text-primary fs-5">${{ number_format($amount - $giftCardAmount, 2) }}</strong>
+                                                    </li>
+                                                </ul>
+                                        
+                                                <!-- Proceed to Checkout Button -->
+                                                <a href="javascript:void(0)" id="submitGiftCards"
+                                                    class="btn btn-primary w-100 mt-3 py-2 text-uppercase fw-bold rounded-pill shadow" onclick="stepper.next()">
+                                                    Proceed to Checkout
+                                                </a>
+                                            </div>
                                         </div>
+                                        
                                         
                                     </div>
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -636,6 +669,8 @@
     function removeGiftCardRow(button) {
         button.parentElement.parentElement.remove(); // Removes the row
     }
+
+
 </script>
 
 
