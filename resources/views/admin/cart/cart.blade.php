@@ -302,7 +302,6 @@
                                     aria-labelledby="logins-part-trigger">
 
                                     <div class="col-12">
-
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
@@ -384,7 +383,7 @@
                                         <div class="row mt-4 mb-4">
                                             <div class="col-md-6">
                                                 <input class="form-control" type="email" name="receipt_email"
-                                                    placeholder="Enter email..." id="search_email" value="">
+                                                    placeholder="Enter email..." id="search_email" value="deepak@thetemz.com">
                                             </div>
 
                                             <div class="col-md-2">
@@ -443,33 +442,39 @@
                                                 <ul class="list-unstyled mt-3">
                                                     <li class="d-flex justify-content-between py-2">
                                                         <span class="fw-semibold">Cart Total:</span>
-                                                        <span class="fw-bold text-dark">${{ number_format($amount, 2) }}</span>
+                                                        <span class="fw-bold text-dark" id="cart_total">${{ number_format($total, 2) }}</span>
                                                     </li>
                                                     <li class="d-flex justify-content-between py-2">
                                                         <span class="fw-semibold">Gift Cards Applied:</span>
-                                                        <span class="fw-bold text-success" id="giftcard_amount">
-                                                            @php
-                                                                $giftCardAmount = 0; // Replace with the actual applied gift card value
-                                                                echo "-$" . number_format($giftCardAmount, 2);
-                                                            @endphp
-                                                        </span>
+                                                        <span class="fw-bold text-success" id="giftcard_amount">-$0.00</span>
                                                     </li>
-                                                   
+                                                    <li class="d-flex justify-content-between py-2">
+                                                        <span class="fw-semibold">Discount:</span>
+                                                        <input type="number" class="form-control w-50" id="discount" value="0">
+                                                    </li>
+                                                    <li class="d-flex justify-content-between py-2">
+                                                        <span class="fw-semibold">Tax%:</span>
+                                                        <select id="tax" class="form-control w-50">
+                                                            <option value="0">0%</option>
+                                                            <option value="5">5%</option>
+                                                            <option value="10">10%</option>
+                                                            <option value="12">12%</option>
+                                                            <option value="18">18%</option>
+                                                        </select>
+                                                    </li>
                                                     <li class="d-flex justify-content-between py-3 border-top">
                                                         <strong class="fs-5">Total:</strong>
-                                                        <strong id="totalValue" class="text-primary fs-5">${{ number_format($amount - $giftCardAmount, 2) }}</strong>
+                                                        <strong id="totalValue" class="text-primary fs-5">${{ number_format($amount, 2) }}</strong>
                                                     </li>
                                                 </ul>
                                         
                                                 <!-- Proceed to Checkout Button -->
-                                                <a href="javascript:void(0)" id="submitGiftCards"
-                                                    class="btn btn-primary w-100 mt-3 py-2 text-uppercase fw-bold rounded-pill shadow" onclick="stepper.next()">
+                                                <a href="javascript:void(0)" id="submitGiftCards" class="btn btn-primary w-100 mt-3 py-2 text-uppercase fw-bold rounded-pill shadow">
                                                     Proceed to Checkout
                                                 </a>
+                                        
                                             </div>
                                         </div>
-                                        
-                                        
                                     </div>
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
@@ -487,7 +492,7 @@
                                                     <ul class="list-unstyled border-top pt-3">
                                                         <li class="d-flex justify-content-between py-2">
                                                             <span>Cart Total:</span>
-                                                            <span class="fw-bold">${{ number_format($amount, 2) }}</span>
+                                                            <span class="fw-bold">{{ "$" . number_format($total, 2) }}</span>
                                                         </li>
                                                         <li class="d-flex justify-content-between py-2">
                                                             <span>Giftcards apply:</span>
@@ -641,7 +646,7 @@
 
 </script>
 {{--  For Use Giftcards Append Giftcard Section --}}
-<script>
+{{-- <script>
 
     function addGiftCardRow(card_number, gift_card_amount) {
         let container = document.getElementById('giftCardContainer');
@@ -670,278 +675,81 @@
         button.parentElement.parentElement.remove(); // Removes the row
     }
 
-
-</script>
-
-
+    
+</script> --}}
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const cartTotal = {{ $total }};
+    const discountInput = document.getElementById('discount');
+    const taxSelect = document.getElementById('tax');
+    const totalValue = document.getElementById('totalValue');
+    const giftCardAmountDisplay = document.getElementById('giftcard_amount');
 
+    function calculateGiftCardTotal() {
+        let totalGiftCardAmount = 0;
+        document.querySelectorAll("input[name='gift_card_amount[]']").forEach(input => {
+            const value = parseFloat(input.value) || 0;
+            const maxValue = parseFloat(input.getAttribute('max')) || 0;
 
-
-
-
-
-
-
-
-
-
-
-
-        //  Gift card validation code start
-        $(document).ready(function() {
-            // Initialize key to a starting value
-            var key = 0;
-            // Array to store gift card numbers
-            var giftCardNumbers = [];
-
-            // Attach the click event to the button
-            $('#addGiftCardButton').click(function() {
-                // Increment the key for each new set of input fields
-                key++;
-
-                var html = `
-            <div class="row mt-5" id="row_${key}">
-                <div class="col-md-5">
-                    <input id="gift_number_${key}" placeholder="Enter Gift Card Number"
-                        class="input-text" name="coupon_code" type="text" required>
-                </div>
-                <div class="col-md-3">
-                    <input id="giftcard_amount_${key}" placeholder="$0.00"
-                        class="input-text" name="coupon_code" type="number" min="0" onkeyup="validateGiftAmount(this)" onchange="validateGiftAmount(this)" readonly style="padding-left: 22px;">
-                </div>
-                <div class="col-md-3 mt-4" style="display:flex;">
-                    <button onclick="validategiftnumber(${key})"
-                         class="btn btn-block btn-outline-success giftcartbutton" type="button">
-                        <span class="fill-btn-inner">
-                            <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
-                            <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
-                        </span>
-                    </button> 
-                    |
-                    <button 
-                         class="btn btn-block btn-outline-danger giftcartdelete remove-button" type="button" data-key="${key}">
-                        <span class="fill-btn-inner">
-                            <span class="fill-btn-normal">X</span>
-                            <span class="fill-btn-hover">X</span>
-                        </span>
-                    </button>
-                </div>
-                <div class="col-md-3 mt-4">
-                </div>
-                <div class="col-md-12">
-                    <span class="text-danger mt-4" id="error_${key}"></span>
-                    <span class="text-success mt-4" id="success_${key}"></span>
-                </div>
-            </div>
-        `;
-
-                // Append the HTML to the desired parent element
-                $('#parentElement').append(html); // Use the actual ID of the parent element
-            });
-
-            // Event delegation for dynamically added Remove buttons
-            $(document).on('click', '.remove-button', function() {
-                var keyToRemove = $(this).data('key');
-                // Remove gift card number from the array
-                var giftNumberToRemove = $('#gift_number_' + keyToRemove).val();
-                giftCardNumbers = giftCardNumbers.filter(num => num !== giftNumberToRemove);
-                $('#row_' + keyToRemove).remove();
-                sumValues();
-            });
-
-            // Function to validate gift card number
-            window.validategiftnumber = function(key) {
-                var giftNumber = $('#gift_number_' + key).val();
-
-                // Check if the gift card number is not null or empty
-                if (!giftNumber) {
-                    alert('Gift Card Number cannot be empty!');
-                    $('#error_' + key).html('Gift Card Number cannot be empty.');
-                    $('#success_' + key).html('');
-                    return;
-                }
-
-                if (giftCardNumbers.includes(giftNumber)) {
-                    alert('Duplicate Gift Card Number.');
-                    $('#gift_number_' + key).val('');
-                    $('#error_' + key).html('Duplicate Gift Card Number.');
-                    $('#success_' + key).html('');
-                    return;
-                }
-
-                $.ajax({
-                    url: '{{ route('giftcards-validate') }}',
-                    method: "post",
-                    dataType: "json",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        giftcardnumber: giftNumber,
-                        user_token: 'FOREVER-MEDSPA',
-                    },
-                    success: function(response) {
-                        if (response.status === 200) {
-                            var totalValueText = $('#totalValue').text();
-                            // Remove the '$' symbol and parse it as a number
-                            var totalValue = parseFloat(totalValueText.replace('$', '').replace(',',
-                                '').trim());
-                            // alert(response.actual_paid_amount);
-                            // alert(totalValue);
-                            if (response.actual_paid_amount > totalValue) {
-                                alert(
-                                    "The giftcard amount can not be more than the cart total amount"
-                                );
-                                return false; // Stop the execution if invalid
-                            }
-
-                            // Add the gift card number to the array
-                            giftCardNumbers.push(giftNumber);
-                            console.log(response.success);
-                            console.log(response.actual_paid_amount);
-                            $('#success_' + key).html(
-                                response.message);
-                            $('#giftcard_amount_' + key).val(response.actual_paid_amount);
-                            $('#giftcard_amount_' + key).removeAttr('readonly');
-                            $('#giftcard_amount_' + key).attr('max', response.actual_paid_amount);
-                            sumValues();
-                            $('#error_' + key).html('');
-                        } else {
-                            alert('Invalid Giftcard. Please enter the correct number');
-                            console.log(response.error);
-                            $('#error_' + key).html(response.error ||
-                                'Invalid Giftcard. Please enter the correct number');
-                            $('#success_' + key).html('');
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert('An error occurred. Please try again.');
-                        $('#error_' + key).html('An error occurred. Please try again.');
-                        $('#success_' + key).html('');
-                    }
-                });
-            };
-        });
-
-        // Gift card validatuon code end
-
-        // Adding Value in session
-        $(document).ready(function() {
-            $('#submitGiftCards').click(function() {
-                var giftCards = [];
-
-                // Add the initial gift card input fields
-                var initialGiftNumber = $('#gift_number_0').val();
-                var initialGiftAmount = $('#giftcard_amount_0').val();
-
-                if (initialGiftNumber && initialGiftAmount) {
-                    giftCards.push({
-                        number: initialGiftNumber,
-                        amount: initialGiftAmount
-                    });
-                }
-
-                // Add dynamically added gift card input fields
-                $('#parentElement .row').each(function() {
-                    var rowId = $(this).attr('id').split('_')[1];
-                    var giftNumber = $('#gift_number_' + rowId).val();
-                    var giftAmount = $('#giftcard_amount_' + rowId).val();
-
-                    if (giftNumber && giftAmount) {
-                        giftCards.push({
-                            number: giftNumber,
-                            amount: giftAmount
-                        });
-                    }
-                });
-
-                $.ajax({
-                    url: '{{ route('checkout') }}',
-                    method: "post",
-                    dataType: "json",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        giftcards: giftCards,
-                        total_gift_applyed: $('#giftcard_applied').html().replace(/[\$-]/g, '')
-                            .trim(),
-                        tax_amount: $('#tax_amount').html().replace(/[\$+]/g, '').trim(),
-                        totalValue: $('#totalValue').html().replace(/[\$]/g, '').trim()
-
-                    },
-                    success: function(response) {
-                        if (response.status === 200 && !response.error) {
-                            window.location.href = "{{ route('checkout_view') }}";
-                        } else if (response.status === 401 && response.error) {
-                            // window.location.href = "http://localhost/medspa-program-management/public/patient-login";
-                            $(location).prop('href',
-                                'http://localhost/medspa-program-management/public/patient-login'
-                                )
-                        } else {
-                            alert(response.message || 'Unexpected response.');
-                        }
-                    },
-                    error: function(jqXHR) {
-                        alert('An error occurred. Please try again.');
-                    }
-                });
-            });
-        });
-
-
-        // Giftcard number adding in session 
-
-        let alertShownCount = 0;
-
-        function validateGiftAmount(inputElement) {
-            // Retrieve the maximum allowed value
-            var maxValue = parseFloat($(inputElement).attr('max'));
-            // Retrieve the current value from the input
-            var currentValue = parseFloat($(inputElement).val());
-
-            // If currentValue exceeds maxValue, reset and handle alerts
-            if (currentValue > maxValue) {
-                if (alertShownCount === 0) {
-                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
-                        '. Please enter a valid amount.');
-                    alertShownCount++;
-                } else {
-                    alert('The value entered exceeds the maximum allowed value of ' + maxValue +
-                        '. The value has been set to the maximum.');
-                }
-                // Set the input value to the maximum allowed
-                $(inputElement).val(maxValue);
+            if (value > maxValue) {
+                input.value = maxValue;
             }
 
-            // Call the sum calculation function to update totals
-            sumValues();
-        }
+            totalGiftCardAmount += parseFloat(input.value) || 0;
+        });
+        giftCardAmountDisplay.textContent = `-$${totalGiftCardAmount.toFixed(2)}`;
+        return totalGiftCardAmount;
+    }
 
-        // Sum Calculation Function
-        function sumValues() {
-            let sum = 0;
+    function calculateTotal() {
+        const discount = parseFloat(discountInput.value) || 0;
+        const tax = parseFloat(taxSelect.value) || 0;
+        const giftCardTotal = calculateGiftCardTotal();
+        const subtotal = cartTotal - giftCardTotal - discount;
+        const taxAmount = (subtotal * tax) / 100;
+        const total = subtotal + taxAmount;
+        totalValue.textContent = `$${total.toFixed(2)}`;
+    }
 
-            // Iterate through all gift card amount inputs and calculate the sum
-            $('input[id^="giftcard_amount_"]').each(function() {
-                let value = parseFloat($(this).val());
-                if (!isNaN(value)) {
-                    sum += value;
-                }
-            });
+    window.addGiftCardRow = function (card_number, gift_card_amount) {
+        let container = document.getElementById('giftCardContainer');
+        let newRow = document.createElement('div');
+        newRow.classList.add('row', 'mb-2');
+        newRow.innerHTML = `
+            <div class="col-md-5">
+                <input type="text" class="form-control" name="card_number[]" value="${card_number}" readonly>
+            </div>
+            <div class="col-md-5">
+                <input type="number" class="form-control gift_card_input" name="gift_card_amount[]" value="${gift_card_amount}" max="${gift_card_amount}">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-danger remove-gift-card">Remove</button>
+            </div>
+        `;
+        document.querySelector('#giftCardContainer p').style.display = 'none';
+        container.appendChild(newRow);
 
-            // Retrieve the total value from the cart
-            var total_value_from_cart = {{ $amount }};
-            var new_final_amount = total_value_from_cart - sum;
+        // Add event listener for the new input
+        newRow.querySelector('.gift_card_input').addEventListener('input', calculateTotal);
+        newRow.querySelector('.remove-gift-card').addEventListener('click', function () {
+            removeGiftCardRow(this);
+        });
 
-            // Calculate the tax amount (10% of the new final amount)
-            var taxamount = (new_final_amount * 0) / 100;
+        calculateTotal();
+    }
 
-            // Update the display values on the page
-            $('#totalValue').text('$' + (new_final_amount + taxamount).toFixed(2));
-            $('#giftcard_applied').text('-$' + sum.toFixed(2));
-            $('#tax_amount').text('+$' + taxamount.toFixed(2));
-        }
-    </script>
+    window.removeGiftCardRow = function (button) {
+        button.closest('.row').remove();
+        calculateTotal();
+    }
 
+    discountInput.addEventListener('input', calculateTotal);
+    taxSelect.addEventListener('change', calculateTotal);
 
+    calculateTotal();
+});
+
+</script>
 
     {{-- For Cart Update --}}
     <script>
