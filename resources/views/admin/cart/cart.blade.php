@@ -518,10 +518,7 @@
                                                                 class="text-primary fs-5">${{ number_format($amount + $taxamount, 2) }}</strong>
                                                         </li>
                                                     </ul>
-                                                    <a href="javascript:void(0)" id="submitGiftCards"
-                                                        class="btn btn-primary w-100 mt-3 py-2 text-uppercase fw-bold rounded-pill">
-                                                        Proceed to Checkout
-                                                    </a>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
