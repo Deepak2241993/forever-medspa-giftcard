@@ -141,6 +141,8 @@ Route::get('export-keywords','ProductController@ExportDate')->name('export_date'
 Route::get('service-cart','PopularOfferController@AdminCartview')->name('service-cart');
 Route::get('payment-process','PopularOfferController@AdminPaymentProcess')->name('payment-process');
 Route::post('servic-checkout-process','PopularOfferController@CheckoutProcess')->name('servic-checkout-process');
+
+Route::post('internal-service-purchase','StripeController@InternalServicePurchase')->name('InternalServicePurchases');
 Route::get('/invoice/{transaction_data}', 'PopularOfferController@invoice')->name('service-invoice');
 Route::resource('/terms', TermController::class);
 Route::resource('/program', ProgramController::class);
@@ -182,7 +184,7 @@ Route::post('/patient-data','PatientController@PatientData')->name('patient-data
 
 
 // For Cache Clear
-Route::get('/clear-cache', function() {
+Route::get('/clear', function() {
     Artisan::call('cache:clear ');
     Artisan::call('route:clear');
     Artisan::call('config:clear');

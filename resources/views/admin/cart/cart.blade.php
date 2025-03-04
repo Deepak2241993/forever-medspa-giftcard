@@ -395,6 +395,8 @@
                                             <div class="mt-4 col-md-3">
                                                 <input type="text" class="form-control" value="" id="fname" name="fname"
                                                     Placeholder="First Name">
+                                                <input type="hidden" class="form-control" value="0" id="patient_id" name="patient_id"
+                                                Placeholder="id">
                                             </div>
                                             <div class="mt-4 col-md-3">
                                                 <input type="text" class="form-control" value="" id="lname" name="lname"
@@ -464,69 +466,68 @@
                                                     </li>
                                                     <li class="d-flex justify-content-between py-3 border-top">
                                                         <strong class="fs-5">Total:</strong>
-                                                        <strong id="totalValue" class="text-primary fs-5">${{ number_format($amount, 2) }}</strong>
+                                                        <strong id="totalValue" class="text-primary fs-5"></strong>
                                                     </li>
-                                                </ul>
-                                        
-                                                <!-- Proceed to Checkout Button -->
-                                                <a href="javascript:void(0)" id="submitGiftCards" class="btn btn-primary w-100 mt-3 py-2 text-uppercase fw-bold rounded-pill shadow">
-                                                    Proceed to Checkout
-                                                </a>
-                                        
+                                                </ul>                                        
                                             </div>
                                         </div>
                                     </div>
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                                 </div>
+
                                 {{-- Payment Section  --}}
-                                <div id="payment_part" class="content" role="tabpanel"
-                                    aria-labelledby="payment_part-trigger">
+                                <div id="payment_part" class="content" role="tabpanel" aria-labelledby="payment_part-trigger">
                                     <div class="form-group">
-                                        <h5>Payment Details</h5>
+                                        <h2>Payment Details</h2>
                                         <div class="row justify-content-center">
                                             <div class="col-lg-6">
                                                 <div class="cart-page-total shadow-lg p-4 rounded-3 bg-white">
-                                                    <h2 class="text-center mb-4 text-uppercase fw-bold"
-                                                        style="color: #333;">Cart Totals</h2>
+                                                    <h3 class="text-center mb-4 text-uppercase fw-bold" style="color: #333;">Billing Information</h3>
                                                     <ul class="list-unstyled border-top pt-3">
                                                         <li class="d-flex justify-content-between py-2">
                                                             <span>Cart Total:</span>
                                                             <span class="fw-bold">{{ "$" . number_format($total, 2) }}</span>
                                                         </li>
                                                         <li class="d-flex justify-content-between py-2">
-                                                            <span>Giftcards apply:</span>
-                                                            <span class="fw-bold text-success" id="tax_amount">
-                                                                @php
-                                                                    $taxamount = ($amount * 0) / 100;
-                                                                    echo "-$" . number_format($taxamount, 2);
-                                                                @endphp
-                                                            </span>
+                                                            <span>Gift Cards Applied:</span>
+                                                            <span class="fw-bold text-success" id="giftcard_amount_payment">-$0.00</span>
                                                         </li>
                                                         <li class="d-flex justify-content-between py-2">
-                                                            <span>Tax 0%:</span>
-                                                            l <span class="fw-bold text-warning" id="tax_amount">
-                                                                @php
-                                                                    $taxamount = ($amount * 0) / 100;
-                                                                    echo "+$" . number_format($taxamount, 2);
-                                                                @endphp
-                                                            </span>
+                                                            <span>Discount:</span>
+                                                            <span class="fw-bold text-success" id="discount_amount_payment">-$0.00</span>
+                                                        </li>
+                                                        <li class="d-flex justify-content-between py-2">
+                                                            <span>Tax:</span>
+                                                            <span class="fw-bold text-warning" id="tax_amount_payment">$0.00</span>
                                                         </li>
                                                         <li class="d-flex justify-content-between py-3 border-top">
-                                                            <strong>Total:</strong>
-                                                            <strong id="totalValue"
-                                                                class="text-primary fs-5">${{ number_format($amount + $taxamount, 2) }}</strong>
+                                                            <strong>Pay Amount:</strong>
+                                                            <strong id="totalValuePayment" class="text-primary fs-5">${{ number_format($amount, 2) }}</strong>
+                                                        </li>
+                                                        <li class="d-flex justify-content-between py-3 border-top">
+                                                            <strong>Payment Status</strong>
+                                                            <select name="payment_status" class="form-control" id="payment_status">
+                                                                <option value="success" selected>Success</option>
+                                                                <option value="under_process">Process</option>
+                                                                <option value="fail">Fail</option>
+                                                            </select>
+                                                        </li>
+                                                        <li class="d-flex justify-content-between py-3 border-top">
+                                                            <button type="submit" class="btn btn-primary" id="submitPayment">Submit</button>
                                                         </li>
                                                     </ul>
-                                                   
                                                 </div>
                                             </div>
                                         </div>
-
+                                
+                                        <!-- Form Section -->
+                                        <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                        
                                     </div>
-                                    <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
+                                
+                                
                             </div>
                         </div>
                     </div>
@@ -609,6 +610,7 @@
                 $('#lname').val(patient_data['lname']);
                 $('#email').val(patient_data['email']);
                 $('#phone').val(patient_data['phone']);
+                $('#patient_id').val(patient_data['id']);
 
                 // Display gift cards in the table
                 let giftcardsContainer = $('#giftcards-container');
@@ -642,111 +644,148 @@
 }
 
 </script>
-{{--  For Use Giftcards Append Giftcard Section --}}
-{{-- <script>
-
-    function addGiftCardRow(card_number, gift_card_amount) {
-        let container = document.getElementById('giftCardContainer');
-
-        // Create a new div row
-        let newRow = document.createElement('div');
-        newRow.classList.add('row', 'mb-2'); // Bootstrap row class
-        newRow.innerHTML = `
-            <div class="col-md-5">
-                <input type="text" class="form-control" name="card_number[]" value="${card_number}" readonly>
-            </div>
-            <div class="col-md-5">
-                <input type="number" class="form-control" name="gift_card_amount[]" value="${gift_card_amount}" max="${gift_card_amount}">
-            </div>
-            
-            <div class="col-md-2">
-                <button class="btn btn-danger" onclick="removeGiftCardRow(this)">Remove</button>
-            </div>
-        `;
-        $('#giftCardContainer p').hide();
-        // Append to container
-        container.appendChild(newRow);
-    }
-
-    function removeGiftCardRow(button) {
-        button.parentElement.parentElement.remove(); // Removes the row
-    }
-
-    
-</script> --}}
+{{--  For All Giftcard Calculation, Tax, Discount and Total Calculation --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const cartTotal = {{ $total }};
-    const discountInput = document.getElementById('discount');
-    const taxSelect = document.getElementById('tax');
-    const totalValue = document.getElementById('totalValue');
-    const giftCardAmountDisplay = document.getElementById('giftcard_amount');
+        const cartTotal = {{ $total }};
+        const discountInput = document.getElementById('discount');
+        const taxSelect = document.getElementById('tax');
+        const totalValue = document.getElementById('totalValue');
+        const totalValuePayment = document.getElementById('totalValuePayment');
+        const giftCardAmountDisplay = document.getElementById('giftcard_amount');
+        const discountDisplay = document.getElementById('discount_amount_payment');
+        const taxDisplay = document.getElementById('tax_amount_payment');
+        const paymentGiftCardDisplay = document.getElementById('giftcard_amount_payment');
 
-    function calculateGiftCardTotal() {
-        let totalGiftCardAmount = 0;
-        document.querySelectorAll("input[name='gift_card_amount[]']").forEach(input => {
-            const value = parseFloat(input.value) || 0;
-            const maxValue = parseFloat(input.getAttribute('max')) || 0;
+        let appliedGiftCards = new Set(); // To store applied gift card numbers
+// Giftcard Amount Calculation
+        function calculateGiftCardTotal() {
+            let totalGiftCardAmount = 0;
+            document.querySelectorAll("input[name='gift_card_amount[]']").forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const maxValue = parseFloat(input.getAttribute('max')) || 0;
 
-            if (value > maxValue) {
-                input.value = maxValue;
+                if (value > maxValue) {
+                    input.value = maxValue;
+                }
+
+                totalGiftCardAmount += parseFloat(input.value) || 0;
+            });
+
+            giftCardAmountDisplay.textContent = `-$${totalGiftCardAmount.toFixed(2)}`;
+            paymentGiftCardDisplay.textContent = `-$${totalGiftCardAmount.toFixed(2)}`;
+
+            return totalGiftCardAmount;
+        }
+//  For Calculation of Total
+        function calculateTotal() {
+            const discount = parseFloat(discountInput.value) || 0;
+            const tax = parseFloat(taxSelect.value) || 0;
+            const giftCardTotal = calculateGiftCardTotal();
+            const subtotal = cartTotal - giftCardTotal - discount;
+            const taxAmount = (subtotal * tax) / 100;
+            const total = subtotal + taxAmount;
+
+            totalValue.textContent = `$${total.toFixed(2)}`;
+            totalValuePayment.textContent = `$${total.toFixed(2)}`; // Update Pay Amount
+            discountDisplay.textContent = `-$${discount.toFixed(2)}`;
+            taxDisplay.textContent = `$${taxAmount.toFixed(2)}`;
+        }
+
+        window.addGiftCardRow = function (card_number, gift_card_amount) {
+            if (appliedGiftCards.has(card_number)) {
+                alert('This gift card is already applied.');
+                return;
             }
 
-            totalGiftCardAmount += parseFloat(input.value) || 0;
-        });
-        giftCardAmountDisplay.textContent = `-$${totalGiftCardAmount.toFixed(2)}`;
-        return totalGiftCardAmount;
-    }
+            let container = document.getElementById('giftCardContainer');
+            let newRow = document.createElement('div');
+            newRow.classList.add('row', 'mb-2');
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="card_number[]" value="${card_number}" readonly>
+                </div>
+                <div class="col-md-5">
+                    <input type="number" class="form-control gift_card_input" name="gift_card_amount[]" value="${gift_card_amount}" max="${gift_card_amount}">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-danger remove-gift-card">Remove</button>
+                </div>
+            `;
+            document.querySelector('#giftCardContainer p').style.display = 'none';
+            container.appendChild(newRow);
 
-    function calculateTotal() {
-        const discount = parseFloat(discountInput.value) || 0;
-        const tax = parseFloat(taxSelect.value) || 0;
-        const giftCardTotal = calculateGiftCardTotal();
-        const subtotal = cartTotal - giftCardTotal - discount;
-        const taxAmount = (subtotal * tax) / 100;
-        const total = subtotal + taxAmount;
-        totalValue.textContent = `$${total.toFixed(2)}`;
-    }
+            appliedGiftCards.add(card_number); // Add to set
 
-    window.addGiftCardRow = function (card_number, gift_card_amount) {
-        let container = document.getElementById('giftCardContainer');
-        let newRow = document.createElement('div');
-        newRow.classList.add('row', 'mb-2');
-        newRow.innerHTML = `
-            <div class="col-md-5">
-                <input type="text" class="form-control" name="card_number[]" value="${card_number}" readonly>
-            </div>
-            <div class="col-md-5">
-                <input type="number" class="form-control gift_card_input" name="gift_card_amount[]" value="${gift_card_amount}" max="${gift_card_amount}">
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-danger remove-gift-card">Remove</button>
-            </div>
-        `;
-        document.querySelector('#giftCardContainer p').style.display = 'none';
-        container.appendChild(newRow);
+            newRow.querySelector('.gift_card_input').addEventListener('input', calculateTotal);
+            newRow.querySelector('.remove-gift-card').addEventListener('click', function () {
+                removeGiftCardRow(this, card_number);
+            });
 
-        // Add event listener for the new input
-        newRow.querySelector('.gift_card_input').addEventListener('input', calculateTotal);
-        newRow.querySelector('.remove-gift-card').addEventListener('click', function () {
-            removeGiftCardRow(this);
-        });
+            calculateTotal();
+        }
+
+        window.removeGiftCardRow = function (button, card_number) {
+            appliedGiftCards.delete(card_number); // Remove from set
+            button.closest('.row').remove();
+            calculateTotal();
+        }
+
+        discountInput.addEventListener('input', calculateTotal);
+        taxSelect.addEventListener('change', calculateTotal);
 
         calculateTotal();
-    }
-
-    window.removeGiftCardRow = function (button) {
-        button.closest('.row').remove();
-        calculateTotal();
-    }
-
-    discountInput.addEventListener('input', calculateTotal);
-    taxSelect.addEventListener('change', calculateTotal);
-
-    calculateTotal();
-});
-
+    });
 </script>
+{{--  For All Giftcard Calculation, Tax, Discount and Total Calculation --}}
+
+{{--  For Payment of Cart --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("submitPayment").addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                let paymentStatus = document.getElementById("payment_status").value;
+                let giftCards = [];
+                document.querySelectorAll("input[name='card_number[]']").forEach((input, index) => {
+                    giftCards.push({
+                        card_number: input.value,
+                        amount: document.querySelectorAll("input[name='gift_card_amount[]']")[index].value
+                    });
+                });
+    
+                let formData = {
+                    cart_total: {{ $total }},
+                    discount: document.getElementById("discount").value || 0,
+                    tax: document.getElementById("tax").value || 0,
+                    gift_cards: giftCards,
+                    pay_amount: document.getElementById("totalValuePayment").textContent.replace("$", ""),
+                    payment_status: paymentStatus,
+                    _token: "{{ csrf_token() }}",
+                    patient_id: $("#patient_id").val() || "",
+                    fname: $("#fname").val() || "",
+                    lname: $("#lname").val() || "",
+                    email: $("#email").val() || "",
+                    phone: $("#phone").val() || ""
+                };
+    
+                $.ajax({
+                    url: "{{ route('InternalServicePurchases') }}", // Replace with your route
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function (response) {
+                        alert("Payment submitted successfully!");
+                        window.location.href = "{{ route('service-order-history.index') }}"; // Redirect after success
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Something went wrong! " + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    {{-- Payment Code End   --}}
 
     {{-- For Cart Update --}}
     <script>
