@@ -791,7 +791,8 @@
             fname: fnameField.value.trim(),
             lname: document.getElementById("lname").value.trim(),
             email: emailField.value.trim(),
-            phone: $("#phone").val() || ""
+            phone: $("#phone").val() || "",
+            giftapply:document.getElementById('giftcard_amount_payment') ||""
         };
 
         // AJAX Request

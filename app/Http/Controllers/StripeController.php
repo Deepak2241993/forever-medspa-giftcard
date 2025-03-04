@@ -501,16 +501,15 @@ public function invoice()
 }
 
 public function InternalServicePurchase(Request $request){
-    dd($request->all());
-        $request->validate([
-            'fname' => 'required|string|max:255',
-            'lname' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'zip_code' => 'required|digits:5',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|digits_between:7,10',
-        ]);
+    $request->validate([
+        'fname' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'cart_total' => 'required|numeric|min:0',
+        'discount' => 'nullable|numeric|min:0',
+        'tax' => 'nullable|numeric|min:0',
+        'pay_amount' => 'required|numeric|min:0',
+        'payment_status' => 'required|string|max:255',
+    ]);
     
         DB::beginTransaction();  // Start transaction
     
@@ -523,26 +522,27 @@ public function InternalServicePurchase(Request $request){
             $totalAmount = 0;
     
     //  If Gift card applyed for redeem
-            if (session()->has('total_gift_applyed')) {
-                $cards = session('cart', []);
-                $giftcards = session('giftcards', []);
-                $gift_numbers = [];
-                $gift_amounts = [];
-      
-                foreach ($giftcards as $giftcard) {
-                    if (isset($giftcard['number'])) {
-                        $gift_numbers[] = $giftcard['number'];
-                        $gift_amounts[] = $giftcard['amount'];
-                    }
-                }
+    if (!empty($request->gift_cards)) {
+        $giftcards = $request->gift_cards; // Get gift cards from request
+        $gift_numbers = [];
+        $gift_amounts = [];
     
-                $gift_number = implode('|', $gift_numbers);
-                $gift_amount = implode('|', $gift_amounts);
-                $sub_amount = session('totalValue', 0) + session('total_gift_applyed', 0) - session('tax_amount', 0);
-                $final_amount = session('totalValue', 0);
-                $taxamount = session('tax_amount', 0);
-                
+        foreach ($giftcards as $giftcard) {
+            if (isset($giftcard['card_number'])) { // Fix key name
+                $gift_numbers[] = $giftcard['card_number'];
+                $gift_amounts[] = $giftcard['amount'];
             }
+        }
+    
+        $gift_number = implode('|', $gift_numbers);
+        $gift_amount = implode('|', $gift_amounts);
+    
+        // Corrected calculation
+        $final_amount = ($request->cart_total ?? 0) - ($request->giftapply ?? 0) - ($request->giftapply ?? 0)+ ($request->tax ?? 0);
+        $taxamount = $request->tax ?? 0;
+    }
+    
+    
             //  If Gift card Not applyed for redeem
             else {
                
