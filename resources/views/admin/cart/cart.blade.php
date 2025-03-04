@@ -516,6 +516,9 @@
                                                         <li class="d-flex justify-content-between py-3 border-top">
                                                             <button type="submit" class="btn btn-primary" id="submitPayment">Submit</button>
                                                         </li>
+                                                        <li class="d-flex justify-content-between text-danger py-3 border-top">
+                                                           <p id="form_error"class="text-danger"></p>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -606,16 +609,15 @@
                 let giftcards = response.giftcards;
 
                 // Populate form fields with patient data
-                $('#fname').val(patient_data['fname']);
-                $('#lname').val(patient_data['lname']);
-                $('#email').val(patient_data['email']);
+                $('#fname').val(patient_data['fname']).trigger('input');
+                $('#lname').val(patient_data['lname']).trigger('input');
+                $('#email').val(patient_data['email']).trigger('input');
                 $('#phone').val(patient_data['phone']);
                 $('#patient_id').val(patient_data['id']);
 
-                // Display gift cards in the table
+                // Update gift card container
                 let giftcardsContainer = $('#giftcards-container');
                 giftcardsContainer.empty(); // Clear previous entries
-
                 if (giftcards.length > 0) {
                     giftcards.forEach(function(card, index) {
                         let giftcardRow = `
@@ -624,7 +626,7 @@
                                 <td>${card.card_number}</td>
                                 <td>$${card.value_amount}</td>
                                 <td>$${card.actual_paid_amount}</td>
-                               <td>${card.value_amount != 0 ? `<button class="btn btn-warning" onclick="addGiftCardRow('${card.card_number}', '${card.value_amount}')">Use</button>` : ''}</td>
+                                <td>${card.value_amount != 0 ? `<button class="btn btn-warning" onclick="addGiftCardRow('${card.card_number}', '${card.value_amount}')">Use</button>` : ''}</td>
                             </tr>
                         `;
                         giftcardsContainer.append(giftcardRow);
@@ -632,6 +634,9 @@
                 } else {
                     giftcardsContainer.append('<tr><td colspan="5" class="text-center">No gift cards found.</td></tr>');
                 }
+
+                // **validate form **
+                validateForm();
             } else {
                 alert(response.message || 'No patient data found.');
             }
@@ -642,6 +647,7 @@
         }
     });
 }
+
 
 </script>
 {{--  For All Giftcard Calculation, Tax, Discount and Total Calculation --}}
@@ -741,49 +747,70 @@
 
 {{--  For Payment of Cart --}}
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("submitPayment").addEventListener("click", function (event) {
-                event.preventDefault(); // Prevent default form submission
-    
-                let paymentStatus = document.getElementById("payment_status").value;
-                let giftCards = [];
-                document.querySelectorAll("input[name='card_number[]']").forEach((input, index) => {
-                    giftCards.push({
-                        card_number: input.value,
-                        amount: document.querySelectorAll("input[name='gift_card_amount[]']")[index].value
-                    });
-                });
-    
-                let formData = {
-                    cart_total: {{ $total }},
-                    discount: document.getElementById("discount").value || 0,
-                    tax: document.getElementById("tax").value || 0,
-                    gift_cards: giftCards,
-                    pay_amount: document.getElementById("totalValuePayment").textContent.replace("$", ""),
-                    payment_status: paymentStatus,
-                    _token: "{{ csrf_token() }}",
-                    patient_id: $("#patient_id").val() || "",
-                    fname: $("#fname").val() || "",
-                    lname: $("#lname").val() || "",
-                    email: $("#email").val() || "",
-                    phone: $("#phone").val() || ""
-                };
-    
-                $.ajax({
-                    url: "{{ route('InternalServicePurchases') }}", // Replace with your route
-                    type: "POST",
-                    data: formData,
-                    dataType: "json",
-                    success: function (response) {
-                        alert("Payment submitted successfully!");
-                        window.location.href = "{{ route('service-order-history.index') }}"; // Redirect after success
-                    },
-                    error: function (xhr, status, error) {
-                        alert("Something went wrong! " + xhr.responseText);
-                    }
+       document.addEventListener("DOMContentLoaded", function () {
+    // Select the required input fields and the submit button
+    let fnameField = document.getElementById("fname");
+    let emailField = document.getElementById("email");
+    let submitButton = document.getElementById("submitPayment"); // Targeting the button inside <li>
+
+    // Function to check if required fields are filled
+    function validateForm() {
+        if (fnameField.value.trim() !== "" && emailField.value.trim() !== "") {
+            return true;
+        } else {
+            alert("First Name and Email are required fields!");
+            return false;
+        }
+    }
+
+    // Submit AJAX request when the button is clicked
+    submitButton.addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        // Validate the form
+        if (!validateForm()) {
+            return; // Stop submission if validation fails
+        }
+
+            let giftCards = [];
+            document.querySelectorAll("input[name='card_number[]']").forEach((input, index) => {
+                giftCards.push({
+                    card_number: input.value,
+                    amount: document.querySelectorAll("input[name='gift_card_amount[]']")[index].value
                 });
             });
+        let formData = {
+            cart_total: {!! json_encode($total) !!}, // Blade variable to JavaScript
+            discount: document.getElementById("discount")?.value || 0,
+            tax: document.getElementById("tax")?.value || 0,
+            gift_cards: giftCards || 0,
+            pay_amount: document.getElementById("totalValuePayment")?.textContent.replace("$", "").trim() || 0,
+            payment_status: document.getElementById("payment_status")?.value || "",
+            _token: "{{ csrf_token() }}",
+            patient_id: $("#patient_id").val() || "",
+            fname: fnameField.value.trim(),
+            lname: document.getElementById("lname").value.trim(),
+            email: emailField.value.trim(),
+            phone: $("#phone").val() || ""
+        };
+
+        // AJAX Request
+        $.ajax({
+            url: "{{route('InternalServicePurchases')}}", // Change to your actual Laravel route
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                alert("Payment details submitted successfully!");
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: ", error);
+            }
         });
+    });
+});
+
+
     </script>
     {{-- Payment Code End   --}}
 
