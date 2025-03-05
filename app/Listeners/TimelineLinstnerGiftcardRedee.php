@@ -49,7 +49,6 @@ class TimelineLinstnerGiftcardRedee
 
         // Ensure required fields are present
         $gift_send_to = $giftcardDate->gift_send_to ?? null;
-        $transaction_id = $giftcardDate->transaction_id ?? 'N/A';
 
         if (!$gift_send_to) {
             Log::error('Giftcard data is missing required gift_send_to information.');
@@ -59,9 +58,9 @@ class TimelineLinstnerGiftcardRedee
         // Create a timeline event
         TimelineEvent::create([
             'patient_id' => $gift_send_to,
-            'event_type' => 'Giftcard Redeem',
-            'subject' => 'Giftcards Redeem',
-            'metadata' => "Giftcard Redeem Transaction ID: " .$event->result['transaction_id']
+            'event_type' => $event->result['event_type'],
+            'subject' => $event->result['subject'],
+            'metadata' => $event->result['metadata']
         ]);
 
         Log::info('Timeline event successfully created', ['transaction_id' => $event->result['transaction_id']]);

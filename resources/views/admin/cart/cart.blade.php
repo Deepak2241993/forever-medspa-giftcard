@@ -793,9 +793,11 @@
             type: "POST",
             data: formData,
             success: function (response) {
-                alert("Payment details submitted successfully!");
-                console.log(response);
+            alert("Payment details submitted successfully!");
+            window.location.href = "{{ url('/admin/invoice') }}/" + response.invoice_id;
+            console.log(response);
             },
+
             error: function (xhr) {
                 if (xhr.status === 422) { // Laravel validation error
                     let errors = xhr.responseJSON.errors;

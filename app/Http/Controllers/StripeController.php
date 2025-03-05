@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Events\GiftcardPurchases;
 use App\Events\ServicePurchases;
+use App\Events\TimelineGiftcardRedeem;
 use App\Events\ServicePurchasesPayment;
 
 class StripeController extends Controller
@@ -511,8 +512,9 @@ public function invoice()
 
 
 
-    public function InternalServicePurchase(Request $request){
-        try {
+        public function InternalServicePurchase(Request $request)
+        {
+            // Validation
             $request->validate([
                 'fname' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
@@ -522,114 +524,152 @@ public function invoice()
                 'pay_amount' => 'required|numeric|min:0',
                 'payment_status' => 'required|string|max:255',
             ], [
-                'fname.required' => 'First name is required.',
-                'fname.string' => 'First name must be a valid string.',
-                'fname.max' => 'First name cannot exceed 255 characters.',
-            
-                'email.required' => 'Email is required.',
+                'fname.required' => 'The first name is required.',
+                'email.required' => 'The email address is required.',
                 'email.email' => 'Please enter a valid email address.',
-                'email.max' => 'Email cannot exceed 255 characters.',
-            
-                'cart_total.required' => 'Cart total is required.',
-                'cart_total.numeric' => 'Cart total must be a number.',
-                'cart_total.min' => 'Cart total cannot be negative.',
-            
-                'discount.numeric' => 'Discount must be a number.',
-                'discount.min' => 'Discount cannot be negative.',
-            
-                'tax.numeric' => 'Tax must be a number.',
-                'tax.min' => 'Tax cannot be negative.',
-            
-                'pay_amount.required' => 'Pay amount is required.',
-                'pay_amount.numeric' => 'Pay amount must be a number.',
-                'pay_amount.min' => 'Pay amount cannot be negative.',
-            
-                'payment_status.required' => 'Payment status is required.',
-                'payment_status.string' => 'Payment status must be a valid string.',
-                'payment_status.max' => 'Payment status cannot exceed 255 characters.',
-            ]);
-            
-            $orderId = 'FMSWCSU' . str_pad(000000, 6, '0', STR_PAD_LEFT);
-            $totalAmount = 0;
-            $taxamount = $request->tax;
-            $discount = $request->discount;
-            
-            $patient = Patient::find($request->patient_id);
-            $patient_login_id = $patient ? $patient->patient_login_id : null;
-
-            $sub_amount = ($request->cart_total - $request->discount) + ($request->giftapply ?? 0);
-            $totalAmount = $sub_amount + $taxamount;
-            
-            DB::beginTransaction();
-            
-            $result = TransactionHistory::create([
-                'fname' => $request->fname,
-                'lname' => $request->lname,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'order_id' => null,
-                'sub_amount' => $sub_amount,
-                'final_amount' => $totalAmount,
-                'transaction_amount' => $totalAmount,
-                'tax_amount' => $taxamount,
-                'discount' => $discount,
-                'user_token' => 'FOREVER-MEDSPA',
-                'payment_mode' => 'store',
-                'patient_login_id' => $patient_login_id,
+                'cart_total.required' => 'The cart total amount is required.',
+                'cart_total.numeric' => 'The cart total must be a numeric value.',
+                'pay_amount.required' => 'The payment amount is required.',
+                'pay_amount.numeric' => 'The payment amount must be a numeric value.',
+                'payment_status.required' => 'The payment status is required.',
             ]);
 
-            if ($result) {
-                $updatedOrderId = $orderId . $result->id;
-                $payment_session_id = 'MEDSPA-CENTER-' . $result->id;
-                $payment_intent = 'MEDSPA-CENTER-' . $result->id;
-            
-                $result->update([
-                    'order_id' => $updatedOrderId,
-                    'payment_session_id' => $payment_session_id,
-                    'transaction_status' => 'complete',
-                    'payment_status' => 'paid',
-                    'status' => 1,
-                    'payment_intent' => $payment_intent
-                ]);
-            }
-            
-            $cart = session()->get('cart', []);
-            foreach ($cart as $item) {
-                $cart_data = ServiceUnit::find($item['id']);
-                if ($cart_data) {
-                    $discountedAmount = $cart_data->discounted_amount ?? $cart_data->amount;
-                    $order_data = [
-                        'order_id' => $updatedOrderId,
-                        'service_id' => $item['id'],
-                        'status' => 0,
-                        'number_of_session' => $cart_data->session_number 
-                            ? $item['quantity'] * $cart_data->session_number 
-                            : $item['quantity'],
-                        'user_token' => 'FOREVER-MEDSPA',
-                        'actual_amount' => $cart_data->amount,
-                        'discounted_amount' => $discountedAmount,
-                        'payment_mode' => 'store',
-                        'qty' => $item['quantity'],
-                        'service_type' => $item['type'],
-                        'patient_login_id' => $patient_login_id
-                    ];
-                    
-                    (new ServiceOrderController())->store(new \Illuminate\Http\Request($order_data));
-                    event(new ServicePurchases($order_data));
+            DB::beginTransaction(); // Start transaction
+            try {
+                $orderPrefix = 'FMSWCSU';
+                $orderId = $orderPrefix . str_pad(0, 6, '0', STR_PAD_LEFT);
+                $taxAmount = $request->tax ?? 0;
+                $discount = $request->discount ?? 0;
+                $cartTotal = $request->cart_total ?? 0;
+                $giftApply = $request->giftapply ?? 0;
+
+                // Get patient details
+                $patient = Patient::find($request->patient_id);
+                $patientLoginId = $patient ? $patient->patient_login_id : null;
+
+                // Process Gift Cards
+                $giftNumbers = $giftAmounts = [];
+                if (!empty($request->gift_cards)) {
+                    foreach ($request->gift_cards as $giftcard) {
+                        if (!empty($giftcard['card_number']) && isset($giftcard['amount'])) {
+                            $giftNumbers[] = $giftcard['card_number'];
+                            $giftAmounts[] = $giftcard['amount'];
+                        }
+                    }
                 }
+
+                // Calculate amounts
+                $subAmount = ($cartTotal - $discount) + $giftApply;
+                $totalAmount = $subAmount + $taxAmount;
+
+                // Create transaction record
+                $transaction = TransactionHistory::create([
+                    'fname' => $request->fname,
+                    'lname' => $request->lname,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'order_id' => null, // Placeholder
+                    'gift_card_applyed' => $giftNumbers ? implode('|', $giftNumbers) : null,
+                    'gift_card_amount' => $giftAmounts ? implode('|', $giftAmounts) : null,
+                    'sub_amount' => $subAmount,
+                    'final_amount' => $totalAmount,
+                    'transaction_amount' => $totalAmount,
+                    'tax_amount' => $taxAmount,
+                    'discount' => $discount,
+                    'user_token' => 'FOREVER-MEDSPA',
+                    'payment_mode' => 'store',
+                    'patient_login_id' => $patientLoginId,
+                ]);
+
+                // Update order ID after transaction is created
+                if ($transaction) {
+                    $updatedOrderId = $orderId . $transaction->id;
+                    $paymentSessionId = 'MEDSPA-CENTER-' . $transaction->id;
+                    $paymentIntent = 'MEDSPA-CENTER-' . $transaction->id;
+
+                    $transaction->update([
+                        'order_id' => $updatedOrderId,
+                        'payment_session_id' => $paymentSessionId,
+                        'transaction_status' => 'complete',
+                        'payment_status' => 'paid',
+                        'status' => 1,
+                        'payment_intent' => $paymentIntent,
+                    ]);
+                }
+
+                // Process Cart Items
+                $cart = session()->get('cart', []);
+                foreach ($cart as $item) {
+                    $cartData = ServiceUnit::find($item['id']);
+
+                    if ($cartData) {
+                        $discountedAmount = $cartData->discounted_amount ?? $cartData->amount;
+                        $totalAmount += $item['quantity'] * $discountedAmount;
+
+                        $orderData = [
+                            'order_id' => $updatedOrderId,
+                            'service_id' => $item['id'],
+                            'status' => 0,
+                            'number_of_session' => $cartData->session_number
+                                ? $item['quantity'] * $cartData->session_number
+                                : $item['quantity'],
+                            'user_token' => 'FOREVER-MEDSPA',
+                            'actual_amount' => $cartData->amount,
+                            'discounted_amount' => $discountedAmount,
+                            'payment_mode' => 'store',
+                            'qty' => $item['quantity'],
+                            'service_type' => $item['type'],
+                            'patient_login_id' => $patientLoginId,
+                        ];
+
+                        $serviceOrder = new ServiceOrderController();
+                        $serviceOrder->store(new \Illuminate\Http\Request($orderData));
+
+                        event(new ServicePurchases($orderData));
+                    }
+                }
+
+                // Process Gift Card Redemption
+                if (!empty($request->gift_cards)) {
+                    $redeemOrderId = 'REDEEM' . time();
+                    foreach ($request->gift_cards as $giftcard) {
+                       $giftcard_data= GiftcardsNumbers::where('giftnumber',$giftcard['card_number'])->first();
+                        if (!empty($giftcard['card_number']) && isset($giftcard['amount'])) {
+                            $giftcardEntry = GiftcardsNumbers::create([
+                                'transaction_id' => $redeemOrderId,
+                                'user_id' => $giftcard_data->user_id,
+                                'user_token' => 'FOREVER-MEDSPA',
+                                'giftnumber' => $giftcard['card_number'],
+                                'amount' => '-'.$giftcard['amount'],
+                                'actual_paid_amount' => '-'.$giftcard['amount'],
+                                'comments' => 'Gift card used in purchase service with order number ' . $updatedOrderId,
+                            ]);
+                            
+                            // Update the transaction_id with the newly created entry ID
+                            $giftcardEntry->update(['transaction_id' => $redeemOrderId . $giftcardEntry->id]);
+                            event(new TimelineGiftcardRedeem([
+                                'patient_id' => $patientLoginId ?? null,
+                                'event_type'=>'Giftcard Redeem',
+                                'metadata'=>'Giftcard Use in Purchase services with order id '.$redeemOrderId . $giftcardEntry->id,
+                                'subject' => 'Giftcards Redeem'
+                                ]));
+                        }
+                    }
+                }
+
+                session()->forget('cart'); // Clear cart session
+                DB::commit(); // Commit transaction
+
+                return response()->json([
+                    'message' => 'Order placed successfully',
+                    'invoice_id' => $transaction->id
+                ], 200);
+
+            } catch (\Exception $e) {
+                DB::rollBack(); // Rollback transaction on error
+                return response()->json(['error' => 'Something went wrong: ' . $e->getMessage()], 500);
             }
-            
-            DB::commit();
-            session()->pull('cart', []);
-            return response()->json(['success' => true, 'message' => 'Transaction completed successfully.']);
-        } catch (ValidationException $e) {
-            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error('InternalServicePurchase Error: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'An error occurred while processing the transaction. Please try again.'], 500);
         }
-    }
 
 }
 
