@@ -322,13 +322,8 @@
                                                     @endphp
                                                     @foreach ($cart as $key => $item)
                                                         @php
-                                                            if ($item['type'] == 'unit') {
-                                                                $cart_data = App\Models\ServiceUnit::find($item['id']);
-                                                            } elseif ($item['type'] == 'product') {
-                                                                $cart_data = App\Models\Product::find($item['id']);
-                                                            }
-
-                                                            $subtotal = $item['quantity'] * $cart_data->amount;
+                                                            $cart_data = App\Models\ServiceUnit::find($item['id']);
+                                                            $subtotal = $item['quantity']*$cart_data->discounted_amount ??  $item['quantity']*$cart_data->amount;
                                                             $total += $subtotal; // Add subtotal to total
                                                         @endphp
 
@@ -517,7 +512,7 @@
                                                             <button type="submit" class="btn btn-primary" id="submitPayment">Submit</button>
                                                         </li>
                                                         <li class="d-flex justify-content-between text-danger py-3 border-top">
-                                                           <p id="form_error"class="text-danger"></p>
+                                                            <div id="errorMessages" class="alert alert-danger" style="display: none;"></div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -652,30 +647,34 @@
 </script>
 {{--  For All Giftcard Calculation, Tax, Discount and Total Calculation --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const cartTotal = {{ $total }};
-        const discountInput = document.getElementById('discount');
-        const taxSelect = document.getElementById('tax');
-        const totalValue = document.getElementById('totalValue');
-        const totalValuePayment = document.getElementById('totalValuePayment');
-        const giftCardAmountDisplay = document.getElementById('giftcard_amount');
-        const discountDisplay = document.getElementById('discount_amount_payment');
-        const taxDisplay = document.getElementById('tax_amount_payment');
-        const paymentGiftCardDisplay = document.getElementById('giftcard_amount_payment');
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get required elements
+        const cartTotal = parseFloat({{ $total }}) || 0; // Ensure it's a valid number
+        const discountInput = document.getElementById("discount");
+        const taxSelect = document.getElementById("tax");
+        const totalValue = document.getElementById("totalValue");
+        const totalValuePayment = document.getElementById("totalValuePayment");
+        const giftCardAmountDisplay = document.getElementById("giftcard_amount");
+        const discountDisplay = document.getElementById("discount_amount_payment");
+        const taxDisplay = document.getElementById("tax_amount_payment");
+        const paymentGiftCardDisplay = document.getElementById("giftcard_amount_payment");
+        const giftCardContainer = document.getElementById("giftCardContainer");
 
-        let appliedGiftCards = new Set(); // To store applied gift card numbers
-// Giftcard Amount Calculation
+        let appliedGiftCards = new Set(); // Store applied gift card numbers
+
+        // Function to calculate the total applied gift card amount
         function calculateGiftCardTotal() {
             let totalGiftCardAmount = 0;
             document.querySelectorAll("input[name='gift_card_amount[]']").forEach(input => {
-                const value = parseFloat(input.value) || 0;
-                const maxValue = parseFloat(input.getAttribute('max')) || 0;
+                let value = parseFloat(input.value) || 0;
+                let maxValue = parseFloat(input.getAttribute("max")) || 0;
 
                 if (value > maxValue) {
-                    input.value = maxValue;
+                    input.value = maxValue; // Prevent exceeding max value
+                    value = maxValue;
                 }
 
-                totalGiftCardAmount += parseFloat(input.value) || 0;
+                totalGiftCardAmount += value;
             });
 
             giftCardAmountDisplay.textContent = `-$${totalGiftCardAmount.toFixed(2)}`;
@@ -683,30 +682,31 @@
 
             return totalGiftCardAmount;
         }
-//  For Calculation of Total
+
+        // Function to calculate the total amount
         function calculateTotal() {
-            const discount = parseFloat(discountInput.value) || 0;
-            const tax = parseFloat(taxSelect.value) || 0;
+            const discount = parseFloat(discountInput?.value) || 0;
+            const tax = parseFloat(taxSelect?.value) || 0;
             const giftCardTotal = calculateGiftCardTotal();
-            const subtotal = cartTotal - giftCardTotal - discount;
+            const subtotal = Math.max(cartTotal - giftCardTotal - discount, 0);
             const taxAmount = (subtotal * tax) / 100;
             const total = subtotal + taxAmount;
 
             totalValue.textContent = `$${total.toFixed(2)}`;
-            totalValuePayment.textContent = `$${total.toFixed(2)}`; // Update Pay Amount
+            totalValuePayment.textContent = `$${total.toFixed(2)}`;
             discountDisplay.textContent = `-$${discount.toFixed(2)}`;
             taxDisplay.textContent = `$${taxAmount.toFixed(2)}`;
         }
 
+        // Function to add a gift card row
         window.addGiftCardRow = function (card_number, gift_card_amount) {
             if (appliedGiftCards.has(card_number)) {
-                alert('This gift card is already applied.');
+                alert("This gift card is already applied.");
                 return;
             }
 
-            let container = document.getElementById('giftCardContainer');
-            let newRow = document.createElement('div');
-            newRow.classList.add('row', 'mb-2');
+            let newRow = document.createElement("div");
+            newRow.classList.add("row", "mb-2");
             newRow.innerHTML = `
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="card_number[]" value="${card_number}" readonly>
@@ -715,104 +715,108 @@
                     <input type="number" class="form-control gift_card_input" name="gift_card_amount[]" value="${gift_card_amount}" max="${gift_card_amount}">
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-danger remove-gift-card">Remove</button>
+                    <button type="button" class="btn btn-danger remove-gift-card">Remove</button>
                 </div>
             `;
-            document.querySelector('#giftCardContainer p').style.display = 'none';
-            container.appendChild(newRow);
 
+            giftCardContainer.appendChild(newRow);
             appliedGiftCards.add(card_number); // Add to set
 
-            newRow.querySelector('.gift_card_input').addEventListener('input', calculateTotal);
-            newRow.querySelector('.remove-gift-card').addEventListener('click', function () {
+            // Bind event listeners to the new elements
+            newRow.querySelector(".gift_card_input").addEventListener("input", calculateTotal);
+            newRow.querySelector(".remove-gift-card").addEventListener("click", function () {
                 removeGiftCardRow(this, card_number);
             });
 
             calculateTotal();
-        }
+        };
 
+        // Function to remove a gift card row
         window.removeGiftCardRow = function (button, card_number) {
             appliedGiftCards.delete(card_number); // Remove from set
-            button.closest('.row').remove();
+            button.closest(".row").remove();
             calculateTotal();
-        }
+        };
 
-        discountInput.addEventListener('input', calculateTotal);
-        taxSelect.addEventListener('change', calculateTotal);
+        // Event listeners
+        discountInput?.addEventListener("input", calculateTotal);
+        taxSelect?.addEventListener("change", calculateTotal);
 
+        // Initial calculation on page load
         calculateTotal();
     });
 </script>
+
 {{--  For All Giftcard Calculation, Tax, Discount and Total Calculation --}}
 
 {{--  For Payment of Cart --}}
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-    // Select the required input fields and the submit button
+   document.addEventListener("DOMContentLoaded", function () {
     let fnameField = document.getElementById("fname");
     let emailField = document.getElementById("email");
-    let submitButton = document.getElementById("submitPayment"); // Targeting the button inside <li>
+    let submitButton = document.getElementById("submitPayment");
+    let errorMessagesDiv = document.getElementById("errorMessages");
 
-    // Function to check if required fields are filled
-    function validateForm() {
-        if (fnameField.value.trim() !== "" && emailField.value.trim() !== "") {
-            return true;
-        } else {
-            alert("First Name and Email are required fields!");
-            return false;
-        }
-    }
-
-    // Submit AJAX request when the button is clicked
     submitButton.addEventListener("click", function (e) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
-        // Validate the form
-        if (!validateForm()) {
-            return; // Stop submission if validation fails
-        }
-
-            let giftCards = [];
-            document.querySelectorAll("input[name='card_number[]']").forEach((input, index) => {
-                giftCards.push({
-                    card_number: input.value,
-                    amount: document.querySelectorAll("input[name='gift_card_amount[]']")[index].value
-                });
+        let giftCards = [];
+        document.querySelectorAll("input[name='card_number[]']").forEach((input, index) => {
+            giftCards.push({
+                card_number: input.value,
+                amount: document.querySelectorAll("input[name='gift_card_amount[]']")[index].value
             });
-        let formData = {
-            cart_total: {!! json_encode($total) !!}, // Blade variable to JavaScript
-            discount: document.getElementById("discount")?.value || 0,
-            tax: document.getElementById("tax")?.value || 0,
-            gift_cards: giftCards || 0,
-            pay_amount: document.getElementById("totalValuePayment")?.textContent.replace("$", "").trim() || 0,
-            payment_status: document.getElementById("payment_status")?.value || "",
-            _token: "{{ csrf_token() }}",
-            patient_id: $("#patient_id").val() || "",
-            fname: fnameField.value.trim(),
-            lname: document.getElementById("lname").value.trim(),
-            email: emailField.value.trim(),
-            phone: $("#phone").val() || "",
-            giftapply:document.getElementById('giftcard_amount_payment') ||""
-        };
+        });
 
-        // AJAX Request
+        let formData = {
+        cart_total: {!! json_encode($total) !!},
+        discount: document.getElementById("discount")?.value || 0,
+        tax: $("#tax_amount_payment").text().replace("$", "").trim() || 0,  // Use `.text()` instead of `.val()`
+        gift_cards: giftCards || 0,
+        pay_amount: document.getElementById("totalValuePayment")?.textContent.replace("$", "").trim() || 0,
+        payment_status: document.getElementById("payment_status")?.value || "",
+        _token: "{{ csrf_token() }}",
+        patient_id: $("#patient_id").val() || "",
+        fname: fnameField.value.trim(),
+        lname: document.getElementById("lname").value.trim(),
+        email: emailField.value.trim(),
+        phone: $("#phone").val() || "",
+        giftapply: $("#giftcard_amount_payment").text().replace("$", "").trim() || 0  // Use `.text()` instead of `.val()`
+    };
+
+        // Clear previous errors
+        errorMessagesDiv.style.display = "none";
+        errorMessagesDiv.innerHTML = "";
+
         $.ajax({
-            url: "{{route('InternalServicePurchases')}}", // Change to your actual Laravel route
+            url: "{{ route('InternalServicePurchases') }}",
             type: "POST",
             data: formData,
             success: function (response) {
                 alert("Payment details submitted successfully!");
                 console.log(response);
             },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error: ", error);
+            error: function (xhr) {
+                if (xhr.status === 422) { // Laravel validation error
+                    let errors = xhr.responseJSON.errors;
+                    let errorHtml = "<ul>";
+                    
+                    Object.keys(errors).forEach(function (key) {
+                        errorHtml += `<li>${errors[key][0]}</li>`;
+                    });
+
+                    errorHtml += "</ul>";
+                    errorMessagesDiv.innerHTML = errorHtml;
+                    errorMessagesDiv.style.display = "block";
+                } else {
+                    console.error("AJAX Error: ", xhr);
+                }
             }
         });
     });
 });
 
-
-    </script>
+</script>
     {{-- Payment Code End   --}}
 
     {{-- For Cart Update --}}
