@@ -151,6 +151,8 @@ Route::resource('/patient', PatientController::class);
 
 Route::post('/patient-data','PatientController@PatientData')->name('patient-data');
 
+// Quick PAtient Create
+Route::post('/patient-quick-create',[AdminController::class,'PatientQuickCreate'])->name('patient-quick-create');
 });
 
 

@@ -128,6 +128,15 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
+                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
@@ -137,6 +146,9 @@
                             </h3>
                         </div>
                         <div class="card-body">
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createPatient">
+                                Create Patient
+                            </button>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
                                 Create Unit
                             </button>
@@ -148,10 +160,10 @@
                                 onclick="location.href='{{ route('unit.index') }}';">
                                 Buy Unit
                             </button>
-                            <button type="button" class="btn btn-dark"
+                            {{-- <button type="button" class="btn btn-dark"
                                 onclick="location.href='{{ route('product.index') }}';">
                                 Buy Services
-                            </button>
+                            </button> --}}
 
 
                         </div>
@@ -256,6 +268,72 @@
             <!-- /.modal-dialog -->
         </div>
         {{--  For Unit Create Modal End --}}
+
+
+        {{--  For Patient Create Modal --}}
+        <div class="modal fade" id="createPatient">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Patient Quickly</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="patientForm" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="mb-3 col-lg-12 self">
+                                    <label for="patient_login_id" class="form-label">User Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" id="patient_login_id" onkeyup="CheckUser()" required type="text" name="patient_login_id" placeholder="User Name">
+                                    <div class="showbalance" style="color: red; margin-top: 10px;"></div>
+                                    <div id="error-patient_login_id" class="text-danger mt-1"></div>
+                                </div>
+                        
+                                <div class="mb-3 col-lg-6 self">
+                                    <label for="fname" class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" id="fname" required type="text" name="fname" placeholder="First Name">
+                                    <div id="error-fname" class="text-danger mt-1"></div>
+                                </div>
+                        
+                                <div class="mb-3 col-lg-6 self">
+                                    <label for="lname" class="form-label">Last Name</label>
+                                    <input class="form-control" type="text" name="lname" placeholder="Last Name" id="lname">
+                                </div>
+                        
+                                <div class="mb-3 col-lg-6 self mt-2">
+                                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="email" name="email" id="email" placeholder="Email" required>
+                                    <div id="error-email" class="text-danger mt-1"></div>
+                                </div>
+                        
+                                <div class="mb-3 col-lg-6 self mt-2">
+                                    <label for="phone" class="form-label">Mobile</label>
+                                    <input class="form-control" type="number" name="phone" id="phone" placeholder="Mobile">
+                                </div>
+                        
+                                <div class="mb-3 col-lg-6">
+                                    <button class="btn btn-block btn-outline-primary form_submit" type="button" id="submitBtn" onclick="createFrom()">
+                                        <span id="btnText">Submit</span>
+                                        <span id="spinner" class="spinner-border spinner-border-sm d-none"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Success & Error Messages -->
+                        <div id="success-message" class="alert alert-success d-none"></div>
+                        <div id="error-message" class="alert alert-danger d-none"></div>
+                        
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {{--  For PAtient Create Modal End --}}
     </section>
     {{--  Action Button Section End --}}
 
@@ -866,6 +944,94 @@
         }
 
     </script>
+<script>
+    function CheckUser() {
+    var user_name = $('#patient_login_id').val();
+
+    // Clear previous error messages
+    $('#error-username').text(''); // Specific to the username error field
+    $('.showbalance').hide(); // Hide previous success/error messages
+
+    $.ajax({
+        url: '{{ route('checkusername') }}',
+        method: 'post',
+        dataType: 'json',
+        data: {
+            _token: '{{ csrf_token() }}',
+            username: user_name,
+        },
+        success: function(response) {
+            if (response.success) {
+                $('.showbalance').html(response.message).css('color', 'green').show();
+            } else {
+                $('.showbalance').html(response.message).css('color', 'red').show();
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText);
+        }
+    });
+}
+</script>
+
+<script>
+    function createFrom() {
+        let formData = new FormData(document.getElementById("patientForm")); // Properly define FormData
+
+        // Disable button, show spinner, and update text
+        $("#submitBtn").prop("disabled", true);
+        $("#btnText").text("Submitting...");
+        $("#spinner").removeClass("d-none");
+
+        $.ajax({
+            url: "{{ route('patient-quick-create') }}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is included
+            },
+            success: function (response) {
+                // Enable button, hide spinner
+                $("#submitBtn").prop("disabled", false);
+                $("#btnText").text("Submit");
+                $("#spinner").addClass("d-none");
+
+                if (response.success) {
+                    $("#success-message").removeClass("d-none").text(response.message);
+                    $("#error-message").addClass("d-none");
+
+                    // Reload page after success (2-second delay)
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    $("#error-message").removeClass("d-none").text(response.message);
+                    $("#success-message").addClass("d-none");
+                }
+            },
+            error: function (xhr) {
+                // Enable button, hide spinner
+                $("#submitBtn").prop("disabled", false);
+                $("#btnText").text("Submit");
+                $("#spinner").addClass("d-none");
+
+                let errors = xhr.responseJSON.errors;
+                $(".text-danger").text(""); // Clear previous errors
+
+                if (errors) {
+                    $.each(errors, function (key, value) {
+                        $("#error-" + key).text(value[0]); // Show validation error messages
+                    });
+                } else {
+                    $("#error-message").removeClass("d-none").text("Something went wrong!");
+                }
+            }
+        });
+    }
+
+</script>
 
 
 
