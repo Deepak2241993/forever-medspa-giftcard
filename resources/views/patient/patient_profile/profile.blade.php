@@ -112,7 +112,8 @@
                           ($value->event_type == 'Service Refund' ? 'primary' : 
                           ($value->event_type == 'Login' ? 'success' : 
                           ($value->event_type == 'Logout' ? 'danger' : 
-                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger')))))))) 
+                          ($value->event_type == 'Patient Created' ? 'primary' : 
+                          ($value->event_type == 'Transaction Completed' ? 'success' : 'danger'))))))))) 
                       }}">
                       
                         {{date('d-m-Y',strtotime($value->created_at))}}
@@ -139,6 +140,8 @@
                         <i class="fas fa-power-off bg-success"></i>
                         @elseif($value->event_type == 'Logout')
                         <i class="fas fa-power-off bg-danger"></i>
+                        @elseif($value->event_type == 'Patient Created')
+                        <i class="fas fa fa-user-md bg-primary"></i>
 
                         @else
                         <i class="fas fa fa-ban bg-danger"></i>

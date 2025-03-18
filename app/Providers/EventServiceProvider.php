@@ -16,6 +16,7 @@ use App\Events\TimelineServiceCancel;
 use App\Events\TimelineServiceRefund;
 use App\Events\GiftcardsBuyFromCenter;
 use App\Events\EventPatientLogout;
+use App\Events\EventPatientCreated;
 
 
 use App\Listeners\ListenerGiftcardPurchases;
@@ -28,6 +29,7 @@ use App\Listeners\TimelineLinstnerServicecardCancel;
 use App\Listeners\TimelineLinstnerServicecardRefund;
 use App\Listeners\ListenerGiftcardsBuyFromCenter;
 use App\Listeners\ListnerPatientLogout;
+use App\Listeners\ListenerPatientCreated;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -70,6 +72,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EventPatientLogout::class => [
             ListnerPatientLogout::class,
+        ],
+        EventPatientCreated::class => [
+            ListenerPatientCreated::class,
         ],
     ];
 

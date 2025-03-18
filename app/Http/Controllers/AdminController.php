@@ -17,6 +17,7 @@ use Hash;
 use Str;
 use App\Events\GiftcardsBuyFromCenter;
 use App\Events\EventPatientLogout;
+use App\Events\EventPatientCreated;
 use Illuminate\Support\Facades\DB;
 use App\Mail\PatientCredentialsMail;
 use Illuminate\Support\Facades\Log;
@@ -329,54 +330,57 @@ class AdminController extends Controller
     }
 
     public function PatientQuickCreate(Request $request, Patient $patient)
-{
-    // Validate request
-    $validator = Validator::make($request->all(), [
-        'fname' => 'required|string|max:255',
-        'email' => 'required|email|unique:patients,email',
-    ], [], [
-        'fname.required' => 'First name is required',
-        'email.required' => 'Please enter Email, this is a required field',
-        'email.email' => 'Please enter a valid email address',
-        'email.unique' => 'This email is already registered',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'fname' => 'required|string|max:255',
+            'email' => 'required|email|unique:patients,email',
+        ], [], [
+            'fname.required' => 'First name is required',
+            'email.required' => 'Please enter Email, this is a required field',
+            'email.email' => 'Please enter a valid email address',
+            'email.unique' => 'This email is already registered',
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
-    }
-
-    try {
-        // Start transaction
-        DB::beginTransaction();
-
-        $randomPassword = Str::random(10);
-        $data = $request->except('_token');
-        $data['password'] = Hash::make($randomPassword);
-        $data['tokenverify'] = Str::random(60);
-        $data['user_token'] = 'FOREVER-MEDSPA';
-        $full_name = $request->fname . " " . $request->lname;
-
-        $result = $patient->create($data);
-
-        if ($result) {
-            try {
-                Mail::to($request->email)->send(new PatientCredentialsMail($request->patient_login_id, $randomPassword, $full_name));
-            } catch (\Exception $e) {
-                Log::error('Email sending failed: ' . $e->getMessage());
-            }
-
-            DB::commit();
-
-            return response()->json(['success' => true, 'message' => 'Patient created successfully. Credentials sent to email.']);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
-        DB::rollBack();
-        return response()->json(['success' => false, 'message' => 'Failed to create patient.']);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json(['success' => false, 'message' => 'An unexpected error occurred.']);
+        try {
+            DB::beginTransaction();
+
+            $randomPassword = Str::random(10);
+            $data = $request->except('_token');
+            $data['password'] = Hash::make($randomPassword);
+            $data['user_token'] = 'FOREVER-MEDSPA';
+            $data['status'] = 1;
+            $full_name = $request->fname . " " . $request->lname;
+
+            $result = $patient->create($data);
+
+            if ($result) {
+                try {
+                    Mail::to($request->email)->send(new PatientCredentialsMail($result->patient_login_id, $randomPassword, $full_name));
+                } catch (\Exception $e) {
+                    Log::error('Email sending failed: ' . $e->getMessage());
+                }
+
+                // Commit the transaction
+                DB::commit();
+
+                // Fire the event
+                event(new EventPatientCreated($result));
+
+                return response()->json(['success' => true, 'message' => 'Patient created successfully. Credentials sent to email.']);
+            }
+
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to create patient.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'An unexpected error occurred.']);
+        }
     }
-}
+
 
         
 }

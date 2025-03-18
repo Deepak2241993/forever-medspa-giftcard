@@ -37,6 +37,7 @@
                <div class="row align-items-center about-main-info">
                   <div class="col-lg-6 col-md-6 col-sm-12">
                      <h2><b>Giftcards made simple </b>
+                        {{-- {{dd(Session::get('patient_details'))}} --}}
                      </h2>
                      <p style="text-align: justify;">We're thrilled to express our gratitude to the loyal
                         customers of MedSpa Wellness centre, with our ! Whether it's a token of appreciation, a
@@ -212,7 +213,7 @@
                                                     <!-- Your Name Field -->
                                                     <div class="mb-3 col-lg-12 col-md-12 self">
                                                         <label for="your_name" class="form-label">Your name <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text" name="your_name" value="{{Session::get('result') ? Auth::guard('patient')->user()->fname ." ". Auth::guard('patient')->user()->lname : "" }}" placeholder="From Name" id="your_name" autocomplete="off" required>
+                                                        <input class="form-control" type="text" name="your_name" value="{{Session::get('patient_details') ? Auth::guard('patient')->user()->fname ." ". Auth::guard('patient')->user()->lname : "" }}" placeholder="From Name" id="your_name" autocomplete="off" required>
                                                         <input type="hidden" value="0" name="template_id">
                                                     </div>
                                             
@@ -239,7 +240,7 @@
                                                         <!-- Sender Email -->
                                                         <div class="mb-3 col-lg-12 col-md-12 mt-2" id="giftSendByEmail">
                                                             <label for="recipient_email" class="form-label"><b>Your email address (for the receipt) <span class="text-danger">*</span></b></label>
-                                                            <input class="form-control" type="email" name="from_email" value="{{Session::get('result') ? Auth::guard('patient')->user()->email : ""}}" placeholder="Sender's Email address (for the receipt)" id="recipient_email" autocomplete="off" required>
+                                                            <input class="form-control" type="email" name="from_email" value="{{Session::get('patient_details') ? Auth::guard('patient')->user()->email : ""}}" placeholder="Sender's Email address (for the receipt)" id="recipient_email" autocomplete="off" required>
                                                         </div>
                                             
                                                         <!-- Select Event -->
@@ -327,7 +328,7 @@
 
                                                    <div class="mb-3 col-12">
                                                          <label for="syour_name" class="form-label">Your Name <span class="text-danger">*</span></label>
-                                                         <input class="form-control" type="text" name="from_name" value="{{Session::get('result') ? Auth::guard('patient')->user()->fname ." ". Auth::guard('patient')->user()->lname : "" }}" placeholder="From Name" id="syour_name" required autocomplete="off">
+                                                         <input class="form-control" type="text" name="from_name" value="{{Session::get('patient_details') ? Auth::guard('patient')->user()->fname ." ". Auth::guard('patient')->user()->lname : "" }}" placeholder="From Name" id="syour_name" required autocomplete="off">
                                                          <input type="hidden" value="0" name="template_id">
                                                    </div>
 
@@ -344,7 +345,7 @@
 
                                                    <div class="mb-3 col-12 mt-2" id="giftSendByEmail">
                                                          <label for="to_email_1" class="form-label"><b>What email address should we send the gift card to? <span class="text-danger">*</span></b></label>
-                                                         <input class="form-control" type="email" name="to_email" placeholder="Enter Your Email" id="sto_email" autocomplete="off" value="{{Session::get('result') ? Auth::guard('patient')->user()->email : "" }}" required>
+                                                         <input class="form-control" type="email" name="to_email" placeholder="Enter Your Email" id="sto_email" autocomplete="off" value="{{Session::get('patient_details') ? Auth::guard('patient')->user()->email : "" }}" required>
                                                    </div>
 
                                                    <div class="row mb-3 col-12 mt-2">
