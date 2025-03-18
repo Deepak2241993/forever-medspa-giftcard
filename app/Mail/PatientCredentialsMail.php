@@ -11,13 +11,13 @@ class PatientCredentialsMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $email;
+    public $patient_login_id;
     public $password;
     public $full_name;
 
-    public function __construct($email, $password,$full_name)
+    public function __construct($patient_login_id, $password,$full_name)
     {
-        $this->email = $email;
+        $this->patient_login_id = $patient_login_id;
         $this->password = $password;
         $this->full_name = $full_name;
     }
@@ -27,7 +27,7 @@ class PatientCredentialsMail extends Mailable
         return $this->subject('Your Account Credentials')
                     ->view('email.patient_credentials')
                     ->with([
-                        'email' => $this->email,
+                        'patient_login_id' => $this->patient_login_id,
                         'password' => $this->password,
                         'full_name' => $this->full_name,
                     ]);

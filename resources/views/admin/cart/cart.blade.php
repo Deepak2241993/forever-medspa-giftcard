@@ -292,25 +292,25 @@
                                 </div>
                         
                                 <div class="mb-3 col-lg-6 self">
-                                    <label for="fname" class="form-label">First Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" id="fname" required type="text" name="fname" placeholder="First Name">
+                                    <label for="fitst_name" class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" id="fitst_name" required type="text" name="fname" placeholder="First Name">
                                     <div id="error-fname" class="text-danger mt-1"></div>
                                 </div>
                         
                                 <div class="mb-3 col-lg-6 self">
-                                    <label for="lname" class="form-label">Last Name</label>
-                                    <input class="form-control" type="text" name="lname" placeholder="Last Name" id="lname">
+                                    <label for="last_name" class="form-label">Last Name</label>
+                                    <input class="form-control" type="text" name="lname" placeholder="Last Name" id="last_name">
                                 </div>
                         
                                 <div class="mb-3 col-lg-6 self mt-2">
-                                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="email" name="email" id="email" placeholder="Email" required>
+                                    <label for="email_id" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="email" name="email" id="email_id" placeholder="Email" required>
                                     <div id="error-email" class="text-danger mt-1"></div>
                                 </div>
                         
                                 <div class="mb-3 col-lg-6 self mt-2">
-                                    <label for="phone" class="form-label">Mobile</label>
-                                    <input class="form-control" type="number" name="phone" id="phone" placeholder="Mobile">
+                                    <label for="phone_number" class="form-label">Mobile</label>
+                                    <input class="form-control" type="number" name="phone" id="phone_number" placeholder="Mobile">
                                 </div>
                         
                                 <div class="mb-3 col-lg-6">
@@ -976,60 +976,58 @@
 
 <script>
     function createFrom() {
-        let formData = new FormData(document.getElementById("patientForm")); // Properly define FormData
+    let formData = new FormData(document.getElementById("patientForm"));
 
-        // Disable button, show spinner, and update text
-        $("#submitBtn").prop("disabled", true);
-        $("#btnText").text("Submitting...");
-        $("#spinner").removeClass("d-none");
+    // Disable button, show spinner, and update text
+    $("#submitBtn").prop("disabled", true);
+    $("#btnText").text("Submitting...");
+    $("#spinner").removeClass("d-none");
 
-        $.ajax({
-            url: "{{ route('patient-quick-create') }}",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is included
-            },
-            success: function (response) {
-                // Enable button, hide spinner
-                $("#submitBtn").prop("disabled", false);
-                $("#btnText").text("Submit");
-                $("#spinner").addClass("d-none");
+    $.ajax({
+        url: "{{ route('patient-quick-create') }}",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Ensure correct CSRF token is used
+        },
+        success: function (response) {
+            $("#submitBtn").prop("disabled", false);
+            $("#btnText").text("Submit");
+            $("#spinner").addClass("d-none");
 
-                if (response.success) {
-                    $("#success-message").removeClass("d-none").text(response.message);
-                    $("#error-message").addClass("d-none");
-
-                    // Reload page after success (2-second delay)
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-                } else {
-                    $("#error-message").removeClass("d-none").text(response.message);
-                    $("#success-message").addClass("d-none");
-                }
-            },
-            error: function (xhr) {
-                // Enable button, hide spinner
-                $("#submitBtn").prop("disabled", false);
-                $("#btnText").text("Submit");
-                $("#spinner").addClass("d-none");
-
-                let errors = xhr.responseJSON.errors;
-                $(".text-danger").text(""); // Clear previous errors
-
-                if (errors) {
-                    $.each(errors, function (key, value) {
-                        $("#error-" + key).text(value[0]); // Show validation error messages
-                    });
-                } else {
-                    $("#error-message").removeClass("d-none").text("Something went wrong!");
-                }
+            if (response.success) {
+                $("#success-message").removeClass("d-none").text(response.message);
+                $("#error-message").addClass("d-none");
+                
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            } else {
+                $("#error-message").removeClass("d-none").text(response.message);
+                $("#success-message").addClass("d-none");
             }
-        });
-    }
+        },
+        error: function (xhr) {
+            $("#submitBtn").prop("disabled", false);
+            $("#btnText").text("Submit");
+            $("#spinner").addClass("d-none");
+
+            let errors = xhr.responseJSON?.errors;
+            $(".text-danger").text(""); // Clear previous errors
+
+            if (errors) {
+                $.each(errors, function (key, value) {
+                    $("#error-" + key).text(value[0]);
+                });
+            } else {
+                $("#error-message").removeClass("d-none").text("Something went wrong!");
+            }
+        }
+    });
+} 
+
 
 </script>
 

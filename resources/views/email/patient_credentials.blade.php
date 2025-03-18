@@ -1,77 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .email-container {
-            max-width: 600px;
-            margin: 30px auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .email-header {
-            text-align: center;
-            padding: 10px 0;
-        }
-        .email-header img {
-            max-width: 150px;
-        }
-        .email-body {
-            padding: 20px;
-            line-height: 1.6;
-            color: #333333;
-        }
-        .email-body h2 {
-            color: #333333;
-        }
-        .email-body p {
-            margin: 15px 0;
-        }
-        .email-body a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .email-footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #888888;
-            font-size: 12px;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Created - Forever Medspa</title>
 </head>
-<body>
-    <div class="email-container">
-        <!-- Header with Logo -->
-        <div class="email-header">
-            <img src="{{url('/images/gifts/logo.png')}}" alt="Forever Medspa">
-        </div>
-<div class="container">
-    <p>Dear {{$full_name}},</p>
-    <p>Your account has been successfully created. Here are your login details:</p>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9f9f9; color: #333333;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f9f9f9; padding: 30px 0;">
+        <tr>
+            <td align="center">
+                <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);">
+                    <!-- Header Section -->
+                    <tr>
+                        <td align="center" style="padding: 20px 0; background-color: #FCA52A;">
+                            <img src="{{url('/images/gifts/logo.png')}}" alt="Forever Medspa" style="max-width: 150px;" />
+                        </td>
+                    </tr>
+                    
+                    <!-- Body Section -->
+                    <tr>
+                        <td style="padding: 40px; text-align: left;">
+                            <h2 style="color: #333333;">Welcome to Forever Medspa, {{$full_name}}!</h2>
+                            <p>We are thrilled to have you on board. Your account has been successfully created, and you can now log in using the credentials below:</p>
+                            
+                            <p><strong>Username:</strong> {{ $patient_login_id }}</p>
+                            <p><strong>Password:</strong> {{ $password }}</p>
 
-    <p><strong>Username:</strong> {{ $email }}</p>
-    <p><strong>Password:</strong> {{ $password }}</p>
+                            <p>To get started, simply click the button below to log in:</p>
+                            <p>
+                                <a href="{{ url('/patient-login') }}" style="display: inline-block; padding: 12px 24px; font-size: 16px; background-color: #007BFF; color: #ffffff; text-decoration: none; border-radius: 4px;">Log In Now</a>
+                            </p>
 
-    <p>You can now log in using these credentials.</p>
+                            <p>If you have any questions or face any issues, feel free to reach out to us. We're here to help!</p>
+                            <p>Best regards,</p>
+                            <p><strong>FOREVER-MEDSPA</strong></p>
+                        </td>
+                    </tr>
 
-    <p>Best regards,</p>
-    <p>FOREVER-MEDSPA</p>
-</div>
+                    <!-- Footer Section -->
+                    <tr>
+                        <td style="text-align: center; padding: 20px; background-color: #f4f4f4; color: #888888; font-size: 12px;">
+                            &copy; {{ date('Y') }} {{ config('app.name') }}. All Rights Reserved.
+                            <br />
+                            Need help? <a href="mailto:info@forevermedspanj.com" style="color: #FCA52A; text-decoration: none;">Contact Support</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

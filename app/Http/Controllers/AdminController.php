@@ -360,7 +360,7 @@ class AdminController extends Controller
 
         if ($result) {
             try {
-                Mail::to($request->email)->send(new PatientCredentialsMail($request->email, $randomPassword, $full_name));
+                Mail::to($request->email)->send(new PatientCredentialsMail($request->patient_login_id, $randomPassword, $full_name));
             } catch (\Exception $e) {
                 Log::error('Email sending failed: ' . $e->getMessage());
             }

@@ -309,7 +309,7 @@ public function PatientData(Request $request)
 {
     // Find patient by email
     $patientData = Patient::where('email', $request->email_id)->first();
-
+    // dd($patientData);
     if (!$patientData) {
         return response()->json([
             'status' => 'error',
@@ -363,6 +363,7 @@ public function PatientData(Request $request)
         // Convert associative array to indexed array
         $formattedGiftcards = array_values($formattedGiftcards);
         
+        // dd($patientData);
     // Prepare JSON response
     return response()->json([
         'status' => 'success',
