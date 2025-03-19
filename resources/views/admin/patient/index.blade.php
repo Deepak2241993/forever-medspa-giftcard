@@ -24,23 +24,19 @@
         <div class="row mb-4">
             <div class="col-md-3">
                 <label for="fname" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="fname" name="fname"
-                    placeholder="First Name" onkeyup="SearchView()">
+                <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" onkeyup="SearchView()">
             </div>
             <div class="col-md-3">
                 <label for="lname" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="lname" name="lname"
-                    placeholder="Last Name" onkeyup="SearchView()">
+                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" onkeyup="SearchView()">
             </div>
             <div class="col-md-3">
                 <label for="email" class="form-label">Email:</label>
-                <input type="text" class="form-control" id="email" name="email" 
-                    placeholder="Enter Email" onkeyup="SearchView()">
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" onkeyup="SearchView()">
             </div>
             <div class="col-md-3">
                 <label for="phone" class="form-label">Phone:</label>
-                <input type="text" class="form-control" id="phone" name="phone" 
-                    placeholder="Enter phone" onkeyup="SearchView()">
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone" onkeyup="SearchView()">
             </div>
         </div>
     </div>
@@ -157,72 +153,90 @@
 
 @push('script')
 <script>
-function SearchView() {
-    var fname = $('#fname').val();
-    var lname = $('#lname').val();
-    var email = $('#email').val();
-    var phone = $('#phone').val();
+$(document).ready(function () {
+    window.SearchView = function() {
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var email = $('#email').val();
+        var phone = $('#phone').val();
 
-    $.ajax({
-        url: '{{ route('patient-search') }}', // API endpoint
-        method: "GET",
-        dataType: "json",
-        data: {
-            fname: fname,
-            lname: lname,
-            email: email,
-            phone: phone,
-        },
-        success: function(response) {
-            if (response.status === 'success') {
-                var tableBody = $('#data-table-body'); // ID of your table body
-                tableBody.empty(); // Clear existing rows
+        $.ajax({
+            url: "{{ route('patient.search') }}",
+            method: "GET",
+            data: { fname, lname, email, phone },
+            success: function(response) {
+                if (response.status === 'success') {
+                    var tableBody = $('#data-table-body');
+                    tableBody.empty();
+                    if (response.data.data && response.data.data.length > 0) {
+                        $.each(response.data.data, function(key, value) {
+                            var updatedDate = new Date(value.updated_at).toLocaleString('en-US', {
+                                month: '2-digit',
+                                day: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            });
 
-                // Loop through the response data and populate the table
-                $.each(response.data.data, function(key, value) {
-                    var updatedDate = new Date(value.updated_at).toLocaleString('en-US', {
-                        month: '2-digit',
-                        day: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-
-                    tableBody.append(`
-                        <tr>
-                            <td>${key + 1}</td>
-                            <td>
-                                <a href="{{url('/')}}/admin/patient/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
-                                <form action="{{url('/')}}/admin/patient/${value.id}" method="POST" style="display:inline;">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
-                                </form>
-                            </td>
-                            <td>${value.fname} ${value.lname}</td>
-                            <td>${value.email}</td>
-                            <td>${value.phone}</td>
-                            <td>${value.address}</td>
-                            <td>${value.zip_code}</td>
-                            <td>
-                                <span class="badge bg-${value.status === '1' ? 'success' : 'danger'}">
-                                   ${value.status === '1' ? 'Active' : 'Inactive'}
-                                </span>
-                            </td>
-                        </tr>
-                    `);
-                });
-            } else {
-                <tr><td colspane="8">No results found.</td></tr>
-                alert(response.message || 'No results found.');
+                            tableBody.append(`
+                                <tr>
+                                    <td>${key + 1}</td>
+                                    <td>
+                                        <a href="{{ url('/') }}/admin/patient/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
+                                        <form action="{{ url('/') }}/admin/patient/${value.id}" method="POST" style="display:inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                    <td>${value.fname} ${value.lname}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.phone}</td>
+                                    <td>${value.address}</td>
+                                    <td>${value.zip_code}</td>
+                                    <td>
+                                        <span class="badge bg-${value.status === '1' ? 'success' : 'danger'}">
+                                           ${value.status === '1' ? 'Active' : 'Inactive'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        tableBody.append('<tr><td colspan="8">No results found.</td></tr>');
+                    }
+                } else {
+                    alert(response.message || 'No results found.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching data.');
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            alert('An error occurred while fetching data.');
-        }
-    });
+        });
+    }
+});
+
+function deletePatient(id) {
+    if (confirm('Are you sure you want to delete this patient?')) {
+        $.ajax({
+            url: `{{url('/')}}/admin/patient/${id}`,
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                alert(response.message);
+                SearchView();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Failed to delete the patient.');
+            }
+        });
+    }
 }
+
 </script>
 @endpush

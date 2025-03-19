@@ -70,7 +70,8 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        return view('admin.patient.create',compact('patient'));
+        $timeline = TimelineEvent::where('patient_id',$patient->patient_login_id)->orderBy('created_at','DESC')->get();
+        return view('admin.patient.create',compact('patient','timeline'));
     }
 
     /**

@@ -125,7 +125,7 @@ Route::get('/export-services', [CategoryExportController::class, 'exportServices
 Route::get('/service-redeem','ServiceOrderController@ServiceRedeemView')->name('service-redeem-view');
 Route::post('/redeem-services','ServiceOrderController@ServiceRedeem')->name('redeem-services');
 Route::get('/search-order-api','ServiceOrderController@SearchOrderApi')->name('search-order-api');
-Route::get('/patient-search','PatientController@PatientSearch')->name('patient-search');
+Route::get('/patient-search','PatientController@PatientSearch')->name('patient.search');
 Route::post('/service-statement', 'ServiceOrderController@getServiceStatement')->name('service-statement');
 Route::post('/redeemcalculation', 'ServiceOrderController@redeemcalculation')->name('redeemcalculation');
 Route::post('/do-cancel', 'ServiceOrderController@DoCancel')->name('do-cancel');
