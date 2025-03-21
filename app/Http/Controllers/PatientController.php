@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TimelineEvent;
 use Auth;
+use Carbon\Carbon;
 
 use DB;
 use Session;
@@ -68,9 +69,23 @@ class PatientController extends Controller
      * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function edit(Patient $patient)
+    public function edit(Patient $patient,Request $request)
     {
-        $timeline = TimelineEvent::where('patient_id',$patient->patient_login_id)->orderBy('created_at','DESC')->get();
+        // $timeline = TimelineEvent::where('patient_id',$patient->patient_login_id)->orderBy('created_at','DESC')->get();
+
+        $query = TimelineEvent::query();
+
+        // Apply filter if start_time and end_time are provided
+        if ($request->start_time && $request->end_time) {
+            $startTime = Carbon::parse($request->start_time)->startOfDay();
+            $endTime = Carbon::parse($request->end_time)->endOfDay();
+            $query->whereBetween('created_at', [$startTime, $endTime]);
+        } else {
+            // Show latest 10 entries by default
+            $query->latest()->limit(10);
+        }
+    
+        $timeline = $query->get();
         return view('admin.patient.create',compact('patient','timeline'));
     }
 
@@ -187,12 +202,24 @@ class PatientController extends Controller
             return redirect()->route('patient-login')->withErrors(['patient_login_id' => 'Please log in first.']);
         }
         // PAtient Profile
-        public function PatientProfile(Patient $patient)
+        public function PatientProfile(Patient $patient,Request $request)
         {
             $id = Auth::guard('patient')->user()->id;
             $patient = Patient::find($id);
             // dd($patient->patient_login_id);
-           $timeline = TimelineEvent::where('patient_id',$patient->patient_login_id)->orderBy('created_at','DESC')->get();
+            $query = TimelineEvent::query();
+
+        // Apply filter if start_time and end_time are provided
+        if ($request->start_time && $request->end_time) {
+            $startTime = Carbon::parse($request->start_time)->startOfDay();
+            $endTime = Carbon::parse($request->end_time)->endOfDay();
+            $query->whereBetween('created_at', [$startTime, $endTime]);
+        } else {
+            // Show latest 10 entries by default
+            $query->latest()->limit(10);
+        }
+    
+        $timeline = $query->get();
             return view('patient.patient_profile.profile',compact('patient','timeline'));
         }
 

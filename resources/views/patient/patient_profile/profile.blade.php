@@ -101,6 +101,20 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="activity">
+                                     {{-- For Search --}}
+                                     <div class="d-flex justify-content-end mb-3">
+                                        <form method="GET" action="" class="d-flex align-items-center">
+                                          <label for="start_time" class="me-2">Start Time:</label>
+                                          <input type="date" id="start_time" name="start_time" value="{{ request('start_time') }}" class="form-control me-2">
+                                          
+                                          <label for="end_time" class="me-2">End Time:</label>
+                                          <input type="date" id="end_time" name="end_time" value="{{ request('end_time') }}" class="form-control me-2">
+  
+                                          <button type="submit" class="btn btn-primary me-2">Filter</button> |
+                                          <a href="{{ url()->current() }}" class="btn btn-secondary">Reset</a>
+                                        </form>
+                                      </div>
+                                      {{-- Search Line Time --}}
                                     <!-- Post -->
                                     <div class="timeline timeline-inverse">
                                         @if ($timeline)
