@@ -27,6 +27,19 @@
 <script src="{{url('/')}}/dist/summernote/summernote-bs4.min.js"></script>
 {{--  Show Steert Alert --}}
 <script src="{{url('/')}}/dist/sweetalert2/sweetalert2.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{url('/')}}/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="{{url('/')}}/plugins/jszip/jszip.min.js"></script>
+<script src="{{url('/')}}/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="{{url('/')}}/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="{{url('/')}}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="{{url('/')}}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 {{--  For Auto Search Js --}}
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

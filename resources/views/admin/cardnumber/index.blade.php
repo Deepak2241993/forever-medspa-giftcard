@@ -35,6 +35,10 @@
             box-sizing: border-box;
         }
     </style>
+      <!-- DataTables -->
+  <link rel="stylesheet" href="{{url('/')}}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{url('/')}}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{url('/')}}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
 <section class="content-header">
     <div class="container-fluid">
@@ -74,50 +78,44 @@
                         @endif
                     </div>
                     <span class="text-success"id="response_msg"></span>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="mb-0">Search Data</h4>
-                        </div>
-                        <div class="card-body"> 
-                                <div class="mb-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" id="recipient_name" name="recipient_name" placeholder="Enter Gift Card Holder Name" onkeyup="SearchView()">
-                                        </div>
-                                        <div class="col-md-6">
-                                        
-                                            <input type="text" class="form-control" id="receipt_email" name="receipt_email" placeholder="Enter Gift Card Holder Email" onkeyup="SearchView()">
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
+                   
+                    
                     <div class="scroll-container">
                         <div style="overflow: scroll">
                             {{-- <div class="scroll-content"> --}}
-                                @if($paginatedItems->count())
+                                @if(count($data) > 0)
                                 <table id="datatable-buttons" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Giftcard Number</th>
-                                            <th>Send Mail</th>
-                                            <th>Sender Name</th>
-                                            <th>Receiver Name</th>
-                                            <!--<th>Message</th>-->
-                                            <th>Number of Giftcards</th>
-                                            <th>Giftcard Value</th>
-                                            <th>Discount</th>
-                                            <th>Coupon Code</th>
-                                            <th>Paid Amount</th>
-                                            <th>Payment Status</th>
-                                            <th>Transaction Id</th>
-                                            <th>Generated Date & Time</th>
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending">#</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Giftcard Number: activate to sort column descending">Giftcard Number</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Send Mail: activate to sort column descending">Send Mail</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Sender Name: activate to sort column descending">Sender Name</th>
+                 
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Receiver Name: activate to sort column descending">Receiver Name</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Number of Giftcards: activate to sort column descending">Number of Giftcards</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Giftcard Value: activate to sort column descending">Giftcard Value</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Discount: activate to sort column descending">Discount</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Coupon Code: activate to sort column descending">Coupon Code</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Paid Amount: activate to sort column descending">Paid Amount</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Payment Status: activate to sort column descending">Payment Status</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Transaction Id: activate to sort column descending">Transaction Id</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Generated Date & Time: activate to sort column descending">Generated Date & Time</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data-table-body">
-                                        @foreach($paginatedItems as $key=>$value)
+                                        @foreach($data as $key=>$value)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
@@ -137,7 +135,7 @@
                                                 <td>
                                                     @if ($value['payment_status'] == 'succeeded')
                                                         <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
-                                                             class="btn btn-block btn-outline-warning" id="mailsend_{{ $value['id'] }}">Mail
+                                                             class="btn btn-block btn-outline-dark" id="mailsend_{{ $value['id'] }}">Mail
                                                             Resend</a>
                                                         {{-- <button  class="btn btn-block btn-outline-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
                                                     @endif
@@ -194,10 +192,10 @@
                                             </tr>
                                         @endforeach
                                         <br>
-                                        {{ $paginatedItems->links() }}
+                                        {{-- {{ $paginatedItems->links() }} --}}
                                     </tbody>
                                 </table>
-                                {{ $paginatedItems->links() }}
+                                {{-- {{ $paginatedItems->links() }} --}}
                             @else
                                 <hr>
                                 <p> No data found</p>
@@ -399,88 +397,25 @@
             });
         }
 
-        function SearchView() {
-    var recipient_name = $('#recipient_name').val();
-    var receipt_email = $('#receipt_email').val();
-
-    $.ajax({
-        url: '{{ route('gift-card-transaction-search') }}', // API endpoint
-        method: "GET",
-        dataType: "json",
-        data: {
-            recipient_name: recipient_name,
-            receipt_email: receipt_email
-        },
-        success: function (response) {
-            if (response.status === 'success' && response.data.data.length > 0) {
-                var tableBody = $('#data-table-body'); // ID of your table body
-                tableBody.empty(); // Clear existing rows
-
-                // Loop through the response data and populate the table
-                $.each(response.data.data, function (key, value) {
-                    // Format date
-                    var updatedDate = value.updated_at
-                        ? new Date(value.updated_at).toLocaleString('en-US', {
-                            month: '2-digit',
-                            day: '2-digit',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                        })
-                        : 'N/A';
-
-                    // Handle product images dynamically
-                    var productImages = value.product_image ? value.product_image.split('|') : [];
-                    var firstImage = productImages.length > 0 ? productImages[0] : '{{ url("/No_Image_Available.jpg") }}';
-
-                    // Handle payment status
-                    var paymentStatusBadge = '';
-                    if (value.payment_status === 'succeeded') {
-                        paymentStatusBadge = '<span class="badge bg-success">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
-                    } else if (value.payment_status === 'processing') {
-                        paymentStatusBadge = '<span class="badge bg-primary">' + value.payment_status.charAt(0).toUpperCase() + value.payment_status.slice(1) + '</span>';
-                    } else {
-                        paymentStatusBadge = '<span class="badge bg-danger">Incompleted</span>';
-                    }
-
-                    // Append rows
-                    tableBody.append(`
-                        <tr>
-                            <td>${key + 1}</td>
-                            <td>${value.recipient_name || value.your_name}</td>
-                            <td>${value.payment_mode === 'Payment Gateway' ? (value.recipient_name ? value.your_name : 'Self') : '{{ Auth::user()->user_token }}'}</td>
-                            <td>${value.receipt_email || 'Medspa'}</td>
-                            <td class="text-uppercase">${value.coupon_code || '----'}</td>
-                            <td>${value.qty || '----'}</td>
-                            <td>${value.amount ? '$' + value.amount : '$ 0'}</td>
-                            <td>${value.discount ? '$' + value.discount : '$ 0'}</td>
-                            <td>${value.transaction_amount ? '$' + value.transaction_amount : '$ 0'}</td>
-                            <td>${paymentStatusBadge}</td>
-                            <td>${value.transaction_id}</td>
-                            <td>${new Date(value.created_at).toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</td>
-                            <td>
-                                <a type="button" class="btn btn-block btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop_${value.id}" onclick="cardview(${value.id},'${value.transaction_id}')">
-                                    View Card
-                                </a>
-                            </td>
-                        </tr>
-                    `);
-                });
-            } else {
-                // Handle empty results
-                $('#data-table-body').empty().append('<tr><td colspan="9">No results found.</td></tr>');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error:', error);
-            alert('An error occurred while fetching data.');
-        },
-    });
-}
-
-
 
 
     </script>
+
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush
