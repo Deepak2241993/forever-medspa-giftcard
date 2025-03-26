@@ -51,20 +51,20 @@
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                        {{-- <ul class="nav nav-treeview">
-                            <li class="nav-item">
+                        <ul class="nav nav-treeview">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('root') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard</p>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a href="{{ route('product-dashboard') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Product Dashboard</p>
                                 </a>
                             </li>
-                        </ul> --}}
+                        </ul>
                     </li>
                     {{-- end Dashboard --}}
                      
