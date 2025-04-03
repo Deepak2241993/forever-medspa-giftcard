@@ -115,12 +115,12 @@
 <script>
     $(function () {
       $("#datatable-buttons").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "responsive": true, "lengthChange": true, "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
       $('#example2').DataTable({
         "paging": true,
-        "lengthChange": false,
+        "lengthChange": true,
         "searching": false,
         "ordering": true,
         "info": true,
