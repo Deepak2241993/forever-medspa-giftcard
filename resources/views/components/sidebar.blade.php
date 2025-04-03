@@ -259,14 +259,14 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('keywords_reports') }}" class="nav-link">
                                     <i class="nav-icon fas fa-columns"></i>
                                     <p>
                                         Search Keywords Report
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
         
                             <li class="nav-item">
                                 <a href="{{ route('email-template.index') }}" class="nav-link">

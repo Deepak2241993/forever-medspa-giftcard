@@ -54,12 +54,12 @@
                 <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Service Name</th>
-                            <th>Unit Name</th>
-                            <th>Term & Conditions</th>
-                            <th>Created at</th>
-                            <th>Action</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Service Name">Service Name</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Unit Name">Unit Name</th>
+                            
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Created at">Created at</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
 
                         </tr>
                     </thead>
@@ -103,7 +103,7 @@
                                 </td>
                                 
                             
-                                <td>{{ mb_strimwidth(isset($value['description']) ? htmlspecialchars($value['description']) : 'NULL', 0, 100, '...') }}</td>
+                                {{-- <td>{{ mb_strimwidth(isset($value['description']) ? htmlspecialchars($value['description']) : 'NULL', 0, 100, '...') }}</td> --}}
 
                                 <td>{{ date('m-d-Y h:i:s', strtotime($value['created_at'])) }}</td>
                                 <td>
@@ -124,9 +124,9 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    {{ $result->links() }}
+                   
                 </table>
-                {{ $result->links() }}
+                {{-- {{ $result->links() }} --}}
                 <!--end::Row-->
                 <!-- /.Start col -->
             </div>
@@ -288,4 +288,21 @@
             });
         }
     </script>
+    <script>
+        $(function () {
+          $("#datatable-buttons").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+          }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+          $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+          });
+        });
+      </script>
 @endpush

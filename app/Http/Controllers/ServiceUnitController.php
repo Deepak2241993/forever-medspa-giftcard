@@ -19,7 +19,7 @@ class ServiceUnitController extends Controller
      */
     public function index()
     {
-        $result = ServiceUnit::where('product_is_deleted',0)->orderBy('id','DESC')->paginate(10);
+        $result = ServiceUnit::where('product_is_deleted',0)->orderBy('id','DESC')->get();
         return view('admin.service_unit.service_unit_index', compact('result'));
     }
 

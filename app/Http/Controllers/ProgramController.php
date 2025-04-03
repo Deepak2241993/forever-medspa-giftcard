@@ -18,7 +18,7 @@ class ProgramController extends Controller
         $data = Program::
         where('status', 1)
         ->where('is_deleted', 0)
-        ->paginate(10);
+        ->get();
     
         return view('admin.program.index', compact('data'));
 

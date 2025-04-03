@@ -23,30 +23,7 @@
         <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">Search Data</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row align-items-end">
-                            <!-- Service Search Form -->
-                            <div class="col-md-8">
-                                <form method="GET" action="{{ route('product.index') }}">
-                                    @csrf
-                                    <div class="mb-0">
-                                        <label for="service_name" class="form-label">Search by Service Name:</label>
-                                        <input type="text" class="form-control" id="service_name" name="service_name" placeholder="Enter Service Name" onkeyup="SearchView()">
-                                        <input type="hidden" class="form-control" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Add More Button -->
-                            <div class="col-md-4">
-                                <a href="{{ route('unit.create') }}" class="btn btn-dark w-100">Add More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
                 @if (session('message'))
                     <div class="alert alert-success mt-4">
@@ -62,15 +39,15 @@
                         </ul>
                     </div>
                 @endif
-                <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                <table id="datatable-buttons" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Unit Name</th>
-                            <th>Orignal Price</th>
-                            <th>Discounted Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Unit Name">Unit Name</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Orignal Price">Orignal Price</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Discounted Price">Discounted Price</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Status">Status</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
 
                         </tr>
                     </thead>
@@ -101,9 +78,9 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    {{ $result->links() }}
+                    
                 </table>
-                {{ $result->links() }}
+                {{-- {{ $result->links() }} --}}
                 <!--end::Row-->
                 <!-- /.Start col -->
             </div>
@@ -328,4 +305,22 @@
     });
 }
     </script>
+
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush
