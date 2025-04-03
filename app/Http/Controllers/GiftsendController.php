@@ -260,38 +260,21 @@ else{
 
     //  for giftcard redeem
     public function giftcardredeemView(Request $request)
-    {
-        $token = Auth::user()->user_token;
-        $data_arr = ['name' => '', 'email' => '', 'giftcardnumber' => '', 'user_token' => $token];
-        $data = json_encode($data_arr);
-        $result = $this->postAPI('gift-card-search', $data);
-    
-        if (isset($result['status']) && $result['status'] == 200) {
-            $getdata = $result['result'];
-    
-            // Convert the data array into a Collection
-            $collection = collect($getdata);
-    
-            // Get the current page from the request, default to 1
-            $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    
-            // Define how many items you want per page
-            $perPage = 10; // Example: 10 items per page
-    
-            // Slice the collection to get the items to display in the current page
-            $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
-    
-            // Create our paginator
-            $paginatedItems = new LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
-    
-            // Set the pagination path
-            $paginatedItems->setPath($request->url());
-            return view('admin.redeem.redeem_view', compact('paginatedItems'));
-        } else {
-            $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
-            return view('admin.redeem.redeem_view')->with('error', $error);
-        }
+{
+    $token = Auth::user()->user_token;
+    $data_arr = ['name' => '', 'email' => '', 'giftcardnumber' => '', 'user_token' => $token];
+    $data = json_encode($data_arr);
+    $result = $this->postAPI('gift-card-search', $data);
+
+    if (isset($result['status']) && $result['status'] == 200) {
+        $getdata = $result['result'];
+        return view('admin.redeem.redeem_view', compact('getdata'));
+    } else {
+        $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
+        return view('admin.redeem.redeem_view')->with('error', $error);
     }
+}
+
     public function GiftCardSearch(Request $request)
     {
         $data_arr = $request->except('_token');
@@ -461,6 +444,7 @@ public function cardgeneratedList(Request $request, User $user, GiftcardsNumbers
     $token = Auth::user()->user_token;
     $data_arr = ['user_token' => $token];
     $data = json_encode($data_arr);
+
     $result = $this->postAPI('gift-list', $data);
 
     // if (isset($result['status']) && $result['status'] == 200) {

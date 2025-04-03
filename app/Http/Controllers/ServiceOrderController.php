@@ -105,20 +105,17 @@ class ServiceOrderController extends Controller
 
       //  for giftcard redeem
 
-public function ServiceRedeemView(Request $request,TransactionHistory $transaction)
+      public function ServiceRedeemView(Request $request, TransactionHistory $transaction)
       {
-
-        if(Auth::user()->user_type==1)
-        {
-        $data=$transaction->orderBy('id','DESC')->paginate(10);
-        }
-        else{
-            $id=Auth::user()->id;
-            $data=$transaction->where('user_id',$id)->orderBy('id','DESC')->get();
-        }
-        return view('admin.redeem.service_redeem',compact('data'));
-
+          if (Auth::user()->user_type == 1) {
+              $data = $transaction->orderBy('id', 'DESC')->get();
+          } else {
+              $id = Auth::user()->id;
+              $data = $transaction->where('user_id', $id)->orderBy('id', 'DESC')->get();
+          }
+          return view('admin.redeem.service_redeem', compact('data'));
       }
+      
 
       public function ServiceRedeem(Request $request, ServiceRedeem $service_redeem)
         {

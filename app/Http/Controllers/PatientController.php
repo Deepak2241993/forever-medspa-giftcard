@@ -25,8 +25,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $data = Patient::
-        paginate(50);
+        $data = Patient::where('is_deleted',0)->orderBy('id', 'DESC')->get();
     
         return view('admin.patient.index', compact('data'));
     }

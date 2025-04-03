@@ -17,7 +17,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/medspa-program-management/public/api/"
+            "url": "http://localhost/forever-medspa-giftcard/public/api/"
         }
     ],
     "paths": {
@@ -71,6 +71,7 @@
                     "Gift-Cards"
                 ],
                 "summary": "Gift Send For  Someone else",
+                "operationId": "0df57bb9d00c2652f7191c80970dab9c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -192,6 +193,10 @@
                                     "coupon_code": {
                                         "type": "string",
                                         "example": "CCODE12"
+                                    },
+                                    "patient_login_id": {
+                                        "type": "string",
+                                        "example": "xyz@123"
                                     }
                                 },
                                 "type": "object"

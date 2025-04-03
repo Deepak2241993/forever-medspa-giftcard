@@ -1,5 +1,6 @@
 @extends('layouts.admin_layout')
 @section('body')
+ 
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -19,57 +20,27 @@
 </section>
 <section class="content-header">
     
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Search Data</h4>
-        </div>
-        <div class="card-body">
-                <form method="get" action="{{ route('giftcard-search') }}">
-                    <div class="mb-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Gift Card Holder Name">
-                            </div>
-                            <div class="col-md-3">
-                            
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter User Name">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="giftcardnumber" name="giftcardnumber" placeholder="FEMS-2024-8147">
-                            </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <input type="hidden" class="form-control" name="user_token" value="{{ Auth::user()->user_token }}">
-                                <button type="submit"  class="btn btn-block btn-outline-success">Search</button>
-                            </div>
-                            <div class="col-md-1 d-flex align-items-end">
-                                <input type="hidden" class="form-control" name="user_token" value="{{ Auth::user()->user_token }}">
-                                <a href="{{route('giftcardredeem-view')}}" class="btn btn-block btn-outline-warning"><i class="fa fa-refresh" aria-hidden="true"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-        </div>
-    </div>
+    
 
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            @if($paginatedItems->count())
-            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+            @if(count($getdata) > 0)
+            <table id="datatable-buttons" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Gift Card Holder Name</th>
-                        <th>User Name </th>
-                        <th>Gift Card Number</th>
-                        <th>Gift Card Amount</th>
-                        <th>Gift Card Status</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending">#</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending"aria-label="Gift Card Holder Name">Gift Card Holder Name</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending"aria-label="User Name">User Name </th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending"aria-label="Gift Card Number">Gift Card Number</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending"aria-label="Gift Card Amount">Gift Card Amount</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending"aria-label="Gift Card Status">Gift Card Status</th>
                         {{-- <th>Created Time</th> --}}
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($paginatedItems as $key=>$value)
+                    @foreach($getdata as $key=>$value)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $value['recipient_name'] ? $value['recipient_name']:$value['your_name'] }}</td>
@@ -94,9 +65,9 @@
                    
                     @endforeach
                 </tbody>
-                {{ $paginatedItems->links() }}
+                {{-- {{ $getdata->links() }} --}}
             </table>
-            {{ $paginatedItems->links() }}
+            {{-- {{ $getdata->links() }} --}}
             @else
             <hr>
             <p> No Data found </p>
@@ -427,5 +398,21 @@ function cancelgiftcard(event) {
     }
 }
     </script>
-    
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
   @endpush

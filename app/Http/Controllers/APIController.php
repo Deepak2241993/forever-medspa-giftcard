@@ -207,6 +207,7 @@ public function gift_send_store_self (Request $request,Giftsend $giftsend,User $
  */
 public function list(Request $request,Giftsend $giftsend,GiftcardsNumbers $numbers)
 {
+
     $token=$request->user_token;
     $result=$giftsend->where('user_token',$token)->orderBy('id','DESC')->get();
 

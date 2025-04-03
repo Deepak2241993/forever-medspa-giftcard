@@ -35,10 +35,6 @@
             box-sizing: border-box;
         }
     </style>
-      <!-- DataTables -->
-  <link rel="stylesheet" href="{{url('/')}}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="{{url('/')}}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="{{url('/')}}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
 <section class="content-header">
     <div class="container-fluid">

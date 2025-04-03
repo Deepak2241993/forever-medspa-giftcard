@@ -16,31 +16,7 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
-<div class="card">
-    <div class="card-header">
-        <h4 class="mb-0">Search Data</h4>
-    </div>
-    <div class="card-body">
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <label for="fname" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" onkeyup="SearchView()">
-            </div>
-            <div class="col-md-3">
-                <label for="lname" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" onkeyup="SearchView()">
-            </div>
-            <div class="col-md-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" onkeyup="SearchView()">
-            </div>
-            <div class="col-md-3">
-                <label for="phone" class="form-label">Phone:</label>
-                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone" onkeyup="SearchView()">
-            </div>
-        </div>
-    </div>
-</div>
+
 <section class="content-header">
     <!--begin::App Content-->
     <div class="app-content">
@@ -77,17 +53,17 @@
                     <div style="overflow: scroll">
                         {{-- <div class="scroll-content"> --}}
 
-                        <table id="datatable-buttons" class="table table-bordered table-striped">
+                            <table id="datatable-buttons" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Action</th>
-                                    <th>Patient Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>Zip Code</th>
-                                    <th>Status</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Patient Name">Patient Name</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Email">Email</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Phone">Phone</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Address">Address</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Zip Code">Zip Code</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Status">Status</th>
                                 </tr>
                             </thead>
                             <tbody id="data-table-body">
@@ -134,11 +110,11 @@
                                 @endif
                                 
                                 <br>
-                                {{ $data->links() }}
+                                {{-- {{ $data->links() }} --}}
                             </tbody>
                         </table>
 
-                        {{ $data->links() }}
+                        {{-- {{ $data->links() }} --}}
                        
 
                     </div>
@@ -153,70 +129,6 @@
 
 @push('script')
 <script>
-$(document).ready(function () {
-    window.SearchView = function() {
-        var fname = $('#fname').val();
-        var lname = $('#lname').val();
-        var email = $('#email').val();
-        var phone = $('#phone').val();
-
-        $.ajax({
-            url: "{{ route('patient.search') }}",
-            method: "GET",
-            data: { fname, lname, email, phone },
-            success: function(response) {
-                if (response.status === 'success') {
-                    var tableBody = $('#data-table-body');
-                    tableBody.empty();
-                    if (response.data.data && response.data.data.length > 0) {
-                        $.each(response.data.data, function(key, value) {
-                            var updatedDate = new Date(value.updated_at).toLocaleString('en-US', {
-                                month: '2-digit',
-                                day: '2-digit',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit'
-                            });
-
-                            tableBody.append(`
-                                <tr>
-                                    <td>${key + 1}</td>
-                                    <td>
-                                        <a href="{{ url('/') }}/admin/patient/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
-                                        <form action="{{ url('/') }}/admin/patient/${value.id}" method="POST" style="display:inline;">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
-                                        </form>
-                                    </td>
-                                    <td>${value.fname} ${value.lname}</td>
-                                    <td>${value.email}</td>
-                                    <td>${value.phone}</td>
-                                    <td>${value.address}</td>
-                                    <td>${value.zip_code}</td>
-                                    <td>
-                                        <span class="badge bg-${value.status === '1' ? 'success' : 'danger'}">
-                                           ${value.status === '1' ? 'Active' : 'Inactive'}
-                                        </span>
-                                    </td>
-                                </tr>
-                            `);
-                        });
-                    } else {
-                        tableBody.append('<tr><td colspan="8">No results found.</td></tr>');
-                    }
-                } else {
-                    alert(response.message || 'No results found.');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('An error occurred while fetching data.');
-            }
-        });
-    }
-});
 
 function deletePatient(id) {
     if (confirm('Are you sure you want to delete this patient?')) {
@@ -228,7 +140,6 @@ function deletePatient(id) {
             },
             success: function(response) {
                 alert(response.message);
-                SearchView();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
@@ -239,4 +150,22 @@ function deletePatient(id) {
 }
 
 </script>
+
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush
