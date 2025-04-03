@@ -26,7 +26,7 @@
                                         <h4>Verify your email</h4>
                                         <p>We have sent you verification email <span class="fw-bold">example@abc.com</span>, Please check it</p>
                                         <div class="mt-4">
-                                            <a href="{{ url('index') }}" class="btn btn-primary w-10">Verify email</a>
+                                            <a href="{{ url('index') }}"  class="btn btn-block btn-outline-primary w-10">Verify email</a>
                                         </div>
                                     </div>
                                 </div>

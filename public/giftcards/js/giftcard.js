@@ -1,28 +1,4 @@
-//  for amount move to next window
 
-function fixamount(amount){
-if(amount!="" && amount!=0)
-    {
-        $('#secondbox').show();
-        $('#firstbox').hide(); 
-        $('#personal').addClass('active');
-       $("#amountdisplay").html('1 X '+'$'+amount + ' gift card');
-       $("#amountdisplay").attr('amount', amount);
-       $("#amountdisplay").attr('finalAmount', amount);
-
-    }
-    else{
-        alert('Amount is Not Selected');
-        $('#secondbox').hide(); 
-    }
-}
-
-function firstboxshow(){
-    location.reload();
-    // $('#secondbox').hide();
-    // $('#firstbox').show(); 
-    // $('#personal').removeClass('active');
-}
 function qtychange(){
     var qty = $('#qty').val();
     var price = $("#amountdisplay").attr('amount');
@@ -42,39 +18,6 @@ function sqtychange(){
     $("#amountdisplay").attr('coupondiscount', 0);
     
 }
-
-//  for custome amount giftcard
-
-function customeamount(amount){
-    var amount = $('#customeamount').val();
-
-    if(amount!="")
-    {
-        if(amount<25)
-        {
-            alert('The Amount should be more than or equal to $25');
-            return false;	
-        }
-        if(amount>2000)
-        {
-            alert('Your is more the $2000 please enter less then $2000 or equal to $2000');
-            return false;	
-        }
-        $('#secondbox').show();
-        $('#firstbox').hide(); 
-        $('#personal').addClass('active');
-         $("#amountdisplay").html('1 X '+'$'+amount + ' gift card');
-         $("#amountdisplay").attr('amount', amount);
-         $("#amountdisplay").attr('finalAmount', amount);
-
-
-    }
-    else{
-        alert('Enter Amount');
-        $('#secondbox').hide(); 
-    }
-    
-    }
 
     // Default Show 
     $('#someoneform').show();

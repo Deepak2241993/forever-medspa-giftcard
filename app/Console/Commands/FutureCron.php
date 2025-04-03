@@ -23,7 +23,7 @@ class FutureCron extends Command
      *
      * @var string
      */
-    protected $description = 'This Command use for Comman Cronjob Run';
+    protected $description = 'Send Email for Buy Future Giftcards';
 
     /**
      * Execute the console command.

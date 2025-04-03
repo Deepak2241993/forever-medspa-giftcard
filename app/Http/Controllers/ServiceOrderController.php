@@ -19,6 +19,9 @@ use App\Mail\RefundReceiptMail;
 use Illuminate\Support\Facades\Log;
 use Stripe\Stripe;
 use Stripe\Refund;
+use App\Events\TimelineServiceRedeem;
+use App\Events\TimelineServiceCancel;
+use App\Events\TimelineServiceRefund;
 
 class ServiceOrderController extends Controller
 {
@@ -102,82 +105,113 @@ class ServiceOrderController extends Controller
 
       //  for giftcard redeem
 
-public function ServiceRedeemView(Request $request,TransactionHistory $transaction)
+      public function ServiceRedeemView(Request $request, TransactionHistory $transaction)
       {
-
-        if(Auth::user()->user_type==1)
-        {
-        $data=$transaction->orderBy('id','DESC')->paginate(10);
-        }
-        else{
-            $id=Auth::user()->id;
-            $data=$transaction->where('user_id',$id)->orderBy('id','DESC')->get();
-        }
-        return view('admin.redeem.service_redeem',compact('data'));
-
+          if (Auth::user()->user_type == 1) {
+              $data = $transaction->orderBy('id', 'DESC')->get();
+          } else {
+              $id = Auth::user()->id;
+              $data = $transaction->where('user_id', $id)->orderBy('id', 'DESC')->get();
+          }
+          return view('admin.redeem.service_redeem', compact('data'));
       }
+      
 
       public function ServiceRedeem(Request $request, ServiceRedeem $service_redeem)
-      {
-          // Validate the request data
-          $validatedData = $request->validate([
-              'order_id' => 'required|string|max:255',
-              'number_of_session_use' => 'required|integer|min:1',
-              'comments' => 'nullable|string|max:255',
-          ]);
-      
-          // Create a new record using the validated data
-        //   try {
-            $data = $request->all();
-            $data['user_token'] = 'FOREVER-MEDSPA';
-            $data['transaction_id'] = 'SER-RED' . time();
-            
-            // Create the record and get the inserted model instance
-            $result = $service_redeem->create($data);
-            
-            // Update the transaction ID with the concatenated latest inserted ID
-            if ($result) {
-                $result->transaction_id = 'SER-RED' . $result->id;
-                $result->save();
-                $transactionresult = TransactionHistory::where('order_id',$result->order_id)->first();
-                Mail::to($transactionresult->email)->send(new ServiceRedeemReceipt($transactionresult));
-            }
-
-          // Return a JSON response indicating success
-          return response()->json(['success' => true, 'message' => 'Service redeemed successfully.']);
-      }
-      
-      public function SearchServiceOrder(Request $request, TransactionHistory $transaction)
         {
-            // Start with a base query
-            $query = $transaction->query();
+            // Validate the request data
+            $validatedData = $request->validate([
+                'order_id' => 'required|string|max:255',
+                'number_of_session_use' => 'required|integer|min:1',
+                'comments' => 'nullable|string|max:255',
+            ]);
 
-            // Apply different logic based on user type
-            if (Auth::user()->user_type == 1) {
-                // Admin user type logic: filter based on form inputs
-                if ($request->filled('order_id')) {
-                    $query->where('order_id', 'LIKE', '%' . $request->order_id . '%');
+            // Log the request data
+            Log::info('ServiceRedeem called', ['request_data' => $request->all()]);
+
+            try {
+                $data = $request->all();
+                $data['user_token'] = 'FOREVER-MEDSPA';
+                $data['transaction_id'] = 'SER-RED' . time();
+                $data['updated_by'] = Auth::user()->id;
+
+                // Create the record and get the inserted model instance
+                $result = $service_redeem->create($data);
+
+                // Log the result of the creation
+                Log::info('Service redeem record created', ['result' => $result]);
+
+                if ($result) {
+                    // Update the transaction ID with the concatenated latest inserted ID
+                    $result->transaction_id = 'SER-RED' . $result->id;
+                    $result->save();
+                    event(new TimelineServiceRedeem([
+                        'session_id' => $result->id,
+                        'transaction_id' => $result->transaction_id,
+                        'patient_id'=> $result->patient_login_id,
+                    ]));
+                    Log::info('Transaction ID updated', ['transaction_id' => $result->transaction_id]);
+
+                    // Fetch transaction history and send an email
+                    $transactionResult = TransactionHistory::where('order_id', $result->order_id)->first();
+
+                    if ($transactionResult) {
+                        Mail::to($transactionResult->email)->send(new ServiceRedeemReceipt($transactionResult));
+                        Log::info('ServiceRedeemReceipt email sent', ['email' => $transactionResult->email]);
+                    } else {
+                        Log::warning('Transaction history not found', ['order_id' => $result->order_id]);
+                    }
+                }
+
+                // Return a JSON response indicating success
+                return response()->json(['success' => true, 'message' => $request->number_of_session_use . ' session(s) redeemed successfully.']);
+            } catch (\Exception $e) {
+                // Log the exception
+                Log::error('Error in ServiceRedeem', ['error' => $e->getMessage(), 'stack' => $e->getTraceAsString()]);
+
+                // Return an error response
+                return response()->json(['success' => false, 'message' => 'Failed to redeem session(s). Please try again later.'], 500);
+            }
+        }
+      
+      
+        
+        // For onkey press function call
+        
+        public function SearchOrderApi(Request $request, TransactionHistory $transaction)
+            {
+                // Start with a base query
+                $query = $transaction->query();
+
+                // Apply filters if present in the request
+                if ($request->filled('fname')) {
+                    $query->whereRaw('LOWER(fname) LIKE ?', ['%' . strtolower($request->fname) . '%']);
+                }
+
+                if ($request->filled('lname')) {
+                    $query->whereRaw('LOWER(lname) LIKE ?', ['%' . strtolower($request->lname) . '%']);
                 }
 
                 if ($request->filled('email')) {
-                    $query->where('email', 'LIKE', '%' . $request->email . '%');
+                    $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($request->email) . '%']);
                 }
-
                 if ($request->filled('phone')) {
-                    $query->where('phone', 'LIKE', '%' . $request->phone . '%');
+                    $query->whereRaw('LOWER(phone) LIKE ?', ['%' . strtolower($request->phone) . '%']);
                 }
 
-            } else {
-                // Non-admin user logic: filter based on user ID
-                $id = Auth::user()->id;
-                $query->where('user_id', $id);
+                // Order and paginate results
+                $data = $query->orderBy('id', 'DESC')->paginate(10);
+
+                // Return response as JSON
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Search results retrieved successfully.',
+                    'data' => $data,
+                ], 200);
             }
 
-            // Order and paginate results
-            $data = $query->orderBy('id', 'DESC')->paginate(10);
+        //  End function
 
-            return view('admin.redeem.service_redeem', compact('data'));
-        }
 
         public function getServiceStatement(Request $request)
         {
@@ -250,7 +284,8 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                 'service_orders.actual_amount',
                 'service_orders.discounted_amount',
                 'service_orders.payment_mode',
-                'service_orders.user_token'
+                'service_orders.user_token',
+                'service_orders.patient_login_id'
             )
             ->get();
 
@@ -279,16 +314,22 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
 
     try {
         $data = $request->all();
+       
         $data['user_token'] = 'FOREVER-MEDSPA';
         
         $result = $service_redeem->create($data);
 
         if ($result) {
             $result->transaction_id = 'SER-CAN-' . $result->id;
+            $result->updated_by = Auth::user()->id;
             $result->save();
 
             $transactionresult = TransactionHistory::where('order_id', $result->order_id)->first();
-
+            //  For Timeline store data
+            event(new TimelineServiceCancel([
+                'transaction_id' => $result->transaction_id,
+                'patient_id' => $result->patient_login_id,
+            ]));
             try {
                 // Send cancellation email
                 Mail::to($transactionresult->email)->send(new DealsCancle($transactionresult));
@@ -308,19 +349,29 @@ public function ServiceRedeemView(Request $request,TransactionHistory $transacti
                         'amount' => $request->refund_amount * 100,  // Amount is in cents
                         'reason' => 'requested_by_customer',  // Reason for refund
                     ]);
-
+                
                     $balanceTransaction = \Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
-
+                
                     // After a successful refund, send a receipt
                     $this->sendRefundReceipt($transactionresult->email, $refund);
-                    // for update status 
+                
+                    // Update status
                     $result->update(['status' => 0]);
-
+                
+                    // Trigger event with stripped details (no sensitive data)
+                    event(new TimelineServiceRefund([
+                        'refund_id' => $refund->id,               // Only refund ID
+                        'status' => $refund->status,              // Refund status
+                        'amount' => $refund->amount / 100,        // Amount in standard currency format
+                        'created_at' => $refund->created,         // Timestamp of refund
+                        'patient_id' =>$result->patient_login_id,         // Timestamp of refund
+                    ]));
                 } catch (\Exception $e) {
                     // Log if refund process fails
                     Log::error('Stripe Refund failed: ' . $e->getMessage());
                     return response()->json(['success' => false, 'message' => 'Failed to process refund.']);
                 }
+                
             }
             else{
                 $result->update(['status' => 0]);

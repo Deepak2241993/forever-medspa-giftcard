@@ -14,14 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('giftcards_numbers', function (Blueprint $table) {
-            $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->string('user_token')->nullable();
-            $table->string('giftnumber')->unique()->nullable(false);
-            $table->float('amount', 8, 2)->nullable()->default(0.00);
+            $table->bigIncrements('id'); // Primary Key
+            $table->string('user_id', 191)->nullable();
+            $table->string('transaction_id', 191)->nullable()->index(); // Indexed field
+            $table->string('user_token', 191)->nullable();
+            $table->string('giftnumber', 191)->nullable();
+            $table->double('amount', 8, 2)->default(0.00);
             $table->tinyInteger('status')->default(1);
-            $table->timestamps();
+            $table->string('comments', 255)->nullable();
+            $table->double('actual_paid_amount', 8, 2)->nullable();
+            $table->timestamps(); // created_at and updated_at
         });
     }
 

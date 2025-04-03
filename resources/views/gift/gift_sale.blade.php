@@ -1,7 +1,7 @@
 @extends('layouts.admin_layout')
 @section('body')
 <style>
-    .btn-warning {
+    .btn-outline-warning {
         --bs-btn-color: #000;
         --bs-btn-bg: #d3d3d3;
         --bs-btn-border-color: #d3d3d3;
@@ -302,7 +302,7 @@
     .right-content {
         float: right;
 
-        .btn-warning {
+        .btn-outline-warning {
             width: 80px;
         }
     }
@@ -342,10 +342,10 @@
                         <p>Fill all form field to go to next step</p>
 
                         <div class="button-group ml-6 mb-4">
-                            <button type="button" class="btn btn-light active" id="someone"
+                            <button type="button"  class="btn btn-block btn-light active" id="someone"
                                 onclick="giftCardSentType('someone')"><i class="fa fa-gift" aria-hidden="true"></i>
                                 Someone else</button>
-                            <button type="button" class="btn btn-light" id="self" onclick="giftCardSentType('self')"><i
+                            <button type="button"  class="btn btn-block btn-light" id="self" onclick="giftCardSentType('self')"><i
                                     class="fa fa-user" aria-hidden="true"></i> Yourself</button>
                         </div>
                         <div class="row">
@@ -382,7 +382,7 @@
                                                 <span class="giftlist">$25 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$25</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(25, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -390,7 +390,7 @@
                                                 <span class="giftlist">$50 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$50</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(50, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -398,7 +398,7 @@
                                                 <span class="giftlist">$75 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$75</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(75, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -406,7 +406,7 @@
                                                 <span class="giftlist">$100 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$100</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(100, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -421,7 +421,7 @@
                                                             onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                                     </div>
                                                     {{-- <div class="col-md-2">
-                                                       <button class="btn btn-warning right-content button_width" type="button" onclick="CustomeamountOther()">Buy</button>
+                                                       <button  class="btn btn-warning right-content button_width" type="button" onclick="CustomeamountOther()">Buy</button>
                                                    </div> --}}
                                                 </div>
                                                 <span class="text-danger amounterror"></span>
@@ -429,8 +429,10 @@
                                             <p class="p-2">Give the gift of rejuvenation and relaxation with a Medspa
                                                 gift card - perfect for you and your friends!</p>
                                         </ul>
-                                        <input type="button" id="check_amount_other_button" name="next"
-                                            class="next action-button" value="Next Step" />
+                                        <input type="button" id="check_amount_other_button" name="next" class="next action-button" 
+    onclick="$('#personal').addClass('active'); $('#payment').removeClass('active');" value="Next Step" />
+
+
                                     </section>
 
                                     <section id="o_two">
@@ -452,20 +454,37 @@
                                                     <input type="hidden" name="user_token" value="FOREVER-MEDSPA"
                                                         class="user_token">
                                                 </div>
-                                                <div class="mb-3 col-lg-12 self">
-                                                    <label for="your_name" class="form-label">Your name<span
+                                                <div class="mb-3 col-lg-6 self">
+                                                    <label for="your_name" class="form-label">Sender Name<span
                                                             class="text-danger">*</span></label>
                                                     <input class="form-control" type="text" name="your_name" value=""
                                                         placeholder="From Name" id="your_name" autocomplete="off">
                                                     <span id="your_name_error" class="text-danger"></span>
                                                 </div>
-                                                <div class="mb-3 col-lg-12">
-                                                    <label for="recipient_name" class="form-label">Recipient name<span
+                                                <div class="mb-3 col-lg-6" id="giftSendByEmail">
+                                                    <label for="receipt_email" class="form-label"><b>Sender Email<span
+                                                                class="text-danger">*</span></b></label>
+                                                    <input class="form-control" type="email" name="receipt_email"
+                                                        value=""
+                                                        placeholder="Sender's Email address (for the receipt)"
+                                                        id="receipt_email" autocomplete="off">
+                                                    <span id="receipt_email_error" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3 col-lg-6">
+                                                    <label for="recipient_name" class="form-label">Receiver Name<span
                                                             class="text-danger">*</span></label>
                                                     <input class="form-control" type="text" name="recipient_name"
                                                         value="" placeholder="To Name" id="recipient_name"
                                                         autocomplete="off">
                                                     <span id="recipient_name_error" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3 col-lg-6" id="giftSendByEmail">
+                                                    <label for="gift_send_to" class="form-label"><b>Receiver Email<span
+                                                                class="text-danger">*</span></b></label>
+                                                    <input class="form-control" type="email" name="gift_send_to"
+                                                        value="" placeholder="Recipient Email Address"
+                                                        id="gift_send_to" autocomplete="off">
+                                                    <span id="gift_send_to_error" class="text-danger"></span>
                                                 </div>
                                                 <div class="mb-3 col-lg-12">
                                                     <label for="message" class="form-label">Message</label>
@@ -473,25 +492,8 @@
                                                         class="form-control"></textarea>
                                                 </div>
                                                 <div id="emailfields">
-                                                    <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
-                                                        <label for="gift_send_to" class="form-label"><b>What email
-                                                                address should we send the gift card to?<span
-                                                                    class="text-danger">*</span></b></label>
-                                                        <input class="form-control" type="email" name="gift_send_to"
-                                                            value="" placeholder="Recipient Email Address"
-                                                            id="gift_send_to" autocomplete="off">
-                                                        <span id="gift_send_to_error" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="mb-3 col-lg-12 mt-2" id="giftSendByEmail">
-                                                        <label for="receipt_email" class="form-label"><b>Your email
-                                                                address (for the receipt)<span
-                                                                    class="text-danger">*</span></b></label>
-                                                        <input class="form-control" type="email" name="receipt_email"
-                                                            value=""
-                                                            placeholder="Sender's Email address (for the receipt)"
-                                                            id="receipt_email" autocomplete="off">
-                                                        <span id="receipt_email_error" class="text-danger"></span>
-                                                    </div>
+                                                    
+                                                    
                                                     <div class="mb-3 col-lg-12">
                                                         <label for="future_yes">
                                                             <input type="radio" id="future_yes" value="yes"
@@ -519,7 +521,7 @@
                                                         id="coupon_code">
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <button class="btn btn-warning couponValidate" type="button"
+                                                    <button  class="btn btn-warning couponValidate" type="button"
                                                         onclick="CheckCoupon()">Apply Code</button>
                                                 </div>
                                             </div>
@@ -565,7 +567,7 @@
                                         </div>
                                         <button type="button" class="previous btn btn-dark action-button-previous">Go
                                             Back</button>
-                                        <input type="submit" name="cok" value="Submit" class="btn btn-success" style="width: 50%;
+                                        <input type="submit" name="cok" value="Submit"  class="btn btn-success" style="width: 50%;
                                        font-weight: bold;
                                        color: white;
                                        border: 0 none;
@@ -596,7 +598,7 @@
                                                 <span class="giftlist">$25 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$25</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(25, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -604,7 +606,7 @@
                                                 <span class="giftlist">$50 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$50</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(50, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -612,7 +614,7 @@
                                                 <span class="giftlist">$75 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$75</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(75, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -620,7 +622,7 @@
                                                 <span class="giftlist">$100 gift card</span>
                                                 <div class="right-content">
                                                     <span class="giftamount">$100</span>
-                                                    <button class="btn btn-warning" type="button"
+                                                    <button  class="btn btn-warning" type="button"
                                                         onclick="fixamount(100, this)">Buy</button>
                                                 </div>
                                             </li>
@@ -635,7 +637,7 @@
                                                             onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                                     </div>
                                                     {{-- <div class="col-md-2">
-                                                       <button class="btn btn-warning right-content button_width" type="button" onclick="CustomeamountSelf()">Buy</button>
+                                                       <button  class="btn btn-warning right-content button_width" type="button" onclick="CustomeamountSelf()">Buy</button>
                                                    </div> --}}
                                                 </div>
                                                 <span class="text-danger amounterror"></span>
@@ -693,7 +695,7 @@
                                                             id="scoupon_code" message="">
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <button class="btn btn-warning right-content" type="button"
+                                                        <button  class="btn btn-warning right-content" type="button"
                                                             onclick="SCheckCoupon()">Apply Code</button>
                                                     </div>
                                                     <div class="text-success Coupon_success" style="margin-left: 20px;">
@@ -741,7 +743,7 @@
 
                                         <button type="button" class="previous btn btn-dark action-button-previous">Go
                                             Back</button>
-                                        <input type="submit" name="cok" value="Submit" class="btn btn-success" style="width: 50%;
+                                        <input type="submit" name="cok" value="Submit"  class="btn btn-block btn-outline-success" style="width: 50%;
                                     font-weight: bold;
                                     color: white;
                                     border: 0 none;
@@ -778,7 +780,7 @@
             $('#customeamount_self').val("");
 
             // Remove 'active' class from all buttons
-            var buttons = document.querySelectorAll('.btn-warning');
+            var buttons = document.querySelectorAll('.btn-outline-warning');
             buttons.forEach(function (btn) {
                 btn.classList.remove('active');
             });
@@ -798,12 +800,11 @@
             for (var i = 0; i < selectElements.length; i++) {
                 selectElements[i].value = '1';
             }
-
             console.log('Amount selected:', amount);
         }
 
         function CustomeamountOther() {
-            var activeElements = document.querySelectorAll('.btn-warning.active');
+            var activeElements = document.querySelectorAll('.btn-outline-warning.active');
 
             // Remove the 'active' class from each element
             activeElements.forEach(function (element) {
@@ -916,7 +917,7 @@
 
         //  For Self Code 
         function CustomeamountSelf() {
-            var activeElements = document.querySelectorAll('.btn-warning.active');
+            var activeElements = document.querySelectorAll('.btn-outline-warning.active');
             // Remove the 'active' class from each element
             activeElements.forEach(function (element) {
                 element.classList.remove('active');
@@ -1167,15 +1168,9 @@
                 document.getElementById('o_two').style.display = 'none';
                 // Assuming the next section has an id of 'nextSection'
                 document.getElementById('o_three').style.display = 'block';
-                $('#payment').addClass("active");
-
+               
             }
-            // else {
-            //     // If validation fails, do not proceed
-            //     // Optionally, you can show an error message or highlight invalid fields
-            //     alert('Please fill in all required fields.');
-            //     document.getElementById('o_three').style.display = 'none';
-            // }
+            $('#payment').addClass('active');
             var amount = $('#fix_amount').val();
             $('#amount_input').val(amount);
             $('#samount_input').val(amount);
@@ -1287,4 +1282,79 @@
         }
 
     </script>
+
+<script>
+$(document).ready(function () {
+    function setupAutocomplete(inputField) {
+        $(inputField).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{route('email-suggestions')}}", // Laravel route to fetch emails
+                    type: "GET",
+                    data: {
+                        query: request.term
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        response(data);
+                    },
+                    error: function () {
+                        console.error("Error fetching email suggestions.");
+                    }
+                });
+            },
+            minLength: 2, // Start suggesting after 2 characters
+            select: function (event, ui) {
+                $(inputField).val(ui.item.value);
+                return false;
+            }
+        });
+    }
+
+    // Apply autocomplete to both email fields
+    setupAutocomplete("#receipt_email"); // Sender Email
+    setupAutocomplete("#gift_send_to"); // Receiver Email
+});
+// For Name Search
+
+$(document).ready(function () {
+    function setupAutocomplete(inputField) {
+        $(inputField).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{ route('name-suggestions') }}", // Laravel route
+                    type: "GET",
+                    data: {
+                        query: request.term
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("Autocomplete Data:", data); // Debugging
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.full_name, // Display full name
+                                value: item.full_name // Fill input with selected name
+                            };
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching name suggestions:", error);
+                    }
+                });
+            },
+            minLength: 2, // Start suggesting after 2 characters
+            select: function (event, ui) {
+                $(inputField).val(ui.item.value); // Set the input value
+                return false;
+            }
+        });
+    }
+
+    setupAutocomplete("#your_name"); // Sender Name
+    setupAutocomplete("#recipient_name"); // Receiver Name
+});
+
+</script>
+
+
 @endpush

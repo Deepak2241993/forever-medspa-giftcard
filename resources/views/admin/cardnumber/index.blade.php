@@ -62,8 +62,9 @@
             <!--begin::Container-->
             <section class="content">
                 <div class="container-fluid">
+
                     <!--begin::Row-->
-                    {{-- <a href="{{route('medspa-gift.create')}}" class="btn btn-primary">Add More</a> --}}
+                    {{-- <a href="{{route('medspa-gift.create')}}"  class="btn btn-block btn-outline-primary">Add More</a> --}}
                     <div class="card-header">
                         @if (session()->has('error'))
                             <p class="text-danger"> {{ session()->get('error') }}</p>
@@ -73,104 +74,124 @@
                         @endif
                     </div>
                     <span class="text-success"id="response_msg"></span>
+                   
+                    
                     <div class="scroll-container">
                         <div style="overflow: scroll">
                             {{-- <div class="scroll-content"> --}}
-                                @if($paginatedItems->count())
+                                @if(count($data) > 0)
                                 <table id="datatable-buttons" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Receiver Name</th>
-                                            <th>Received From</th>
-                                            <!--<th>Message</th>-->
-                                            <th>Sender's Email</th>
-                                            <th>Coupon Code</th>
-                                            <th>Number of Giftcards</th>
-                                            <th>Giftcard Value</th>
-                                            <th>Discount</th>
-                                            <th>Paid Amount</th>
-                                            <th>Payment Status</th>
-                                            <th>Transaction Id</th>
-                                            <th>Generated Date & Time</th>
-                                            <th>Giftcard Number</th>
-                                            <th>Send Mail</th>
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending">#</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Giftcard Number: activate to sort column descending">Giftcard Number</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Send Mail: activate to sort column descending">Send Mail</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Sender Name: activate to sort column descending">Sender Name</th>
+                 
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Receiver Name: activate to sort column descending">Receiver Name</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Number of Giftcards: activate to sort column descending">Number of Giftcards</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Giftcard Value: activate to sort column descending">Giftcard Value</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Discount: activate to sort column descending">Discount</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Coupon Code: activate to sort column descending">Coupon Code</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Paid Amount: activate to sort column descending">Paid Amount</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Payment Status: activate to sort column descending">Payment Status</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Transaction Id: activate to sort column descending">Transaction Id</th>
+
+                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Generated Date & Time: activate to sort column descending">Generated Date & Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach($paginatedItems as $key=>$value)
+                                    <tbody id="data-table-body">
+                                        @foreach($data as $key=>$value)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $value['recipient_name'] ? $value['recipient_name'] : $value['your_name'] }}
+                                                <td>
+                                                    @if($value['payment_status'] == 'succeeded')
+                                                    <a type="button"  class="btn btn-block btn-outline-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop_{{ $value['id'] }}"
+                                                        onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
+                                                        View Card
+                                                    </a>
+                                                    @else
+                                                    <a type="button"  class="btn btn-block btn-outline-danger">
+                                                    No Payment
+                                                </a>
+                                                @endif
+                                                   
+                                                </td>
+                                                <td>
+                                                    @if ($value['payment_status'] == 'succeeded')
+                                                        <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
+                                                             class="btn btn-block btn-outline-dark" id="mailsend_{{ $value['id'] }}">Mail
+                                                            Resend</a>
+                                                        {{-- <button  class="btn btn-block btn-outline-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if ($value['payment_mode'] == 'Payment Gateway')
-                                                        {{ $value['recipient_name'] ? $value['your_name'] : 'Self' }}
+                                                    {!! $value['recipient_name'] ? $value['your_name'] : "<span class='badge bg-primary'>Self</span>" !!}
+
                                                     @else
-                                                        {{ Auth::user()->user_token }}
+                                                    <span class='badge bg-warning'>{!! Auth::user()->user_token !!}</span>
                                                     @endif
                                                 </td>
+                                                <td>{{ $value['recipient_name'] ? $value['recipient_name'] : $value['your_name'] }}
+                                                </td>
                                                 <!--<td>{{ $value['recipient_name'] ? $value['message'] : 'NULL' }}</td>-->
-                                                <td>{{ $value['recipient_name'] ? $value['receipt_email'] : 'Medspa' }}</td>
-                                                <td class="text-uppercase">
-                                                    {{ $value['coupon_code'] ? $value['coupon_code'] : '----' }}</td>
+
                                                 <td>{{ $value['qty'] ? $value['qty'] : '----' }}</td>
                                                 <td>{{ $value['amount'] ? '$' . $value['amount'] : '$ 0' }}</td>
                                                 <td>{{ $value['discount'] ? '$' . $value['discount'] : '$ 0' }}</td>
+                                                <td class="text-uppercase">
+                                                    {{ $value['coupon_code'] ? $value['coupon_code'] : '----' }}</td>
                                                 <td>{{ $value['transaction_amount'] ? '$' . $value['transaction_amount'] : '$ 0' }}
                                                 </td>
 
                                                 <td>
                                                     @if ($value['payment_status'] == 'succeeded')
                                                         <span
-                                                            class="badge text-bg-success">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-success">{{ ucFirst($value['payment_status']) }}</span>
                                                     @elseif($value['payment_status'] == 'processing')
                                                         <span
-                                                            class="badge text-bg-primary">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-primary">{{ ucFirst($value['payment_status']) }}</span>
                                                         <a href="#">
-                                                            <span class="badge text-bg-warning" data-bs-toggle="modal"
+                                                            <span class="badge bg-warning" data-bs-toggle="modal"
                                                                 data-bs-target="#paymentUpdate_{{ $value['id'] }}"
                                                                 onclick="modalopen({{ $value['id'] }}, '{{ $value['transaction_id'] }}')">Update
                                                                 Status</span>
                                                         </a>
                                                     @elseif($value['payment_status'] == 'amount_capturable_updated')
                                                         <span
-                                                            class="badge text-bg-warning">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-warning">{{ ucFirst($value['payment_status']) }}</span>
                                                     @elseif($value['payment_status'] == 'payment_failed')
                                                         <span
-                                                            class="badge text-bg-danger">{{ ucFirst($value['payment_status']) }}</span>
+                                                            class="badge bg-danger">{{ ucFirst($value['payment_status']) }}</span>
                                                     @else
-                                                        <span class="badge text-bg-danger">Incompleted</span>
+                                                        <span class="badge bg-danger">Incompleted</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $value['transaction_id'] }}</td>
 
                                                 <td><?php echo date('m-d-Y h:i:A', strtotime($value['created_at'])); ?></td>
-                                                <td>
-                                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop_{{ $value['id'] }}"
-                                                        onclick="cardview({{ $value['id'] }},'{{ $value['transaction_id'] }}')">
-                                                        View Card
-                                                    </a>
-                                                   
-                                                </td>
-                                                <td>
-                                                    @if ($value['payment_status'] == 'succeeded')
-                                                        <a href="{{ route('Resendmail_view', ['id' => $value['id']]) }}"
-                                                            class="btn btn-warning" id="mailsend_{{ $value['id'] }}">Mail
-                                                            Resend</a>
-                                                        {{-- <button class="btn btn-warning" type="button" id="mailsend_{{$value['id']}}" onclick="sendmail({{$value['id']}}, '{{$value['transaction_id']}}')"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> Send</button> --}}
-                                                    @endif
-                                                </td>
+                                                
 
                                                 <!-- Button trigger modal -->
                                             </tr>
                                         @endforeach
                                         <br>
-                                        {{ $paginatedItems->links() }}
+                                        {{-- {{ $paginatedItems->links() }} --}}
                                     </tbody>
                                 </table>
-                                {{ $paginatedItems->links() }}
+                                {{-- {{ $paginatedItems->links() }} --}}
                             @else
                                 <hr>
                                 <p> No data found</p>
@@ -216,7 +237,7 @@
                                 value="{{ Auth::user()->user_token }}">
                             <input type="hidden" class="gift_id" id="gift_id_" name="id" value="">
 
-                            <button type="button" class="btn btn-primary mt-3 paymentstatusbutton" id="paymentstatusbutton"
+                            <button type="button"  class="btn btn-block btn-outline-primary mt-3 paymentstatusbutton" id="paymentstatusbutton"
                                 gift_id="gift_id_" onclick="updatestatus(event)"><span
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                     style="display: none;"></span>Update</button>
@@ -224,7 +245,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -247,7 +268,7 @@
                     <h2 id="giftcardsshow"></h2>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -371,5 +392,26 @@
                 }
             });
         }
+
+
+
     </script>
+
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": true, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush

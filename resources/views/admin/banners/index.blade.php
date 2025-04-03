@@ -14,7 +14,7 @@
                 </ol>
             </div>
         </div>
-        <a href="{{ route('banner.create') }}" class="btn btn-primary">Add More</a>
+        <a href="{{ route('banner.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
     </div><!-- /.container-fluid -->
 </section>
 <section class="content-header">
@@ -24,8 +24,8 @@
         <section class="content">
             <div class="container-fluid">
                 <!--begin::Row-->
-                {{-- <a href="{{route('medspa-gift.create') }}" class="btn
-                btn-primary">Add More</a> --}}
+                {{-- <a href="{{route('medspa-gift.create') }}"  class="btn btn-block
+                btn-outline-primary">Add More</a> --}}
                 <div class="card-header">
                     @if($errors->any())
                         <div class="alert alert-danger">
@@ -53,15 +53,15 @@
                     <div style="overflow: scroll">
                         {{-- <div class="scroll-content"> --}}
 
-                        <table id="datatable-buttons" class="table table-bordered table-striped">
+                            <table id="datatable-buttons" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>Image</th>
-                                    <th>URL</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Title">Title</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Image">Image</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="URL">URL</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Status">Status</th>
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,14 +78,14 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('banner.edit', $value->id) }}"
-                                                class="btn btn-primary">Edit</a>
+                                                 class="btn btn-block btn-outline-primary">Edit</a>
                                             <form
                                                 action="{{ route('banner.destroy', $value->id) }}"
                                                 method="POST">
                                                 @method('DELETE')
                                                 
                                                   @csrf
-                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                <button  class="btn btn-block btn-outline-danger" type="submit">Delete</button>
                                             </form>
                                         </td>
 
@@ -112,5 +112,21 @@
 @endsection
 
 @push('script')
-
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": true, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush

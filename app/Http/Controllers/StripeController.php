@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Gift;
 use App\Models\Product;
+use App\Models\Patient;
 use App\Models\ServiceUnit;
 use App\Models\Giftsend;
 use App\Models\EmailTemplate;
@@ -13,12 +14,17 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use Session;
 use Mail;
+use Auth;
 use App\Mail\GeftcardMail;
 use App\Mail\GiftReceipt;
 use Illuminate\Support\Facades\DB;
 use App\Mail\ServicePurchaseConfirmation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Events\GiftcardPurchases;
+use App\Events\ServicePurchases;
+use App\Events\TimelineGiftcardRedeem;
+use App\Events\ServicePurchasesPayment;
 
 class StripeController extends Controller
 {
@@ -122,96 +128,97 @@ class StripeController extends Controller
 
     //  Giftcardspayment
 
-    public function giftcardpayment(Request $request,Giftsend $giftsend,GiftcardsNumbers $cardnumber)
-       {
-           $id=Session::get('gift_id');
-           $giftsend = Giftsend::find($id);
-           
-        // dd($request->session()->get('gift_details'));
-       Stripe::setApiKey(env('STRIPE_SECRET'));
-
-       try {
-
-           // Create a charge
-          $data= Charge::create([
-            'amount' => (($giftsend['amount'] * $giftsend['qty']) - $giftsend['discount']) * 100, // Amount in cents
-            'currency' => 'usd',
-            'source' => $request->stripeToken,
-            'description' => 'Forever Medspa Giftcards UserId='.$giftsend['id'].' Amount $ ='.$giftsend['amount']*$giftsend['qty'],
-           ]);
-
-           
-        //    Payment successful, you can handle success here
-        if($data)
-        {
-            $transaction_entry = [
-                'transaction_id' => $data->source->id,
-                'transaction_amount' => $data->amount / 100,
-                'payment_status' => $data->status,
-                'payment_time' => $data->created,
-                'payment_mode' => 'Payment Gateway',
-            ];
-            // Assuming $giftsend is the instance of the Giftsend model you retrieved earlier
-            $mail_data  = $giftsend->update($transaction_entry);
-
-            // For Entry Gift Number Generate Process
-            if($data->status=='succeeded')
-            {
-            $qty=$giftsend->qty;
-            for($i=1;$i<=$qty;$i++)
-            {
-                $cardgenerate = [
-                    'user_id' => $giftsend->id,
+    public function giftcardpayment(Request $request, Giftsend $giftsend, GiftcardsNumbers $cardnumber)
+    {
+        $id = Session::get('gift_id');
+        $giftsend = Giftsend::find($id);
+    
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+        try {
+            $data = Charge::create([
+                'amount' => (($giftsend['amount'] * $giftsend['qty']) - $giftsend['discount']) * 100,
+                'currency' => 'usd',
+                'source' => $request->stripeToken,
+                'description' => 'Forever Medspa Giftcards UserId=' . $giftsend['id'] . ' Amount $ =' . $giftsend['amount'] * $giftsend['qty'],
+            ]);
+    
+            Log::info('Payment attempted', [
+                'user_id' => $giftsend->id,
+                'amount' => $data->amount / 100,
+                'status' => $data->status,
+            ]);
+    
+            if ($data->status == 'succeeded') {
+                $transaction_entry = [
                     'transaction_id' => $data->source->id,
-                    'user_token' => $giftsend->user_token,
-                    'amount' => $giftsend->amount,
-                    // 'giftnumber' => $gift_card_code, // Uncomment this line if needed
-                    'status' => 1,
-                    'comments' => $giftsend->message,
+                    'transaction_amount' => $data->amount / 100,
+                    'payment_status' => $data->status,
+                    'payment_time' => $data->created,
+                    'payment_mode' => 'Payment Gateway',
                 ];
-                
-                // Conditional logic to calculate actual_paid_amount
-                if ($giftsend->discount != 0) {
-                    $cardgenerate['actual_paid_amount'] = ($giftsend->amount * $giftsend->qty - $giftsend->discount) / $giftsend->qty;
-                } else {
-                    $cardgenerate['actual_paid_amount'] = $giftsend->amount;
+    
+                Log::info('Transaction entry update', $transaction_entry);
+                $giftsend->update($transaction_entry);
+    
+                $GeneratedGiftcards = [];
+    
+                for ($i = 1; $i <= $giftsend->qty; $i++) {
+                    $cardgenerate = [
+                        'user_id' => $giftsend->id,
+                        'transaction_id' => $data->source->id,
+                        'user_token' => $giftsend->user_token,
+                        'amount' => $giftsend->amount,
+                        'status' => 1,
+                        'comments' => $giftsend->message,
+                        'actual_paid_amount' => $giftsend->discount != 0 
+                            ? ($giftsend->amount * $giftsend->qty - $giftsend->discount) / $giftsend->qty 
+                            : $giftsend->amount,
+                    ];
+    
+                    $cardresult = $cardnumber->create($cardgenerate);
+    
+                    if ($cardresult) {
+                        $gift_card_code = 'FEMS-' . time() . $cardresult->id;
+                        $cardresult->update(['giftnumber' => $gift_card_code]);
+    
+                        Log::info('Gift card generated', [
+                            'gift_card_code' => $gift_card_code,
+                            'user_id' => $giftsend->id,
+                        ]);
+    
+                        $GeneratedGiftcards[] = $gift_card_code;
+                    }
+                }
+    
+                $gift_send_to = Patient::where('patient_login_id', $giftsend->gift_send_to)
+                    ->value('email') ?? $giftsend->gift_send_to;
+    
+                $tomail = Patient::where('patient_login_id', $giftsend->receipt_email)
+                    ->value('email') ?? $giftsend->receipt_email;
+    
+                if (empty($giftsend->in_future)) {
+                    Mail::to($gift_send_to)->send(new GeftcardMail($giftsend));
+                    Log::info('Gift card email sent', ['to' => $gift_send_to]);
+                }
+    
+                if (!empty($giftsend->recipient_name)) {
+                    Mail::to($tomail)->send(new GiftReceipt($giftsend));
+                    Log::info('Gift receipt email sent', ['to' => $tomail]);
                 }
                 
-                $cardresult = $cardnumber->create($cardgenerate);
-                if($cardresult)
-                {
-                    $gift_card_code = 'FEMS-' . time() . $cardresult->id;
-                    $cardresult->update(['giftnumber' => $gift_card_code]);
-                }
+                event(new GiftcardPurchases($transaction_entry));
+    
+                Session::pull('amount');
+                return view('stripe.thanks', compact('data'))->with('success', 'Payment successful.');
             }
-
-            }
-            $gift_send_to = $giftsend->gift_send_to;
-            $tomail = $giftsend->receipt_email;
-            
-
-            if (empty($giftsend->in_future)) {
-                Mail::to($gift_send_to)->send(new GeftcardMail($giftsend));
-            }
-            
-
-            if(!empty($giftsend->recipient_name))
-            {
-
-                Mail::to("$tomail")->send(new GiftReceipt($giftsend));
-            }
-
-            return view('stripe.thanks',compact('data'))->with('success', 'Payment successful.');
+        } catch (\Exception $e) {
+            Log::error('Payment failed', ['error' => $e->getMessage()]);
+            return view('stripe.failed')->with('error', $e->getMessage());
         }
-       
-       } catch (\Exception $e) {
-           // Payment failed, handle the error
-        //    return  $e->getMessage();
-
-           return view('stripe.failed')->with('error',  $e->getMessage());
-        //    return back()->with('error', $e->getMessage());
-       }
     }
+    
+
 
    public function CheckoutProcess(Request $request)
 {
@@ -223,7 +230,6 @@ class StripeController extends Controller
         'zip_code' => 'required|digits:5',
         'email' => 'required|email|max:255',
         'phone' => 'required|digits_between:7,10',
-        'address' => 'required|string|max:255',
     ]);
 
     DB::beginTransaction();  // Start transaction
@@ -300,6 +306,7 @@ class StripeController extends Controller
             'tax_amount' => $taxamount,
             'user_token' => 'FOREVER-MEDSPA',
             'payment_mode' => 'online',
+            'patient_login_id' => Auth::guard('patient')->user()->patient_login_id
         ];
 
         
@@ -343,23 +350,13 @@ class StripeController extends Controller
                 'payment_mode' => 'online',
                 'qty' => $item['quantity'],
                 'service_type' => $item['type'],
+                'patient_login_id' => Auth::guard('patient')->user()->patient_login_id
             ];
 
             // ServiceOrderController::create($order_data);
             $this->ServiceOrderController->store(new \Illuminate\Http\Request($order_data));
+            event(new ServicePurchases($order_data));
         }
-
-        // API Code for Storing Data in Lead Capture
-        $api_data = [
-            "first_name" => $request->fname,
-            "last_name" => $request->lname,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "message" => "This is Comes From Giftcart Payment Page",
-            "source" => "Giftcart Website"
-        ];
-
-        $this->sendLeadCaptureRequest($api_data);
 
         DB::commit();  // Commit transaction
 
@@ -397,6 +394,15 @@ class StripeController extends Controller
         // Update payment_session_id in TransactionHistory
         TransactionHistory::where('order_id', $orderId)->update(['payment_session_id' => $response->id]);
 
+        // Trigger the payment event with relevant data
+        event(new ServicePurchasesPayment([
+        'session_id' => $response->id,
+        'payment_intent' => $response->payment_intent,
+        'email' => $request->email,
+        'order_id' => $orderId,
+        'amount' => session()->get('totalValue') ?? $final_amount,
+        'patient_id'=>Auth::guard('patient')->user()->patient_login_id
+        ]));
         return redirect($response['url']);
 
     } catch (\Exception $e) {
@@ -405,20 +411,7 @@ class StripeController extends Controller
     }
 }
 
-private function sendLeadCaptureRequest(array $api_data)
-{
-    try {
-        $api_data = json_encode($api_data);
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json'
-        ])->post(env('LEAD_API_URL') . "capture", $api_data);
-
-        return $response->json();
-    } catch (\Exception $e) {
-        Log::error('Lead Capture API Error: ' . $e->getMessage());
-    }
-}
 
 
     public function stripcheckoutSuccess(Request $request)
@@ -510,5 +503,177 @@ public function invoice()
 
 
 
+
+
+
+
+
+
+
+
+
+        public function InternalServicePurchase(Request $request)
+        {
+            // Validation
+            $request->validate([
+                'fname' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'cart_total' => 'required|numeric|min:0',
+                'discount' => 'nullable|numeric|min:0',
+                'tax' => 'nullable|numeric|min:0',
+                'pay_amount' => 'required|numeric|min:0',
+                'payment_status' => 'required|string|max:255',
+            ], [
+                'fname.required' => 'The first name is required.',
+                'email.required' => 'The email address is required.',
+                'email.email' => 'Please enter a valid email address.',
+                'cart_total.required' => 'The cart total amount is required.',
+                'cart_total.numeric' => 'The cart total must be a numeric value.',
+                'pay_amount.required' => 'The payment amount is required.',
+                'pay_amount.numeric' => 'The payment amount must be a numeric value.',
+                'payment_status.required' => 'The payment status is required.',
+            ]);
+
+            DB::beginTransaction(); // Start transaction
+            try {
+                $orderPrefix = 'FMSWCSU';
+                $orderId = $orderPrefix . str_pad(0, 6, '0', STR_PAD_LEFT);
+                $taxAmount = $request->tax ?? 0;
+                $discount = $request->discount ?? 0;
+                $cartTotal = $request->cart_total ?? 0;
+                $giftApply = $request->giftapply ?? 0;
+
+                // Get patient details
+                $patient = Patient::find($request->patient_id);
+                $patientLoginId = $patient ? $patient->patient_login_id : null;
+
+                // Process Gift Cards
+                $giftNumbers = $giftAmounts = [];
+                if (!empty($request->gift_cards)) {
+                    foreach ($request->gift_cards as $giftcard) {
+                        if (!empty($giftcard['card_number']) && isset($giftcard['amount'])) {
+                            $giftNumbers[] = $giftcard['card_number'];
+                            $giftAmounts[] = $giftcard['amount'];
+                        }
+                    }
+                }
+
+                // Calculate amounts
+                $subAmount = ($cartTotal - $discount) + $giftApply;
+                $totalAmount = $subAmount + $taxAmount;
+
+                // Create transaction record
+                $transaction = TransactionHistory::create([
+                    'fname' => $request->fname,
+                    'lname' => $request->lname,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'order_id' => null, // Placeholder
+                    'gift_card_applyed' => $giftNumbers ? implode('|', $giftNumbers) : null,
+                    'gift_card_amount' => $giftAmounts ? implode('|', $giftAmounts) : null,
+                    'sub_amount' => $subAmount,
+                    'final_amount' => $totalAmount,
+                    'transaction_amount' => $totalAmount,
+                    'tax_amount' => $taxAmount,
+                    'discount' => $discount,
+                    'user_token' => 'FOREVER-MEDSPA',
+                    'payment_mode' => 'store',
+                    'patient_login_id' => $patientLoginId,
+                ]);
+
+                // Update order ID after transaction is created
+                if ($transaction) {
+                    $updatedOrderId = $orderId . $transaction->id;
+                    $paymentSessionId = 'MEDSPA-CENTER-' . $transaction->id;
+                    $paymentIntent = 'MEDSPA-CENTER-' . $transaction->id;
+
+                    $transaction->update([
+                        'order_id' => $updatedOrderId,
+                        'payment_session_id' => $paymentSessionId,
+                        'transaction_status' => 'complete',
+                        'payment_status' => 'paid',
+                        'status' => 1,
+                        'payment_intent' => $paymentIntent,
+                    ]);
+                }
+
+                // Process Cart Items
+                $cart = session()->get('cart', []);
+                foreach ($cart as $item) {
+                    $cartData = ServiceUnit::find($item['id']);
+
+                    if ($cartData) {
+                        $discountedAmount = $cartData->discounted_amount ?? $cartData->amount;
+                        $totalAmount += $item['quantity'] * $discountedAmount;
+
+                        $orderData = [
+                            'order_id' => $updatedOrderId,
+                            'service_id' => $item['id'],
+                            'status' => 0,
+                            'number_of_session' => $cartData->session_number
+                                ? $item['quantity'] * $cartData->session_number
+                                : $item['quantity'],
+                            'user_token' => 'FOREVER-MEDSPA',
+                            'actual_amount' => $cartData->amount,
+                            'discounted_amount' => $discountedAmount,
+                            'payment_mode' => 'store',
+                            'qty' => $item['quantity'],
+                            'service_type' => $item['type'],
+                            'patient_login_id' => $patientLoginId,
+                        ];
+
+                        $serviceOrder = new ServiceOrderController();
+                        $serviceOrder->store(new \Illuminate\Http\Request($orderData));
+
+                        event(new ServicePurchases($orderData));
+                    }
+                }
+
+                // Process Gift Card Redemption
+                if (!empty($request->gift_cards)) {
+                    $redeemOrderId = 'REDEEM' . time();
+                    foreach ($request->gift_cards as $giftcard) {
+                       $giftcard_data= GiftcardsNumbers::where('giftnumber',$giftcard['card_number'])->first();
+                        if (!empty($giftcard['card_number']) && isset($giftcard['amount'])) {
+                            $giftcardEntry = GiftcardsNumbers::create([
+                                'transaction_id' => $redeemOrderId,
+                                'user_id' => $giftcard_data->user_id,
+                                'user_token' => 'FOREVER-MEDSPA',
+                                'giftnumber' => $giftcard['card_number'],
+                                'amount' => '-'.$giftcard['amount'],
+                                'actual_paid_amount' => '-'.$giftcard['amount'],
+                                'comments' => 'Gift card used in purchase service with order number ' . $updatedOrderId,
+                            ]);
+                            
+                            // Update the transaction_id with the newly created entry ID
+                            $giftcardEntry->update(['transaction_id' => $redeemOrderId . $giftcardEntry->id]);
+                            event(new TimelineGiftcardRedeem([
+                                'patient_id' => $patientLoginId ?? null,
+                                'event_type'=>'Giftcard Redeem',
+                                'metadata'=>'Giftcard Use in Purchase services with order id '.$redeemOrderId . $giftcardEntry->id,
+                                'subject' => 'Giftcards Redeem'
+                                ]));
+                        }
+                    }
+                }
+
+                session()->forget('cart'); // Clear cart session
+                DB::commit(); // Commit transaction
+
+                return response()->json([
+                    'message' => 'Order placed successfully',
+                    'invoice_id' => $transaction->id
+                ], 200);
+
+            } catch (\Exception $e) {
+                DB::rollBack(); // Rollback transaction on error
+                return response()->json(['error' => 'Something went wrong: ' . $e->getMessage()], 500);
+            }
+        }
+
 }
+
+    
+
+
 

@@ -60,7 +60,7 @@
                                             </div>
 
                                             <div class="mt-4">
-                                                <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Confirm</button>
+                                                <button  class="btn btn-block btn-outline-primary w-100 waves-effect waves-light" type="submit">Confirm</button>
                                             </div>
                                         </form>
 

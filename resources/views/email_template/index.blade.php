@@ -24,7 +24,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            <a href="{{ route('email-template.create') }}" class="btn btn-primary">Add More</a>
+            <a href="{{ route('email-template.create') }}"  class="btn btn-block btn-outline-primary">Add More</a>
             <form class="mt-2" method="get" action="{{ route('ServicesSearch') }}">
                 @csrf
                 <div class="row mb-4">
@@ -36,7 +36,7 @@
 
                     <div class="col-md-1">
                         <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                        <button type="submit" class="btn btn-success mt-4">Search</button>
+                        <button type="submit"  class="btn btn-block btn-outline-success mt-4">Search</button>
                     </div>
                 </div>
             </form>
@@ -48,15 +48,15 @@
                     {{ session()->get('success') }}
                 @endif
             </div>
-            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+            <table id="datatable-buttons" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Image</th>
-                        <th>Message</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Title">Title</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Image">Image</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Message">Message</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Status">Status</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
 
                     </tr>
                 </thead>
@@ -77,12 +77,12 @@
                             <td>{{ $value->status == 1 ? 'Active' : 'Deactive' }}
                             </td>
                             <td><a href="{{ route('email-template.edit', $value->id) }}"
-                                    class="btn btn-primary"><i class="bx bx-pencil"></i>Edit </a>
+                                     class="btn btn-block btn-outline-primary"><i class="bx bx-pencil"></i>Edit </a>
                                 <form method="post"
                                     action="{{ route('email-template.destroy', $value->id) }}">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-danger"
+                                    <button type="submit"  class="btn btn-block btn-outline-danger"
                                         onclick="return confirm('Are You sure')"><i
                                             class="bx bx-trash-alt"></i>Delete</button>
 
@@ -101,3 +101,22 @@
     <!--end::Container-->
 </main>
 @endsection
+@push('script')
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
+@endpush

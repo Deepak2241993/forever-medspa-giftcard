@@ -39,7 +39,7 @@
                         
                         <div class="col-md-1">
                             <input type="hidden" name="user_token" value="{{ Auth::user()->user_token }}">
-                            <button type="submit" class="btn btn-success mt-4">Search</button>
+                            <button type="submit"  class="btn btn-block btn-outline-success mt-4">Search</button>
                         </div>
                     </div>
                 </form>
@@ -123,7 +123,7 @@
                     <h2 id="giftcardsshow"></h2>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

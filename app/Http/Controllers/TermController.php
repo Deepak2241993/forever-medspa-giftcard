@@ -17,7 +17,7 @@ class TermController extends Controller
      */
     public function index()
     {
-        $result = Term::where('is_deleted',0)->orderBy('id','DESC')->paginate(10);
+        $result = Term::where('is_deleted',0)->orderBy('id','DESC')->get();
         // dd($result);
         return view('admin.terms.terms_index',compact('result'));
     }

@@ -51,7 +51,7 @@ Confirm Password
                                     </div>
 
                                     <div class="text-end">
-                                        <button class="btn btn-primary w-md waves-effect waves-light"
+                                        <button  class="btn btn-block btn-outline-primary w-md waves-effect waves-light"
                                             type="submit">Confirm Password</button>
                                     </div>
 

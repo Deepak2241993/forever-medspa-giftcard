@@ -129,7 +129,7 @@
 	<header class="top-header">
 		<nav class="navbar header-nav navbar-expand-lg">
             <div class="container">
-				<a class="navbar-brand" href="{{url('/')}}"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:70px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
+				<a class="navbar-brand" href="{{url('/')}}"><img src="{{url('/images/gifts/logo.png')}}" alt="image" style="height:70px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-wd" aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
 					<span></span>
 					<span></span>
@@ -156,7 +156,7 @@
 	<div id="myDiv" class="about-box" style="padding-bottom: 0;">
         <fieldset id="finishbox">
             <div class="form-card">
-                <img id="logosuccess" src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" style="width:200px; height:100px; display:none">
+                <img id="logosuccess" src="{{url('/images/gifts/logo.png')}}" style="width:200px; height:100px; display:none">
                 <div class="row justify-content-center">
                     <div class="col-7 ">
                     <h4 class="tran">The Payment has failed.</h4>
@@ -181,8 +181,8 @@
 
 
     <center class="mb-2">
-        <a href="{{ url('/') }}" class="btn btn-primary mr-2">Home</a>
-        {{-- <button class="btn btn-success" id="printButton" onclick="printDiv()">Print</button> --}}
+        <a href="{{ url('/') }}"  class="btn btn-primary mr-2">Home</a>
+        {{-- <button  class="btn btn-block btn-outline-success" id="printButton" onclick="printDiv()">Print</button> --}}
     </center>
 	
 	<!-- End Subscribe -->

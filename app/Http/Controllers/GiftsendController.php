@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Giftsend;
 use App\Models\User;
 use App\Models\GiftcardsNumbers;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Auth;
@@ -120,8 +121,18 @@ class GiftsendController extends Controller
 
     public function sendgift(Request $request){
         $data_arr = $request->except('_token');
+        $data_arr['receipt_email'] = $request->patient_login_id;
+        // find User exist or not
+        $patient = Patient::where('email',$request->gift_send_to)->first();
+        if($patient->patient_login_id != null)
+        {
+            $data_arr['gift_send_to'] = $patient->patient_login_id;
+        }
+        else{
+            $data_arr['gift_send_to'] = $request->gift_send_to;
+        }
+       
         $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
-        // print_r($data_arr); die();
         $data = json_encode($data_arr);
         //  First API
         $resultData =$this->postAPI('gift-for-other',$data);
@@ -153,8 +164,8 @@ class GiftsendController extends Controller
                                          <tr><th>Your name:</th><th>'.$result->your_name.'</th></tr>
                                          <tr><th>Recipient name:</th><th>'.$result->recipient_name.'</th></tr>
                                          <tr><th>Message:</th><th>'.$result->message.'</th></tr>
-                                         <tr><th>Ship To:</th><th>'.$result->gift_send_to.'</th></tr>
-                                         <tr><th>Receipt To:</th><th>'.$result->receipt_email.'</th></tr>'.$discount_dispaly.'
+                                         <tr><th>Ship To:</th><th>'.$request->gift_send_to.'</th></tr>
+                                         <tr><th>Receipt To:</th><th>'.$request->receipt_email.'</th></tr>'.$discount_dispaly.'
                                          <tr><th>Total:</th><th>'.'$'.($result->amount * $result->qty) - ($result->discount ? $result->discount : 0).'</th></tr>
                                        </tbody>
                                      </table>',
@@ -178,6 +189,15 @@ class GiftsendController extends Controller
     // For Self Giftcards
     public function selfgift(Request $request){
         $data_arr = $request->except('_token');
+
+        $patient = Patient::where('email',$request->gift_send_to)->first();
+        if($patient->patient_login_id != null)
+        {
+            $data_arr['gift_send_to'] =  $patient->patient_login_id;
+            $data_arr['receipt_email'] = $patient->patient_login_id;
+        }
+       
+
         $data_arr['amount'] = $data_arr['amount'] / $data_arr['qty'];
         $data = json_encode($data_arr);
         //  First API
@@ -202,7 +222,7 @@ else{
                                <tbody>
                                  <tr><th id="giftqty"></th><th>$'.$result->amount*$result->qty.'</th></tr>
                                  <tr><th>Your name:</th><th>'.$result->your_name.'</th></tr>
-                                 <tr><th>Shipping By Email:</th><th>'.$result->receipt_email.'</th></tr>'.$discount_dispaly.'
+                                 <tr><th>Shipping By Email:</th><th>'.$request->gift_send_to.'</th></tr>'.$discount_dispaly.'
                                  <tr><th>Total:</th><th>'.'$'.($result->amount * $result->qty) - ($result->discount ? $result->discount : 0).'</th></tr>
                                </tbody>
                              </table>',
@@ -240,39 +260,21 @@ else{
 
     //  for giftcard redeem
     public function giftcardredeemView(Request $request)
-    {
-        $token = Auth::user()->user_token;
-        $data_arr = ['name' => '', 'email' => '', 'giftcardnumber' => '', 'user_token' => $token];
-        $data = json_encode($data_arr);
-        $result = $this->postAPI('gift-card-search', $data);
-    
-        if (isset($result['status']) && $result['status'] == 200) {
-            $getdata = $result['result'];
-    
-            // Convert the data array into a Collection
-            $collection = collect($getdata);
-    
-            // Get the current page from the request, default to 1
-            $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    
-            // Define how many items you want per page
-            $perPage = 10; // Example: 10 items per page
-    
-            // Slice the collection to get the items to display in the current page
-            $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
-    
-            // Create our paginator
-            $paginatedItems = new LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
-    
-            // Set the pagination path
-            $paginatedItems->setPath($request->url());
-    
-            return view('admin.redeem.redeem_view', compact('paginatedItems'));
-        } else {
-            $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
-            return view('admin.redeem.redeem_view')->with('error', $error);
-        }
+{
+    $token = Auth::user()->user_token;
+    $data_arr = ['name' => '', 'email' => '', 'giftcardnumber' => '', 'user_token' => $token];
+    $data = json_encode($data_arr);
+    $result = $this->postAPI('gift-card-search', $data);
+
+    if (isset($result['status']) && $result['status'] == 200) {
+        $getdata = $result['result'];
+        return view('admin.redeem.redeem_view', compact('getdata'));
+    } else {
+        $error = isset($result['error']) ? $result['error'] : 'Unknown error occurred.';
+        return view('admin.redeem.redeem_view')->with('error', $error);
     }
+}
+
     public function GiftCardSearch(Request $request)
     {
         $data_arr = $request->except('_token');
@@ -281,7 +283,7 @@ else{
 
         if (isset($result['status']) && $result['status'] == 200) {
             $getdata = $result['result'];
-
+           
             // Convert the data array into a Collection
             $collection = collect($getdata);
 
@@ -311,13 +313,34 @@ else{
         $data_arr = $request->except('_token');
         $data = json_encode($data_arr);
         $result = $this->postAPI('gift-card-redeem', $data);
+     
         if($result['status']==200){
+
             $data_arr = $request->except('_token','amount','comments','user_id');
             $data = json_encode($data_arr);
+            
             $statement = $this->postAPI('gift-card-statment', $data);
             $statement['giftCardHolderDetails'] = $result['giftCardHolderDetails'];
+
+            $patient_data = Patient::where('patient_login_id', $result['giftCardHolderDetails']['gift_send_to'])->first();
+            if($patient_data)
+            {
+                //  For Getting Email form Patient Table as Per Recever Username
+                $statement['giftCardHolderDetails']['gift_send_to'] = $patient_data->email;
+
+                $fullname = $patient_data->fname." ".$patient_data->lname;
+                // Assign recipient name if it's empty, otherwise keep existing value
+                if($statement['giftCardHolderDetails']['recipient_name'] = !null)
+                {
+                    $statement['giftCardHolderDetails']['recipient_name'] = $fullname ;
+                }
+                else{
+                    $statement['giftCardHolderDetails']['your_name'] = $fullname ;
+                }
+            }
             
-            Mail::to($result['giftCardHolderDetails']['gift_send_to'])->send(new GiftCardStatement($statement));
+           
+            Mail::to($statement['giftCardHolderDetails']['gift_send_to'])->send(new GiftCardStatement($statement));
         }
 
         return $result;
@@ -421,33 +444,44 @@ public function cardgeneratedList(Request $request, User $user, GiftcardsNumbers
     $token = Auth::user()->user_token;
     $data_arr = ['user_token' => $token];
     $data = json_encode($data_arr);
+
     $result = $this->postAPI('gift-list', $data);
+
+    // if (isset($result['status']) && $result['status'] == 200) {
+    //     $data = $result['result'];
+
+    //     // Convert the data array into a Collection
+    //     $collection = collect($data);
+
+    //     // Get the current page from the request, default to 1 if not set
+    //     $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+    //     // Define how many items you want per page
+    //     $perPage = 50; // for example, 10 items per page
+
+    //     // Slice the collection to get the items to display in the current page
+    //     $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+    //     // Create our paginator
+    //     $paginatedItems = new LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
+
+    //     // Set the pagination path
+    //     $paginatedItems->setPath($request->url());
+
+    //     return view('admin.cardnumber.index', compact('paginatedItems'));
+    // } else {
+    //     return view('admin.cardnumber.index')->with('error', 'Something Went Wrong');
+    // }
+    
+    //  Above Code is Manual Pagination 
 
     if (isset($result['status']) && $result['status'] == 200) {
         $data = $result['result'];
-
-        // Convert the data array into a Collection
-        $collection = collect($data);
-
-        // Get the current page from the request, default to 1 if not set
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-
-        // Define how many items you want per page
-        $perPage = 10; // for example, 10 items per page
-
-        // Slice the collection to get the items to display in the current page
-        $currentPageItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
-
-        // Create our paginator
-        $paginatedItems = new LengthAwarePaginator($currentPageItems, $collection->count(), $perPage);
-
-        // Set the pagination path
-        $paginatedItems->setPath($request->url());
-
-        return view('admin.cardnumber.index', compact('paginatedItems'));
+        return view('admin.cardnumber.index', compact('data'));
     } else {
         return view('admin.cardnumber.index')->with('error', 'Something Went Wrong');
     }
+    
 }
 //  for payment status update
 public function updatePaymentStatus(Request $request){
@@ -473,8 +507,22 @@ public function giftcancel(Request $request,){
 
         if ($statement['receiverAndSenderDetails']['receipt_email'] != '') {
             $tomail = $statement['receiverAndSenderDetails']['receipt_email'];
+            $senderdata = Patient::where('patient_login_id',$tomail)->first();
+            if($senderdata)
+            {
+                $tomail = $senderdata->email;
+                $statement['receiverAndSenderDetails']['your_name'] = $senderdata->fname." ".$senderdata->lname;
+            }
+           
         } else {
             $tomail = $statement['receiverAndSenderDetails']['gift_send_to'];
+            $receiverdata = Patient::where('patient_login_id',$tomail)->first();
+            if($receiverdata)
+            {
+                $tomail = $receiverdata->email;
+                $statement['receiverAndSenderDetails']['your_name'] = $receiverdata->fname." ".$receiverdata->lname;
+            }
+           
         }
         
         // Convert $tomail to string if it's an array
@@ -482,12 +530,24 @@ public function giftcancel(Request $request,){
         
         Mail::to($tomail)->send(new GiftcardCancelMail($statement));
      } 
+
     return $result;
  
 }
 
 public function Resendmail_view(Request $request){
     $mail_data = Giftsend::findOrFail($request->id);
+
+     $receiver= Patient::where('patient_login_id',$mail_data->gift_send_to)->first();
+     $sender= Patient::where('patient_login_id',$mail_data->receipt_email)->first();
+     if($receiver)
+     {
+        $mail_data['gift_send_to'] = $receiver->email;
+     }
+     if($sender)
+     {
+        $mail_data['receipt_email'] = $sender->email;
+     }
     return view('email.email_template_view',compact('mail_data'));
 
 }
@@ -514,4 +574,37 @@ public function giftcardValidate(Request $request){
     return $result;
 
 }
+
+public function GifttransactionSearch(Request $request, Giftsend $giftTransactions)
+{
+    // Start with a base query
+    $query = $giftTransactions->query();
+
+    // Check if 'recipient_name' is provided in the request
+    if ($request->filled('recipient_name')) {
+        $recipient_name = strtolower($request->recipient_name);  // Get the search term
+        // Apply the filter on 'recipient_name'
+        $query->whereRaw('LOWER(recipient_name) LIKE ?', ['%' . $recipient_name . '%']);
+    }
+
+    // Check if 'receipt_email' is provided in the request
+    if ($request->filled('receipt_email')) {
+        $receipt_email = strtolower($request->receipt_email);  // Get the search term
+        // Apply the filter on 'receipt_email'
+        $query->whereRaw('LOWER(receipt_email) LIKE ?', ['%' . $receipt_email . '%']);
+    }
+
+    // Order and paginate results
+    $data = $query->orderBy('id', 'DESC')->paginate(10);
+
+    // Return response as JSON
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Search results retrieved successfully.',
+        'data' => $data,
+    ], 200);
+}
+
+
+
 }

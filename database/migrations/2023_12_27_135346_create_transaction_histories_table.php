@@ -14,14 +14,33 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transaction_histories', function (Blueprint $table) {
-            $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->string('amount')->nullable();
-            $table->string('status')->nullable();
-            $table->string('card_type')->nullable();
-            $table->string('last_for_digit')->nullable();
-            $table->timestamps();
+            $table->bigIncrements('id'); // Primary Key
+            $table->string('order_id', 255)->nullable();
+            $table->string('fname', 255)->nullable();
+            $table->string('lname', 255)->nullable();
+            $table->string('city', 255)->nullable();
+            $table->string('country', 255)->nullable();
+            $table->integer('zip_code')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->string('address', 255)->nullable();
+            $table->string('email', 255)->nullable();
+            $table->string('transaction_id', 191)->nullable();
+            $table->string('sub_amount', 191)->nullable();
+            $table->string('tax_amount', 255)->nullable();
+            $table->string('final_amount', 255)->nullable();
+            $table->string('transaction_amount', 255)->nullable();
+            $table->string('payment_session_id', 255)->nullable();
+            $table->string('status', 255)->nullable();
+            $table->string('payment_status', 255)->nullable();
+            $table->string('transaction_status', 255)->nullable();
+            $table->string('gift_card_applyed', 255)->nullable();
+            $table->string('gift_card_amount', 255)->nullable();
+            $table->string('user_token', 255)->nullable();
+            $table->string('payment_mode', 255)->nullable();
+            $table->string('payment_intent', 255)->nullable();
+            $table->timestamps(); // includes created_at and updated_at
+            $table->string('last_for_digit', 255)->nullable();
+            $table->string('card_type', 255)->nullable();
         });
     }
 

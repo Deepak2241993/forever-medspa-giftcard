@@ -30,7 +30,7 @@
                     <input class="form-control form-control-sidebar" type="search" placeholder="Search"
                         aria-label="Search">
                     <div class="input-group-append">
-                        <button class="btn btn-sidebar">
+                        <button  class="btn btn-block btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
                         </button>
                     </div>
@@ -52,12 +52,12 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('root') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard</p>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a href="{{ route('product-dashboard') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -66,177 +66,249 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-header">Giftcards Orders</li>
+                    {{-- end Dashboard --}}
+                     
+                    {{--  For Manage --}}
+                    <li class="nav-header">Manage</li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-solid fa-gift"></i>
                             <p>
-                                Giftcards
+                                Manage
                                 <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">3</span>
+                                <span class="badge badge-info right">5</span>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-heartbeat"></i>
+                                        <p>
+                                            Giftcards
+                                            <i class="fas fa-angle-left right"></i>
+                                            <span class="badge badge-info right">2</span>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('cardgenerated-list') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Giftcard Orders</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('giftcardredeem-view') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Giftcard Redeem</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-heartbeat"></i>
+                                        <p>
+                                            Services
+                                            <i class="fas fa-angle-left right"></i>
+                                            <span class="badge badge-info right">2</span>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('service-order-history.index') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Service Orders</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('service-redeem-view') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p> Service Redeem</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             <li class="nav-item">
-                                <a href="{{ route('cardgenerated-list') }}" class="nav-link">
+                                <a href="{{ route('patient.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Giftcard Orders</p>
+                                    <p>  Patient List</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('giftcardredeem-view') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Giftcard Redeem</p>
-                                </a>
-                            </li>
+                                                      
+                           
+                        </ul>
+                    </li>
+
+
+
+                    {{-- <li class="nav-header">In Clinic</li> --}}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-user-md"></i>
+                            <p>
+                                In Clinic
+                                <i class="fas fa-angle-left right"></i>
+                                <span class="badge badge-info right">2</span>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('giftcards-sale') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Sale Gift Card</p>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="nav-header">Services Orders</li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fa fa-user-md"></i>
-                            <p>
-                                Services
-                                <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">3</span>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-
-                            <li class="nav-item">
-                                <a href="{{ route('service-order-history.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Service Orders</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('service-redeem-view') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> Service Redeem</p>
-                                </a>
-                            </li>
+                            
+                            
                             <li class="nav-item">
                                 <a href="{{ route('product.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Service & Deals Sale</p>
                                 </a>
                             </li>
+                            
                         </ul>
                     </li>
 
-                    
-                    <li class="nav-header">Deals Management</li>
-                    <li class="nav-item">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fa-solid fa-receipt"></i>
-                          <p>
-                              Deals & Services
-                              <i class="fas fa-angle-left right"></i>
-                              <span class="badge badge-info right">3</span>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
 
-                        <li class="nav-item">
-                            <a href="{{ route('category.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                <p>
-                                    Deals Management
-
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('product.index') }}" class="nav-link">
-                                <i class="nav-icon fa fa-user-md"></i>
-                                <p>
-                                    Services Management
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('unit.index') }}" class="nav-link">
-                                <i class="nav-icon fa fa-user-md"></i>
-                                <p>
-                                    Unit Management
-                                </p>
-                            </a>
-                        </li>
-                      </ul>
-                    </li>
+                    {{--  For Create  --}}
+                    {{-- <li class="nav-header">Create</li> --}}
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fa-solid fa-receipt"></i>
+                            <i class="nav-icon fa fa-user-md"></i>
                             <p>
-                                Terms & Conditions
+                                Create
                                 <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">1</span>
+                                <span class="badge badge-info right">10</span>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-user-md"></i>
+                                    <p>
+                                        Program Management
+                                        <i class="fas fa-angle-left right"></i>
+                                        <span class="badge badge-info right">2</span>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('program.index') }}" class="nav-link">
+                                            <i class="nav-icon fas fa-book-medical"></i>
+                                            <p>
+                                                Program List
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('program.create') }}" class="nav-link">
+                                            <i class="nav-icon fas fa-book-medical"></i>
+                                            <p>
+                                                Program Add
+                                            </p>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('category.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-calendar-alt"></i>
+                                    <p>
+                                        Deals Management
+    
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('product.index') }}" class="nav-link">
+                                    <i class="nav-icon fa fa-user-md"></i>
+                                    <p>
+                                        Services Management
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('unit.index') }}" class="nav-link">
+                                    <i class="nav-icon fa fa-user-md"></i>
+                                    <p>
+                                        Unit Management
+                                    </p>
+                                </a>
+                            </li>
+                           
 
                             <li class="nav-item">
                                 <a href="{{ route('terms.index') }}" class="nav-link">
-                                    <i class="nav-icon fa fa-list" aria-hidden="true"></i>
-                                    <p>Terms & Condition</p>
+                                    <i class="nav-icon fas fa-book-medical"></i>
+                                    <p>
+                                        Terms & Condition
+                                    </p>
                                 </a>
                             </li>
 
+                          
+                            <li class="nav-item">
+                                <a href="{{ route('coupon.index') }}" class="nav-link">
+                                    <i class="nav-icon fa fa-barcode"></i>
+                                    <p>
+                                        Create Coupon
+                                        <!-- <span class="right badge badge-danger">New</span> -->
+                                    </p>
+                                </a>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('keywords_reports') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-columns"></i>
+                                    <p>
+                                        Search Keywords Report
+                                    </p>
+                                </a>
+                            </li> --}}
+        
+                            <li class="nav-item">
+                                <a href="{{ route('email-template.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-envelope"></i>
+                                    <p>
+                                        Email Template
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('banner.index') }}" class="nav-link">
+                                    <i class="nav-icon far fa-image"></i>
+                                    <p>
+                                        Slider Management
+                                    </p>
+                                </a>
+                            </li>
+                            
                         </ul>
                     </li>
-                    <li class="nav-header">MISCELLANEOUS</li>
+                    
+                    
+                    
+                    
                     <li class="nav-item">
-                        <a href="{{ route('coupon.index') }}" class="nav-link">
-                            <i class="nav-icon fa fa-barcode"></i>
-                            <p>
-                                Coupon Management
-                                <!-- <span class="right badge badge-danger">New</span> -->
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('keywords_reports') }}" class="nav-link">
-                            <i class="nav-icon fas fa-columns"></i>
-                            <p>
-                                Search Keywords Report
-                            </p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('email-template.index') }}" class="nav-link">
-                            <i class="nav-icon far fa-envelope"></i>
-                            <p>
-                                Email Template
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('banner.index') }}" class="nav-link">
-                            <i class="nav-icon far fa-image"></i>
-                            <p>
-                                Slider Management
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('logout') }}" class="nav-link">
-                            <i class="nav-icon far fa-user"></i>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                     
+                        <a href="#"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
+                            <i class="nav-icon fa fa-power-off"></i>
                             <p>
                                 Logout
                             </p>
                         </a>
                     </li>
+                   
 
 
                 </ul>
             </nav>
+
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->

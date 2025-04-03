@@ -5,15 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GiftCoupon;
-use App\Models\MedsapGift;
-use App\Models\GiftCategory;
 use App\Models\Giftsend;
 use App\Models\GiftcardsNumbers;
 use App\Models\User;
-use App\Models\TransactionHistory;
 use App\Models\GiftcardRedeem;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\Patient;
 use App\Mail\GeftcardMail;
 use App\Mail\GiftReceipt;
 use Auth;
@@ -21,6 +19,8 @@ use Mail;
 use Session;
 use Validator;
 use Illuminate\Support\Facades\Log;
+use App\Events\TimelineGiftcardRedeem;
+use App\Events\TimelineGiftcardCancel;
 use DB;
 
 class APIController extends Controller
@@ -101,6 +101,7 @@ public function giftvalidate(Request $request, GiftCoupon $giftCoupon){
  *                 @OA\Property(property="in_future", type="date", example="12-05-2025"),
  *                 @OA\Property(property="coupon_code", type="string", example="CCODE12"),
  *                 @OA\Property(property="event_id", type="integer", example="5"),
+ *                 @OA\Property(property="patient_login_id", type="string", example="xyz@123"),
  *             )
  *         )
  *     ),
@@ -118,9 +119,8 @@ public function giftvalidate(Request $request, GiftCoupon $giftCoupon){
 public function gift_send_store_other (Request $request,Giftsend $giftsend)
 {
     $data=$request->all();
-   $result= $giftsend->create($data);
-
-   if ($result) {
+    $result= $giftsend->create($data);
+    if ($result) {
        $lastId = $result->id;
        $result=$giftsend->find($lastId);
         $result=  json_encode($result);
@@ -150,6 +150,7 @@ public function gift_send_store_other (Request $request,Giftsend $giftsend)
  *                 @OA\Property(property="gift_card_send_type", type="string", example="Email"),
  *                 @OA\Property(property="user_token", type="string", example="FOREVER-MEDSPA"),
  *                 @OA\Property(property="coupon_code", type="string", example="CCODE12"),
+ *                 @OA\Property(property="patient_login_id", type="string", example="xyz@123"),
  *             )
  *         )
  *     ),
@@ -206,6 +207,7 @@ public function gift_send_store_self (Request $request,Giftsend $giftsend,User $
  */
 public function list(Request $request,Giftsend $giftsend,GiftcardsNumbers $numbers)
 {
+
     $token=$request->user_token;
     $result=$giftsend->where('user_token',$token)->orderBy('id','DESC')->get();
 
@@ -747,6 +749,12 @@ public function cardview(Request $request, User $user,GiftcardsNumbers $number){
     if ($result) {
         $updatedTransactionId = 'REDEEM' . time() . $result->id;
         $result->update(['transaction_id' => $updatedTransactionId]);
+         //  For Store Data in Time line
+         $transactionData = [
+            'user_id' => $request->user_id,
+            'transaction_id' => $updatedTransactionId
+        ];
+         event(new TimelineGiftcardRedeem($transactionData));
     }
     //    Adding Gift Sender And Receive Details Add
         $id=$request->user_id;
@@ -889,17 +897,37 @@ public function gift_purchase(Request $request, Giftsend $giftsend, GiftCoupon $
 
         // Fetch the gift card number(s) based on the transaction ID from $result
         $giftcardNumber = GiftcardsNumbers::where('transaction_id', $result->transaction_id)->get();
+        
         $result['card_number'] = $giftcardNumber;
         $gift_send_to = $result->gift_send_to;
         $result['amount'] = $result->amount;
 
         try {
             if (!empty($result->recipient_name)) {
-                Mail::to($result->receipt_email)->send(new GiftReceipt($result));
-                Log::info('GiftReceipt email sent successfully to: ' . $result->receipt_email);
+                $patient_data = Patient::where('patient_login_id',$result->receipt_email)->first();
+                if($patient_data)
+                {
+                    Mail::to($patient_data->email)->send(new GiftReceipt($result));
+                    Log::info('GiftReceipt email sent successfully to: ' . $patient_data->email);
+                }
+                else{
+                    Mail::to($result->receipt_email)->send(new GiftReceipt($result));
+                    Log::info('GiftReceipt email sent successfully to: ' . $result->receipt_email);
+                }
+               
             }
-            Mail::to($gift_send_to)->send(new GeftcardMail($result));
-            Log::info('GeftcardMail email sent successfully to: ' . $gift_send_to);
+
+            $patient_data = Patient::where('patient_login_id',$gift_send_to)->first();
+            if($patient_data)
+            {
+                Mail::to($patient_data->email)->send(new GeftcardMail($result));
+                Log::info('GeftcardMail email sent successfully to: ' . $patient_data->email);
+            }
+            else{
+                Mail::to($gift_send_to)->send(new GeftcardMail($result));
+                Log::info('GeftcardMail email sent successfully to: ' . $gift_send_to);
+            }
+          
         } catch (\Exception $e) {
             Log::error('Mail sending failed: ' . $e->getMessage());
         }
@@ -2108,19 +2136,26 @@ public function product_view(Request $request, $id)
         'status'=>0,
         'transaction_id' => 'CANCEL' . date('YmdHis'),
         ];
-      $result = $numbers->create($canceldata);
-      $updateResult=$numbers->where('giftnumber', $request->gift_card_number)
-      ->where('user_id', $request->user_id)
-      ->update(['status' => 0]);
-           
-      $receiverAndSenderDetails = Giftsend::where('id', $request->user_id)->get();
-      $receiverAndSenderDetails['gift_card_number']=$request->gift_card_number;
+        $result = $numbers->create($canceldata);
+        $updateResult = $numbers->where('giftnumber', $request->gift_card_number)
+                                ->where('user_id', $request->user_id)
+                                ->update(['status' => 0]);
+        
+        $receiverAndSenderDetails = Giftsend::where('id', $request->user_id)->get();
+        $receiverAndSenderDetails['gift_card_number'] = $request->gift_card_number;
+        
         if ($result && $updateResult && $receiverAndSenderDetails) {
-
-            return response()->json(['status' => 200,'receiverAndSenderDetails'=>$receiverAndSenderDetails,'success' => $request->gift_card_number.' Gift Cards Canceled successfully'], 200);
+            // Dispatch the event with the GiftcardsNumbers model instance
+            event(new TimelineGiftcardCancel($result));
+        
+            return response()->json([
+                'status' => 200,
+                'receiverAndSenderDetails' => $receiverAndSenderDetails,
+                'success' => $request->gift_card_number . ' Gift Cards Canceled successfully'
+            ], 200);
         } else {
             return response()->json(['error' => 'Something Went Wrong Plese Contact to Admin', 'status' => 404]);
-        }
+        }        
 
  }
 
@@ -2181,6 +2216,7 @@ public function product_view(Request $request, $id)
             'transaction_histories.lname',
             'transaction_histories.order_id',
             'service_orders.service_id',
+            'service_orders.patient_login_id',
             DB::raw('IFNULL(SUM(service_redeems.number_of_session_use), 0) as total_redeemed_sessions'),
             DB::raw('(service_orders.number_of_session - IFNULL(SUM(service_redeems.number_of_session_use), 0)) as remaining_sessions'),
             'service_orders.discounted_amount',
@@ -2204,7 +2240,8 @@ public function product_view(Request $request, $id)
             'transaction_histories.order_id',
             'service_orders.service_id',
             'service_orders.discounted_amount',
-            'service_orders.actual_amount'
+            'service_orders.actual_amount',
+            'service_orders.patient_login_id'
         );
 
     // Apply filters based on request input

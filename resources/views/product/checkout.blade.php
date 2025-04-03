@@ -51,58 +51,23 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>First Name <span class="required">*</span></label>
-                                            <input type="text" placeholder="" name="fname" value="{{ old('fname') }}">
+                                            <input type="text" placeholder="" name="fname" value="{{Session::get('result') ? Auth::guard('patient')->user()->fname : old('fname') }}">
                                             @error('fname')
-                                                <span class="text-danger">{{ 'First name is required.' }}</span>
+                                            <span class="text-danger">{{ 'First name is required.' }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
-                                            <label>Last Name <span class="required">*</span></label>
-                                            <input type="text" placeholder="" name="lname" value="{{ old('lname') }}">
-                                            @error('lname')
-                                                <span class="text-danger">{{ 'Last name is required.' }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <input type="text" placeholder="Apartment, suite, unit etc. (optional)" name="address" value="{{ old('address') }}">
-                                           
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <label>Town / City <span class="required">*</span></label>
-                                            <input type="text" placeholder="Town / City" name="city" value="{{ old('city') }}">
-                                            @error('city')
-                                                <span class="text-danger">{{ 'Please Enter Town / City.' }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>State / County <span class="required">*</span></label>
-                                            <input type="text" placeholder="" name="country" value="{{ old('country') }}">
-                                            @error('country')
-                                                <span class="text-danger">{{ 'Please Enter State / County' }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Postcode / Zip <span class="required">*</span></label>
-                                            <input type="text" placeholder="Postcode / Zip" name="zip_code" value="{{ old('zip_code') }}">
-                                            @error('zip_code')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <label>Last Name </label>
+                                            <input type="text" placeholder="" name="lname" value="{{Session::get('result') ? Auth::guard('patient')->user()->lname : old('lname') }}">
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Email Address <span class="required">*</span></label>
-                                            <input type="email" placeholder="" name="email" value="{{ old('email') }}">
+                                            <input type="email" placeholder="" name="email" value="{{Session::get('result') ? Auth::guard('patient')->user()->email : old('email') }}">
                                             @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -111,12 +76,46 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Phone <span class="required">*</span></label>
-                                            <input type="number" placeholder="Phone" name="phone" value="{{ old('phone') }}">
+                                            <input type="number" placeholder="Phone" name="phone" value="{{Session::get('result') ? Auth::guard('patient')->user()->phone : old('phone') }}">
                                             @error('phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <input type="text" placeholder="Apartment, suite, unit etc. (optional)" name="address" value="{{Session::get('result') ? Auth::guard('patient')->user()->address : old('address') }}">
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Town / City <span class="required">*</span></label>
+                                            <input type="text" placeholder="Town / City" name="city" value="{{Session::get('result') ? Auth::guard('patient')->user()->city : old('city') }}">
+                                            @error('city')
+                                                <span class="text-danger">{{ 'Please Enter Town / City.' }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>State / Country <span class="required">*</span></label>
+                                            <input type="text" placeholder="" name="country" value="{{Session::get('result') ? Auth::guard('patient')->user()->country : old('country') }}">
+                                            @error('country')
+                                                <span class="text-danger">{{ 'Please Enter State / County' }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Postcode / Zip <span class="required">*</span></label>
+                                            <input type="text" placeholder="Postcode / Zip" name="zip_code" value="{{Session::get('result') ? Auth::guard('patient')->user()->zip_code : old('zip_code') }}">
+                                            @error('zip_code')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

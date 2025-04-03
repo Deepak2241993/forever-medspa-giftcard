@@ -14,16 +14,15 @@ class TransactionHistoryController extends Controller
      */
     public function index(TransactionHistory $transaction)
     {
-        if(Auth::user()->user_type==1)
-        {
-        $data=$transaction->orderBy('id','DESC')->paginate(10);
+        if (Auth::user()->user_type == 1) {
+            $data = $transaction->orderBy('id', 'DESC')->get();
+        } else {
+            $id = Auth::user()->id;
+            $data = $transaction->where('user_id', $id)->orderBy('id', 'DESC')->get();
         }
-        else{
-            $id=Auth::user()->id;
-            $data=$transaction->where('user_id',$id)->orderBy('id','DESC')->get();
-        }
-        return view('gift.order_history',compact('data'));
+        return view('gift.order_history', compact('data'));
     }
+    
 
     /**
      * Show the form for creating a new resource.

@@ -25,30 +25,33 @@
     <div class="app-content">
         <!--begin::Container-->
         <div class="container-fluid">
+
+            
+            
             <!--begin::Row-->
-            {{ $data->onEachSide(5)->links() }}
+            {{-- {{ $data->onEachSide(50)->links() }} --}}
             <table id="datatable-buttons" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Order Number</th>
-                        <th>View Order</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>City</th>
-                        <th>Country</th>
-                        <th>Transaction Id</th>
-                        <th>Total Amount</th>
-                        <th>Transaction Amount</th>
-                        <th>Gift Card Use</th>
-                        <th>Payment Status</th>
-                        <th>Transaction Status</th>
-                        <th>Created Date & Time</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Order Number">Order Number</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Invoice">Invoice</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Full Name">Full Name</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Email">Email</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Phone">Phone</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="City">City</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Country">Country</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Transaction Id">Transaction Id</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Total Amount">Total Amount</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Transaction Amount">Transaction Amount</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Gift Card Use">Gift Card Use</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Payment Status">Payment Status</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Transaction Status">Transaction Status</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Created Date & Time">Created Date & Time</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="data-table-body">
                     @foreach($data as $key => $value)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
@@ -60,7 +63,7 @@
                             <td>
                              
                                 @if(!empty($value->payment_intent))
-                                <a class="btn btn-warning"
+                                <a  class="btn btn-block btn-outline-warning"
                                     href="{{ route('service-invoice', ['transaction_data' => $value->id]) }}">
                                     Invoice
                                 </a>
@@ -80,14 +83,14 @@
                             </td>
                             <td>
                                 <span
-                                    class="badge text-bg-{{ $value->payment_status == 'paid' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($value->payment_status) }}
+                                    class="badge bg-{{ $value->payment_status == 'paid' ? 'success' : 'danger' }}">
+                                    {{ucfirst($value->payment_status) }}
                                 </span>
                             </td>
                             <td>
                                 <span
-                                    class="badge text-bg-{{ $value->transaction_status == 'complete' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($value->transaction_status) }}
+                                    class="badge bg-{{ $value->transaction_status == 'complete' ? 'success' : 'danger' }}">
+                                    {{ucfirst($value->transaction_status) }}
                                 </span>
                             </td>
                             <td>{{ date('m-d-Y h:i:s', strtotime($value->updated_at)) }}
@@ -97,7 +100,7 @@
                 </tbody>
             </table>
 
-            {{ $data->onEachSide(5)->links() }}
+           
             <!--end::Row-->
             <!-- /.Start col -->
         </div>
@@ -121,7 +124,7 @@
                 <h2 id="giftcardsshow"></h2>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button"  class="btn btn-block btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -196,6 +199,26 @@
 
 
         }
+//  For Seacrh Function 
 
     </script>
+
+    {{--  Table --}}
+    <script>
+        $(function () {
+          $("#datatable-buttons").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+          }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+          $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+          });
+        });
+      </script>
 @endpush

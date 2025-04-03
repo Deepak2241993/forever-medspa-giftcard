@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\PopularOffer;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Program;
+use App\Models\ServiceUnit;
 use App\Models\TransactionHistory;
-use Stripe\Stripe;
-use Stripe\Charge;
+use Illuminate\Support\Facades\Auth;
 use Session;
 use Mail;
 use Illuminate\Support\Facades\DB;
@@ -107,90 +108,33 @@ class PopularOfferController extends Controller
         return view('product.offers_details');
     }
   
-    // Old Cart Code 
-    // public function Cart(Request $request)
-    // {
-    //     // Validate common fields
-    //     $request->validate([
-    //         'product_id' => 'nullable|integer|exists:products,id',
-    //         'unit_id'    => 'nullable|integer|exists:service_units,id',
-    //         'quantity'   => 'required|integer|min:1'
-    //     ]);
-    
-    //     // Retrieve cart from session or initialize an empty array
-    //     $cart = session()->get('cart', []);
-    //     // Handle Product Addition
-    //     if (!empty($request->product_id)) {
-    //         $productId = 'product_' . $request->product_id; // Use a prefixed key for products
-    
-    //         if (isset($cart[$productId])) {
-    //             // Update quantity if product already exists
-    //             $cart[$productId]['quantity'] += $request->quantity;
-    //         } else {
-    //             // Add new product to cart
-    //             $cart[$productId] = [
-    //                 'type'      => 'product', // Distinguish between product and unit
-    //                 'id'        => $request->product_id,
-    //                 'quantity'  => $request->quantity
-    //             ];
-    //         }
-    //     }
-    
-    //     // Handle Unit Service Addition
-    //     if (!empty($request->unit_id)) {
-    //         $unitId = 'unit_' . $request->unit_id; // Use a prefixed key for units
-    
-    //         if (isset($cart[$unitId])) {
-    //             // Update quantity if unit already exists
-    //             $cart[$unitId]['quantity'] += $request->quantity;
-    //         } else {
-    //             // Add new unit to cart
-    //             $cart[$unitId] = [
-    //                 'type'      => 'unit', // Distinguish between product and unit
-    //                 'id'        => $request->unit_id,
-    //                 'quantity'  => $request->quantity
-    //             ];
-    //         }
-    //     }
-    
-    //     // Save the updated cart back to the session
-    //     session()->put('cart', $cart);
-    
-    //     return response()->json([
-    //         'status'  => '200',
-    //         'success' => 'Item added to cart successfully!',
-    //         'cart'    => $cart
-    //     ]);
-    // }
-    // Old Cart Code End
+   
 
     public function Cart(Request $request)
     {
-        // Validate common fields
-        $request->validate([
-            'product_id' => 'nullable|integer|exists:products,id',
-            'unit_id'    => 'nullable|integer|exists:service_units,id',
-            'quantity'   => 'required|integer|min:1',
-        ]);
+        
     
         // Retrieve cart from session or initialize an empty array
         $cart = session()->get('cart', []);
-    
-        // Handle Product Addition
+
+    //  For Services Purchase
         if (!empty($request->product_id)) {
-            // Generate a unique key for each product
-            $productKey = 'product_' . $request->product_id . '_' . time();
+
+            $product_data = Product::find($request->product_id);
+            // Generate a unique key for each unit
+            $unitKey = 'unit_' . $request->product_id . '_' . time();
     
-            // Add the product to the cart
-            $cart[$productKey] = [
+            // Add the unit to the cart
+            $cart[$unitKey] = [
                 'type'      => 'product',
                 'id'        => $request->product_id,
-                'quantity'  => $request->quantity,
+                'quantity'  => 1,
             ];
         }
-    
-        // Handle Unit Addition
+
+        // For unit Unit Purchase
         if (!empty($request->unit_id)) {
+            $unit_data = ServiceUnit::find($request->unit_id);
             // Generate a unique key for each unit
             $unitKey = 'unit_' . $request->unit_id . '_' . time();
     
@@ -198,13 +142,42 @@ class PopularOfferController extends Controller
             $cart[$unitKey] = [
                 'type'      => 'unit',
                 'id'        => $request->unit_id,
-                'quantity'  => $request->quantity,
+                'quantity'  => $unit_data->min_qty,
             ];
         }
+
+        //  For Program Purchase
+        if (!empty($request->program_id)) {
+            // Find the program data
+            $program_data = Program::find($request->program_id);
+        
+            if ($program_data) {
+                // Get the unit IDs associated with the program
+                $unit_in_program = explode('|', $program_data->unit_id);
+
+                foreach ($unit_in_program as $key=>$value) {
+                    // Generate a unique key for each unit
+                    $unitKey = 'unit_' . $value .$key. '_' . time();
+
+            //  For fetch Unittable data for minqty
+            $program_data = ServiceUnit::find($value);
+    
+                    // Add the unit to the cart
+                    $cart[$unitKey] = [
+                        'type'     => 'unit',
+                        'id'       => $value,
+                        'quantity' => $program_data->min_qty,
+                    ];
+                }
+            } else {
+                // Handle the case where program data is not found
+                throw new \Exception("Program not found for ID: " . $request->program_id);
+            }
+        }
+        
     
         // Save the updated cart back to the session
         session()->put('cart', $cart);
-    
         return response()->json([
             'status'  => '200',
             'success' => 'Item added to cart successfully!',
@@ -286,40 +259,56 @@ public function updateCart(Request $request)
         }
     }
 
-    public function Checkout(Request $request) {
-        $cart = session()->get('cart', []);
+
+    public function Checkout(Request $request)
+    {
+        try {
+            if (Auth::guard('patient')->check()) {
+                $cart = session()->get('cart', []);
     
-        if ($request->giftcards != null) {
-            // Initialize the giftcards array
-            $giftcards = session()->get('giftcards', []);
+                if (!empty($request->giftcards)) {
+                    // Initialize or retrieve giftcards array from the session
+                    $giftcards = session()->get('giftcards', []);
     
-            // Iterate over the giftcards array from the request
-            foreach ($request->giftcards as $giftcard) {
-                // Add each gift card to the session array
-                $giftcards[] = [
-                    'number' => $giftcard['number'],
-                    'amount' => $giftcard['amount'],
-                ];
+                    // Iterate and add gift card details from the request
+                    foreach ($request->giftcards as $giftcard) {
+                        if (!isset($giftcard['number']) || !isset($giftcard['amount'])) {
+                            continue;
+                        }
+                        $giftcards[] = [
+                            'number' => $giftcard['number'],
+                            'amount' => $giftcard['amount'],
+                        ];
+                    }
+    
+                    // Store updated session data
+                    session()->put([
+                        'giftcards' => $giftcards,
+                        'total_gift_applyed' => $request->total_gift_applyed,
+                        'tax_amount' => $request->tax_amount,
+                        'totalValue' => $request->totalValue,
+                    ]);
+    
+                    return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.', 'error' => false]);
+                } else {
+                    return response()->json(['status' => 200, 'message' => 'No Giftcard Applied', 'error' => false]);
+                }
+            } else {
+                Log::warning('Unauthorized checkout attempt', ['ip' => $request->ip()]);
+                return response()->json(['status' => 401, 'message' => 'User not authenticated', 'error' => true]);
             }
-    
-            // Store the updated giftcards array and other values back into the session
-            session()->put([
-                'giftcards' => $giftcards,
-                'total_gift_applyed' => $request->total_gift_applyed,
-                'tax_amount' => $request->tax_amount,
-                'totalValue' => $request->totalValue,
+        } catch (\Exception $e) {
+            Log::error('Error during checkout process', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
-            return response()->json(['status' => 200, 'message' => 'Gift Cards stored in session successfully.']);
-        } else {
-            return response()->json(['status' => 200, 'message' => 'No Giftcard Apply']);
+    
+            return response()->json(['status' => 500, 'message' => 'Internal server error', 'error' => true]);
         }
     }
+
     
-
-
-
-
-
+    
 
 //  For checkout page call
         public function checkoutView(Request $request){
@@ -497,11 +486,11 @@ public function updateCart(Request $request)
                             }
                         }
                     }
-                    session::pull('giftcards');
-                    session::pull('total_gift_applyed');
-                    session::pull('tax_amount');
-                    session::pull('totalValue');
-                    session::pull('cart');
+                    Session::pull('giftcards');
+                    Session::pull('total_gift_applyed');
+                    Session::pull('tax_amount');
+                    Session::pull('totalValue');
+                    Session::pull('cart');
                 }
 
         Mail::to($transaction_data->email)->send(new ServicePurchaseConfirmation($transaction_data));

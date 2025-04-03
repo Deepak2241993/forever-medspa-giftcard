@@ -210,7 +210,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                    <button type="submit"  class="btn btn-block btn-outline-primary w-md">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -247,7 +247,7 @@
                                         </div>
 
                                         <div>
-                                            <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                            <button type="submit"  class="btn btn-block btn-outline-primary w-md">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -280,7 +280,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit"  class="btn btn-block btn-outline-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -291,9 +291,9 @@
                         <form class="row gx-3 gy-2 align-items-center">
                             <div class="hstack gap-3">
                                 <input class="form-control me-auto" type="text" placeholder="Add your item here...">
-                                <button type="button" class="btn btn-secondary">Submit</button>
+                                <button type="button"  class="btn btn-block btn-secondary">Submit</button>
                                 <div class="vr"></div>
-                                <button type="reset" class="btn btn-outline-danger">Reset</button>
+                                <button type="reset"  class="btn btn-block btn-outline-danger">Reset</button>
                             </div>
                         </form>
                     </div>

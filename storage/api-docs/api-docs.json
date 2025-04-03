@@ -125,6 +125,10 @@
                                     "event_id": {
                                         "type": "integer",
                                         "example": "5"
+                                    },
+                                    "patient_login_id": {
+                                        "type": "string",
+                                        "example": "xyz@123"
                                     }
                                 },
                                 "type": "object"
@@ -189,6 +193,10 @@
                                     "coupon_code": {
                                         "type": "string",
                                         "example": "CCODE12"
+                                    },
+                                    "patient_login_id": {
+                                        "type": "string",
+                                        "example": "xyz@123"
                                     }
                                 },
                                 "type": "object"

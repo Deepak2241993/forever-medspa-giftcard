@@ -24,7 +24,7 @@
                   </div>
                     <div class="mt-4 col-lg-3 self">
                        
-                        <button class="form-control btn btn-primary" type="submit">Submit</button>
+                        <button class="form-control btn btn-outline-primary" type="submit">Submit</button>
                     </div>
                 </div>
                 </form>

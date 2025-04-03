@@ -160,9 +160,9 @@
                                                 <td>
                                                     <a href="javascript:void(0)"
                                                         onclick="updateCart({{ $item['id'] }},'{{ $item['type'] }}','{{ $key }}')"
-                                                        class="btn btn-success">Update</a>
+                                                         class="btn btn-block btn-outline-success">Update</a>
                                                     <a href="javascript:void(0)" onclick="removeFromCart('{{ $key }}')"
-                                                        class="btn btn-danger">Remove</a>
+                                                         class="btn btn-block btn-outline-danger">Remove</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -194,7 +194,7 @@
                                                 {{-- {{dd($redeem);}} --}}
                                                 @if ($redeem <= 0)
                                                     <div class="col-9 mt-4">
-                                                        <h5>Apply Giftcard</h5>
+                                                        <h5>Apply Giftcard </h5>
                                                         <div class="row">
                                                             <div class="col-md-5">
                                                                 <input id="gift_number_0"
@@ -212,7 +212,7 @@
 
                                                             <div class="col-md-3 mt-4">
                                                                 <button onclick="validategiftnumber({{ 0 }})"
-                                                                    class="btn btn-success giftcartbutton" type="button">
+                                                                     class="btn btn-block btn-outline-success giftcartbutton" type="button">
                                                                     <span class="fill-btn-inner">
                                                                         <span class="fill-btn-normal"><i class="fa fa-check"
                                                                                 aria-hidden="true"></i></span>
@@ -358,7 +358,7 @@
                 </div>
                 <div class="col-md-3 mt-4" style="display:flex;">
                     <button onclick="validategiftnumber(${key})"
-                        class="btn btn-success giftcartbutton" type="button">
+                         class="btn btn-block btn-outline-success giftcartbutton" type="button">
                         <span class="fill-btn-inner">
                             <span class="fill-btn-normal"><i class="fa fa-check" aria-hidden="true"></i></span>
                             <span class="fill-btn-hover"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -366,7 +366,7 @@
                     </button> 
                     |
                     <button 
-                        class="btn btn-danger giftcartdelete remove-button" type="button" data-key="${key}">
+                         class="btn btn-block btn-outline-danger giftcartdelete remove-button" type="button" data-key="${key}">
                         <span class="fill-btn-inner">
                             <span class="fill-btn-normal">X</span>
                             <span class="fill-btn-hover">X</span>
@@ -471,62 +471,62 @@
 
         // Adding Value in session
         $(document).ready(function() {
-            $('#submitGiftCards').click(function() {
-                var giftCards = [];
+    $('#submitGiftCards').click(function() {
+        var giftCards = [];
 
-                // Add the initial gift card input fields
-                var initialGiftNumber = $('#gift_number_0').val();
-                var initialGiftAmount = $('#giftcard_amount_0').val();
+        // Add the initial gift card input fields
+        var initialGiftNumber = $('#gift_number_0').val();
+        var initialGiftAmount = $('#giftcard_amount_0').val();
 
-                if (initialGiftNumber && initialGiftAmount) {
-                    giftCards.push({
-                        number: initialGiftNumber,
-                        amount: initialGiftAmount
-                    });
-                }
-
-                // Add dynamically added gift card input fields
-                $('#parentElement .row').each(function() {
-                    var rowId = $(this).attr('id').split('_')[1];
-                    var giftNumber = $('#gift_number_' + rowId).val();
-                    var giftAmount = $('#giftcard_amount_' + rowId).val();
-
-                    if (giftNumber && giftAmount) {
-                        giftCards.push({
-                            number: giftNumber,
-                            amount: giftAmount
-                        });
-                    }
-                });
-
-                $.ajax({
-                    url: '{{ route('checkout') }}',
-                    method: "post",
-                    dataType: "json",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        giftcards: giftCards,
-                        total_gift_applyed: $('#giftcard_applied').html().replace(/[\$-]/g, '')
-                            .trim(),
-                        tax_amount: $('#tax_amount').html().replace(/[\$+]/g, '').trim(),
-                        totalValue: $('#totalValue').html().replace(/[\$]/g, '').trim()
-
-                    },
-                    success: function(response) {
-                        if (response.status === 200) {
-                            window.location = "{{ route('checkout_view') }}";
-                        } else {
-                            alert('Error submitting Gift Cards: ' + response.error);
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert(
-                            'An error occurred while submitting the Gift Cards. Please try again.'
-                            );
-                    }
-                });
+        if (initialGiftNumber && initialGiftAmount) {
+            giftCards.push({
+                number: initialGiftNumber,
+                amount: initialGiftAmount
             });
+        }
+
+        // Add dynamically added gift card input fields
+        $('#parentElement .row').each(function() {
+            var rowId = $(this).attr('id').split('_')[1];
+            var giftNumber = $('#gift_number_' + rowId).val();
+            var giftAmount = $('#giftcard_amount_' + rowId).val();
+
+            if (giftNumber && giftAmount) {
+                giftCards.push({
+                    number: giftNumber,
+                    amount: giftAmount
+                });
+            }
         });
+
+        $.ajax({
+            url: '{{ route('checkout') }}',
+            method: "post",
+            dataType: "json",
+            data: {
+                _token: '{{ csrf_token() }}',
+                giftcards: giftCards,
+                total_gift_applyed: $('#giftcard_applied').html().replace(/[\$-]/g, '').trim(),
+                tax_amount: $('#tax_amount').html().replace(/[\$+]/g, '').trim(),
+                totalValue: $('#totalValue').html().replace(/[\$]/g, '').trim()
+            },
+            success: function(response) {
+                if (response.status === 200) {
+                    window.location = "{{ route('checkout_view') }}";
+                } else {
+                    window.location = "{{ route('patient-login') }}";
+                }
+            },
+            error: function(jqXHR) {
+                var errorMessage = 'An error occurred while submitting the Gift Cards.';
+                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                    errorMessage += '\n' + jqXHR.responseJSON.message;
+                }
+                alert(errorMessage);
+            }
+        });
+    });
+});
 
 
         // Giftcard number adding in session 

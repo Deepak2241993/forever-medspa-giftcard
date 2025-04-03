@@ -30,7 +30,7 @@
                                                                                 style="color:#467fcf;text-decoration:none"
                                                                                 target="_blank"
                                                                                 data-saferedirecturl="https://myforevermedspa.com/"><img
-                                                                                    src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                    src="{{url('/images/gifts/logo.png')}}"
                                                                                     width="150" height="60"
                                                                                     alt="Forever Medspa"
                                                                                     style="line-height:100%;outline:none;text-decoration:none;vertical-align:baseline;font-size:0;border:0 none"
@@ -117,7 +117,7 @@
                                                                                         <tr>
                                                                                             <td style="font-family:Open Sans,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;width:1%;padding-right:16px"
                                                                                                 valign="top"><img
-                                                                                                    src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                                                                                                    src="{{url('/images/gifts/logo.png')}}"
                                                                                                     width="150"
                                                                                                     height="60"
                                                                                                     alt=""

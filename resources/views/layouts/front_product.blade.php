@@ -45,14 +45,6 @@
     <div id="preloader">
        <div class="bd-loader-inner">
           <div class="bd-loader">
-             {{-- <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span>
-             <span class="bd-loader-item"></span> --}}
              <img src="{{url('/uploads/FOREVER-MEDSPA/medspa_logo.gif')}}" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';">
           </div>
        </div>
@@ -61,48 +53,9 @@
     <!-- END LOADER -->
 	
 	<!-- Start header -->
-	<header class="top-header">
-		<nav class="navbar header-nav navbar-expand-lg">
-            <div class="container">
-				<a class="navbar-brand" href="{{url('/')}}"><img src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" alt="image" style="height:81px;" onerror="this.onerror=null; this.src='{{url('/No_Image_Available.jpg')}}';"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-wd" aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
-                    <ul class="navbar-nav">
-                        <li><a class="nav-link" href="https://forevermedspanj.com/" target="_blank">Home</a></li>
-						<li>
-                            <a class="nav-link {{ Request::is('services') ? 'active' : '' }}" href="{{ route('services') }}">
-                                Black Friday Deals
-                            </a>
-                        </li>
-                         <li><a class="nav-link" href="{{url('/')}}">Giftcards</a></li> 
-                        {{-- Cart Code --}}
-                        @php
-                        $cart = session()->get('cart', []);
-                        $amount=0;
-                        
-                        @endphp
-                        @if(count(session()->get('cart', []))>0)
-                        <div id="cart" class="btn-group btn-block">
-                            <button onclick="window.location.href='{{route('cartview')}}'" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-bag"></i> <span id="cart-total" class="hidden-xs">{{ count(session()->get('cart', [])) ? count(session()->get('cart', [])) : 0 }}
-                            </span></button>
-                            {{-- <ul class="dropdown-menu pull-right">    <li>
-                                <p class="text-center">Your shopping cart is empty!</p>
-                              </li>  </ul> --}}
-                        </div>
-                        @endif
-                       
-                        {{-- Cart Code END --}}
-                        
-                    </ul>
-                </div>
-            </div>
-        </nav>
-	</header>
+	<x-front_header/>
 	<!-- End header -->
+
 	
 	<!-- Start Banner -->
 	@yield('body')

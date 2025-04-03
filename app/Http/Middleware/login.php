@@ -21,7 +21,7 @@ class login
         {
             return redirect('/login');
         }
-        return $next($request);
+       
         return $next($request);
     }
 }

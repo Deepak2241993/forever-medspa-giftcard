@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'patient' => [
+        'driver' => 'session',
+        'provider' => 'patients',
+        ],
     ],
 
     /*
@@ -65,10 +69,11 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'patients' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Patient::class,
+        'patient_login_id' => 'patient_login_id',
+        ],
     ],
 
     /*
@@ -89,6 +94,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'patients' => [
+            'provider' => 'patients',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

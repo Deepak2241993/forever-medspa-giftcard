@@ -8,6 +8,7 @@ use App\Models\Banner;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Auth;
+use Session;
 use Illuminate\Support\Facades\DB;
 class ServiceUnitController extends Controller
 {
@@ -18,7 +19,7 @@ class ServiceUnitController extends Controller
      */
     public function index()
     {
-        $result = ServiceUnit::where('product_is_deleted',0)->orderBy('id','DESC')->paginate(10);
+        $result = ServiceUnit::where('product_is_deleted',0)->orderBy('id','DESC')->get();
         return view('admin.service_unit.service_unit_index', compact('result'));
     }
 
@@ -64,7 +65,9 @@ class ServiceUnitController extends Controller
     }
 
         $serviceUnit->create($data);
-        return redirect('/admin/unit')->with('message', 'Unit Added Successfully');;
+
+        return redirect('/admin/unit')->with('message', 'Unit Added Successfully');
+
     }
 
  
@@ -193,5 +196,30 @@ public function ServicePage(Request $request){
     
    
 }
-//  All Service And Unit code End 
+
+// Create Unit Quickly
+public function CreateUnitQuickly(Request $request,ServiceUnit $serviceUnit)
+    {
+        $token = Auth::user()->user_token;
+        $data = $request->except('_token');
+        $data['user_token'] = $token;
+        $result = $serviceUnit->create($data);
+        $cart = session()->get('cart', []);
+        // Handle Unit Addition
+        if ($result) {
+            // Generate a unique key for each unit
+            $unitKey = 'unit_' . $result->id . '_' . time();
+    
+            // Add the unit to the cart
+            $cart[$unitKey] = [
+                'type'      => 'unit',
+                'id'        => $result->id,
+                'quantity'  => $result->min_qty,
+            ];
+        }
+        session()->put('cart', $cart);
+        return back()->with('message', 'Unit Added Successfully');
+
+    }
+
 }

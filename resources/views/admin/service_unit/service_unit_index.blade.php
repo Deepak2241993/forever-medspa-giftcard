@@ -23,16 +23,7 @@
         <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
-
-                <!--begin::Row-->
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <!-- Add More Button (Left Side) -->
-                    <a href="{{ route('unit.create') }}" class="btn btn-dark mb-4">Add More</a>
-
-                    <!-- Form and Demo Download (Right Side) -->
-
-                </div>
-                <!-- Display Uploaded Images -->
+                
 
                 @if (session('message'))
                     <div class="alert alert-success mt-4">
@@ -48,22 +39,19 @@
                         </ul>
                     </div>
                 @endif
-          
-            
-                
-                <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                <table id="datatable-buttons" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Unit Name</th>
-                            <th>Orignal Price</th>
-                            <th>Discounted Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Unit Name">Unit Name</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Orignal Price">Orignal Price</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Discounted Price">Discounted Price</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Status">Status</th>
+                            <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
 
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="data-table-body">
                         @foreach ($result as $value)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -75,8 +63,9 @@
                                 <td>{{ $value->status == 1 ?  "Active":"Inactive" }}</td>
                                 
                                 <td>
-                                    <a href="{{ route('unit.edit', $value['id']) }}" class="btn btn-primary">Edit</a>
-                                    <a href="{{ route('unitdelete', $value['id']) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ route('unit.edit', $value['id']) }}"  class="btn btn-block btn-outline-primary">Edit</a>
+                                    <a href="{{ route('unitdelete', $value['id']) }}"  class="btn btn-block btn-outline-danger">Delete</a>
+                                    <a class="btn btn-block btn-outline-primary" onclick="addcart({{ $value['id'] }})">Buy</a>
                                   
                                 </td>
 
@@ -89,9 +78,9 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    {{ $result->links() }}
+                    
                 </table>
-                {{ $result->links() }}
+                {{-- {{ $result->links() }} --}}
                 <!--end::Row-->
                 <!-- /.Start col -->
             </div>
@@ -141,9 +130,8 @@
                 dataType: "json",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    product_id: id,
-                    quantity: 1,
-                    type: "product"
+                    unit_id: id,
+                    type: "unit"
                 },
                 success: function(response) {
                     if (response.success) {
@@ -252,5 +240,87 @@
                 console.error("Could not copy text: ", error);
             });
         }
+        function SearchView() {
+    var service_name = $('#service_name').val();
+    $.ajax({
+        url: '{{ route('unit-search') }}', // API endpoint
+        method: "GET",
+        dataType: "json",
+        data: {
+            service_name: service_name,
+        },
+        success: function (response) {
+            if (response.status === 'success' && response.data.data.length > 0) {
+                var tableBody = $('#data-table-body'); // ID of your table body
+                tableBody.empty(); // Clear existing rows
+
+                // Loop through the response data and populate the table
+                $.each(response.data.data, function (key, value) {
+                    // Format date
+                    var updatedDate = value.updated_at
+                        ? new Date(value.updated_at).toLocaleString('en-US', {
+                              month: '2-digit',
+                              day: '2-digit',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              second: '2-digit',
+                          })
+                        : 'N/A';
+
+                    // Handle product images dynamically
+                    var productImages = value.product_image ? value.product_image.split('|') : [];
+                    var firstImage = productImages.length > 0 ? productImages[0] : '{{ url("/No_Image_Available.jpg") }}';
+
+                    // Append rows
+                    tableBody.append(`
+                        <tr>
+                            <td>${key + 1}</td>
+                            <td><a class="btn btn-block btn-outline-primary" onclick="addcart(${value.id})">Buy</a></td>
+                            <td>${value.product_name || 'N/A'}</td>
+                            <td>${value.amount || '0.00'}</td>
+                            <td>${value.discounted_amount || '0.00'}</td>
+                            <td>${value.short_description ? value.short_description.substring(0, 100) + '...' : 'N/A'}</td>
+                            <td>${value.unit_id !== null ? 'Unit Service' : 'Normal Deals & Service'}</td>
+                            <td>
+                                <a href="/product/${value.id}/edit" class="btn btn-block btn-outline-primary">Edit</a>
+                                <form action="/product/${value.id}" method="POST" style="display:inline;">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button class="btn btn-block btn-outline-danger" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    `);
+                });
+            } else {
+                // Handle empty results
+                $('#data-table-body').empty().append('<tr><td colspan="9">No results found.</td></tr>');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            alert('An error occurred while fetching data.');
+        },
+    });
+}
     </script>
+
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": true, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush

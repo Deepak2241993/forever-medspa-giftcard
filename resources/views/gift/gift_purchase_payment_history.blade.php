@@ -33,7 +33,7 @@
                 border: solid 1px;
                 text-align: left;
                 padding: 4px;">
-                <img class="mb-4" id="logosuccess" src="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png" height="60px">
+                <img class="mb-4" id="logosuccess" src="{{url('/images/gifts/logo.png')}}" height="60px">
                 <table class="table mt-4" style="margin-top: 20px;">
                     <thead>
                         <tr><td colspan="2"><h2>Transaction Details</h2></td></tr>
@@ -75,7 +75,7 @@
                 </table>
             </div>
         </div>
-            <button class="btn btn-warning mt-4"onclick="printDiv()"> Print</button>
+            <button  class="btn btn-block btn-outline-warning mt-4"onclick="printDiv()"> Print</button>
         </center>
                 
                 <!-- /.Start col -->

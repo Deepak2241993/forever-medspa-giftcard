@@ -22,41 +22,28 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, Product $product)
-    {
-        $token = Auth::user()->user_token;
-        $page = $request->input('page', 1); // Current page, default is 1
-        $perPage = 10; // Number of items per page
+{
+    $token = Auth::user()->user_token;
 
-        // Prepare data for API request
-        $data_arr = [
-            'user_token' => $token,
-            'service_name' => $request->input('service_name'),
-            'product_slug' => $request->input('product_slug'),
-            'page' => $page,
-            'perPage' => $perPage
-        ];
+    // Prepare data for API request
+    $data_arr = [
+        'user_token' => $token,
+        'service_name' => $request->input('service_name'),
+        'product_slug' => $request->input('product_slug')
+    ];
 
-        $data = json_encode($data_arr);
+    $data = json_encode($data_arr);
 
-        // Make API request
-        $apiResponse = $this->postAPI('product-list', $data);
-        $products = $apiResponse['result']; // Array of products
-        $total = $apiResponse['total']; // Total number of products
-        $perPage = $apiResponse['perPage']; // Number of items per page
-        $currentPage = $apiResponse['currentPage']; // Current page
+    // Make API request
+    $apiResponse = $this->postAPI('product-list', $data);
+    $products = $apiResponse['result']; // Array of products
 
-        // Create paginator manually
-        $paginator = new LengthAwarePaginator(
-            $products,    // Items for the current page
-            $total,       // Total items
-            $perPage,     // Items per page
-            $currentPage, // Current page
-            ['path' => $request->url(), 'query' => $request->query()] // Append query parameters
-        );
-        // Image Show
-        $images = Storage::files('public/images');
-        return view('admin.product.product_index', compact('paginator','images'));
-    }
+    // Image Show
+    $images = Storage::files('public/images');
+
+    return view('admin.product.product_index', compact('products', 'images'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -529,6 +516,60 @@ if ($request->hasFile('product_image')) {
             return view('product.product_details',compact('data','category','search','popular_service','description'));
             }
 
+            public function ServiceSearch(Request $request, Product $product)
+            {
+                // Start with a base query
+                $query = $product->query();
+            
+                // Check if 'service_name' is provided in the request
+                if ($request->filled('service_name')) {
+                    $service_name = strtolower($request->service_name);  // Get the search term
+            
+                    // Apply the filter on both 'product_name' and 'product_slug'
+                    $query->where(function($q) use ($service_name) {
+                        $q->whereRaw('LOWER(product_name) LIKE ?', ['%' . $service_name . '%'])
+                          ->orWhereRaw('LOWER(product_slug) LIKE ?', ['%' . $service_name . '%']);
+                    });
+                }
+            
+                // Order and paginate results (you can adjust this based on your requirements)
+                $data = $query->orderBy('id', 'DESC')->paginate(10);
+            
+                // Return response as JSON
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Search results retrieved successfully.',
+                    'data' => $data,
+                ], 200);
+            }
+            //  For Unit Search
+            public function UnitSearch(Request $request, ServiceUnit $unit)
+            {
+                // Start with a base query
+                $query = $unit->query();
+            
+                // Check if 'service_name' is provided in the request
+                if ($request->filled('service_name')) {
+                    $service_name = strtolower($request->service_name);  // Get the search term
+            
+                    // Apply the filter on both 'product_name' and 'product_slug'
+                    $query->where(function($q) use ($service_name) {
+                        $q->whereRaw('LOWER(product_name) LIKE ?', ['%' . $service_name . '%'])
+                          ->orWhereRaw('LOWER(product_slug) LIKE ?', ['%' . $service_name . '%']);
+                    });
+                }
+            
+                // Order and paginate results (you can adjust this based on your requirements)
+                $data = $query->orderBy('id', 'DESC')->paginate(10);
+            
+                // Return response as JSON
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Search results retrieved successfully.',
+                    'data' => $data,
+                ], 200);
+            }
+            
 
     }
 

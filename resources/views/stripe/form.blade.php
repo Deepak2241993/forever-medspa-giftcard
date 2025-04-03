@@ -21,7 +21,7 @@
                 data-description="Forever Medspa Giftcards"
                 data-amount="{{$giftDetails['amount'] * 100 }}"
                 data-email="info@forevermedspanj.com"
-                data-image="https://forevermedspanj.com/wp-content/uploads/forever-color.fw_.png"
+                data-image="{{url('/images/gifts/logo.png')}}"
                 data-currency="usd">
                 </script>
             </form>
