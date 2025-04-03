@@ -72,32 +72,9 @@
                     </div>
                 @endif
 
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">Search Data</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row align-items-end">
-                            <!-- Service Search Form -->
-                            <div class="col-md-8">
-                                <form method="GET" action="{{ route('product.index') }}">
-                                    @csrf
-                                    <div class="mb-0">
-                                        <label for="service_name" class="form-label">Search by Service Name:</label>
-                                        <input type="text" class="form-control" id="service_name" name="service_name" placeholder="Enter Service Name" onkeyup="SearchView()">
-                                        <input type="hidden" class="form-control" id="user_token" name="user_token" value="{{ Auth::user()->user_token }}">
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Add More Button -->
-                            <div class="col-md-4">
-                                <a href="{{ route('product.create') }}" class="btn btn-dark w-100">Add More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 
                 
+              
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0">Upload and Download</h4>
@@ -119,7 +96,7 @@
                             <!-- Downloads Section -->
                             <div class="col-md-6 mb-4">
                                 <div class="d-flex flex-column">
-                                    @if ($paginator->isEmpty())
+                                    @if (collect($products)->isEmpty())
                                         <a href="{{ url('/services.csv') }}" class="btn btn-outline-info mb-2" download="services.csv">
                                             Download Service Template
                                         </a>
@@ -134,6 +111,9 @@
                                     <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#media_modal">
                                         Media
                                     </button>
+                                    
+                                        <a href="{{ route('product.create') }}" class="btn btn-outline-dark mb-2 mt-2">Add More</a>
+                                  
                                 </div>
                             </div>
                         </div>               
@@ -142,23 +122,23 @@
                 </div>
                 
 
-            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                <table id="datatable-buttons" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Buy</th>
-                        <th>Product Name</th>
-                        <th>Image</th>
-                        <th>Actual Price</th>
-                        <th>Deal Price</th>
-                        <th>Product Description</th>
-                        <th>Type</th>
-                        <th>Action</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#">#</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Buy">Buy</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Product Name">Product Name</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Image">Image</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Actual Price">Actual Price</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Deal Price">Deal Price</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Product Description">Product Description</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Type">Type</th>
+                        <th class="sorting sorting_asc" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Action">Action</th>
 
                     </tr>
                 </thead>
                 <tbody id="data-table-body">
-                    @foreach ($paginator as $value)
+                    @foreach ($products as $value)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td><a class="btn btn-block btn-outline-primary" onclick="addcart({{ $value['id'] }})">Buy</a>
@@ -208,9 +188,9 @@
                         </tr>
                     @endforeach
                 </tbody>
-                {{ $paginator->links() }}
+                {{-- {{ $paginator->links() }} --}}
             </table>
-            {{ $paginator->links() }}
+            {{-- {{ $paginator->links() }} --}}
             <!--end::Row-->
             <!-- /.Start col -->
         </div>
@@ -537,4 +517,22 @@ function SearchView() {
 
 
     </script>
+{{-- For Data Table --}}
+<script>
+    $(function () {
+      $("#datatable-buttons").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 @endpush

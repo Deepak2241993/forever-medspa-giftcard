@@ -22,41 +22,28 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, Product $product)
-    {
-        $token = Auth::user()->user_token;
-        $page = $request->input('page', 1); // Current page, default is 1
-        $perPage = 10; // Number of items per page
+{
+    $token = Auth::user()->user_token;
 
-        // Prepare data for API request
-        $data_arr = [
-            'user_token' => $token,
-            'service_name' => $request->input('service_name'),
-            'product_slug' => $request->input('product_slug'),
-            'page' => $page,
-            'perPage' => $perPage
-        ];
+    // Prepare data for API request
+    $data_arr = [
+        'user_token' => $token,
+        'service_name' => $request->input('service_name'),
+        'product_slug' => $request->input('product_slug')
+    ];
 
-        $data = json_encode($data_arr);
+    $data = json_encode($data_arr);
 
-        // Make API request
-        $apiResponse = $this->postAPI('product-list', $data);
-        $products = $apiResponse['result']; // Array of products
-        $total = $apiResponse['total']; // Total number of products
-        $perPage = $apiResponse['perPage']; // Number of items per page
-        $currentPage = $apiResponse['currentPage']; // Current page
+    // Make API request
+    $apiResponse = $this->postAPI('product-list', $data);
+    $products = $apiResponse['result']; // Array of products
 
-        // Create paginator manually
-        $paginator = new LengthAwarePaginator(
-            $products,    // Items for the current page
-            $total,       // Total items
-            $perPage,     // Items per page
-            $currentPage, // Current page
-            ['path' => $request->url(), 'query' => $request->query()] // Append query parameters
-        );
-        // Image Show
-        $images = Storage::files('public/images');
-        return view('admin.product.product_index', compact('paginator','images'));
-    }
+    // Image Show
+    $images = Storage::files('public/images');
+
+    return view('admin.product.product_index', compact('products', 'images'));
+}
+
 
     /**
      * Show the form for creating a new resource.
