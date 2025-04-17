@@ -193,5 +193,12 @@ Route::get('/clear', function() {
     Artisan::call('view:clear');
     echo Artisan::output();
 });
+//For the new UI 
+Route::get('/newmedspaservice', function(){
+    return view('newmedspaservice.index');
+
+    
+    
+});
 
 

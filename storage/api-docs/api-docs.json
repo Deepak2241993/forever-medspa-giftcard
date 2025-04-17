@@ -17,7 +17,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/forever-medspa-giftcard/public/api/"
+            "url": "https://thetemz.in/medspa-giftcard/public/api/"
         }
     ],
     "paths": {
